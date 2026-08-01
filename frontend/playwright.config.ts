@@ -1,11 +1,17 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const frontendPort = parseInt(process.env.FRONTEND_PORT ?? "3100", 10);
+const backendPort = parseInt(process.env.BACKEND_PORT ?? "8100", 10);
+
 /**
  * Playwright configuration for E2E testing
  * See https://playwright.dev/docs/test-configuration
  *
  * Automatically starts both backend and frontend servers.
  * Requires: Docker DB running (`docker compose up -d db` from project root).
+ *
+ * Ports are read from FRONTEND_PORT (default 3100) and BACKEND_PORT (default 8100),
+ * matching the values in .env.example and the Makefile.
  */
 export default defineConfig({
   testDir: "./e2e",
@@ -16,7 +22,7 @@ export default defineConfig({
   reporter: "html",
   timeout: 60_000,
   use: {
-    baseURL: "http://localhost:3000",
+    baseURL: `http://localhost:${frontendPort}`,
     trace: "on-first-retry",
     screenshot: "only-on-failure",
   },
@@ -30,18 +36,19 @@ export default defineConfig({
 
   webServer: [
     {
-      command:
-        "uv run python -m uvicorn app.main:app --host 127.0.0.1 --port 8000",
+      command: `uv run python -m uvicorn app.main:app --host 127.0.0.1 --port ${backendPort}`,
       cwd: "../backend",
-      port: 8000,
+      port: backendPort,
       reuseExistingServer: !process.env.CI,
       timeout: 30_000,
+      env: { BACKEND_PORT: String(backendPort) },
     },
     {
-      command: "pnpm run start:test",
-      port: 3000,
+      command: `PORT=${frontendPort} pnpm run start:test`,
+      port: frontendPort,
       reuseExistingServer: !process.env.CI,
       timeout: 30_000,
+      env: { PORT: String(frontendPort), FRONTEND_PORT: String(frontendPort) },
     },
   ],
 });

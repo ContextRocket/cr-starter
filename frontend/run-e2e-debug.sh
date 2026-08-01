@@ -5,6 +5,9 @@
 
 set -e
 
+FRONTEND_PORT="${FRONTEND_PORT:-3100}"
+BACKEND_PORT="${BACKEND_PORT:-8100}"
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -61,16 +64,17 @@ trap cleanup EXIT INT TERM
 > "$TEST_LOG"
 
 echo -e "${BLUE}=== E2E Test Runner with Full Logging ===${NC}"
+echo -e "${BLUE}Frontend port: ${FRONTEND_PORT}  Backend port: ${BACKEND_PORT}${NC}"
 echo -e "${BLUE}Frontend log: $FRONTEND_LOG${NC}"
 echo -e "${BLUE}Backend log: $BACKEND_LOG${NC}"
 echo -e "${BLUE}Test log: $TEST_LOG${NC}"
 echo ""
 
 # Start backend
-echo -e "${GREEN}Starting backend...${NC}"
+echo -e "${GREEN}Starting backend on port ${BACKEND_PORT}...${NC}"
 cd ../backend
 source .venv/bin/activate
-uvicorn app.main:app --host 127.0.0.1 --port 8000 > "$BACKEND_LOG" 2>&1 &
+BACKEND_PORT="${BACKEND_PORT}" uvicorn app.main:app --host 127.0.0.1 --port "${BACKEND_PORT}" > "$BACKEND_LOG" 2>&1 &
 BACKEND_PID_VALUE=$!
 echo $BACKEND_PID_VALUE > "$BACKEND_PID"
 echo -e "${GREEN}Backend started (PID: $BACKEND_PID_VALUE)${NC}"
@@ -78,7 +82,7 @@ echo -e "${GREEN}Backend started (PID: $BACKEND_PID_VALUE)${NC}"
 # Wait for backend to be ready
 echo -e "${YELLOW}Waiting for backend to be ready...${NC}"
 for i in {1..30}; do
-    if curl -s http://localhost:8000/docs > /dev/null 2>&1; then
+    if curl -s "http://localhost:${BACKEND_PORT}/docs" > /dev/null 2>&1; then
         echo -e "${GREEN}Backend is ready!${NC}"
         break
     fi
@@ -92,9 +96,9 @@ for i in {1..30}; do
 done
 
 # Start frontend
-echo -e "${GREEN}Starting frontend...${NC}"
+echo -e "${GREEN}Starting frontend on port ${FRONTEND_PORT}...${NC}"
 cd ../frontend
-pnpm run dev > "$FRONTEND_LOG" 2>&1 &
+PORT="${FRONTEND_PORT}" pnpm run dev > "$FRONTEND_LOG" 2>&1 &
 FRONTEND_PID_VALUE=$!
 echo $FRONTEND_PID_VALUE > "$FRONTEND_PID"
 echo -e "${GREEN}Frontend started (PID: $FRONTEND_PID_VALUE)${NC}"
@@ -102,7 +106,7 @@ echo -e "${GREEN}Frontend started (PID: $FRONTEND_PID_VALUE)${NC}"
 # Wait for frontend to be ready
 echo -e "${YELLOW}Waiting for frontend to be ready...${NC}"
 for i in {1..60}; do
-    if curl -s http://localhost:3000 > /dev/null 2>&1; then
+    if curl -s "http://localhost:${FRONTEND_PORT}" > /dev/null 2>&1; then
         echo -e "${GREEN}Frontend is ready!${NC}"
         break
     fi
@@ -120,7 +124,7 @@ echo -e "${BLUE}=== Running E2E Tests ===${NC}"
 echo ""
 
 # Run the tests
-pnpm test:e2e 2>&1 | tee "$TEST_LOG"
+FRONTEND_PORT="${FRONTEND_PORT}" BACKEND_PORT="${BACKEND_PORT}" pnpm test:e2e 2>&1 | tee "$TEST_LOG"
 TEST_EXIT_CODE=${PIPESTATUS[0]}
 
 echo ""
@@ -128,9 +132,9 @@ echo -e "${BLUE}=== Test Results ===${NC}"
 echo ""
 
 if [ $TEST_EXIT_CODE -eq 0 ]; then
-    echo -e "${GREEN}✓ Tests passed!${NC}"
+    echo -e "${GREEN}Tests passed!${NC}"
 else
-    echo -e "${RED}✗ Tests failed!${NC}"
+    echo -e "${RED}Tests failed!${NC}"
     echo ""
     echo -e "${YELLOW}=== Frontend Logs (last 50 lines) ===${NC}"
     tail -50 "$FRONTEND_LOG"

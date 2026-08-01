@@ -85,7 +85,8 @@ To set persona, welcome message, and scope for your vertical, set these env vars
 
 ```bash
 # frontend/.env.local (or hosting platform env)
-NEXT_PUBLIC_CR_AGENT_URL=https://api.contextrocket.com/a2a/<your-org-id>
+# Bare origin URL -- the SDK appends /api/agent/a2a internally.
+NEXT_PUBLIC_CR_AGENT_URL=https://app.contextrocket.com
 NEXT_PUBLIC_CR_ORG_KEY=<machine-credential-key>
 ```
 

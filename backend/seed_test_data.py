@@ -29,7 +29,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from sqlalchemy import select
 
 from app.database import async_session_maker
-from app.models import User, App
+from app.models import User
 from app.users import UserManager
 from app.database import get_user_db
 from app.schemas import UserCreate
@@ -39,92 +39,53 @@ from app.schemas import UserCreate
 STANDARD_TEST_PASSWORD = "DevPass#99"
 
 # Test personas - easy to add more
-TEST_PERSONAS = [
+TEST_PERSONAS: list[Dict[str, Any]] = [
     {
         "email": "tester@example.com",
-        "apps": [
-            {
-                "name": "Test App",
-                "description": "Primary test application for E2E tests",
-                "config_json": {
-                    "integration_mode": "simulator",
-                    "simulator_type": "echo",
-                },
-            }
-        ],
     },
     # Add more personas here as needed:
-    # {
-    #     "email": "support@example.com",
-    #     "apps": [
-    #         {"name": "Support App", "description": "Customer support chatbot"}
-    #     ],
-    # },
+    # {"email": "support@example.com"},
+    # {"email": "admin@example.com"},
 ]
 
 
 async def seed_persona(session, persona: Dict[str, Any]) -> bool:
-    """Seed a single persona (user + apps)."""
+    """Seed a single persona (user)."""
     email = persona["email"]
-    apps = persona.get("apps", [])
 
     # Check if user already exists
     result = await session.execute(select(User).where(User.email == email))
     user = result.scalar_one_or_none()
 
     if user:
-        print(f"  ✓ User already exists: {email}")
-    else:
-        # Create user using UserManager (handles password hashing)
-        user_db_dep = get_user_db(session)
-        user_db = await user_db_dep.__anext__()
+        print(f"  User already exists: {email}")
+        return True
 
-        user_manager = UserManager(user_db)
+    # Create user using UserManager (handles password hashing)
+    user_db_dep = get_user_db(session)
+    user_db = await user_db_dep.__anext__()
 
-        user_create = UserCreate(
-            email=email,
-            password=STANDARD_TEST_PASSWORD,
-            is_superuser=False,
-            is_verified=True,  # Pre-verify for testing
-        )
+    user_manager = UserManager(user_db)
 
-        try:
-            user = await user_manager.create(user_create)
-            print(f"  ✓ Created user: {email}")
-        except Exception as e:
-            print(f"  ✗ Failed to create user {email}: {e}")
-            return False
+    user_create = UserCreate(
+        email=email,
+        password=STANDARD_TEST_PASSWORD,
+        is_superuser=False,
+        is_verified=True,  # Pre-verify for testing
+    )
 
-    # Create apps for this user
-    for app_data in apps:
-        app_name = app_data["name"]
-
-        # Check if app already exists
-        result = await session.execute(
-            select(App).where(App.user_id == user.id, App.name == app_name)
-        )
-        app = result.scalar_one_or_none()
-
-        if app:
-            print(f"    ✓ App already exists: {app_name}")
-        else:
-            # Create app
-            app = App(
-                name=app_name,
-                description=app_data.get("description", ""),
-                user_id=user.id,
-                config_json=app_data.get("config_json", {}),
-            )
-            session.add(app)
-            await session.commit()
-            print(f"    ✓ Created app: {app_name}")
-
-    return True
+    try:
+        await user_manager.create(user_create)
+        print(f"  Created user: {email}")
+        return True
+    except Exception as e:
+        print(f"  Failed to create user {email}: {e}")
+        return False
 
 
 async def seed_test_data():
-    """Seed all test personas and their apps."""
-    print("🌱 Seeding test data...")
+    """Seed all test personas."""
+    print("Seeding test data...")
     print(f"   Password for all test users: {STANDARD_TEST_PASSWORD}\n")
 
     success = True
@@ -134,12 +95,12 @@ async def seed_test_data():
                 success = False
 
     if success:
-        print("\n✅ Test data seeded successfully!")
-        print(f"\n📧 Test users (all use password: {STANDARD_TEST_PASSWORD}):")
+        print("\nTest data seeded successfully!")
+        print(f"\nTest users (all use password: {STANDARD_TEST_PASSWORD}):")
         for persona in TEST_PERSONAS:
             print(f"   - {persona['email']}")
     else:
-        print("\n⚠️  Some test data failed to seed")
+        print("\nSome test data failed to seed")
 
     return success
 
@@ -150,7 +111,7 @@ async def main():
         success = await seed_test_data()
         sys.exit(0 if success else 1)
     except Exception as e:
-        print(f"\n❌ Error seeding test data: {e}")
+        print(f"\nError seeding test data: {e}")
         import traceback
 
         traceback.print_exc()

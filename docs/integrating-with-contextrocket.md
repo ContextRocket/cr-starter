@@ -10,8 +10,9 @@ file is derived from the real code in `frontend/lib/cr-sdk/` and
 
 1. **An org credential.** Go to your ContextRocket dashboard, navigate to
    Settings, and mint a machine credential for your org. You get two values:
-   - `NEXT_PUBLIC_CR_AGENT_URL`: the A2A endpoint for your org's agent
-     (e.g. `https://api.contextrocket.com`).
+   - `NEXT_PUBLIC_CR_AGENT_URL`: bare origin URL of the ContextRocket agent
+     (e.g. `https://app.contextrocket.com`). The SDK appends `/api/agent/a2a`
+     internally -- do not include a path here.
    - `NEXT_PUBLIC_CR_ORG_KEY`: a `crk_`-prefixed machine key (optional;
      needed for org-scoped access when the local backend is disabled).
 
@@ -28,8 +29,9 @@ file is derived from the real code in `frontend/lib/cr-sdk/` and
 Set these in `frontend/.env.local` (copy from `frontend/.env.example`):
 
 ```bash
-# Required: the A2A endpoint for your org's ContextRocket agent.
-NEXT_PUBLIC_CR_AGENT_URL=https://api.contextrocket.com
+# Required: bare origin URL of your org's ContextRocket agent.
+# The SDK appends /api/agent/a2a internally -- do not include a path here.
+NEXT_PUBLIC_CR_AGENT_URL=https://app.contextrocket.com
 
 # Optional: org machine credential key (crk_-prefixed).
 # When set, A2A calls include this as the OrgCredential header.

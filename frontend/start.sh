@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pnpm run dev &
+PORT="${FRONTEND_PORT:-3100}" pnpm run dev &
 
 node watcher.js
 
