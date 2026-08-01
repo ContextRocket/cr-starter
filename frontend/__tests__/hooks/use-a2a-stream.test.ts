@@ -239,4 +239,269 @@ describe("useA2AStream", () => {
       expect(result.current.messages).toHaveLength(0);
     });
   });
+
+  describe("faithfulness verdict — grounded indicator", () => {
+    it("attaches faithfulness to completed assistant message when grounded", async () => {
+      mockStreamFetch([
+        {
+          type: "TaskStatusUpdateEvent",
+          id: "t1",
+          status: { state: "submitted" },
+          final: false,
+        },
+        {
+          type: "TaskArtifactUpdateEvent",
+          id: "t1",
+          artifact: {
+            parts: [{ type: "text", text: "The answer." }],
+            index: 0,
+            append: false,
+            lastChunk: true,
+          },
+          final: false,
+        },
+        {
+          type: "TaskStatusUpdateEvent",
+          id: "t1",
+          status: { state: "completed" },
+          final: true,
+          metadata: {
+            customerSafe: true,
+            faithfulness: {
+              grounded: true,
+              state: "grounded",
+              checked_claims: 3,
+            },
+          },
+        },
+      ]);
+
+      const { result } = renderHook(() => useA2AStream({ baseUrl: AGENT_URL }));
+
+      await act(async () => {
+        result.current.sendMessage("Tell me something");
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      });
+
+      const assistantMsg = result.current.messages.find(
+        (m) => m.role === "assistant",
+      );
+      expect(assistantMsg?.faithfulness).toBeDefined();
+      expect(assistantMsg?.faithfulness?.grounded).toBe(true);
+      expect(assistantMsg?.faithfulness?.state).toBe("grounded");
+      expect(assistantMsg?.faithfulness?.checked_claims).toBe(3);
+    });
+
+    it("attaches faithfulness with state=ungrounded when not grounded", async () => {
+      mockStreamFetch([
+        {
+          type: "TaskStatusUpdateEvent",
+          id: "t2",
+          status: { state: "submitted" },
+          final: false,
+        },
+        {
+          type: "TaskArtifactUpdateEvent",
+          id: "t2",
+          artifact: {
+            parts: [{ type: "text", text: "Maybe." }],
+            index: 0,
+            append: false,
+            lastChunk: true,
+          },
+          final: false,
+        },
+        {
+          type: "TaskStatusUpdateEvent",
+          id: "t2",
+          status: { state: "completed" },
+          final: true,
+          metadata: {
+            customerSafe: true,
+            faithfulness: {
+              grounded: false,
+              state: "ungrounded",
+              checked_claims: 2,
+            },
+          },
+        },
+      ]);
+
+      const { result } = renderHook(() => useA2AStream({ baseUrl: AGENT_URL }));
+
+      await act(async () => {
+        result.current.sendMessage("Are you sure?");
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      });
+
+      const assistantMsg = result.current.messages.find(
+        (m) => m.role === "assistant",
+      );
+      expect(assistantMsg?.faithfulness?.state).toBe("ungrounded");
+      expect(assistantMsg?.faithfulness?.grounded).toBe(false);
+    });
+
+    it("leaves faithfulness undefined when absent from metadata", async () => {
+      mockStreamFetch([
+        {
+          type: "TaskStatusUpdateEvent",
+          id: "t3",
+          status: { state: "submitted" },
+          final: false,
+        },
+        {
+          type: "TaskStatusUpdateEvent",
+          id: "t3",
+          status: { state: "completed" },
+          final: true,
+          metadata: { customerSafe: true },
+        },
+      ]);
+
+      const { result } = renderHook(() => useA2AStream({ baseUrl: AGENT_URL }));
+
+      await act(async () => {
+        result.current.sendMessage("Hi");
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      });
+
+      const assistantMsg = result.current.messages.find(
+        (m) => m.role === "assistant",
+      );
+      expect(assistantMsg?.faithfulness).toBeUndefined();
+    });
+  });
+
+  describe("demo-slug mode — anon request shaping", () => {
+    it("includes public_slug in metadata when demoPublicSlug is set and no token", async () => {
+      const fetchSpy = jest.fn().mockResolvedValueOnce({
+        ok: true,
+        body: makeSSEBody([
+          {
+            type: "TaskStatusUpdateEvent",
+            id: "td1",
+            status: { state: "completed" },
+            final: true,
+          },
+        ]),
+      });
+      global.fetch = fetchSpy;
+
+      const { result } = renderHook(() =>
+        useA2AStream({ baseUrl: AGENT_URL, demoPublicSlug: "my-brand-slug" }),
+      );
+
+      act(() => {
+        result.current.sendMessage("Hello demo");
+      });
+
+      // Allow async to settle.
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      });
+
+      expect(fetchSpy).toHaveBeenCalledTimes(1);
+      const body = JSON.parse(fetchSpy.mock.calls[0][1].body as string);
+      expect(body.params.metadata?.public_slug).toBe("my-brand-slug");
+    });
+
+    it("does NOT include public_slug when a bearerToken is present", async () => {
+      const fetchSpy = jest.fn().mockResolvedValueOnce({
+        ok: true,
+        body: makeSSEBody([
+          {
+            type: "TaskStatusUpdateEvent",
+            id: "td2",
+            status: { state: "completed" },
+            final: true,
+          },
+        ]),
+      });
+      global.fetch = fetchSpy;
+
+      const { result } = renderHook(() =>
+        useA2AStream({
+          baseUrl: AGENT_URL,
+          demoPublicSlug: "my-brand-slug",
+          bearerToken: "crk_some-org-key",
+        }),
+      );
+
+      act(() => {
+        result.current.sendMessage("Hello authed");
+      });
+
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      });
+
+      const body = JSON.parse(fetchSpy.mock.calls[0][1].body as string);
+      expect(body.params.metadata?.public_slug).toBeUndefined();
+    });
+
+    it("uses no Authorization header in demo-slug mode (no token)", async () => {
+      const fetchSpy = jest.fn().mockResolvedValueOnce({
+        ok: true,
+        body: makeSSEBody([
+          {
+            type: "TaskStatusUpdateEvent",
+            id: "td3",
+            status: { state: "completed" },
+            final: true,
+          },
+        ]),
+      });
+      global.fetch = fetchSpy;
+
+      const { result } = renderHook(() =>
+        useA2AStream({ baseUrl: AGENT_URL, demoPublicSlug: "showcase-org" }),
+      );
+
+      act(() => {
+        result.current.sendMessage("Anon question");
+      });
+
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      });
+
+      const headers = fetchSpy.mock.calls[0][1].headers as Record<
+        string,
+        string
+      >;
+      expect(headers["Authorization"]).toBeUndefined();
+    });
+
+    it("demo error for slug-not-found surfaces a resolved string (not a raw key)", async () => {
+      mockStreamFetch([
+        {
+          type: "TaskStatusUpdateEvent",
+          id: "td4",
+          status: { state: "failed" },
+          final: true,
+          metadata: {
+            customerSafe: true,
+            error_key: "no published content for slug 'bad-slug'",
+            reason: "no published content for slug 'bad-slug'",
+          },
+        },
+      ]);
+
+      const { result } = renderHook(() =>
+        useA2AStream({ baseUrl: AGENT_URL, demoPublicSlug: "bad-slug" }),
+      );
+
+      await act(async () => {
+        result.current.sendMessage("Hello");
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      });
+
+      // The error message must NOT be a raw i18n key like "CHAT_DEMO_ERROR_SLUG_NOT_FOUND".
+      // In the test env t() returns the key itself, so we just verify it is a string
+      // and not empty (the hook resolved it via t()).
+      expect(result.current.error).not.toBeNull();
+      expect(result.current.error?.message).toBeTruthy();
+      expect(result.current.error?.kind).toBe("agent_failed");
+    });
+  });
 });

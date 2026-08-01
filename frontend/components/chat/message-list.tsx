@@ -4,11 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { t } from "@/i18n/keys";
 import { ArrowDownIcon } from "lucide-react";
+import { CheckCircle2Icon, CircleDashedIcon } from "lucide-react";
 import { StreamStatusStack } from "@/components/chat/stream-status-stack";
 import { CitationPills } from "@/components/chat/citation-pills";
 import { SuggestionPills } from "@/components/chat/suggestion-pills";
 import { PolicyClassCard } from "@/components/chat/policy-class-card";
 import type { ChatMessage } from "@/hooks/use-a2a-stream";
+import type { FaithfulnessVerdict } from "@/lib/a2a-client";
 
 // Approximate line threshold before showing the "More detail" expander.
 // ~6 lines at ~80 chars each.
@@ -302,6 +304,11 @@ function MessageBubble({
             </button>
           )}
 
+          {/* Faithfulness / grounded indicator (cr-06p.10): quiet chip below answer */}
+          {!isStreaming && message.faithfulness && (
+            <GroundedChip verdict={message.faithfulness} />
+          )}
+
           {/* Policy-class card: renders only when present in metadata */}
           {!isStreaming && message.policyClass && (
             <PolicyClassCard policyClass={message.policyClass} animate />
@@ -331,6 +338,61 @@ function MessageBubble({
       )}
     </div>
   );
+}
+
+// ── Grounded indicator chip ───────────────────────────────────────────────────
+
+/**
+ * Small quiet chip indicating whether the platform grounded this answer against
+ * the corpus (cr-06p.10 faithfulness verdict).
+ *
+ * Renders only when the verdict is present and its state is known.
+ * Unknown state or absent metadata = render nothing (defensive default).
+ *
+ * Tooltip/title shows the checked_claims count when it is greater than zero.
+ */
+function GroundedChip({
+  verdict,
+}: {
+  verdict: FaithfulnessVerdict;
+}): React.ReactElement | null {
+  const { state, checked_claims } = verdict;
+
+  const claimsTitle =
+    checked_claims > 0
+      ? `${checked_claims} ${t("CHAT_GROUNDED_CLAIMS_CHECKED")}`
+      : undefined;
+
+  if (state === "grounded") {
+    return (
+      <span
+        data-testid="grounded-chip"
+        title={claimsTitle}
+        className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[11px] font-medium text-emerald-700"
+      >
+        <CheckCircle2Icon className="size-3" aria-hidden />
+        {t("CHAT_GROUNDED")}
+      </span>
+    );
+  }
+
+  if (state === "ungrounded") {
+    return (
+      <span
+        data-testid="grounded-chip"
+        title={claimsTitle}
+        className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-700"
+      >
+        <CircleDashedIcon className="size-3" aria-hidden />
+        {t("CHAT_UNGROUNDED")}
+      </span>
+    );
+  }
+
+  // error state or any unknown state: render nothing.
+  // A failed faithfulness check must NOT display as a partial verdict --
+  // the platform could not determine grounding, so no signal is honest.
+  return null;
 }
 
 // ── Bubble content renderer ───────────────────────────────────────────────────

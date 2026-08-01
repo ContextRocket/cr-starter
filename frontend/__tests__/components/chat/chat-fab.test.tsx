@@ -86,4 +86,16 @@ describe("ChatFab", () => {
     // Panel is always rendered (just hidden via CSS) for smooth transitions.
     expect(screen.getByTestId("chat-fab-panel")).toBeInTheDocument();
   });
+
+  describe("demo mode badge", () => {
+    it("does not show the demo badge when demoPublicSlug is empty (default)", () => {
+      render(<ChatFab />);
+      const button = screen.getByTestId("chat-fab-button");
+      fireEvent.click(button);
+      // Demo badge must not be present when no slug is configured.
+      expect(
+        screen.queryByTestId("chat-fab-demo-badge"),
+      ).not.toBeInTheDocument();
+    });
+  });
 });

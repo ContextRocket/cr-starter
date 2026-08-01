@@ -310,4 +310,86 @@ describe("buildTextTurnParams", () => {
     const params = buildTextTurnParams("Hi", { scope });
     expect(params.metadata?.scope).toEqual(scope);
   });
+
+  it("includes public_slug in metadata when demoPublicSlug is provided", () => {
+    const params = buildTextTurnParams("Hi", {
+      demoPublicSlug: "my-brand-demo",
+    });
+    expect(params.metadata?.public_slug).toBe("my-brand-demo");
+  });
+
+  it("omits public_slug when demoPublicSlug is absent", () => {
+    const params = buildTextTurnParams("Hi");
+    expect(params.metadata?.public_slug).toBeUndefined();
+  });
+
+  it("omits public_slug when demoPublicSlug is an empty string", () => {
+    const params = buildTextTurnParams("Hi", { demoPublicSlug: "" });
+    // Empty string is falsy; the metadata block should not include the key.
+    expect(params.metadata?.public_slug).toBeFalsy();
+  });
+});
+
+// ── FaithfulnessVerdict in A2AEventMetadata ────────────────────────────────────
+
+describe("A2AEventMetadata faithfulness field", () => {
+  it("parses a grounded faithfulness verdict from event metadata", () => {
+    const line = envelope({
+      type: "TaskStatusUpdateEvent",
+      id: TASK_ID,
+      status: { state: "completed" },
+      final: true,
+      metadata: {
+        customerSafe: true,
+        faithfulness: {
+          grounded: true,
+          state: "grounded",
+          checked_claims: 4,
+        },
+      },
+    });
+    const event = parseA2AEvent(
+      line,
+    ) as import("@/lib/a2a-client").TaskStatusUpdateEvent;
+    expect(event.metadata?.faithfulness).toBeDefined();
+    expect(event.metadata?.faithfulness?.grounded).toBe(true);
+    expect(event.metadata?.faithfulness?.state).toBe("grounded");
+    expect(event.metadata?.faithfulness?.checked_claims).toBe(4);
+  });
+
+  it("parses an ungrounded faithfulness verdict from event metadata", () => {
+    const line = envelope({
+      type: "TaskStatusUpdateEvent",
+      id: TASK_ID,
+      status: { state: "completed" },
+      final: true,
+      metadata: {
+        customerSafe: true,
+        faithfulness: {
+          grounded: false,
+          state: "ungrounded",
+          checked_claims: 2,
+        },
+      },
+    });
+    const event = parseA2AEvent(
+      line,
+    ) as import("@/lib/a2a-client").TaskStatusUpdateEvent;
+    expect(event.metadata?.faithfulness?.state).toBe("ungrounded");
+    expect(event.metadata?.faithfulness?.grounded).toBe(false);
+  });
+
+  it("faithfulness is absent when not emitted in metadata", () => {
+    const line = envelope({
+      type: "TaskStatusUpdateEvent",
+      id: TASK_ID,
+      status: { state: "completed" },
+      final: true,
+      metadata: { customerSafe: true },
+    });
+    const event = parseA2AEvent(
+      line,
+    ) as import("@/lib/a2a-client").TaskStatusUpdateEvent;
+    expect(event.metadata?.faithfulness).toBeUndefined();
+  });
 });

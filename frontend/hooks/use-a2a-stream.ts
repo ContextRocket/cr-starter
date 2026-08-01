@@ -9,7 +9,9 @@ import {
   type SourceRef,
   type ToolCallEvent,
   type PendingReview,
+  type FaithfulnessVerdict,
 } from "@/lib/a2a-client";
+import { t } from "@/i18n/keys";
 
 // ── Timing thresholds for the three-tier latency UI ──────────────────────────
 
@@ -84,6 +86,13 @@ export interface ChatMessage {
    * Absent means no card renders.
    */
   policyClass?: PolicyClass;
+  /**
+   * Per-answer faithfulness verdict from the platform (cr-06p.10).
+   * Sourced from meta.faithfulness on the completed-event.
+   * Absent when the turn is not closed-domain or the check did not run.
+   * Mirror of _faithfulness_metadata_from_verdict in tasks.py.
+   */
+  faithfulness?: FaithfulnessVerdict;
   createdAt: string;
 }
 
@@ -139,7 +148,11 @@ function makeId(): string {
   return `msg-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 }
 
-function classifyError(err: unknown, errorKey?: string): StreamError {
+function classifyError(
+  err: unknown,
+  errorKey?: string,
+  isDemoMode?: boolean,
+): StreamError {
   if (errorKey === "byok_key_failure") {
     return {
       kind: "auth",
@@ -153,6 +166,27 @@ function classifyError(err: unknown, errorKey?: string): StreamError {
       message: "Message cannot be empty",
       errorKey,
     };
+  }
+  // Demo-mode specific error surfaces: slug not found or anon access refused.
+  // Use t() so error.message is already the user-facing string, not a raw key.
+  if (isDemoMode) {
+    if (
+      errorKey === "authentication required" ||
+      errorKey?.includes("authentication")
+    ) {
+      return {
+        kind: "auth",
+        message: t("CHAT_DEMO_ERROR_UNAUTHORIZED"),
+        errorKey,
+      };
+    }
+    if (errorKey?.includes("no published content")) {
+      return {
+        kind: "agent_failed",
+        message: t("CHAT_DEMO_ERROR_SLUG_NOT_FOUND"),
+        errorKey,
+      };
+    }
   }
   if (err instanceof Error && err.name === "AbortError") {
     return { kind: "aborted", message: "Request was cancelled" };
@@ -175,11 +209,13 @@ function classifyError(err: unknown, errorKey?: string): StreamError {
  * Wraps streamTask() from a2a-client.ts and drives the three-tier latency
  * UI state (thinking / waiting / slow response).
  *
- * @param clientOpts A2AClientOptions: base URL + optional bearer token.
+ * @param clientOpts A2AClientOptions extended with optional demoPublicSlug.
  *   Base URL defaults to NEXT_PUBLIC_CR_AGENT_URL.
+ *   When demoPublicSlug is set and no bearerToken is present, turns are sent
+ *   as anonymous requests with the slug in metadata.public_slug (cr-starter-7lr).
  */
 export function useA2AStream(
-  clientOpts?: Partial<A2AClientOptions>,
+  clientOpts?: Partial<A2AClientOptions> & { demoPublicSlug?: string },
 ): UseA2AStreamResult {
   const baseUrl = clientOpts?.baseUrl ?? resolveBaseUrl();
 
@@ -287,11 +323,20 @@ export function useA2AStream(
         guestSessionId: clientOpts?.guestSessionId,
       };
 
+      // Demo-slug mode: include public_slug when configured and no auth token is
+      // present.  The CR backend reads it via _extract_metadata_public_slug()
+      // in router.py to resolve the published org without credentials.
+      const demoSlug =
+        !clientOpts?.bearerToken && !clientOpts?.guestSessionId
+          ? clientOpts?.demoPublicSlug
+          : undefined;
+
       const params = buildTextTurnParams(text, {
         threadId: threadId ?? undefined,
         orgId: opts?.orgId,
         scope: opts?.scope,
         guestSessionId: clientOpts?.guestSessionId,
+        demoPublicSlug: demoSlug,
       });
 
       let accumulated = "";
@@ -301,6 +346,7 @@ export function useA2AStream(
       let finalPendingReviews: PendingReview[] | undefined;
       let finalSuggestions: string[] | undefined;
       let finalPolicyClass: PolicyClass | undefined;
+      let finalFaithfulness: FaithfulnessVerdict | undefined;
 
       async function run() {
         try {
@@ -328,6 +374,7 @@ export function useA2AStream(
                       pendingReviews: finalPendingReviews,
                       suggestions: finalSuggestions,
                       policyClass: finalPolicyClass,
+                      faithfulness: finalFaithfulness,
                       threadId: finalThreadId ?? undefined,
                     }
                   : m,
@@ -410,6 +457,15 @@ export function useA2AStream(
             ) {
               finalPolicyClass = meta.policy_class as PolicyClass;
             }
+            // Faithfulness verdict (cr-06p.10): defensively read; absent = render nothing.
+            // Field names mirror _faithfulness_metadata_from_verdict in tasks.py exactly.
+            // meta.faithfulness is typed as FaithfulnessVerdict | undefined by A2AEventMetadata.
+            if (
+              meta?.faithfulness &&
+              typeof meta.faithfulness.state === "string"
+            ) {
+              finalFaithfulness = meta.faithfulness;
+            }
             setPhase("completed");
             return;
           }
@@ -418,7 +474,11 @@ export function useA2AStream(
             const errorKey = String(
               meta?.error_key ?? meta?.reason ?? "ERROR_A2A_INTERNAL",
             );
-            const streamError = classifyError(new Error(errorKey), errorKey);
+            const streamError = classifyError(
+              new Error(errorKey),
+              errorKey,
+              Boolean(demoSlug),
+            );
             setError(streamError);
             setPhase("failed");
             setMessages((prev) => prev.filter((m) => m.id !== assistantMsgId));
@@ -470,6 +530,7 @@ export function useA2AStream(
       baseUrl,
       clientOpts?.bearerToken,
       clientOpts?.guestSessionId,
+      clientOpts?.demoPublicSlug,
       threadId,
       startSlowTimers,
       clearTimers,

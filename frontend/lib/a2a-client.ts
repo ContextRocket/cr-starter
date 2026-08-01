@@ -102,6 +102,28 @@ export interface TaskArtifactUpdateEvent {
   metadata?: A2AEventMetadata;
 }
 
+/**
+ * Per-answer faithfulness verdict from the platform (cr-06p.10).
+ *
+ * Mirrored exactly from:
+ *   backend/app/modules/agent/a2a/tasks.py  _faithfulness_metadata_from_verdict()
+ *
+ * Keys:
+ *   grounded       (bool)   -- true when ALL material claims are corpus-supported.
+ *   state          (string) -- "grounded" | "ungrounded" | "error"
+ *   checked_claims (number) -- count of evaluated claims (0 on error/skip).
+ *
+ * Emitted only for closed-domain org turns; absent on open-domain / guest turns.
+ */
+export interface FaithfulnessVerdict {
+  /** True when ALL material claims passed the corpus-support check. */
+  grounded: boolean;
+  /** Discriminated faithfulness state from the platform. */
+  state: "grounded" | "ungrounded" | "error";
+  /** Number of claims the platform evaluated (0 when state is "error"). */
+  checked_claims: number;
+}
+
 /** Metadata attached to events that carry citations, tool calls, thread ids, etc. */
 export interface A2AEventMetadata {
   customerSafe?: boolean;
@@ -118,6 +140,12 @@ export interface A2AEventMetadata {
   /** i18n key for refusal messages. */
   content_key?: string;
   content_params?: Record<string, unknown>;
+  /**
+   * Per-answer faithfulness verdict (cr-06p.10).
+   * Absent when the turn is not closed-domain or the check did not run.
+   * Mirror of _faithfulness_metadata_from_verdict in tasks.py.
+   */
+  faithfulness?: FaithfulnessVerdict;
   /** Error reason (present on failed events). */
   reason?: string;
   error_key?: string;
@@ -436,7 +464,15 @@ export async function* streamTask(
  * Build an A2ATaskParams object for a simple text turn.
  *
  * @param text     User message text.
- * @param opts     Optional thread/org context for conversation continuity.
+ * @param opts     Optional thread/org/demo context for conversation continuity.
+ *
+ * Public-slug demo mode (cr-starter-7lr):
+ *   When `demoPublicSlug` is set and no `bearerToken` / `guestSessionId` is
+ *   present, the request is anonymous.  The slug is placed in
+ *   `metadata.public_slug` which the CR backend reads via
+ *   `_extract_metadata_public_slug()` (router.py) to resolve the published org.
+ *   No Authorization header is sent by the caller (`buildHeaders` in a2a-client
+ *   only adds the header when `opts.bearerToken` is truthy).
  */
 export function buildTextTurnParams(
   text: string,
@@ -445,6 +481,12 @@ export function buildTextTurnParams(
     orgId?: string;
     guestSessionId?: string;
     scope?: Record<string, unknown>;
+    /**
+     * Public demo slug for anon requests (cr-starter-7lr).
+     * Placed at metadata.public_slug; no Authorization header is sent.
+     * Only included when present and non-empty.
+     */
+    demoPublicSlug?: string;
   },
 ): A2ATaskParams {
   const message: A2AMessage = {
@@ -461,6 +503,7 @@ export function buildTextTurnParams(
   if (opts?.orgId) metadata.org_id = opts.orgId;
   if (opts?.guestSessionId) metadata.guest_session_id = opts.guestSessionId;
   if (opts?.scope) metadata.scope = opts.scope;
+  if (opts?.demoPublicSlug) metadata.public_slug = opts.demoPublicSlug;
 
   return {
     message,

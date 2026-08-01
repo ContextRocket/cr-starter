@@ -272,4 +272,18 @@ export const en = {
   COOKIE_CONSENT_POLICY_LINK: "Privacy Policy",
   COOKIE_CONSENT_ACCEPT: "Accept",
   COOKIE_CONSENT_DECLINE: "Decline",
+
+  // ── Chat: faithfulness / grounded indicator ───────────────────────────────
+  CHAT_GROUNDED: "Grounded",
+  CHAT_PARTIALLY_GROUNDED: "Partially grounded",
+  CHAT_UNGROUNDED: "Ungrounded",
+  /** Tooltip suffix when checked_claims count is available, e.g. "3 claims checked" */
+  CHAT_GROUNDED_CLAIMS_CHECKED: "claims checked",
+
+  // ── Chat: demo mode ───────────────────────────────────────────────────────
+  CHAT_DEMO_BADGE: "Demo",
+  CHAT_DEMO_ERROR_SLUG_NOT_FOUND:
+    "The demo agent is not available. Contact the site owner to enable the public demo.",
+  CHAT_DEMO_ERROR_UNAUTHORIZED:
+    "Demo access was refused. The public demo may not be enabled for this agent.",
 } as const;

@@ -47,6 +47,10 @@ interface ChatFabProps {
  * Link policy: defaults to siteConfig.chat.linkMode; in embed/iframe contexts
  * the consumer forces "new-tab" (see app/embed/page.tsx).
  *
+ * Demo mode (cr-starter-7lr): when siteConfig.chat.demoPublicSlug is non-empty
+ * AND no bearer token is configured in clientOpts, a small "Demo" badge appears
+ * in the drawer header to signal the rate-limited showcase mode.
+ *
  * Shadow spec from the design reference (--lds-shadow-fab):
  *   0 4px 12px rgba(11,11,15,0.15), 0 8px 24px rgba(11,11,15,0.10)
  */
@@ -62,6 +66,16 @@ export function ChatFab({
   const [fullscreen, setFullscreen] = useState(false);
 
   const fullscreenEnabled = siteConfig.chat.fullscreenEnabled;
+
+  // Demo mode: a public slug is configured and no bearer token overrides it.
+  // isDemoMode drives the badge; effectiveClientOpts wires the slug into the
+  // actual request so metadata.public_slug reaches the CR backend.
+  const isDemoMode =
+    Boolean(siteConfig.chat.demoPublicSlug) && !clientOpts?.bearerToken;
+
+  const effectiveClientOpts = isDemoMode
+    ? { ...clientOpts, demoPublicSlug: siteConfig.chat.demoPublicSlug }
+    : clientOpts;
 
   return (
     <>
@@ -122,7 +136,7 @@ export function ChatFab({
 
           <ChatPanel
             agentUrl={agentUrl}
-            clientOpts={clientOpts}
+            clientOpts={effectiveClientOpts}
             welcomeTitle={welcomeTitle}
             welcomeSubtitle={welcomeSubtitle}
             isGuest={isGuest}
@@ -150,23 +164,35 @@ export function ChatFab({
           )}
           style={{ height: "min(600px, calc(100dvh - 160px))" }}
         >
-          {/* Drawer header with expand button */}
-          {open && fullscreenEnabled && (
-            <div className="flex items-center justify-end border-b border-border/40 px-3 py-1.5">
-              <button
-                onClick={() => setFullscreen(true)}
-                aria-label={t("CHAT_EXPAND")}
-                data-testid="chat-fab-expand"
-                className="flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-              >
-                <Maximize2Icon className="size-3.5" aria-hidden />
-              </button>
+          {/* Drawer header with demo badge and expand button */}
+          {open && (isDemoMode || fullscreenEnabled) && (
+            <div className="flex items-center justify-between border-b border-border/40 px-3 py-1.5">
+              {isDemoMode ? (
+                <span
+                  data-testid="chat-fab-demo-badge"
+                  className="inline-flex items-center rounded-full border border-primary/20 bg-primary/8 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-primary/70"
+                >
+                  {t("CHAT_DEMO_BADGE")}
+                </span>
+              ) : (
+                <span />
+              )}
+              {fullscreenEnabled && (
+                <button
+                  onClick={() => setFullscreen(true)}
+                  aria-label={t("CHAT_EXPAND")}
+                  data-testid="chat-fab-expand"
+                  className="flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                >
+                  <Maximize2Icon className="size-3.5" aria-hidden />
+                </button>
+              )}
             </div>
           )}
 
           <ChatPanel
             agentUrl={agentUrl}
-            clientOpts={clientOpts}
+            clientOpts={effectiveClientOpts}
             welcomeTitle={welcomeTitle}
             welcomeSubtitle={welcomeSubtitle}
             isGuest={isGuest}

@@ -79,6 +79,22 @@ export interface ChatConfig {
    * users only and is dismissed at most once per session (sessionStorage).
    */
   conversionMoments: ConversionMomentsConfig;
+  /**
+   * Zero-config public demo slug (cr-starter-7lr).
+   *
+   * When set to a non-empty string AND no org key / bearer token is
+   * configured, the FAB sends anon A2A requests with this slug in
+   * `metadata.public_slug` so the ContextRocket backend resolves the
+   * published org without credentials.
+   *
+   * The FAB header shows a small "Demo" badge in this mode.
+   *
+   * Leave as an empty string (the default) to disable demo mode.  Fork
+   * owners who provide their own org credential (`NEXT_PUBLIC_CR_ORG_KEY`)
+   * are NOT in demo mode even if this field is set -- the credential takes
+   * precedence.
+   */
+  demoPublicSlug: string;
 }
 
 export interface SiteConfig {
@@ -281,5 +297,9 @@ export const siteConfig: SiteConfig = {
       turnThreshold: 3,
       maxPerSession: 1,
     },
+    // Public demo slug: leave empty to disable demo mode.
+    // Set to a published org slug (e.g. "my-brand") to enable zero-config demo
+    // when no org key is configured.  The FAB shows a "Demo" badge in this mode.
+    demoPublicSlug: "",
   },
 };

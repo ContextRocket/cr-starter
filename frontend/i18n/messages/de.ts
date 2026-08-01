@@ -276,4 +276,17 @@ export const de = {
   COOKIE_CONSENT_POLICY_LINK: "Datenschutzerklärung",
   COOKIE_CONSENT_ACCEPT: "Akzeptieren",
   COOKIE_CONSENT_DECLINE: "Ablehnen",
+
+  // ── Chat: Grundierungsindikator ───────────────────────────────────────────
+  CHAT_GROUNDED: "Belegt",
+  CHAT_PARTIALLY_GROUNDED: "Teilweise belegt",
+  CHAT_UNGROUNDED: "Unbelegt",
+  CHAT_GROUNDED_CLAIMS_CHECKED: "Aussagen geprüft",
+
+  // ── Chat: Demo-Modus ──────────────────────────────────────────────────────
+  CHAT_DEMO_BADGE: "Demo",
+  CHAT_DEMO_ERROR_SLUG_NOT_FOUND:
+    "Der Demo-Agent ist nicht verfügbar. Wende dich an den Website-Betreiber, um die öffentliche Demo zu aktivieren.",
+  CHAT_DEMO_ERROR_UNAUTHORIZED:
+    "Der Demo-Zugang wurde abgelehnt. Die öffentliche Demo ist möglicherweise für diesen Agenten nicht aktiviert.",
 } as const;
