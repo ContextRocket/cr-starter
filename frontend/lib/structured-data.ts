@@ -1,19 +1,20 @@
 /**
  * Structured data (JSON-LD) builders for the starter site.
  *
- * Generates schema.org Organization and WebSite entities from site.config.
- * These are the signals ContextRocket's taxonomy reads when crawling a site
- * to assess AI-readiness -- Organization JSON-LD with a contactPoint and
- * optional sameAs links is a high-value AEO signal.
+ * Generates schema.org Organization, WebSite, and FAQPage entities from
+ * site.config and the FAQ seam. These are the signals ContextRocket's
+ * taxonomy reads when crawling a site to assess AI-readiness.
  *
  * Usage: import `buildHomeJsonLd` in the home page Server Component and
- * render via `<StructuredDataScripts>`.
+ * render via `<StructuredDataScripts>`. Import `buildFaqJsonLd` in the
+ * /faq page Server Component for FAQPage structured data.
  *
  * Adapted from context-rocket/frontend/lib/public-structured-data.ts and
  * context-rocket/frontend/components/public/structured-data-scripts.tsx.
  */
 
 import { siteConfig } from "@/site.config";
+import type { FaqEntry } from "@/lib/faq";
 
 export type JsonLdNode = Record<string, unknown>;
 
@@ -90,4 +91,56 @@ export function buildHomeJsonLd(): JsonLdNode[] {
       },
     },
   ];
+}
+
+/**
+ * JSON-LD FAQPage payload for the /faq page.
+ *
+ * Returns a single FAQPage node with one mainEntity per Q&A pair.
+ * Answers are plain text (HTML stripped from Markdown for AEO safety).
+ * Inject via `<StructuredDataScripts items={[buildFaqJsonLd(entries)]} />`
+ * in the /faq page Server Component.
+ *
+ * @param entries Ordered list of FaqEntry objects from the FAQ seam.
+ */
+export function buildFaqJsonLd(entries: FaqEntry[]): JsonLdNode {
+  const origin = siteConfig.siteUrl.replace(/\/$/, "");
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": `${origin}/faq`,
+    url: `${origin}/faq`,
+    mainEntity: entries.map((entry) => ({
+      "@type": "Question",
+      name: entry.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        // Strip Markdown syntax for plain-text answers in JSON-LD.
+        // This covers the most common cases (links, code fences, bold, italic).
+        // Full Markdown parsing is unnecessary for structured-data plain-text.
+        text: stripMarkdown(entry.answerMarkdown),
+      },
+    })),
+  };
+}
+
+/**
+ * Strip common Markdown syntax to produce a plain-text string suitable for
+ * JSON-LD answer text. Language-agnostic; does not alter word content.
+ *
+ * Handles: code fences, inline code, links, bold, italic, headings, bullets.
+ */
+function stripMarkdown(md: string): string {
+  return md
+    .replace(/```[\s\S]*?```/g, "") // fenced code blocks
+    .replace(/`[^`]+`/g, (m) => m.slice(1, -1)) // inline code -> bare text
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") // links -> link text only
+    .replace(/\*\*([^*]+)\*\*/g, "$1") // bold
+    .replace(/\*([^*]+)\*/g, "$1") // italic
+    .replace(/^#{1,6}\s+/gm, "") // headings
+    .replace(/^\s*[-*+]\s+/gm, "") // list bullets
+    .replace(/\n{2,}/g, " ") // collapse blank lines to spaces
+    .replace(/\n/g, " ") // remaining newlines to spaces
+    .trim();
 }

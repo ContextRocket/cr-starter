@@ -28,6 +28,7 @@ interface IndexableRoute {
  */
 const INDEXABLE_ROUTES: readonly IndexableRoute[] = [
   { path: "", priority: 1, changeFrequency: "daily" },
+  { path: "faq", priority: 0.7, changeFrequency: "monthly" },
   { path: "impressum", priority: 0.3, changeFrequency: "monthly" },
   { path: "privacy", priority: 0.3, changeFrequency: "monthly" },
 ];

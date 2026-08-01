@@ -30,6 +30,10 @@ After forking, do these steps before making the site public:
   Fill in `site.config.legal`, then review the generated page with your
   legal advisor before going live. Set analytics env keys first so the
   correct providers appear in the policy.
+- [ ] **`content/faq/{en,es,de}.md`** -- edit the FAQ files to reflect your
+  product. One file powers the `/faq` page, the FAQPage JSON-LD (an AEO
+  signal ContextRocket reads), and future agent corpus seeding. See the
+  FAQ section below for the file format and seam details.
 - [ ] **`.beads/config.yaml`** -- change `issue-prefix` to your product
   name (e.g. `ACME`).
 - [ ] **`frontend/.env.local`** -- set `NEXT_PUBLIC_CR_AGENT_URL` to your
@@ -207,6 +211,64 @@ attribute is updated on the client after hydration.
 segments). For full SEO/hreflang support, adopt Next.js
 [locale] URL-segment routing -- the message files and `t()` API are compatible
 with that upgrade. See `frontend/i18n/keys.ts` for the upgrade path comment.
+
+### FAQ seam (one file: page + JSON-LD + agent seed)
+
+The starter ships a curated FAQ. One Markdown file per locale powers three
+consumers at once: the `/faq` page, the FAQPage JSON-LD structured data (an
+AEO signal ContextRocket reads when scoring AI-readiness), and future agent
+corpus seeding on the platform side.
+
+**Where the files live:**
+```
+content/
+  faq/
+    en.md   -- English FAQ (default locale)
+    es.md   -- Spanish FAQ
+    de.md   -- German FAQ
+```
+
+**File format:**
+```markdown
+---
+title: Optional YAML frontmatter title
+description: Optional description
+---
+
+## Question text goes here
+
+Answer body in Markdown. May include links, code fences, and inline formatting.
+Each ## heading is one Q&A pair.
+
+## Second question
+
+Second answer.
+```
+
+**How to edit the FAQ:**
+1. Edit `content/faq/en.md` (and the matching `es.md` / `de.md`) with your real
+   product questions and answers.
+2. Run `pnpm run build` -- parse errors fail the build loudly with the offending
+   file and line number.
+3. Slugs are derived from question text and used as anchor ids (`/faq#slug`).
+   Keep question text stable after publishing to avoid breaking inbound links.
+
+**How it wires together:**
+- `frontend/lib/faq.ts` defines the `FaqSource` interface and the `FileFaqAdapter`
+  that reads from `content/faq/` at build time.
+- `frontend/app/faq/page.tsx` calls `fileFaqAdapter.list("en")` at build time and
+  renders entries with anchor ids.
+- `frontend/lib/structured-data.ts` exports `buildFaqJsonLd(entries)` which
+  produces the `FAQPage` JSON-LD node injected into the page head.
+- The sitemap includes `/faq` at priority 0.7.
+- `/llms.txt` links to `/faq` in the Core pages section.
+
+**Extending to serve locale-specific FAQ content:**
+The `FaqSource` interface is locale-aware: `source.list(locale)` returns entries
+for any locale. The current page renders the default locale server-side. To serve
+each user's locale, either adopt Next.js `[locale]` URL-segment routing and call
+`fileFaqAdapter.list(params.locale)` in the page, or add a client-side locale
+switcher that re-fetches FAQ content via a route handler.
 
 ### Chat FAB flag
 

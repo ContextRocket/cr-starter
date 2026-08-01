@@ -28,6 +28,7 @@ function buildLlmsTxt(): string {
     "",
     "## Core pages",
     `- [Homepage](${origin}/): ${siteConfig.tagline}`,
+    `- [FAQ](${origin}/faq): Common questions about this site, the chat agent, data handling, and customization.`,
     `- [Impressum](${origin}/impressum): Legal notice (required for DE/EU sites).`,
     `- [Privacy Policy](${origin}/privacy): How user data is handled.`,
     "",

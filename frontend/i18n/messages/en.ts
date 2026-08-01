@@ -140,6 +140,13 @@ export const en = {
   // ── Footer ────────────────────────────────────────────────────────────────
   FOOTER_IMPRESSUM: "Impressum",
   FOOTER_PRIVACY: "Privacy Policy",
+  FOOTER_FAQ: "FAQ",
+
+  // ── FAQ page ──────────────────────────────────────────────────────────────
+  FAQ_PAGE_TITLE: "Frequently Asked Questions",
+  FAQ_PAGE_DESCRIPTION:
+    "Answers to common questions about this site, the chat agent, data handling, and customization.",
+  FAQ_BACK_HOME: "Back to home",
 
   // ── Legal pages ───────────────────────────────────────────────────────────
   IMPRESSUM_TITLE: "Impressum",

@@ -144,6 +144,13 @@ export const de = {
   // ── Footer ────────────────────────────────────────────────────────────────
   FOOTER_IMPRESSUM: "Impressum",
   FOOTER_PRIVACY: "Datenschutzerklärung",
+  FOOTER_FAQ: "Häufige Fragen",
+
+  // ── FAQ-Seite ─────────────────────────────────────────────────────────────
+  FAQ_PAGE_TITLE: "Häufige Fragen",
+  FAQ_PAGE_DESCRIPTION:
+    "Antworten auf häufige Fragen zu dieser Website, dem Chat-Agenten, der Datenverarbeitung und der Anpassung.",
+  FAQ_BACK_HOME: "Zurück zur Startseite",
 
   // ── Legal pages ───────────────────────────────────────────────────────────
   IMPRESSUM_TITLE: "Impressum",
