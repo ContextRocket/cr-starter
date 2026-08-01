@@ -60,7 +60,7 @@ function buildOrganization(origin: string): JsonLdNode {
       "@type": "ContactPoint",
       contactType: "customer support",
       email: siteConfig.contactEmail,
-      availableLanguage: [siteConfig.locale],
+      availableLanguage: [siteConfig.defaultLocale],
     },
   };
 }
@@ -84,7 +84,7 @@ export function buildHomeJsonLd(): JsonLdNode[] {
       "@id": `${origin}/#website`,
       name: siteConfig.companyName,
       url: origin,
-      inLanguage: siteConfig.locale,
+      inLanguage: siteConfig.defaultLocale,
       publisher: {
         "@id": `${origin}/#organization`,
       },

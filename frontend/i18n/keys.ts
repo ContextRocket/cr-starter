@@ -1,206 +1,151 @@
 /**
- * Single source of truth for every user-facing string in the frontend.
+ * i18n/keys.ts -- single entry point for all user-facing string lookups.
  *
- * Naming convention (SCREAMING_SNAKE, category prefix):
- *   AUTH_*     - login, register, password reset
- *   ERROR_*    - error messages
- *   NAV_*      - navigation, sidebar, breadcrumbs
- *   FORM_*     - shared form labels & validation
- *   ACTION_*   - confirmations, toasts, results
- *   HOME_*     - landing page
- *   DASHBOARD_* - dashboard landing
- *   PAGINATION_* - table pagination
+ * Adapted from context-rocket/frontend/i18n/keys.ts.
+ *
+ * HOW IT WORKS:
+ *   - `en` messages are always bundled (never lazy) and serve as the fallback.
+ *   - Non-en locales are registered at runtime:
+ *       Server: via LocaleProvider reading the NEXT_LOCALE cookie.
+ *       Client: injected by LocaleProvider before hydration.
+ *   - `t(key)` resolves the active locale first, then falls back to English,
+ *     then throws if the key is completely missing (fail-fast, never silent).
+ *   - `translateError(raw)` accepts a raw backend key or unknown string and
+ *     returns the translated string or the original raw string if unrecognised.
+ *
+ * CALL SITES: all existing components use t("SCREAMING_SNAKE_KEY"). These keys
+ * live as flat properties on each message object (en/es/de). No dot-paths needed
+ * for the starter's flat key space.
+ *
+ * html lang SERVER COMPONENT LIMITATION:
+ *   The root <html lang> attribute is set at build time in app/layout.tsx as
+ *   siteConfig.defaultLocale. The LocaleProvider updates document.documentElement.lang
+ *   on the client after hydration so the live DOM stays in sync. Server-rendered
+ *   HTML always reflects the default locale; this is a known trade-off of the
+ *   cookie/provider approach (vs. the [locale] URL-segment approach).
+ *
+ *   UPGRADE PATH: to adopt URL-segment locale routing (recommended for full
+ *   SEO/hreflang benefits), move to Next.js i18n routing with a [locale] dynamic
+ *   segment. See: https://nextjs.org/docs/app/building-your-application/routing/internationalization
+ *   The message files and this key layer are fully compatible with that approach.
  */
-const messages = {
-  // ── Home / landing ──────────────────────────────────────────────
-  // HOME_TITLE is omitted: the h1 reads from siteConfig.tagline directly.
-  HOME_SUBTITLE:
-    "Build products on ContextRocket. Auth, dashboard shell, and OpenAPI-driven type safety included. Conversation state and agent runs delegate to ContextRocket via A2A.",
-  HOME_CTA: "Go to Dashboard",
 
-  // ── Auth: login ─────────────────────────────────────────────────
-  AUTH_LOGIN_TITLE: "Login",
-  AUTH_LOGIN_DESCRIPTION: "Enter your email below to log in to your account.",
-  AUTH_LOGIN_SUBMIT: "Sign In",
-  AUTH_LOGIN_NO_ACCOUNT: "Don't have an account?",
-  AUTH_LOGIN_SIGN_UP: "Sign up",
-  AUTH_FORGOT_PASSWORD: "Forgot your password?",
+import { en } from "./messages/en";
+import { resolveLocale, type SupportedLocale } from "./messages";
 
-  // ── Auth: register ──────────────────────────────────────────────
-  AUTH_REGISTER_TITLE: "Sign Up",
-  AUTH_REGISTER_DESCRIPTION:
-    "Enter your email and password below to create your account.",
-  AUTH_REGISTER_SUBMIT: "Sign Up",
-  AUTH_REGISTER_BACK: "Back to login",
+// ─────────────────────────────────────────────────────────────────────────────
+// Runtime message registry
+// ─────────────────────────────────────────────────────────────────────────────
 
-  // ── Auth: password recovery ─────────────────────────────────────
-  AUTH_PASSWORD_RECOVERY_TITLE: "Password Recovery",
-  AUTH_PASSWORD_RECOVERY_DESCRIPTION:
-    "Enter your email to receive instructions to reset your password.",
-  AUTH_PASSWORD_RECOVERY_SUBMIT: "Send",
-  AUTH_PASSWORD_RECOVERY_BACK: "Back to login",
-  AUTH_PASSWORD_RESET_TITLE: "Reset your Password",
-  AUTH_PASSWORD_RESET_DESCRIPTION: "Enter the new password and confirm it.",
-  AUTH_PASSWORD_RESET_SUBMIT: "Send",
-  AUTH_PASSWORD_RESET_LOADING: "Loading reset form...",
-  AUTH_PASSWORD_RESET_SUCCESS:
-    "Password reset instructions sent to your email.",
-
-  // ── Form labels (shared) ────────────────────────────────────────
-  FORM_EMAIL: "Email",
-  FORM_PASSWORD: "Password",
-  FORM_PASSWORD_CONFIRM: "Password Confirm",
-  FORM_USERNAME: "Username",
-  FORM_PLACEHOLDER_EMAIL: "m@example.com",
-
-  // ── Validation messages ─────────────────────────────────────────
-  FORM_VALIDATION_PASSWORD_MIN: "Password should be at least 8 characters.",
-  FORM_VALIDATION_PASSWORD_UPPERCASE:
-    "Password should contain at least one uppercase letter.",
-  FORM_VALIDATION_PASSWORD_SPECIAL:
-    "Password should contain at least one special character.",
-  FORM_VALIDATION_PASSWORDS_MATCH: "Passwords must match.",
-  FORM_VALIDATION_TOKEN_REQUIRED: "Token is required",
-  FORM_VALIDATION_EMAIL_INVALID: "Invalid email address",
-  FORM_VALIDATION_PASSWORD_REQUIRED: "Password is required",
-  FORM_VALIDATION_USERNAME_REQUIRED: "Username is required",
-
-  // ── Navigation / breadcrumbs ────────────────────────────────────
-  NAV_DASHBOARD: "Dashboard",
-  NAV_LOGOUT: "Logout",
-
-  // ── Dashboard (landing when logged in) ───────────────────────────
-  NAV_WELCOME: "Welcome to your Dashboard",
-  DASHBOARD_TITLE: "Dashboard",
-  DASHBOARD_SUBTITLE:
-    "Your ContextRocket-powered workspace. Configure your application and connect to ContextRocket for agent runs, conversation state, and knowledge management.",
-  // Cards
-  DASHBOARD_CARD_CHAT_TITLE: "Continue chatting",
-  DASHBOARD_CARD_CHAT_DESCRIPTION:
-    "Your conversation history is saved. Pick up where you left off.",
-  DASHBOARD_CARD_CHAT_ACTION: "Open chat",
-  DASHBOARD_CARD_PROFILE_TITLE: "Profile & settings",
-  DASHBOARD_CARD_PROFILE_DESCRIPTION:
-    "Update your email, password, or language preference.",
-  DASHBOARD_CARD_PROFILE_ACTION: "Edit profile",
-  DASHBOARD_CARD_USERS_TITLE: "Users",
-  DASHBOARD_CARD_USERS_DESCRIPTION:
-    "Review registered accounts and guest sessions.",
-  DASHBOARD_CARD_USERS_ACTION: "View users",
-  // Guest dashboard prompt
-  DASHBOARD_GUEST_PROMPT_TITLE: "Save your conversation",
-  DASHBOARD_GUEST_PROMPT_DESCRIPTION:
-    "Create a free account to keep your chat history. Your current conversation will continue either way.",
-  DASHBOARD_GUEST_PROMPT_ACTION: "Create account",
-
-  // ── Dashboard: users list (operator only) ────────────────────────
-  DASHBOARD_USERS_TITLE: "Users",
-  DASHBOARD_USERS_DESCRIPTION: "All registered and guest accounts.",
-  DASHBOARD_USERS_COL_EMAIL: "Email",
-  DASHBOARD_USERS_COL_TYPE: "Type",
-  DASHBOARD_USERS_COL_STATUS: "Status",
-  DASHBOARD_USERS_TYPE_GUEST: "Guest",
-  DASHBOARD_USERS_TYPE_REGISTERED: "Registered",
-  DASHBOARD_USERS_STATUS_ACTIVE: "Active",
-  DASHBOARD_USERS_STATUS_INACTIVE: "Inactive",
-  DASHBOARD_USERS_FORBIDDEN: "This page is for operators only.",
-
-  // ── Dashboard: profile ────────────────────────────────────────────
-  DASHBOARD_PROFILE_TITLE: "Profile & settings",
-
-  // ── Error pages ─────────────────────────────────────────────────
-  ERROR_GENERIC: "Something went wrong. Please try again.",
-  ERROR_DASHBOARD: "Something went wrong loading this page.",
-  ERROR_TRY_AGAIN: "Try again",
-  ERROR_UNEXPECTED: "An unexpected error occurred. Please try again later.",
-  ERROR_NETWORK: "Network error",
-  ERROR_NO_TOKEN: "No access token found",
-  ERROR_NO_DATA: "No data returned from server",
-  ERROR_UNKNOWN: "Unknown error",
-
-  // ── Backend error keys (returned as raw keys from API) ────────
-  ERROR_INTERNAL: "Internal server error",
-
-  // ── Footer ──────────────────────────────────────────────────────
-  FOOTER_IMPRESSUM: "Impressum",
-  FOOTER_PRIVACY: "Privacy Policy",
-
-  // ── Legal pages ─────────────────────────────────────────────────
-  IMPRESSUM_TITLE: "Impressum",
-  IMPRESSUM_LEGAL_NOTICE: "Legal Notice",
-  IMPRESSUM_ENTITY_LABEL: "Entity",
-  IMPRESSUM_ADDRESS_LABEL: "Address",
-  IMPRESSUM_REGISTER_LABEL: "Company Register",
-  IMPRESSUM_VAT_LABEL: "VAT ID",
-  IMPRESSUM_REPRESENTED_BY_LABEL: "Represented by",
-  IMPRESSUM_CONTACT_LABEL: "Contact",
-  IMPRESSUM_DISCLAIMER:
-    "This Impressum is legally required for commercial websites in Germany and the European Union. All placeholder values must be replaced before going live.",
-  PRIVACY_TITLE: "Privacy Policy",
-  PRIVACY_CONTACT_LABEL: "Privacy Contact",
-  PRIVACY_PLACEHOLDER:
-    "This is a placeholder privacy policy. Replace this page with your complete, legally compliant privacy statement before going live.",
-
-  // ── Pagination ──────────────────────────────────────────────────
-  PAGINATION_ITEMS_PER_PAGE: "Items per page:",
-  PAGINATION_NO_RESULTS: "0 results",
-
-  // ── Chat ────────────────────────────────────────────────────────
-  CHAT_PLACEHOLDER: "Ask anything...",
-  CHAT_PLACEHOLDER_STREAMING: "Thinking...",
-  CHAT_THINKING: "Thinking",
-  CHAT_SLOW_RESPONSE_TITLE: "Still working...",
-  CHAT_SLOW_RESPONSE_HINT: "This is taking a little longer than usual.",
-  CHAT_VERY_SLOW_RESPONSE_HINT:
-    "Still processing. Complex questions take time.",
-  CHAT_SEND: "Send",
-  CHAT_STOP: "Stop",
-  CHAT_EMPTY_TITLE: "How can I help?",
-  CHAT_EMPTY_SUBTITLE: "Ask a question to get started.",
-  CHAT_COPY: "Copy",
-  CHAT_COPIED: "Copied",
-  CHAT_SOURCES: "Sources",
-  CHAT_SCROLL_TO_BOTTOM: "Scroll to bottom",
-  CHAT_CLEAR: "Clear chat",
-  CHAT_OPEN: "Open chat",
-  CHAT_CLOSE: "Close chat",
-  CHAT_CONNECT_REQUIRED_TITLE: "Connect ContextRocket",
-  CHAT_CONNECT_REQUIRED_BODY:
-    "Set NEXT_PUBLIC_CR_AGENT_URL to enable the AI agent.",
-  ACCESSIBILITY_TYPING: "Assistant is typing",
-
-  // ── Cookie consent ──────────────────────────────────────────────
-  COOKIE_CONSENT_ARIA_LABEL: "Cookie consent",
-  COOKIE_CONSENT_TITLE: "This site uses cookies",
-  COOKIE_CONSENT_BODY:
-    "We use analytics cookies to improve your experience. See our",
-  COOKIE_CONSENT_POLICY_LINK: "Privacy Policy",
-  COOKIE_CONSENT_ACCEPT: "Accept",
-  COOKIE_CONSENT_DECLINE: "Decline",
-} as const;
-
-export type MessageKey = keyof typeof messages;
+// `en` is always present. Non-en locales are registered by LocaleProvider.
+const _registry: Partial<Record<SupportedLocale, Record<string, unknown>>> = {
+  en: en as unknown as Record<string, unknown>,
+};
 
 /**
- * Return the English string for the given key.
- *
- * Type-safe at compile time - a typo in the key is a TS error.
+ * Register a locale's message tree into the runtime registry.
+ * Called by LocaleProvider (client-side) before rendering with a new locale.
  */
-export function t(key: MessageKey): string {
-  return messages[key];
+export function registerLocaleMessages(
+  locale: SupportedLocale,
+  tree: Record<string, unknown>,
+): void {
+  _registry[locale] = tree;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Types
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** All top-level keys of the English message object. */
+export type MessageKey = keyof typeof en;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Locale state
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Client-side module variable -- safe because each browser tab is single-threaded.
+let _clientLocale: SupportedLocale | null = null;
+
+/** Set the active UI locale (called by LocaleProvider). */
+export function setLocale(locale: SupportedLocale): void {
+  _clientLocale = locale;
+}
+
+/** Resolve the current locale for the active environment. */
+export function getCurrentLocale(): SupportedLocale {
+  if (typeof window !== "undefined") {
+    if (_clientLocale) return _clientLocale;
+    // Fallback: read from cookie directly (SSR hydration edge case).
+    const match = document.cookie.match(/(?:^|;\s*)NEXT_LOCALE=([^;]+)/);
+    return resolveLocale(match?.[1]);
+  }
+  // Server-side: always returns "en" in the starter (no per-request store).
+  // With [locale] routing this would read the route param instead.
+  return "en";
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Resolution helpers
+// ─────────────────────────────────────────────────────────────────────────────
+
+function resolveString(
+  locale: SupportedLocale,
+  key: string,
+): string | undefined {
+  const tree = _registry[locale] ?? _registry.en!;
+  const val = (tree as Record<string, unknown>)[key];
+  if (typeof val === "string") return val;
+
+  // Nested path: try dot-walk (handles "locale.labelEnglish" etc.)
+  const segments = key.split(".");
+  if (segments.length > 1) {
+    let node: unknown = tree;
+    for (const seg of segments) {
+      if (node === null || typeof node !== "object") {
+        node = undefined;
+        break;
+      }
+      node = (node as Record<string, unknown>)[seg];
+    }
+    if (typeof node === "string") return node;
+  }
+
+  // Fallback to English.
+  if (locale !== "en") return resolveString("en", key);
+  return undefined;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Public API
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Return the translated string for `key` in the current locale, falling back
+ * through English. Throws if the key is missing entirely (fail-fast).
+ *
+ * Accepts either a known `MessageKey` (typed, autocompleted by TS) or a plain
+ * `string` (for dot-paths like "locale.labelEnglish" and dynamic dispatch).
+ */
+export function t(key: MessageKey | (string & {})): string {
+  const locale = getCurrentLocale();
+  const text = resolveString(locale, key);
+  if (text === undefined) {
+    throw new Error(`[i18n] Missing key: "${key}" (locale: ${locale})`);
+  }
+  return text;
 }
 
 /**
- * Translate a backend error string into a human-readable message.
+ * Translate a backend error key into a human-readable message.
  *
- * The backend returns raw i18n keys (e.g. "ERROR_INTERNAL") as the
- * `detail` field. This function looks up the key and returns the English
- * text. If the string is not a known key (e.g. from fastapi-users or a
- * raw exception), it is returned as-is.
+ * The backend returns raw i18n keys (e.g. "ERROR_INTERNAL") as the `detail`
+ * field of HTTP errors. This function looks up the key and returns the localised
+ * string. If the string is not a known key (e.g. from fastapi-users or a raw
+ * exception), it is returned as-is.
  */
 export function translateError(raw: string): string {
-  if (raw in messages) {
-    return messages[raw as MessageKey];
-  }
-  return raw;
+  const locale = getCurrentLocale();
+  const resolved = resolveString(locale, raw);
+  return resolved ?? raw;
 }

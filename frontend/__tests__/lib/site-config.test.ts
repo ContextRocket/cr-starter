@@ -30,8 +30,14 @@ describe("siteConfig shape", () => {
     expect(siteConfig.contactEmail).toContain("@");
   });
 
-  it("has a non-empty locale", () => {
-    expect(siteConfig.locale.length).toBeGreaterThan(0);
+  it("has a non-empty defaultLocale", () => {
+    expect(siteConfig.defaultLocale.length).toBeGreaterThan(0);
+  });
+
+  it("has a locales array containing at least en, es, de", () => {
+    expect(siteConfig.locales).toContain("en");
+    expect(siteConfig.locales).toContain("es");
+    expect(siteConfig.locales).toContain("de");
   });
 
   it("has all required asset paths defined", () => {

@@ -12,6 +12,7 @@ import { Bot } from "lucide-react";
 import { t } from "@/i18n/keys";
 import { buildHomeJsonLd } from "@/lib/structured-data";
 import { StructuredDataScripts } from "@/components/seo/structured-data-scripts";
+import { LocaleSwitcher } from "@/i18n/locale-switcher";
 import { siteConfig } from "@/site.config";
 
 export default function Home() {
@@ -46,13 +47,14 @@ export default function Home() {
             </Link>
           </nav>
 
-          <footer className="mt-16 text-sm text-muted-foreground flex gap-4 justify-center">
+          <footer className="mt-16 text-sm text-muted-foreground flex gap-4 justify-center items-center">
             <Link href="/impressum" className="hover:underline">
               {t("FOOTER_IMPRESSUM")}
             </Link>
             <Link href="/privacy" className="hover:underline">
               {t("FOOTER_PRIVACY")}
             </Link>
+            <LocaleSwitcher />
           </footer>
         </div>
       </main>

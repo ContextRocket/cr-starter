@@ -32,8 +32,21 @@ export interface SiteConfig {
   siteUrl: string;
   /** Primary contact / support email surfaced in JSON-LD and the footer. */
   contactEmail: string;
-  /** Locale code served by default (ISO 639-1). */
-  locale: string;
+  /**
+   * Default locale code (ISO 639-1). Used as the initial locale in
+   * LocaleProvider and as the <html lang> at SSR time.
+   *
+   * BOUNDARY NOTE: this is a site identity field, not i18n copy.
+   *   site.config.ts = brand identity (name, tagline, description, legal, locale).
+   *   i18n/messages/*.ts = UI copy (button labels, prompts, validation).
+   * Components read brand identity from siteConfig; UI strings from t().
+   */
+  defaultLocale: string;
+  /**
+   * All locale codes supported by the UI. Must match the files in
+   * i18n/messages/ and the SUPPORTED_LOCALES array in i18n/messages/index.ts.
+   */
+  locales: readonly string[];
   /** Paths to brand assets served from /public (relative to /public). */
   assets: {
     logo: string;
@@ -96,7 +109,8 @@ export const siteConfig: SiteConfig = {
     "A Next.js starter for building AI-powered products on ContextRocket. Auth, dashboard shell, and a streaming chat agent included out of the box.",
   siteUrl: "https://example.com", // PLACEHOLDER -- replace with your production domain
   contactEmail: "hello@example.com", // PLACEHOLDER -- replace with your contact email
-  locale: "en",
+  defaultLocale: "en",
+  locales: ["en", "es", "de"] as const,
 
   // ── Brand assets (files live in frontend/public/) ─────────────────────
   assets: {

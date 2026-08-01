@@ -3,11 +3,17 @@ import { screen } from "@testing-library/dom";
 import "@testing-library/jest-dom";
 
 import Home from "@/app/page";
+import { LocaleProvider } from "@/i18n/locale-provider";
 import { siteConfig } from "@/site.config";
+
+// Helper: wrap a component in LocaleProvider (required by LocaleSwitcher).
+function withLocale(ui: React.ReactElement) {
+  return <LocaleProvider initialLocale="en">{ui}</LocaleProvider>;
+}
 
 describe("Home Page", () => {
   it("renders a single h1 from site.config tagline", () => {
-    render(<Home />);
+    render(withLocale(<Home />));
 
     const headings = screen.getAllByRole("heading", { level: 1 });
     expect(headings).toHaveLength(1);
@@ -15,7 +21,7 @@ describe("Home Page", () => {
   });
 
   it("renders a link to the dashboard", () => {
-    render(<Home />);
+    render(withLocale(<Home />));
 
     const dashboardLink = screen.getByRole("link", {
       name: /go to dashboard/i,
@@ -25,7 +31,7 @@ describe("Home Page", () => {
   });
 
   it("renders the description text from i18n keys", () => {
-    render(<Home />);
+    render(withLocale(<Home />));
 
     // The phrase appears in the tagline (h1) and in the subtitle paragraph.
     const matches = screen.getAllByText(/Build products on ContextRocket/i);
@@ -33,7 +39,7 @@ describe("Home Page", () => {
   });
 
   it("renders footer links to impressum and privacy", () => {
-    render(<Home />);
+    render(withLocale(<Home />));
 
     const impressumLink = screen.getByRole("link", { name: /impressum/i });
     expect(impressumLink).toHaveAttribute("href", "/impressum");
@@ -42,8 +48,16 @@ describe("Home Page", () => {
     expect(privacyLink).toHaveAttribute("href", "/privacy");
   });
 
+  it("renders the locale switcher in the footer", () => {
+    render(withLocale(<Home />));
+
+    // LocaleSwitcher is mounted in the footer; verify its trigger exists.
+    const switcher = screen.getByTestId("locale-switcher");
+    expect(switcher).toBeInTheDocument();
+  });
+
   it("renders JSON-LD script tags for Organization and WebSite", () => {
-    const { container } = render(<Home />);
+    const { container } = render(withLocale(<Home />));
 
     const scripts = container.querySelectorAll(
       'script[type="application/ld+json"]',

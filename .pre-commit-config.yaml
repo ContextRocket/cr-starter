@@ -61,3 +61,11 @@ repos:
         # Only run frontend client generation if the OpenAPI schema has changed:
         files: openapi\.json$
         pass_filenames: false
+      - id: i18n-parity
+        name: check i18n parity (en/es/de)
+        entry: zsh -lc 'cd frontend && nvm use --silent 2>/dev/null || true && node scripts/check-i18n-parity.js'
+        language: system
+        # Always run so parity is checked even when unrelated files change
+        # (a locale file edited in a parallel branch could drift silently otherwise).
+        always_run: true
+        pass_filenames: false

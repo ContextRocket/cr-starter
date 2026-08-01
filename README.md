@@ -162,11 +162,48 @@ Edit `frontend/app/globals.css`.  The design tokens (`--primary`, `--background`
 etc.) are CSS custom properties in the `:root` block -- change them to match
 your brand without touching component code.
 
-### i18n keys
+### Internationalization
 
-All user-facing strings live in `frontend/i18n/keys.ts`.  Add a key, use
-`t("KEY")` in any component.  When you add a language, add the locale bundle
-alongside.
+The starter ships tri-locale (en, es, de) out of the box.
+
+**Where strings live:**
+- `frontend/i18n/messages/en.ts` -- English (source of truth)
+- `frontend/i18n/messages/es.ts` -- Spanish
+- `frontend/i18n/messages/de.ts` -- German
+
+**How to add a string:**
+1. Add the key and English value to `en.ts`.
+2. Add the same key with translated values to `es.ts` and `de.ts`.
+3. Use `t("YOUR_KEY")` in any component.
+
+**Boundary rule:** `messages/*.ts` is UI copy only (labels, prompts, errors).
+Brand identity (tagline, description, company name) stays in `site.config.ts`.
+
+**Parity enforcement:** `scripts/check-i18n-parity.js` compares all locale
+files against `en.ts` (AST-based, not regex). It runs automatically on
+pre-commit. Run it manually:
+
+```bash
+cd frontend && node scripts/check-i18n-parity.js
+```
+
+**How to add a new locale** (e.g. French):
+1. Create `frontend/i18n/messages/fr.ts` with `export const fr = { ... }`.
+2. Add `"fr"` to `SUPPORTED_LOCALES` in `frontend/i18n/messages/index.ts`.
+3. Add `"fr"` to `locales` in `frontend/site.config.ts`.
+4. Add a loader for `fr` in `frontend/i18n/locale-provider.tsx`.
+5. Add locale label keys (`locale.labelFrench`) in all three existing files + the new `fr.ts`.
+6. Run `node scripts/check-i18n-parity.js` to confirm parity.
+
+**Locale switching:** a `<LocaleSwitcher />` component (Globe icon + dropdown)
+is mounted in the home page footer. Mount it wherever your layout needs it.
+The active locale is persisted in a `NEXT_LOCALE` cookie. The `<html lang>`
+attribute is updated on the client after hydration.
+
+**Upgrade path:** cookie/provider-based locale is the current approach (no URL
+segments). For full SEO/hreflang support, adopt Next.js
+[locale] URL-segment routing -- the message files and `t()` API are compatible
+with that upgrade. See `frontend/i18n/keys.ts` for the upgrade path comment.
 
 ### Chat FAB flag
 
