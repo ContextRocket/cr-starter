@@ -1,5 +1,5 @@
 /**
- * Tests for the ChatFab component — open/close render behavior.
+ * Tests for the ChatFab component: open/close render behavior.
  */
 
 import { render, screen, fireEvent } from "@testing-library/react";

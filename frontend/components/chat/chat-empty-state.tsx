@@ -1,22 +1,34 @@
 "use client";
 
 import { t } from "@/i18n/keys";
+import { getCurrentLocale } from "@/i18n/keys";
+import { siteConfig } from "@/site.config";
 
 interface ChatEmptyStateProps {
   title?: string;
   subtitle?: string;
   /** When true, show the "connect ContextRocket" prompt instead of the empty state. */
   showConnectPrompt?: boolean;
+  /**
+   * Called when the user taps an icebreaker chip.
+   * The parent (ChatPanel) should call chat.sendMessage with this text.
+   */
+  onIcebreakerSelect?: (message: string) => void;
 }
 
 /**
  * Welcome/empty state for the chat surface.
  * Hero variant: centered column with radial gradient backdrop.
+ *
+ * Renders icebreaker chips from siteConfig.chat.icebreakers[currentLocale].
+ * Falls back to "en" when the current locale has no icebreaker entries.
+ * Renders no chip row when the config has no icebreakers for any locale.
  */
 export function ChatEmptyState({
   title,
   subtitle,
   showConnectPrompt = false,
+  onIcebreakerSelect,
 }: ChatEmptyStateProps) {
   if (showConnectPrompt) {
     return (
@@ -36,6 +48,13 @@ export function ChatEmptyState({
       </div>
     );
   }
+
+  // Resolve icebreakers for the current locale, falling back to "en".
+  const locale = getCurrentLocale();
+  const icebreakers =
+    siteConfig.chat.icebreakers[locale] ??
+    siteConfig.chat.icebreakers["en"] ??
+    [];
 
   return (
     <div
@@ -68,6 +87,26 @@ export function ChatEmptyState({
             {subtitle ?? t("CHAT_EMPTY_SUBTITLE")}
           </p>
         </div>
+
+        {/* Icebreaker chips */}
+        {icebreakers.length > 0 && onIcebreakerSelect && (
+          <div
+            className="flex flex-wrap justify-center gap-2"
+            aria-label="Suggested questions"
+            data-testid="icebreaker-chips"
+          >
+            {icebreakers.map((entry, i) => (
+              <button
+                key={i}
+                onClick={() => onIcebreakerSelect(entry.message)}
+                data-testid={`icebreaker-chip-${i + 1}`}
+                className="rounded-full border border-border/60 bg-background/80 px-4 py-1.5 text-sm text-foreground shadow-sm backdrop-blur-sm transition-all duration-150 hover:border-primary/50 hover:bg-primary/5 hover:text-primary"
+              >
+                {entry.label}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

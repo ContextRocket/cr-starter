@@ -220,10 +220,42 @@ export const en = {
   CHAT_CLEAR: "Clear chat",
   CHAT_OPEN: "Open chat",
   CHAT_CLOSE: "Close chat",
+  CHAT_EXPAND: "Expand to full screen",
+  CHAT_COLLAPSE: "Collapse to panel",
   CHAT_CONNECT_REQUIRED_TITLE: "Connect ContextRocket",
   CHAT_CONNECT_REQUIRED_BODY:
     "Set NEXT_PUBLIC_CR_AGENT_URL to enable the AI agent.",
   ACCESSIBILITY_TYPING: "Assistant is typing",
+
+  // ── Chat: bubble typography ───────────────────────────────────────────────
+  CHAT_MORE_DETAIL: "More detail",
+  CHAT_LESS_DETAIL: "Less detail",
+
+  // ── Chat: suggestion pills ────────────────────────────────────────────────
+  CHAT_SUGGESTIONS_LABEL: "Suggested follow-ups",
+
+  // ── Chat: citation source sheet ───────────────────────────────────────────
+  CHAT_SOURCE_SHEET_TITLE: "Sources",
+  CHAT_SOURCE_SHEET_OPEN: "Open source",
+  CHAT_SOURCE_SHEET_OPEN_NEW_TAB: "Open in new tab",
+  CHAT_SOURCE_CITED_SECTION: "Cited section",
+  CHAT_SOURCE_PUBLISHER: "Publisher",
+  CHAT_SOURCE_DATE: "Date",
+  CHAT_SOURCE_LICENSE: "License",
+
+  // ── Chat: policy-class card ───────────────────────────────────────────────
+  CHAT_POLICY_CARD_SOURCE: "Source",
+
+  // ── Chat: conversion nudge ────────────────────────────────────────────────
+  CHAT_NUDGE_TITLE: "Save your conversation",
+  CHAT_NUDGE_BODY:
+    "Create a free account to keep your full chat history. Your current conversation continues either way.",
+  CHAT_NUDGE_ACTION: "Create account",
+  CHAT_NUDGE_DISMISS: "Dismiss",
+
+  // ── Chat: link preview sheet ──────────────────────────────────────────────
+  CHAT_LINK_PREVIEW_TITLE: "Link preview",
+  CHAT_LINK_PREVIEW_OPEN: "Open in new tab",
 
   // ── Cookie consent ────────────────────────────────────────────────────────
   COOKIE_CONSENT_ARIA_LABEL: "Cookie consent",

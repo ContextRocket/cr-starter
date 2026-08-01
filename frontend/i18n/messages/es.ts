@@ -222,10 +222,42 @@ export const es = {
   CHAT_CLEAR: "Borrar chat",
   CHAT_OPEN: "Abrir chat",
   CHAT_CLOSE: "Cerrar chat",
+  CHAT_EXPAND: "Ampliar a pantalla completa",
+  CHAT_COLLAPSE: "Reducir al panel",
   CHAT_CONNECT_REQUIRED_TITLE: "Conecta ContextRocket",
   CHAT_CONNECT_REQUIRED_BODY:
     "Establece NEXT_PUBLIC_CR_AGENT_URL para activar el agente de IA.",
   ACCESSIBILITY_TYPING: "El asistente está escribiendo",
+
+  // ── Chat: tipografía de burbuja ───────────────────────────────────────────
+  CHAT_MORE_DETAIL: "Más detalles",
+  CHAT_LESS_DETAIL: "Menos detalles",
+
+  // ── Chat: sugerencias ─────────────────────────────────────────────────────
+  CHAT_SUGGESTIONS_LABEL: "Sugerencias de seguimiento",
+
+  // ── Chat: ficha de fuentes ────────────────────────────────────────────────
+  CHAT_SOURCE_SHEET_TITLE: "Fuentes",
+  CHAT_SOURCE_SHEET_OPEN: "Abrir fuente",
+  CHAT_SOURCE_SHEET_OPEN_NEW_TAB: "Abrir en nueva pestaña",
+  CHAT_SOURCE_CITED_SECTION: "Sección citada",
+  CHAT_SOURCE_PUBLISHER: "Editor",
+  CHAT_SOURCE_DATE: "Fecha",
+  CHAT_SOURCE_LICENSE: "Licencia",
+
+  // ── Chat: tarjeta de clase de política ────────────────────────────────────
+  CHAT_POLICY_CARD_SOURCE: "Fuente",
+
+  // ── Chat: aviso de conversión ─────────────────────────────────────────────
+  CHAT_NUDGE_TITLE: "Guarda tu conversación",
+  CHAT_NUDGE_BODY:
+    "Crea una cuenta gratuita para conservar todo tu historial de chat. Tu conversación actual continuará de todos modos.",
+  CHAT_NUDGE_ACTION: "Crear cuenta",
+  CHAT_NUDGE_DISMISS: "Descartar",
+
+  // ── Chat: vista previa de enlace ──────────────────────────────────────────
+  CHAT_LINK_PREVIEW_TITLE: "Vista previa del enlace",
+  CHAT_LINK_PREVIEW_OPEN: "Abrir en nueva pestaña",
 
   // ── Cookie consent ────────────────────────────────────────────────────────
   COOKIE_CONSENT_ARIA_LABEL: "Consentimiento de cookies",

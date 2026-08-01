@@ -224,10 +224,42 @@ export const de = {
   CHAT_CLEAR: "Chat leeren",
   CHAT_OPEN: "Chat öffnen",
   CHAT_CLOSE: "Chat schließen",
+  CHAT_EXPAND: "Auf Vollbild erweitern",
+  CHAT_COLLAPSE: "Zum Panel verkleinern",
   CHAT_CONNECT_REQUIRED_TITLE: "ContextRocket verbinden",
   CHAT_CONNECT_REQUIRED_BODY:
     "Setze NEXT_PUBLIC_CR_AGENT_URL, um den KI-Agenten zu aktivieren.",
   ACCESSIBILITY_TYPING: "Der Assistent tippt",
+
+  // ── Chat: Blasentypografie ────────────────────────────────────────────────
+  CHAT_MORE_DETAIL: "Mehr Details",
+  CHAT_LESS_DETAIL: "Weniger Details",
+
+  // ── Chat: Vorschlagspillen ────────────────────────────────────────────────
+  CHAT_SUGGESTIONS_LABEL: "Vorgeschlagene Folgefragen",
+
+  // ── Chat: Quellenblatt ────────────────────────────────────────────────────
+  CHAT_SOURCE_SHEET_TITLE: "Quellen",
+  CHAT_SOURCE_SHEET_OPEN: "Quelle öffnen",
+  CHAT_SOURCE_SHEET_OPEN_NEW_TAB: "In neuem Tab öffnen",
+  CHAT_SOURCE_CITED_SECTION: "Zitierter Abschnitt",
+  CHAT_SOURCE_PUBLISHER: "Herausgeber",
+  CHAT_SOURCE_DATE: "Datum",
+  CHAT_SOURCE_LICENSE: "Lizenz",
+
+  // ── Chat: Richtlinienklassen-Karte ────────────────────────────────────────
+  CHAT_POLICY_CARD_SOURCE: "Quelle",
+
+  // ── Chat: Konversionsnudge ────────────────────────────────────────────────
+  CHAT_NUDGE_TITLE: "Gespräch speichern",
+  CHAT_NUDGE_BODY:
+    "Erstelle ein kostenloses Konto, um deinen vollständigen Chatverlauf zu behalten. Dein aktuelles Gespräch wird in jedem Fall fortgesetzt.",
+  CHAT_NUDGE_ACTION: "Konto erstellen",
+  CHAT_NUDGE_DISMISS: "Schließen",
+
+  // ── Chat: Link-Vorschau ───────────────────────────────────────────────────
+  CHAT_LINK_PREVIEW_TITLE: "Linkvorschau",
+  CHAT_LINK_PREVIEW_OPEN: "In neuem Tab öffnen",
 
   // ── Cookie consent ────────────────────────────────────────────────────────
   COOKIE_CONSENT_ARIA_LABEL: "Cookie-Zustimmung",

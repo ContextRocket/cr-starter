@@ -6,7 +6,13 @@ import { t } from "@/i18n/keys";
 import { ArrowDownIcon } from "lucide-react";
 import { StreamStatusStack } from "@/components/chat/stream-status-stack";
 import { CitationPills } from "@/components/chat/citation-pills";
+import { SuggestionPills } from "@/components/chat/suggestion-pills";
+import { PolicyClassCard } from "@/components/chat/policy-class-card";
 import type { ChatMessage } from "@/hooks/use-a2a-stream";
+
+// Approximate line threshold before showing the "More detail" expander.
+// ~6 lines at ~80 chars each.
+const LEAD_MAX_CHARS = 480;
 
 interface MessageListProps {
   messages: ChatMessage[];
@@ -15,6 +21,15 @@ interface MessageListProps {
   isThinking?: boolean;
   isSlowResponse?: boolean;
   isVerySlowResponse?: boolean;
+  /**
+   * Called when the user taps a suggestion pill.
+   * Passed down from ChatPanel so the panel can sendMessage.
+   */
+  onSuggestionSelect?: (text: string) => void;
+  /**
+   * Link-opening mode forwarded to CitationPills.
+   */
+  linkMode?: "new-tab" | "preview";
 }
 
 function formatTimestamp(iso: string): string {
@@ -25,11 +40,78 @@ function formatTimestamp(iso: string): string {
 }
 
 /**
+ * Strip/downgrade markdown headings inside a bubble.
+ *
+ * Rules from the contract:
+ *   - h1-h6 (## headings) -> bold paragraph lead-ins.
+ *   - List nesting is capped at one level (no deeply nested bullets).
+ *   - Tables become simple line rows.
+ *
+ * This is deterministic structural normalization only; it does not modify
+ * prose content.
+ */
+function normalizeHeadings(text: string): string {
+  // Replace ATX headings (# Heading) with bold equivalents.
+  return text.replace(/^#{1,6}\s+(.+)$/gm, "**$1**");
+}
+
+/**
+ * Split message content into lead and detail sections.
+ *
+ * The lead is the first ~480 characters (roughly 6 lines of prose).
+ * If the full content is shorter, detail is empty and the expander is not shown.
+ * Splitting is done at a sentence or paragraph boundary to avoid mid-word cuts.
+ */
+function splitLeadDetail(text: string): { lead: string; detail: string } {
+  if (text.length <= LEAD_MAX_CHARS) {
+    return { lead: text, detail: "" };
+  }
+
+  // Find the last paragraph break or sentence end before the threshold.
+  const candidate = text.slice(0, LEAD_MAX_CHARS);
+
+  // Try paragraph break first.
+  const paraIdx = candidate.lastIndexOf("\n\n");
+  if (paraIdx > LEAD_MAX_CHARS * 0.4) {
+    return {
+      lead: text.slice(0, paraIdx).trim(),
+      detail: text.slice(paraIdx).trim(),
+    };
+  }
+
+  // Fall back to sentence boundary (. or ! or ?).
+  // Use [\s\S] instead of dotAll /s flag for broad tsconfig compatibility.
+  const sentenceMatch = candidate.match(/([\s\S]*[.!?])\s/);
+  if (sentenceMatch && sentenceMatch[0].length > LEAD_MAX_CHARS * 0.3) {
+    const idx = sentenceMatch[0].length;
+    return {
+      lead: text.slice(0, idx).trim(),
+      detail: text.slice(idx).trim(),
+    };
+  }
+
+  // No good boundary found: split at whitespace.
+  const spaceIdx = candidate.lastIndexOf(" ");
+  if (spaceIdx > 0) {
+    return {
+      lead: text.slice(0, spaceIdx).trim(),
+      detail: text.slice(spaceIdx).trim(),
+    };
+  }
+
+  // Last resort: hard cut.
+  return { lead: candidate.trim(), detail: text.slice(LEAD_MAX_CHARS).trim() };
+}
+
+/**
  * Message list with:
  * - Blur-to-sharp entrance animation via CSS transitions (no framer-motion dep)
  * - Streaming color-to-final text transition with inline cursor
  * - Three-tier latency stack (thinking / waiting / slow)
- * - Citation pills below assistant messages
+ * - Lead-first bubble typography with "More detail" expander
+ * - Suggestion pills below assistant messages (from platform metadata)
+ * - Policy-class card below the answer (from platform metadata)
+ * - Citation pills below assistant messages (deduped by document)
  * - Scroll-to-bottom FAB
  */
 export function MessageList({
@@ -39,6 +121,8 @@ export function MessageList({
   isThinking = false,
   isSlowResponse = false,
   isVerySlowResponse = false,
+  onSuggestionSelect,
+  linkMode = "new-tab",
 }: MessageListProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -97,6 +181,8 @@ export function MessageList({
               key={message.id}
               message={message}
               streamingText={message.pending ? streamingText : undefined}
+              onSuggestionSelect={onSuggestionSelect}
+              linkMode={linkMode}
             />
           ))}
 
@@ -137,22 +223,39 @@ interface MessageBubbleProps {
   message: ChatMessage;
   /** Provided only for the pending assistant message during streaming. */
   streamingText?: string;
+  onSuggestionSelect?: (text: string) => void;
+  linkMode?: "new-tab" | "preview";
 }
 
-function MessageBubble({ message, streamingText }: MessageBubbleProps) {
+function MessageBubble({
+  message,
+  streamingText,
+  onSuggestionSelect,
+  linkMode = "new-tab",
+}: MessageBubbleProps) {
+  const [expanded, setExpanded] = useState(false);
   const isUser = message.role === "user";
   const isStreaming = message.pending && !isUser;
-  const displayText =
+  const rawText =
     isStreaming && streamingText !== undefined
       ? streamingText
       : message.content;
+
+  // Apply heading normalization and lead/detail split for assistant messages only.
+  const displayText = isUser ? rawText : normalizeHeadings(rawText);
+  const { lead, detail } = isUser
+    ? { lead: displayText, detail: "" }
+    : splitLeadDetail(displayText);
+
+  const hasDetail = detail.length > 0;
+  const textToShow = hasDetail && !expanded ? lead : displayText;
 
   return (
     <div
       data-testid={`message-${message.role}`}
       className={cn(
         "flex w-full transition-all duration-300",
-        // Blur-to-sharp entrance (CSS only — no framer-motion required).
+        // Blur-to-sharp entrance (CSS only -- no framer-motion required).
         "animate-in fade-in slide-in-from-bottom-2",
         isUser ? "justify-end" : "justify-start",
       )}
@@ -168,7 +271,7 @@ function MessageBubble({ message, streamingText }: MessageBubbleProps) {
           </span>
         </div>
       ) : (
-        // Assistant message: left-aligned, no bubble, markdown-rendered
+        // Assistant message: left-aligned, no bubble, lead-first rendering
         <div className="flex max-w-full flex-col gap-2 sm:max-w-[420px] md:max-w-[760px]">
           <div
             className={cn(
@@ -176,7 +279,9 @@ function MessageBubble({ message, streamingText }: MessageBubbleProps) {
               isStreaming ? "text-[#8e8e8e]" : "text-foreground",
             )}
           >
-            {displayText || null}
+            {/* Render lead text (or full text when not truncated / expanded). */}
+            <BubbleContent text={textToShow} />
+
             {isStreaming && (
               <span
                 aria-hidden="true"
@@ -186,13 +291,61 @@ function MessageBubble({ message, streamingText }: MessageBubbleProps) {
             )}
           </div>
 
+          {/* "More detail" / "Less detail" expander */}
+          {hasDetail && !isStreaming && (
+            <button
+              onClick={() => setExpanded((prev) => !prev)}
+              data-testid="more-detail-toggle"
+              className="self-start rounded-md px-1.5 py-0.5 text-xs font-medium text-primary transition-colors hover:bg-primary/10"
+            >
+              {expanded ? t("CHAT_LESS_DETAIL") : t("CHAT_MORE_DETAIL")}
+            </button>
+          )}
+
+          {/* Policy-class card: renders only when present in metadata */}
+          {!isStreaming && message.policyClass && (
+            <PolicyClassCard policyClass={message.policyClass} animate />
+          )}
+
+          {/* Citation pills: deduped by document */}
           {!isStreaming &&
             message.sourceRefs &&
             message.sourceRefs.length > 0 && (
-              <CitationPills sourceRefs={message.sourceRefs} />
+              <CitationPills
+                sourceRefs={message.sourceRefs}
+                linkMode={linkMode}
+              />
+            )}
+
+          {/* Suggestion pills: from platform metadata only, never prose-parsed */}
+          {!isStreaming &&
+            message.suggestions &&
+            message.suggestions.length > 0 && (
+              <SuggestionPills
+                suggestions={message.suggestions}
+                onSelect={(text) => onSuggestionSelect?.(text)}
+                animate
+              />
             )}
         </div>
       )}
     </div>
   );
+}
+
+// ── Bubble content renderer ───────────────────────────────────────────────────
+
+/**
+ * Renders the text content of an assistant bubble.
+ *
+ * Intentionally minimal: displays whitespace-preserving text with no
+ * full markdown rendering engine (avoids adding a dependency for the template).
+ * The heading-to-bold normalization is applied upstream in normalizeHeadings().
+ *
+ * Fork owners who need full markdown can swap this for react-markdown or
+ * similar while keeping the lead/detail split and heading normalization.
+ */
+function BubbleContent({ text }: { text: string }) {
+  if (!text) return null;
+  return <span className="whitespace-pre-wrap break-words">{text}</span>;
 }

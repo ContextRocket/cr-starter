@@ -43,6 +43,22 @@ export type StreamPhase =
   | "completed"
   | "failed";
 
+/**
+ * Typed policy-class signal from the platform completed-event metadata.
+ * severity drives card styling; content_key is the brand-authored copy key;
+ * cited_source is an optional source label for the guidance card.
+ */
+export interface PolicyClass {
+  /** Severity tier driving card color tokens. */
+  class: "danger" | "attention" | "neutral";
+  /** Discriminated policy tier (e.g. "escalation", "guidance", "refusal"). */
+  tier: string;
+  /** Brand-authored content key for the card body copy. */
+  content_key: string;
+  /** Optional source label shown on the card. */
+  cited_source?: string;
+}
+
 export interface ChatMessage {
   id: string;
   role: "user" | "assistant";
@@ -57,6 +73,17 @@ export interface ChatMessage {
   pendingReviews?: PendingReview[];
   /** Server-assigned thread id (available after first turn). */
   threadId?: string;
+  /**
+   * Follow-up suggestion pills from the platform completed-event metadata.
+   * Sourced from meta.suggestions (string[]). Never parsed from prose.
+   */
+  suggestions?: string[];
+  /**
+   * Policy-class signal from the platform completed-event metadata.
+   * Sourced from meta.policy_class. Renders a styled card below the answer.
+   * Absent means no card renders.
+   */
+  policyClass?: PolicyClass;
   createdAt: string;
 }
 
@@ -148,7 +175,7 @@ function classifyError(err: unknown, errorKey?: string): StreamError {
  * Wraps streamTask() from a2a-client.ts and drives the three-tier latency
  * UI state (thinking / waiting / slow response).
  *
- * @param clientOpts A2AClientOptions — base URL + optional bearer token.
+ * @param clientOpts A2AClientOptions: base URL + optional bearer token.
  *   Base URL defaults to NEXT_PUBLIC_CR_AGENT_URL.
  */
 export function useA2AStream(
@@ -162,7 +189,7 @@ export function useA2AStream(
   const [error, setError] = useState<StreamError | null>(null);
   const [threadId, setThreadId] = useState<string | null>(null);
 
-  // Latency tier flags — derived from phase + timers; managed as refs to
+  // Latency tier flags: derived from phase + timers; managed as refs to
   // avoid re-render storms during the streaming hot path.
   const [isThinking, setIsThinking] = useState(false);
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
@@ -272,6 +299,8 @@ export function useA2AStream(
       let finalSourceRefs: SourceRef[] | undefined;
       let finalToolCalls: ToolCallEvent[] | undefined;
       let finalPendingReviews: PendingReview[] | undefined;
+      let finalSuggestions: string[] | undefined;
+      let finalPolicyClass: PolicyClass | undefined;
 
       async function run() {
         try {
@@ -283,7 +312,7 @@ export function useA2AStream(
             processEvent(event);
           }
 
-          // Stream completed — finalize the assistant message.
+          // Stream completed: finalize the assistant message.
           if (!controller.signal.aborted) {
             if (finalThreadId) setThreadId(finalThreadId);
 
@@ -297,6 +326,8 @@ export function useA2AStream(
                       sourceRefs: finalSourceRefs,
                       toolCalls: finalToolCalls,
                       pendingReviews: finalPendingReviews,
+                      suggestions: finalSuggestions,
+                      policyClass: finalPolicyClass,
                       threadId: finalThreadId ?? undefined,
                     }
                   : m,
@@ -364,6 +395,20 @@ export function useA2AStream(
             }
             if (meta?.thread_id) {
               finalThreadId = meta.thread_id;
+            }
+            // Suggestion pills and policy-class card from platform metadata.
+            if (
+              Array.isArray(meta?.suggestions) &&
+              meta.suggestions.every((s: unknown) => typeof s === "string")
+            ) {
+              finalSuggestions = meta.suggestions as string[];
+            }
+            if (
+              meta?.policy_class &&
+              typeof meta.policy_class === "object" &&
+              meta.policy_class !== null
+            ) {
+              finalPolicyClass = meta.policy_class as PolicyClass;
             }
             setPhase("completed");
             return;

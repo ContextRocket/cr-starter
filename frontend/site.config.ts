@@ -19,6 +19,68 @@
  * identity and every piece of code that uses it.
  */
 
+/**
+ * Icebreaker entry: a starter question shown in the empty chat state.
+ * label is the chip text shown to the user; message is the text sent when
+ * the chip is tapped (usually the same or a slightly expanded form).
+ */
+export interface IcebreakerEntry {
+  label: string;
+  message: string;
+}
+
+/**
+ * Per-locale icebreaker configuration.
+ * Keys are locale codes matching the supported locales in site.config.
+ */
+export type IcebreakersByLocale = Record<string, IcebreakerEntry[]>;
+
+/**
+ * Conversion-moment nudge configuration.
+ * Controls when a guest->registered upgrade nudge appears.
+ */
+export interface ConversionMomentsConfig {
+  /**
+   * Number of substantive turns before the nudge appears.
+   * A "substantive turn" is one completed assistant response.
+   */
+  turnThreshold: number;
+  /**
+   * Maximum number of nudges per session. Always 1 per the contract.
+   */
+  maxPerSession: 1;
+}
+
+/**
+ * Chat-surface configuration. Read by chat components at render time.
+ * Fork owners may override these defaults in the siteConfig object below.
+ */
+export interface ChatConfig {
+  /**
+   * Per-locale icebreaker chips shown in the empty state.
+   * Each locale provides 3-5 {label, message} pairs.
+   * When the current locale has no entry, falls back to "en".
+   */
+  icebreakers: IcebreakersByLocale;
+  /**
+   * Whether the FAB panel expand-to-fullscreen toggle is enabled.
+   * Default: true. Set false to disable the expand button.
+   */
+  fullscreenEnabled: boolean;
+  /**
+   * How links inside message content and source sheets are opened.
+   * "new-tab"  -- target="_blank" + rel="noopener noreferrer" (default, safe for embeds).
+   * "preview"  -- in-panel sheet with title + "open in new tab" action.
+   * The embed/widget context always forces "new-tab" regardless of this setting.
+   */
+  linkMode: "new-tab" | "preview";
+  /**
+   * Conversion-nudge settings. The nudge appears for unauthenticated/guest
+   * users only and is dismissed at most once per session (sessionStorage).
+   */
+  conversionMoments: ConversionMomentsConfig;
+}
+
 export interface SiteConfig {
   /** Public-facing company / product name used in headers, titles, JSON-LD. */
   companyName: string;
@@ -92,6 +154,8 @@ export interface SiteConfig {
     /** Email address for privacy / GDPR contact. */
     privacyContact: string;
   };
+  /** Chat surface configuration: icebreakers, FAB behaviors, link policy, nudges. */
+  chat: ChatConfig;
 }
 
 /**
@@ -144,5 +208,78 @@ export const siteConfig: SiteConfig = {
     vat: "DE000000000", // PLACEHOLDER
     representedBy: "Jane Doe", // PLACEHOLDER -- name of managing director / CEO
     privacyContact: "privacy@example.com", // PLACEHOLDER
+  },
+
+  // ── Chat surface ──────────────────────────────────────────────────────
+  chat: {
+    // Icebreaker chips shown in the empty state, one row per locale.
+    // These are generic starters; fork owners should replace with corpus-specific questions.
+    icebreakers: {
+      en: [
+        {
+          label: "What can you help me with?",
+          message: "What can you help me with?",
+        },
+        {
+          label: "Give me a quick overview",
+          message:
+            "Give me a quick overview of what you know about this topic.",
+        },
+        {
+          label: "What are the key facts?",
+          message: "What are the most important facts I should know?",
+        },
+        {
+          label: "Where do I get started?",
+          message: "Where should I get started?",
+        },
+      ],
+      es: [
+        {
+          label: "¿En qué puedes ayudarme?",
+          message: "¿En qué puedes ayudarme?",
+        },
+        {
+          label: "Dame un resumen rápido",
+          message: "Dame un resumen rápido de lo que sabes sobre este tema.",
+        },
+        {
+          label: "¿Cuáles son los datos clave?",
+          message: "¿Cuáles son los datos más importantes que debo conocer?",
+        },
+        {
+          label: "¿Por dónde empiezo?",
+          message: "¿Por dónde debería empezar?",
+        },
+      ],
+      de: [
+        {
+          label: "Womit kannst du mir helfen?",
+          message: "Womit kannst du mir helfen?",
+        },
+        {
+          label: "Gib mir einen kurzen Überblick",
+          message:
+            "Gib mir einen kurzen Überblick über das, was du zu diesem Thema weißt.",
+        },
+        {
+          label: "Was sind die wichtigsten Fakten?",
+          message: "Was sind die wichtigsten Fakten, die ich wissen sollte?",
+        },
+        {
+          label: "Wo fange ich an?",
+          message: "Wo sollte ich anfangen?",
+        },
+      ],
+    },
+    // Expand-to-fullscreen toggle on the FAB panel. Default ON.
+    fullscreenEnabled: true,
+    // Default link-opening mode. "new-tab" is safe for embed/iframe contexts.
+    linkMode: "new-tab",
+    // Conversion-moment nudge settings.
+    conversionMoments: {
+      turnThreshold: 3,
+      maxPerSession: 1,
+    },
   },
 };

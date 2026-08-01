@@ -1,5 +1,5 @@
 /**
- * Tests for MessageList — renders messages, streaming cursor, and citations.
+ * Tests for MessageList: renders messages, streaming cursor, and citations.
  */
 
 import { render, screen } from "@testing-library/react";
