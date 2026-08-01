@@ -20,6 +20,11 @@ customize at the named seams.
 1. **Self-contained code.** Never import from outside this repository (no
    sibling-repo or path imports).  Everything the app needs lives in this
    repo.
+   **Port/adapter at integration seams:** data access and external
+   services go behind small interfaces (a Port) with concrete adapters
+   and fake/in-memory test doubles, so forks swap implementations (file
+   -> API, local -> platform) without rewriting consumers.  Do not
+   over-abstract thin CRUD where the database is the contract.
 2. **No LLM keys.** The template delegates all AI to ContextRocket over A2A.
    `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, and friends must not appear in
    `.env.example`, config, or any default path.  The only external AI
