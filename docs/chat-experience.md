@@ -79,6 +79,20 @@ here is vertical-agnostic; forks supply copy and theming. Companion to
   a generic signup plea. Registration preserves the conversation (the
   guest-conversion flow already guarantees continuity).
 
+### FAB behaviors (defaults, fork-customizable)
+
+- **Expand to full screen**: the FAB panel carries an expand toggle that
+  grows it to a full-screen chat (same thread, same state; the /chat route
+  and the panel are one component in two layouts). Collapse returns to the
+  panel without losing scroll position. Default ON; forks can disable.
+- **Link handling**: links in answers and source sheets NEVER navigate the
+  host page. Default: open in a new tab (`target="_blank"` +
+  `rel="noopener noreferrer"`). Optional per-fork mode: in-panel preview
+  sheet (title, favicon, description, "open in new tab" action) so the
+  user never leaves the conversation; the embed/widget context forces the
+  new-tab default (an iframe must not navigate its parent).
+- Both are surface-config/site-config driven defaults, not code forks.
+
 ### Latency + streaming (existing three-tier stack)
 
 - Keep: thinking pill, slow-response reassurance tiers, blur-to-sharp
