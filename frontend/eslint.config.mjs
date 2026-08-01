@@ -31,7 +31,7 @@ const eslintConfig = [
       "@typescript-eslint/no-empty-object-type": "off",
     },
   },
-  // CommonJS config files
+  // CommonJS config files (root-level *.js and *.cjs)
   {
     files: ["*.js", "*.cjs"],
     languageOptions: {
@@ -39,6 +39,18 @@ const eslintConfig = [
         ...globals.node,
       },
       sourceType: "commonjs",
+    },
+  },
+  // Browser script: public/widget.js is a plain browser script (no bundler,
+  // no Node.js runtime). Override the node-globals rule so document/window
+  // etc. resolve correctly.
+  {
+    files: ["public/widget.js"],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
+      sourceType: "script",
     },
   },
   prettier,

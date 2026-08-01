@@ -27,6 +27,13 @@ export const en = {
     "Build products on ContextRocket. Auth, dashboard shell, and OpenAPI-driven type safety included. Conversation state and agent runs delegate to ContextRocket via A2A.",
   HOME_CTA: "Go to Dashboard",
 
+  // ── Home: embeddable widget section ──────────────────────────────────────
+  HOME_WIDGET_SECTION_TITLE: "Add the agent to any website",
+  HOME_WIDGET_SECTION_BODY:
+    "One script tag drops a floating chat button onto any page. The button opens an iframe backed by your ContextRocket agent -- no React, no bundler, no backend changes on the host site. The floating button on this page is the same component; embed it elsewhere with the snippet below.",
+  HOME_WIDGET_SNIPPET_NOTE:
+    "Copy the snippet, replace the agent URL, and add it before </body>.",
+
   // ── Auth: login ───────────────────────────────────────────────────────────
   AUTH_LOGIN_TITLE: "Login",
   AUTH_LOGIN_DESCRIPTION: "Enter your email below to log in to your account.",

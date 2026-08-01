@@ -254,12 +254,17 @@ from `site.config.ts` -- forks get the correct content with no extra work.
 | A2A agent card | `/.well-known/agent.json` | A2A spec discovery endpoint. Points at the configured CR A2A endpoint. Valid JSON even when the endpoint is not yet configured (`url: null`). |
 | MCP manifest | `/.well-known/mcp.json` | Emerging convention for MCP server discovery. Describes the ContextRocket-hosted MCP endpoint for this org. |
 | Sitemap | `/sitemap.xml` | Standard XML sitemap for all indexable public pages. |
+| Chat widget | `public/widget.js` + `/embed` | One-tag embed that adds a floating chat button to any site. See the [home page demo section](/) and `docs/agent-web-standards.md`. |
 
 The AI-crawler tier gives answer engines (ChatGPT, Claude, Perplexity) an
 explicit Allow list covering `/`, `/llms.txt`, `/llms-full.txt`,
 `/.well-known/agent.json`, and `/sitemap.xml`. A crawl delay of 1 second
 prevents server overload. Set `allowAiCrawlers: false` in `site.config.ts`
 to block the tier entirely.
+
+For a detailed explanation of each standard, the spec links, and the hosted-agent
+patterns (widget embed + ContextRocket-hosted MCP endpoint), see
+[docs/agent-web-standards.md](docs/agent-web-standards.md).
 
 ---
 

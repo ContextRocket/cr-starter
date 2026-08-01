@@ -27,6 +27,13 @@ export const de = {
     "Entwickle Produkte mit ContextRocket. Authentifizierung, Dashboard-Gerüst und typsichere OpenAPI-Integration inklusive. Gesprächsverlauf und Agenten-Ausführungen werden per A2A an ContextRocket delegiert.",
   HOME_CTA: "Zum Dashboard",
 
+  // ── Home: einbettbarer Widget-Abschnitt ───────────────────────────────────
+  HOME_WIDGET_SECTION_TITLE: "Den Agenten auf jede Website einbetten",
+  HOME_WIDGET_SECTION_BODY:
+    "Ein einziges Script-Tag fügt jeder Seite einen schwebenden Chat-Button hinzu. Der Button öffnet einen iframe, der von deinem ContextRocket-Agenten betrieben wird, ohne React, ohne Bundler und ohne Backend-Anpassungen auf der einbettenden Website. Der schwebende Button auf dieser Seite ist dieselbe Komponente; bette sie mit dem folgenden Code-Snippet auf anderen Seiten ein.",
+  HOME_WIDGET_SNIPPET_NOTE:
+    "Kopiere das Snippet, ersetze die Agenten-URL und füge es vor </body> ein.",
+
   // ── Auth: login ───────────────────────────────────────────────────────────
   AUTH_LOGIN_TITLE: "Anmelden",
   AUTH_LOGIN_DESCRIPTION:

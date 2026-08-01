@@ -47,6 +47,38 @@ export default function Home() {
             </Link>
           </nav>
 
+          {/* ── Embeddable widget section ─────────────────────────────────────
+              Explains the one-script-tag embed pattern and provides a
+              copy-paste snippet. The FAB already on this page (injected by
+              the root layout when NEXT_PUBLIC_CHAT_FAB_ENABLED=true) is the
+              same component, so we do NOT self-embed a second widget here. */}
+          <section
+            aria-labelledby="widget-section-heading"
+            className="mt-16 rounded-2xl border border-border/60 bg-card/80 px-6 py-8 text-left shadow-sm backdrop-blur-sm"
+            data-testid="widget-demo-section"
+          >
+            <h2
+              id="widget-section-heading"
+              className="text-xl font-semibold text-foreground"
+            >
+              {t("HOME_WIDGET_SECTION_TITLE")}
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-muted-foreground">
+              {t("HOME_WIDGET_SECTION_BODY")}
+            </p>
+            <p className="mt-4 text-xs font-medium text-muted-foreground">
+              {t("HOME_WIDGET_SNIPPET_NOTE")}
+            </p>
+            <pre className="mt-3 overflow-x-auto rounded-lg bg-muted/80 px-4 py-3 text-xs leading-relaxed text-foreground">
+              <code>{`<script
+  src="https://your-site.example/widget.js"
+  data-cr-agent-url="https://your-cr-instance.com"
+  data-cr-site-key="pk_live_..."
+  defer
+></script>`}</code>
+            </pre>
+          </section>
+
           <footer className="mt-16 text-sm text-muted-foreground flex gap-4 justify-center items-center">
             <Link href="/impressum" className="hover:underline">
               {t("FOOTER_IMPRESSUM")}

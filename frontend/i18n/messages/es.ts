@@ -24,6 +24,13 @@ export const es = {
     "Crea productos con ContextRocket. Autenticación, estructura de panel y seguridad de tipos basada en OpenAPI incluidas. El estado de conversación y las ejecuciones de agente se delegan a ContextRocket vía A2A.",
   HOME_CTA: "Ir al panel",
 
+  // ── Home: sección del widget embebible ───────────────────────────────────
+  HOME_WIDGET_SECTION_TITLE: "Añade el agente a cualquier sitio web",
+  HOME_WIDGET_SECTION_BODY:
+    "Un script tag añade un botón de chat flotante a cualquier página. El botón abre un iframe respaldado por tu agente de ContextRocket, sin React, sin bundler ni cambios en el servidor del sitio anfitrión. El botón flotante de esta página es el mismo componente; incrústalo en otros sitios con el fragmento de código siguiente.",
+  HOME_WIDGET_SNIPPET_NOTE:
+    "Copia el fragmento, reemplaza la URL del agente y añádelo antes de </body>.",
+
   // ── Auth: login ───────────────────────────────────────────────────────────
   AUTH_LOGIN_TITLE: "Iniciar sesión",
   AUTH_LOGIN_DESCRIPTION:
