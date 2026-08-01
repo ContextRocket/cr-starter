@@ -1,0 +1,44 @@
+name: Feature Request
+description: Propose a generic improvement to the cr-starter template
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Feature requests that benefit all forks are welcome. Vertical product
+        features (domain-specific pages, custom skills, brand copy) belong in
+        your fork rather than upstream.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the problem or gap you are trying to address.
+      placeholder: "Every fork that needs X has to copy-paste the same boilerplate..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: Describe what you would like to see added or changed.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What other approaches did you consider?
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      description: Confirm this is a generic template improvement.
+      options:
+        - label: This change would benefit most forks, not just my vertical.
+          required: true
+        - label: I have checked that a similar feature does not already exist.
+          required: true

@@ -1,0 +1,54 @@
+# ContextRocket Starter — compose file
+#
+# Port isolation: all ports differ from the sibling context-rocket project
+# (3000/8000/5442/5443/1025/8025) to allow both stacks on the same machine.
+# Port values are defined ONCE in .env.example and passed in via environment
+# variables below — no literal port numbers appear anywhere else.
+#
+# Profiles
+# --------
+# (default / no profile)  Nothing backend-side starts automatically.
+#                         Run the Next.js frontend standalone against CR.
+# --profile backend       Adds: db + mailhog (development backend stack).
+# --profile test          Adds: db_test (isolated test database).
+#
+# Makefile targets wrap the common invocations:
+#   make start-next-only   — frontend only (default profile)
+#   make start-full        — frontend + backend + db + mailhog
+#   make test-backend      — db_test + run pytest
+
+name: cr-starter
+
+services:
+  db:
+    image: postgres:17
+    profiles: ["backend"]
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: app_db
+    ports:
+      - "${DB_PORT:-5452}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  db_test:
+    image: postgres:17
+    profiles: ["test"]
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: app_test_db
+    ports:
+      - "${DB_TEST_PORT:-5453}:5432"
+    restart: always
+
+  mailhog:
+    image: mailhog/mailhog
+    profiles: ["backend"]
+    ports:
+      - "${MAILHOG_SMTP_PORT:-1026}:1025"
+      - "${MAILHOG_UI_PORT:-8026}:8025"
+
+volumes:
+  postgres_data:
