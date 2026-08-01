@@ -103,7 +103,7 @@ export interface TaskArtifactUpdateEvent {
 }
 
 /**
- * Per-answer faithfulness verdict from the platform (cr-06p.10).
+ * Per-answer faithfulness verdict from the platform faithfulness check.
  *
  * Mirrored exactly from:
  *   backend/app/modules/agent/a2a/tasks.py  _faithfulness_metadata_from_verdict()
@@ -141,7 +141,7 @@ export interface A2AEventMetadata {
   content_key?: string;
   content_params?: Record<string, unknown>;
   /**
-   * Per-answer faithfulness verdict (cr-06p.10).
+   * Per-answer faithfulness verdict from the platform faithfulness check.
    * Absent when the turn is not closed-domain or the check did not run.
    * Mirror of _faithfulness_metadata_from_verdict in tasks.py.
    */

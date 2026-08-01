@@ -2,9 +2,10 @@
  * Impressum page -- /impressum
  *
  * LEGAL NOTICE: An Impressum is LEGALLY REQUIRED for commercial websites
- * targeting Germany or any EU country under the Telemediengesetz (TMG)
- * and similar national laws. The placeholder values in site.config.legal
- * MUST be replaced with real legal information before launch.
+ * targeting Germany or any EU country under § 5 Digitale-Dienste-Gesetz
+ * (DDG, successor of the repealed Telemediengesetz) and similar national
+ * laws. The placeholder values in site.config.legal MUST be replaced with
+ * real legal information before launch.
  *
  * A page with placeholder text does not satisfy the legal requirement.
  * Consult your legal advisor for country-specific compliance.
@@ -39,7 +40,7 @@ export default function ImpressumPage() {
           className="mb-8 border border-yellow-500 bg-yellow-50 text-yellow-900 p-4 rounded text-sm"
           role="alert"
         >
-          <strong>Developer notice:</strong> {t("IMPRESSUM_DISCLAIMER")}
+          <strong>{t("DEV_NOTICE_LABEL")}</strong> {t("IMPRESSUM_DISCLAIMER")}
         </div>
       ) : null}
 

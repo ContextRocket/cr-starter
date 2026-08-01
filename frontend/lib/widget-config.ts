@@ -49,3 +49,35 @@ export function parseWidgetConfig(params: {
     title: params.get("title") || null,
   };
 }
+
+/**
+ * Allowlist check for the embed page's agent-url parameter.
+ *
+ * The agent-url query param is attacker-controlled (any page can construct
+ * the iframe src). The embed page therefore only accepts an agent-url whose
+ * origin exactly matches the agent origin this deployment is configured for
+ * (NEXT_PUBLIC_CR_AGENT_URL). Everything else -- foreign origins, non-http(s)
+ * schemes, malformed values, or an unconfigured deployment -- is rejected and
+ * the embed page renders its honest error state instead of connecting.
+ */
+export function isAllowedAgentUrl(
+  candidate: string,
+  configuredAgentUrl: string | null | undefined,
+): boolean {
+  if (!configuredAgentUrl) return false;
+
+  let candidateUrl: URL;
+  let configuredUrl: URL;
+  try {
+    candidateUrl = new URL(candidate);
+    configuredUrl = new URL(configuredAgentUrl);
+  } catch {
+    return false;
+  }
+
+  if (candidateUrl.protocol !== "http:" && candidateUrl.protocol !== "https:") {
+    return false;
+  }
+
+  return candidateUrl.origin === configuredUrl.origin;
+}

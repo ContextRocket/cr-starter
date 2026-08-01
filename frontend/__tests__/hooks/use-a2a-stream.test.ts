@@ -504,4 +504,238 @@ describe("useA2AStream", () => {
       expect(result.current.error?.kind).toBe("agent_failed");
     });
   });
+
+  describe("stream ends without a terminal event", () => {
+    it("finalizes as an honest interrupted error, keeping the partial text", async () => {
+      // submitted + one artifact chunk, then the stream just closes:
+      // no completed/failed terminal status event ever arrives.
+      mockStreamFetch([
+        {
+          type: "TaskStatusUpdateEvent",
+          id: "ti1",
+          status: { state: "submitted" },
+          final: false,
+        },
+        {
+          type: "TaskArtifactUpdateEvent",
+          id: "ti1",
+          artifact: {
+            parts: [{ type: "text", text: "Partial answer text" }],
+            index: 0,
+            append: false,
+            lastChunk: false,
+          },
+          final: false,
+        },
+      ]);
+
+      const { result } = renderHook(() => useA2AStream({ baseUrl: AGENT_URL }));
+
+      await act(async () => {
+        result.current.sendMessage("Hello");
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      });
+
+      // Honest failure, never silent success.
+      expect(result.current.phase).toBe("failed");
+      expect(result.current.error?.kind).toBe("interrupted");
+      expect(result.current.error?.message).toBeTruthy();
+
+      // The partial text the user already saw is kept, no longer pending.
+      const assistantMsg = result.current.messages.find(
+        (m) => m.role === "assistant",
+      );
+      expect(assistantMsg?.content).toBe("Partial answer text");
+      expect(assistantMsg?.pending).toBeFalsy();
+    });
+
+    it("removes the empty assistant placeholder when no text arrived at all", async () => {
+      mockStreamFetch([
+        {
+          type: "TaskStatusUpdateEvent",
+          id: "ti2",
+          status: { state: "submitted" },
+          final: false,
+        },
+      ]);
+
+      const { result } = renderHook(() => useA2AStream({ baseUrl: AGENT_URL }));
+
+      await act(async () => {
+        result.current.sendMessage("Hello");
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      });
+
+      expect(result.current.phase).toBe("failed");
+      expect(result.current.error?.kind).toBe("interrupted");
+      expect(
+        result.current.messages.filter((m) => m.role === "assistant"),
+      ).toHaveLength(0);
+    });
+  });
+
+  describe("double-send race: stale turn must not clobber the new turn", () => {
+    function hangingFetchThatRejectsOnAbort() {
+      return (_url: string, init: { signal: AbortSignal }): Promise<never> =>
+        new Promise((_resolve, reject) => {
+          init.signal.addEventListener("abort", () =>
+            reject(new DOMException("Aborted", "AbortError")),
+          );
+        });
+    }
+
+    it("keeps the new turn's phase and latency flags when the old turn aborts", async () => {
+      const firstFetch = hangingFetchThatRejectsOnAbort();
+      // Second fetch hangs forever WITHOUT rejecting, so the second turn is
+      // still in-flight while the first turn's AbortError settles.
+      const secondFetch = () => new Promise(() => {});
+      global.fetch = jest
+        .fn()
+        .mockImplementationOnce(firstFetch)
+        .mockImplementationOnce(secondFetch);
+
+      const { result } = renderHook(() => useA2AStream({ baseUrl: AGENT_URL }));
+
+      act(() => {
+        result.current.sendMessage("First");
+      });
+      act(() => {
+        result.current.sendMessage("Second");
+      });
+
+      // Let the first turn's AbortError rejection settle.
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      });
+
+      // Without the stale-turn guard the first turn's catch/finally would
+      // reset these to idle/false while the second turn is still waiting.
+      expect(result.current.phase).toBe("submitted");
+      expect(result.current.isThinking).toBe(true);
+      expect(result.current.isWaitingForResponse).toBe(true);
+      expect(result.current.error).toBeNull();
+    });
+
+    it("completes the second turn normally after the first was superseded", async () => {
+      const firstFetch = hangingFetchThatRejectsOnAbort();
+      global.fetch = jest
+        .fn()
+        .mockImplementationOnce(firstFetch)
+        .mockImplementationOnce(() =>
+          Promise.resolve({
+            ok: true,
+            body: makeSSEBody([
+              {
+                type: "TaskStatusUpdateEvent",
+                id: "tr2",
+                status: { state: "submitted" },
+                final: false,
+              },
+              {
+                type: "TaskArtifactUpdateEvent",
+                id: "tr2",
+                artifact: {
+                  parts: [{ type: "text", text: "Second answer" }],
+                  index: 0,
+                  append: false,
+                  lastChunk: true,
+                },
+                final: false,
+              },
+              {
+                type: "TaskStatusUpdateEvent",
+                id: "tr2",
+                status: { state: "completed" },
+                final: true,
+              },
+            ]),
+          }),
+        );
+
+      const { result } = renderHook(() => useA2AStream({ baseUrl: AGENT_URL }));
+
+      act(() => {
+        result.current.sendMessage("First");
+      });
+      act(() => {
+        result.current.sendMessage("Second");
+      });
+
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      });
+
+      expect(result.current.phase).toBe("completed");
+      expect(result.current.error).toBeNull();
+
+      // The superseded turn's empty placeholder is gone; the second turn's
+      // answer is finalized.
+      const assistants = result.current.messages.filter(
+        (m) => m.role === "assistant",
+      );
+      expect(assistants).toHaveLength(1);
+      expect(assistants[0].content).toBe("Second answer");
+      expect(assistants[0].pending).toBeFalsy();
+
+      // Both user messages remain in the transcript.
+      const users = result.current.messages.filter((m) => m.role === "user");
+      expect(users.map((m) => m.content)).toEqual(["First", "Second"]);
+    });
+  });
+
+  describe("three-tier latency flags (fake timers)", () => {
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it("sets isSlowResponse after 8s and isVerySlowResponse after 20s", () => {
+      jest.useFakeTimers();
+      // Hanging stream: no first token ever arrives.
+      global.fetch = jest.fn().mockReturnValueOnce(new Promise(() => {}));
+
+      const { result } = renderHook(() => useA2AStream({ baseUrl: AGENT_URL }));
+
+      act(() => {
+        result.current.sendMessage("Hello");
+      });
+
+      expect(result.current.isSlowResponse).toBe(false);
+      expect(result.current.isVerySlowResponse).toBe(false);
+
+      act(() => {
+        jest.advanceTimersByTime(8_000);
+      });
+      expect(result.current.isSlowResponse).toBe(true);
+      expect(result.current.isVerySlowResponse).toBe(false);
+      // The thinking flags stay up alongside the slow tier.
+      expect(result.current.isThinking).toBe(true);
+      expect(result.current.isWaitingForResponse).toBe(true);
+
+      act(() => {
+        jest.advanceTimersByTime(12_000);
+      });
+      expect(result.current.isVerySlowResponse).toBe(true);
+    });
+
+    it("clears the slow tiers on abort", () => {
+      jest.useFakeTimers();
+      global.fetch = jest.fn().mockReturnValueOnce(new Promise(() => {}));
+
+      const { result } = renderHook(() => useA2AStream({ baseUrl: AGENT_URL }));
+
+      act(() => {
+        result.current.sendMessage("Hello");
+      });
+      act(() => {
+        jest.advanceTimersByTime(8_000);
+      });
+      expect(result.current.isSlowResponse).toBe(true);
+
+      act(() => {
+        result.current.abort();
+      });
+      expect(result.current.isSlowResponse).toBe(false);
+      expect(result.current.isVerySlowResponse).toBe(false);
+    });
+  });
 });

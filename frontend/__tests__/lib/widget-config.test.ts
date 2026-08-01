@@ -8,7 +8,11 @@
  * -- no URLSearchParams dependency so tests run in both jsdom and node envs.
  */
 
-import { parseWidgetConfig, type WidgetConfig } from "@/lib/widget-config";
+import {
+  parseWidgetConfig,
+  isAllowedAgentUrl,
+  type WidgetConfig,
+} from "@/lib/widget-config";
 
 /** Build a minimal adaptor from a plain record of string values. */
 function makeParams(record: Record<string, string | undefined>): {
@@ -83,5 +87,62 @@ describe("parseWidgetConfig()", () => {
     expect(config.agentUrl).toBe("https://example.com");
     // WidgetConfig has no 'unknown' field -- TypeScript enforces the shape.
     expect(Object.keys(config)).toEqual(["agentUrl", "siteKey", "title"]);
+  });
+});
+
+describe("isAllowedAgentUrl()", () => {
+  const CONFIGURED = "https://agent.example.com";
+
+  it("accepts an agent-url with the exact configured origin", () => {
+    expect(isAllowedAgentUrl("https://agent.example.com", CONFIGURED)).toBe(
+      true,
+    );
+  });
+
+  it("accepts a same-origin agent-url with a path", () => {
+    expect(isAllowedAgentUrl("https://agent.example.com/api", CONFIGURED)).toBe(
+      true,
+    );
+  });
+
+  it("rejects a foreign origin", () => {
+    expect(isAllowedAgentUrl("https://evil.example.net", CONFIGURED)).toBe(
+      false,
+    );
+  });
+
+  it("rejects a different subdomain of the same site", () => {
+    expect(isAllowedAgentUrl("https://other.example.com", CONFIGURED)).toBe(
+      false,
+    );
+  });
+
+  it("rejects a scheme downgrade (http vs configured https)", () => {
+    expect(isAllowedAgentUrl("http://agent.example.com", CONFIGURED)).toBe(
+      false,
+    );
+  });
+
+  it("rejects a different port", () => {
+    expect(
+      isAllowedAgentUrl("https://agent.example.com:8443", CONFIGURED),
+    ).toBe(false);
+  });
+
+  it("rejects non-http(s) schemes", () => {
+    expect(isAllowedAgentUrl("javascript:alert(1)", CONFIGURED)).toBe(false);
+    expect(isAllowedAgentUrl("data:text/html,x", CONFIGURED)).toBe(false);
+  });
+
+  it("rejects malformed candidate URLs", () => {
+    expect(isAllowedAgentUrl("not a url", CONFIGURED)).toBe(false);
+  });
+
+  it("rejects everything when no agent origin is configured", () => {
+    expect(isAllowedAgentUrl("https://agent.example.com", undefined)).toBe(
+      false,
+    );
+    expect(isAllowedAgentUrl("https://agent.example.com", null)).toBe(false);
+    expect(isAllowedAgentUrl("https://agent.example.com", "")).toBe(false);
   });
 });

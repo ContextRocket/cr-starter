@@ -11,9 +11,11 @@
  * The ChatPanel client component is mocked so the embed page can render in
  * jsdom without opening live SSE/WebSocket connections.
  *
- * Two behaviors under test:
+ * Three behaviors under test:
  *   1. Unconfigured state: no agent-url param -> shows CHAT_CONNECT_REQUIRED prompt.
- *   2. Configured state: agent-url present -> renders the chat panel container.
+ *   2. Configured state: agent-url matching the configured origin -> chat panel.
+ *   3. Origin allowlist: agent-url with a foreign origin / bad scheme, or a
+ *      deployment with no configured agent origin -> honest rejection state.
  */
 
 import { render } from "@testing-library/react";
@@ -71,7 +73,14 @@ describe("EmbedPage -- unconfigured state (no agent-url)", () => {
   });
 });
 
-describe("EmbedPage -- configured state (agent-url present)", () => {
+describe("EmbedPage -- configured state (agent-url matches configured origin)", () => {
+  beforeEach(() => {
+    process.env.NEXT_PUBLIC_CR_AGENT_URL = "https://api.example.com";
+  });
+  afterEach(() => {
+    delete process.env.NEXT_PUBLIC_CR_AGENT_URL;
+  });
+
   it("renders the main embed container when agent-url is provided", async () => {
     const ui = await EmbedPage({
       searchParams: makeSearchParams({
@@ -105,5 +114,60 @@ describe("EmbedPage -- configured state (agent-url present)", () => {
     render(ui);
 
     expect(screen.getByTestId("embed-chat-panel")).toBeInTheDocument();
+  });
+});
+
+describe("EmbedPage -- agent-url origin allowlist", () => {
+  afterEach(() => {
+    delete process.env.NEXT_PUBLIC_CR_AGENT_URL;
+  });
+
+  it("rejects a foreign-origin agent-url with the honest rejection state", async () => {
+    process.env.NEXT_PUBLIC_CR_AGENT_URL = "https://api.example.com";
+    const ui = await EmbedPage({
+      searchParams: makeSearchParams({
+        "agent-url": "https://evil.attacker.net",
+      }),
+    });
+    render(ui);
+
+    expect(screen.getByTestId("embed-page-rejected")).toBeInTheDocument();
+    expect(screen.queryByTestId("embed-page")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("embed-chat-panel")).not.toBeInTheDocument();
+  });
+
+  it("rejects a non-http(s) agent-url", async () => {
+    process.env.NEXT_PUBLIC_CR_AGENT_URL = "https://api.example.com";
+    const ui = await EmbedPage({
+      searchParams: makeSearchParams({
+        "agent-url": "javascript:alert(1)",
+      }),
+    });
+    render(ui);
+
+    expect(screen.getByTestId("embed-page-rejected")).toBeInTheDocument();
+    expect(screen.queryByTestId("embed-chat-panel")).not.toBeInTheDocument();
+  });
+
+  it("rejects any agent-url when no agent origin is configured", async () => {
+    // NEXT_PUBLIC_CR_AGENT_URL is unset: there is no allowlisted origin,
+    // so attacker-supplied agent-url values must never connect.
+    const ui = await EmbedPage({
+      searchParams: makeSearchParams({
+        "agent-url": "https://api.example.com",
+      }),
+    });
+    render(ui);
+
+    expect(screen.getByTestId("embed-page-rejected")).toBeInTheDocument();
+    expect(screen.queryByTestId("embed-chat-panel")).not.toBeInTheDocument();
+  });
+
+  it("still shows the unconfigured state when no agent-url param at all", async () => {
+    const ui = await EmbedPage({ searchParams: makeSearchParams({}) });
+    render(ui);
+
+    expect(screen.getByTestId("embed-page-unconfigured")).toBeInTheDocument();
+    expect(screen.queryByTestId("embed-page-rejected")).not.toBeInTheDocument();
   });
 });

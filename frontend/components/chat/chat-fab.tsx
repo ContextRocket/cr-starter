@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   MessageCircleIcon,
   XIcon,
@@ -10,6 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import { t } from "@/i18n/keys";
 import { ChatPanel } from "@/components/chat/chat-panel";
+import { useA2AStream } from "@/hooks/use-a2a-stream";
 import { siteConfig } from "@/site.config";
 import type { A2AClientOptions } from "@/lib/a2a-client";
 
@@ -29,6 +30,7 @@ interface ChatFabProps {
   isGuest?: boolean;
   /**
    * Called when the guest->registered CTA is tapped.
+   * Defaults to navigating to the register page.
    */
   onConversionAction?: () => void;
 }
@@ -40,9 +42,19 @@ interface ChatFabProps {
  * The FAB itself is always rendered when the component mounts -- the env gate
  * lives in the layout so server rendering can strip it entirely.
  *
- * Expand-to-fullscreen: when siteConfig.chat.fullscreenEnabled is true, a
- * secondary expand/collapse toggle appears in the drawer header so the user can
- * grow the panel to fill the screen without losing thread state or scroll position.
+ * Conversation state is hoisted HERE: one useA2AStream instance owns the
+ * messages/thread/stream for both layouts (drawer and fullscreen), so the
+ * expand/collapse toggle re-parents the SAME conversation instead of mounting
+ * a fresh panel. Toggling never loses messages, the thread id, or an
+ * in-flight stream.
+ *
+ * A11y:
+ * - The closed drawer is `inert` and renders no panel content, so nothing
+ *   inside it is focusable behind aria-hidden and the composer cannot steal
+ *   focus on page load.
+ * - Escape collapses fullscreen back to the drawer, or closes the drawer and
+ *   returns focus to the FAB button. Escape events already handled by an
+ *   inner dialog (e.g. the source sheet) are ignored via defaultPrevented.
  *
  * Link policy: defaults to siteConfig.chat.linkMode; in embed/iframe contexts
  * the consumer forces "new-tab" (see app/embed/page.tsx).
@@ -64,6 +76,7 @@ export function ChatFab({
 }: ChatFabProps) {
   const [open, setOpen] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
+  const fabButtonRef = useRef<HTMLButtonElement>(null);
 
   const fullscreenEnabled = siteConfig.chat.fullscreenEnabled;
 
@@ -77,10 +90,43 @@ export function ChatFab({
     ? { ...clientOpts, demoPublicSlug: siteConfig.chat.demoPublicSlug }
     : clientOpts;
 
+  // Hoisted conversation state: shared by the drawer and fullscreen panels.
+  const chat = useA2AStream({
+    ...effectiveClientOpts,
+    baseUrl: agentUrl ?? clientOpts?.baseUrl ?? "",
+  });
+
+  const handleConversionAction =
+    onConversionAction ??
+    (() => {
+      window.location.assign("/auth/register");
+    });
+
+  // Escape: collapse fullscreen first, then close the drawer (with focus
+  // return to the FAB button). Inner dialogs (source sheet) preventDefault
+  // on the Escape they consume, so we skip those.
+  useEffect(() => {
+    if (!open) return;
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      if (fullscreen) {
+        setFullscreen(false);
+      } else {
+        setOpen(false);
+        fabButtonRef.current?.focus();
+      }
+    }
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [open, fullscreen]);
+
   return (
     <>
       {/* FAB button */}
       <button
+        ref={fabButtonRef}
         onClick={() => setOpen((prev) => !prev)}
         aria-label={open ? t("CHAT_CLOSE") : t("CHAT_OPEN")}
         aria-expanded={open}
@@ -107,7 +153,6 @@ export function ChatFab({
         <div
           data-testid="chat-fab-fullscreen"
           className="fixed inset-0 z-40 flex flex-col bg-background"
-          aria-hidden={!open}
         >
           {/* Fullscreen header with collapse button */}
           <div className="flex items-center justify-between border-b border-border/60 px-4 py-2.5">
@@ -135,12 +180,13 @@ export function ChatFab({
           </div>
 
           <ChatPanel
+            chat={chat}
             agentUrl={agentUrl}
             clientOpts={effectiveClientOpts}
             welcomeTitle={welcomeTitle}
             welcomeSubtitle={welcomeSubtitle}
             isGuest={isGuest}
-            onConversionAction={onConversionAction}
+            onConversionAction={handleConversionAction}
             className="flex-1"
             data-testid="chat-fab-fullscreen-panel"
           />
@@ -152,6 +198,7 @@ export function ChatFab({
         <div
           data-testid="chat-fab-drawer"
           aria-hidden={!open}
+          inert={!open}
           className={cn(
             "fixed bottom-24 right-6 z-40 flex flex-col",
             "w-[calc(100vw-48px)] max-w-md overflow-hidden",
@@ -164,42 +211,51 @@ export function ChatFab({
           )}
           style={{ height: "min(600px, calc(100dvh - 160px))" }}
         >
-          {/* Drawer header with demo badge and expand button */}
-          {open && (isDemoMode || fullscreenEnabled) && (
-            <div className="flex items-center justify-between border-b border-border/40 px-3 py-1.5">
-              {isDemoMode ? (
-                <span
-                  data-testid="chat-fab-demo-badge"
-                  className="inline-flex items-center rounded-full border border-primary/20 bg-primary/8 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-primary/70"
-                >
-                  {t("CHAT_DEMO_BADGE")}
-                </span>
-              ) : (
-                <span />
+          {/* Drawer content renders only while open: the closed drawer keeps
+              no focusable content and the composer cannot autofocus on page
+              load. Conversation state lives in the hoisted hook above, so
+              closing and reopening the drawer preserves the thread. */}
+          {open && (
+            <>
+              {/* Drawer header with demo badge and expand button */}
+              {(isDemoMode || fullscreenEnabled) && (
+                <div className="flex items-center justify-between border-b border-border/40 px-3 py-1.5">
+                  {isDemoMode ? (
+                    <span
+                      data-testid="chat-fab-demo-badge"
+                      className="inline-flex items-center rounded-full border border-primary/20 bg-primary/8 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-primary/70"
+                    >
+                      {t("CHAT_DEMO_BADGE")}
+                    </span>
+                  ) : (
+                    <span />
+                  )}
+                  {fullscreenEnabled && (
+                    <button
+                      onClick={() => setFullscreen(true)}
+                      aria-label={t("CHAT_EXPAND")}
+                      data-testid="chat-fab-expand"
+                      className="flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    >
+                      <Maximize2Icon className="size-3.5" aria-hidden />
+                    </button>
+                  )}
+                </div>
               )}
-              {fullscreenEnabled && (
-                <button
-                  onClick={() => setFullscreen(true)}
-                  aria-label={t("CHAT_EXPAND")}
-                  data-testid="chat-fab-expand"
-                  className="flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                >
-                  <Maximize2Icon className="size-3.5" aria-hidden />
-                </button>
-              )}
-            </div>
-          )}
 
-          <ChatPanel
-            agentUrl={agentUrl}
-            clientOpts={effectiveClientOpts}
-            welcomeTitle={welcomeTitle}
-            welcomeSubtitle={welcomeSubtitle}
-            isGuest={isGuest}
-            onConversionAction={onConversionAction}
-            className="flex-1"
-            data-testid="chat-fab-panel"
-          />
+              <ChatPanel
+                chat={chat}
+                agentUrl={agentUrl}
+                clientOpts={effectiveClientOpts}
+                welcomeTitle={welcomeTitle}
+                welcomeSubtitle={welcomeSubtitle}
+                isGuest={isGuest}
+                onConversionAction={handleConversionAction}
+                className="flex-1"
+                data-testid="chat-fab-panel"
+              />
+            </>
+          )}
         </div>
       )}
 

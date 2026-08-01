@@ -124,6 +124,11 @@ export const en = {
   // ── Dashboard: profile ────────────────────────────────────────────────────
   DASHBOARD_PROFILE_TITLE: "Profile & settings",
 
+  // ── Developer notices (dev-visible configuration warnings) ───────────────
+  DEV_NOTICE_LABEL: "Developer notice:",
+  SITE_CONFIG_URL_WARNING:
+    "siteUrl in site.config.ts still points at example.com. Replace it with your production domain before going live.",
+
   // ── Error pages ───────────────────────────────────────────────────────────
   ERROR_GENERIC: "Something went wrong. Please try again.",
   ERROR_DASHBOARD: "Something went wrong loading this page.",
@@ -232,7 +237,14 @@ export const en = {
   CHAT_CONNECT_REQUIRED_TITLE: "Connect ContextRocket",
   CHAT_CONNECT_REQUIRED_BODY:
     "Set NEXT_PUBLIC_CR_AGENT_URL to enable the AI agent.",
+  CHAT_STREAM_INTERRUPTED:
+    "The connection was interrupted before the answer finished. The reply may be incomplete.",
   ACCESSIBILITY_TYPING: "Assistant is typing",
+
+  // ── Embed widget ──────────────────────────────────────────────────────────
+  EMBED_AGENT_URL_REJECTED_TITLE: "Agent URL not allowed",
+  EMBED_AGENT_URL_REJECTED_BODY:
+    "The agent-url passed to the embed widget does not match the agent configured for this site.",
 
   // ── Chat: bubble typography ───────────────────────────────────────────────
   CHAT_MORE_DETAIL: "More detail",

@@ -15,7 +15,7 @@ clear, documented, and well-tested changes benefit every fork.
 ### Clone and start
 
 ```bash
-git clone https://github.com/your-org/cr-starter.git
+git clone https://github.com/ContextRocket/cr-starter.git
 cd cr-starter
 
 # Frontend only (no Python/Docker required)

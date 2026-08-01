@@ -27,6 +27,7 @@ export type StreamErrorKind =
   | "empty_message"
   | "timeout"
   | "aborted"
+  | "interrupted"
   | "unknown";
 
 export interface StreamError {
@@ -87,7 +88,7 @@ export interface ChatMessage {
    */
   policyClass?: PolicyClass;
   /**
-   * Per-answer faithfulness verdict from the platform (cr-06p.10).
+   * Per-answer faithfulness verdict from the platform faithfulness check.
    * Sourced from meta.faithfulness on the completed-event.
    * Absent when the turn is not closed-domain or the check did not run.
    * Mirror of _faithfulness_metadata_from_verdict in tasks.py.
@@ -291,8 +292,11 @@ export function useA2AStream(
       const assistantMsgId = makeId();
       const now = new Date().toISOString();
 
+      // Drop any unfinished assistant placeholder from the turn we just
+      // cancelled -- it will never complete and must not linger as a
+      // permanently-pending bubble.
       setMessages((prev) => [
-        ...prev,
+        ...prev.filter((m) => !m.pending),
         {
           id: userMsgId,
           role: "user",
@@ -340,6 +344,10 @@ export function useA2AStream(
       });
 
       let accumulated = "";
+      // Honesty guard: a stream that ends WITHOUT a terminal status event
+      // (completed / input-required / failed / canceled) must not finalize
+      // as success. Track whether we actually saw one.
+      let sawTerminalEvent = false;
       let finalThreadId: string | null = null;
       let finalSourceRefs: SourceRef[] | undefined;
       let finalToolCalls: ToolCallEvent[] | undefined;
@@ -358,33 +366,67 @@ export function useA2AStream(
             processEvent(event);
           }
 
-          // Stream completed: finalize the assistant message.
-          if (!controller.signal.aborted) {
+          // Stream ended: finalize the assistant message.
+          if (!controller.signal.aborted && abortRef.current === controller) {
             if (finalThreadId) setThreadId(finalThreadId);
 
-            setMessages((prev) =>
-              prev.map((m) =>
-                m.id === assistantMsgId
-                  ? {
-                      ...m,
-                      content: accumulated,
-                      pending: false,
-                      sourceRefs: finalSourceRefs,
-                      toolCalls: finalToolCalls,
-                      pendingReviews: finalPendingReviews,
-                      suggestions: finalSuggestions,
-                      policyClass: finalPolicyClass,
-                      faithfulness: finalFaithfulness,
-                      threadId: finalThreadId ?? undefined,
-                    }
-                  : m,
-              ),
-            );
-            setStreamingText("");
-            setPhase("completed");
+            if (sawTerminalEvent) {
+              setMessages((prev) =>
+                prev.map((m) =>
+                  m.id === assistantMsgId
+                    ? {
+                        ...m,
+                        content: accumulated,
+                        pending: false,
+                        sourceRefs: finalSourceRefs,
+                        toolCalls: finalToolCalls,
+                        pendingReviews: finalPendingReviews,
+                        suggestions: finalSuggestions,
+                        policyClass: finalPolicyClass,
+                        faithfulness: finalFaithfulness,
+                        threadId: finalThreadId ?? undefined,
+                      }
+                    : m,
+                ),
+              );
+              setStreamingText("");
+              setPhase("completed");
+            } else {
+              // The stream closed without a terminal event: honest error.
+              // Keep any partial text the user already saw; never present
+              // an interrupted answer as a completed one.
+              if (accumulated.length > 0) {
+                setMessages((prev) =>
+                  prev.map((m) =>
+                    m.id === assistantMsgId
+                      ? {
+                          ...m,
+                          content: accumulated,
+                          pending: false,
+                          threadId: finalThreadId ?? undefined,
+                        }
+                      : m,
+                  ),
+                );
+              } else {
+                setMessages((prev) =>
+                  prev.filter((m) => m.id !== assistantMsgId),
+                );
+              }
+              setError({
+                kind: "interrupted",
+                message: t("CHAT_STREAM_INTERRUPTED"),
+              });
+              setStreamingText("");
+              setPhase("failed");
+            }
           }
         } catch (err) {
           if (!mountedRef.current) return;
+          // Stale-turn guard: when a newer sendMessage has taken over
+          // (abortRef points at a different controller), this turn's
+          // failure handling must not touch the new turn's state.
+          if (abortRef.current !== controller) return;
           if (controller.signal.aborted) {
             setPhase("idle");
           } else {
@@ -395,7 +437,9 @@ export function useA2AStream(
             setMessages((prev) => prev.filter((m) => m.id !== assistantMsgId));
           }
         } finally {
-          if (mountedRef.current) {
+          // Same stale-turn guard: never reset the latency flags or the
+          // streaming text that now belong to a newer turn.
+          if (mountedRef.current && abortRef.current === controller) {
             resetLatencyFlags();
             setStreamingText("");
           }
@@ -404,6 +448,8 @@ export function useA2AStream(
 
       function processEvent(event: A2AEvent) {
         if (!mountedRef.current) return;
+        // Events from a superseded turn must not mutate the current turn.
+        if (abortRef.current !== controller) return;
         if (event.type === "TaskStatusUpdateEvent") {
           const state = event.status.state;
 
@@ -429,6 +475,7 @@ export function useA2AStream(
           }
 
           if (state === "completed" || state === "input-required") {
+            sawTerminalEvent = true;
             clearTimers();
             // Extract citations from the terminal event metadata.
             if (meta?.source_refs) {
@@ -457,7 +504,7 @@ export function useA2AStream(
             ) {
               finalPolicyClass = meta.policy_class as PolicyClass;
             }
-            // Faithfulness verdict (cr-06p.10): defensively read; absent = render nothing.
+            // Faithfulness verdict: defensively read; absent = render nothing.
             // Field names mirror _faithfulness_metadata_from_verdict in tasks.py exactly.
             // meta.faithfulness is typed as FaithfulnessVerdict | undefined by A2AEventMetadata.
             if (
@@ -470,7 +517,8 @@ export function useA2AStream(
             return;
           }
 
-          if (state === "failed") {
+          if (state === "failed" || state === "canceled") {
+            sawTerminalEvent = true;
             const errorKey = String(
               meta?.error_key ?? meta?.reason ?? "ERROR_A2A_INTERNAL",
             );

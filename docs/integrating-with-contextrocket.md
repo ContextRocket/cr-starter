@@ -16,8 +16,9 @@ file is derived from the real code in `frontend/lib/cr-sdk/` and
    - `NEXT_PUBLIC_CR_ORG_KEY`: a `crk_`-prefixed machine key (optional;
      needed for org-scoped access when the local backend is disabled).
 
-   Provisioning UI is tracked as CR bead `cr-gv9.30`; credential classes
-   are tracked as `cr-06p.8`.
+   A self-serve provisioning UI and additional credential classes are on
+   the ContextRocket roadmap; until then, request credentials through your
+   ContextRocket contact.
 
 2. **An org Context Pack.** The agent answers from your org's verified
    brand knowledge. Configure sources in the ContextRocket dashboard.
@@ -183,6 +184,6 @@ When `NEXT_PUBLIC_CR_AGENT_URL` is empty, `resolveCRConfig()` returns
 
 ## CR-side contract bead references
 
-This doc is kept in lockstep with CR integrator-docs contract (CR bead
-`cr-gv9.31`). If the A2A wire format or env var names change in the CR backend,
-update this file in the same lane.
+This doc is kept in lockstep with the ContextRocket integrator
+documentation. If the A2A wire format or env var names change in the CR
+backend, update this file in the same lane.

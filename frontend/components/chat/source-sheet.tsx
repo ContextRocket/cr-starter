@@ -4,6 +4,13 @@ import { useState } from "react";
 import { ExternalLinkIcon, XIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { t } from "@/i18n/keys";
+import { safeHref } from "@/lib/safe-href";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import type { SourceRef } from "@/lib/a2a-client";
 
 /**
@@ -72,64 +79,63 @@ interface SourceSheetProps {
    * "preview"  -- clicking a source shows a preview row with "open in new tab".
    */
   linkMode?: "new-tab" | "preview";
+  /** Controlled open state (the citation pills own it). */
+  open: boolean;
   onClose: () => void;
 }
 
 /**
- * Source sheet: a modal-style panel listing all cited source documents.
+ * Source sheet: a modal dialog listing all cited source documents.
  * Shown when the user taps a citation pill in the message bubble.
  *
- * Rendered as an overlay panel rather than a shadcn Sheet to avoid
- * introducing additional peer-dep complexity. Uses the same glass-card
- * visual language as the rest of the chat surface.
+ * Built on the Radix Dialog primitive (components/ui/dialog):
+ * - portals out of the transformed drawer container, so position: fixed
+ *   works regardless of ancestor transforms;
+ * - focus is trapped inside the sheet, moved into it on open, and returned
+ *   to the trigger on close;
+ * - Escape closes the sheet without also closing the chat drawer (the
+ *   drawer's Escape handler skips defaultPrevented events).
+ *
+ * All source URLs pass through safeHref(): only http/https targets are
+ * opened; javascript:/data:/other schemes render no open action.
  */
 export function SourceSheet({
   sources,
   linkMode = "new-tab",
+  open,
   onClose,
 }: SourceSheetProps) {
   return (
-    // Backdrop
-    <div
-      className="fixed inset-0 z-50 flex items-end justify-center sm:items-center"
-      data-testid="source-sheet"
-      role="dialog"
-      aria-modal="true"
-      aria-label={t("CHAT_SOURCE_SHEET_TITLE")}
+    <Dialog
+      open={open}
+      onOpenChange={(next) => {
+        if (!next) onClose();
+      }}
     >
-      {/* Scrim */}
-      <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-        onClick={onClose}
-        aria-hidden="true"
-      />
-
-      {/* Sheet panel */}
-      <div
+      <DialogContent
+        data-testid="source-sheet"
+        aria-describedby={undefined}
+        showCloseButton={false}
         className={cn(
-          "relative z-10 w-full max-w-lg",
-          "mx-4 mb-4 sm:mx-0 sm:mb-0",
-          "max-h-[80dvh] overflow-hidden",
-          "rounded-2xl border border-border/60 bg-background shadow-2xl",
-          "flex flex-col",
+          "flex max-h-[80dvh] w-full max-w-lg flex-col gap-0 overflow-hidden p-0",
+          "rounded-2xl border-border/60",
         )}
       >
         {/* Header */}
         <div className="flex items-center justify-between border-b border-border/60 px-4 py-3">
-          <h2 className="text-sm font-semibold text-foreground">
+          <DialogTitle className="text-sm font-semibold text-foreground">
             {t("CHAT_SOURCE_SHEET_TITLE")}
             <span className="ml-2 text-xs font-normal text-muted-foreground">
               ({sources.length})
             </span>
-          </h2>
-          <button
-            onClick={onClose}
+          </DialogTitle>
+          <DialogClose
             aria-label={t("CHAT_CLOSE")}
             className="flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             data-testid="source-sheet-close"
           >
             <XIcon className="size-4" aria-hidden />
-          </button>
+          </DialogClose>
         </div>
 
         {/* Source list */}
@@ -145,8 +151,8 @@ export function SourceSheet({
             ))}
           </ul>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -159,10 +165,14 @@ interface SourceItemProps {
 function SourceItem({ source, index, linkMode }: SourceItemProps) {
   const [previewOpen, setPreviewOpen] = useState(false);
 
+  // Scheme guard: metadata URLs are external input. Only http/https may be
+  // opened; anything else renders no open action at all.
+  const href = safeHref(source.url);
+
   const openLink = () => {
-    if (!source.url) return;
-    if (linkMode === "new-tab" || !source.url) {
-      window.open(source.url, "_blank", "noopener,noreferrer");
+    if (!href) return;
+    if (linkMode === "new-tab") {
+      window.open(href, "_blank", "noopener,noreferrer");
     } else {
       setPreviewOpen((prev) => !prev);
     }
@@ -187,14 +197,10 @@ function SourceItem({ source, index, linkMode }: SourceItemProps) {
           </span>
         </div>
 
-        {source.url && (
+        {href && (
           <button
             onClick={openLink}
-            aria-label={
-              linkMode === "new-tab"
-                ? t("CHAT_SOURCE_SHEET_OPEN")
-                : t("CHAT_SOURCE_SHEET_OPEN")
-            }
+            aria-label={t("CHAT_SOURCE_SHEET_OPEN")}
             className="shrink-0 flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/10"
             data-testid={`source-open-${index + 1}`}
           >
@@ -244,18 +250,14 @@ function SourceItem({ source, index, linkMode }: SourceItemProps) {
       )}
 
       {/* In-panel preview (linkMode === "preview" only) */}
-      {previewOpen && source.url && linkMode === "preview" && (
+      {previewOpen && href && linkMode === "preview" && (
         <div
           className="mt-2 rounded-lg border border-border/60 bg-muted/40 p-2"
           data-testid={`source-preview-${index + 1}`}
         >
-          <p className="text-xs text-muted-foreground break-all">
-            {source.url}
-          </p>
+          <p className="text-xs text-muted-foreground break-all">{href}</p>
           <button
-            onClick={() =>
-              window.open(source.url, "_blank", "noopener,noreferrer")
-            }
+            onClick={() => window.open(href, "_blank", "noopener,noreferrer")}
             className="mt-1.5 flex items-center gap-1 text-xs font-medium text-primary hover:underline"
           >
             <ExternalLinkIcon className="size-3" aria-hidden />

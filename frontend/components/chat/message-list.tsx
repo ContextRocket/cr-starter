@@ -304,7 +304,7 @@ function MessageBubble({
             </button>
           )}
 
-          {/* Faithfulness / grounded indicator (cr-06p.10): quiet chip below answer */}
+          {/* Faithfulness / grounded indicator: quiet chip below answer */}
           {!isStreaming && message.faithfulness && (
             <GroundedChip verdict={message.faithfulness} />
           )}
@@ -344,7 +344,7 @@ function MessageBubble({
 
 /**
  * Small quiet chip indicating whether the platform grounded this answer against
- * the corpus (cr-06p.10 faithfulness verdict).
+ * the corpus (platform faithfulness verdict).
  *
  * Renders only when the verdict is present and its state is known.
  * Unknown state or absent metadata = render nothing (defensive default).

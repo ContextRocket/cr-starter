@@ -27,7 +27,7 @@ export const es = {
   // ── Home: sección del widget embebible ───────────────────────────────────
   HOME_WIDGET_SECTION_TITLE: "Añade el agente a cualquier sitio web",
   HOME_WIDGET_SECTION_BODY:
-    "Un script tag añade un botón de chat flotante a cualquier página. El botón abre un iframe respaldado por tu agente de ContextRocket, sin React, sin bundler ni cambios en el servidor del sitio anfitrión. El botón flotante de esta página es el mismo componente; incrústalo en otros sitios con el fragmento de código siguiente.",
+    "Una etiqueta de script añade un botón de chat flotante a cualquier página. El botón abre un iframe respaldado por tu agente de ContextRocket, sin React, sin empaquetador ni cambios en el servidor del sitio anfitrión. El botón flotante de esta página es el mismo componente; incrústalo en otros sitios con el fragmento de código siguiente.",
   HOME_WIDGET_SNIPPET_NOTE:
     "Copia el fragmento, reemplaza la URL del agente y añádelo antes de </body>.",
 
@@ -124,12 +124,17 @@ export const es = {
   // ── Dashboard: profile ────────────────────────────────────────────────────
   DASHBOARD_PROFILE_TITLE: "Perfil y ajustes",
 
+  // ── Developer notices (dev-visible configuration warnings) ───────────────
+  DEV_NOTICE_LABEL: "Aviso para desarrolladores:",
+  SITE_CONFIG_URL_WARNING:
+    "El campo siteUrl de site.config.ts todavía apunta a example.com. Sustitúyelo por tu dominio de producción antes de publicar el sitio.",
+
   // ── Error pages ───────────────────────────────────────────────────────────
-  ERROR_GENERIC: "Algo salió mal. Por favor, inténtalo de nuevo.",
-  ERROR_DASHBOARD: "Algo salió mal al cargar esta página.",
+  ERROR_GENERIC: "Algo ha salido mal. Por favor, inténtalo de nuevo.",
+  ERROR_DASHBOARD: "Algo ha salido mal al cargar esta página.",
   ERROR_TRY_AGAIN: "Intentar de nuevo",
   ERROR_UNEXPECTED:
-    "Ocurrió un error inesperado. Por favor, inténtalo más tarde.",
+    "Se ha producido un error inesperado. Por favor, inténtalo más tarde.",
   ERROR_NETWORK: "Error de red",
   ERROR_NO_TOKEN: "No se encontró el token de acceso",
   ERROR_NO_DATA: "El servidor no devolvió datos",
@@ -234,7 +239,14 @@ export const es = {
   CHAT_CONNECT_REQUIRED_TITLE: "Conecta ContextRocket",
   CHAT_CONNECT_REQUIRED_BODY:
     "Establece NEXT_PUBLIC_CR_AGENT_URL para activar el agente de IA.",
+  CHAT_STREAM_INTERRUPTED:
+    "La conexión se ha interrumpido antes de completar la respuesta. La respuesta puede estar incompleta.",
   ACCESSIBILITY_TYPING: "El asistente está escribiendo",
+
+  // ── Widget embebible ──────────────────────────────────────────────────────
+  EMBED_AGENT_URL_REJECTED_TITLE: "URL del agente no permitida",
+  EMBED_AGENT_URL_REJECTED_BODY:
+    "El parámetro agent-url proporcionado al widget embebido no coincide con el agente configurado para este sitio.",
 
   // ── Chat: tipografía de burbuja ───────────────────────────────────────────
   CHAT_MORE_DETAIL: "Más detalles",
@@ -284,7 +296,7 @@ export const es = {
   // ── Chat: modo demo ───────────────────────────────────────────────────────
   CHAT_DEMO_BADGE: "Demo",
   CHAT_DEMO_ERROR_SLUG_NOT_FOUND:
-    "El agente de demostración no está disponible. Contacta al propietario del sitio para activar la demo pública.",
+    "El agente de demostración no está disponible. Contacta con el propietario del sitio para activar la demo pública.",
   CHAT_DEMO_ERROR_UNAUTHORIZED:
-    "El acceso de demo fue rechazado. Es posible que la demo pública no esté habilitada para este agente.",
+    "Se ha rechazado el acceso a la demo. Es posible que la demo pública no esté habilitada para este agente.",
 } as const;

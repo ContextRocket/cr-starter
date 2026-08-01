@@ -30,7 +30,7 @@ NEXT_PUBLIC_CR_AGENT_URL=https://api.contextrocket.com
 NEXT_PUBLIC_CR_ORG_KEY=crk_dein_schluessel_hier
 ```
 
-Beide Werte findest du in deinem ContextRocket-Dashboard unter Einstellungen. `NEXT_PUBLIC_CR_AGENT_URL` ist der A2A-Endpunkt des Agenten deiner Organisation. `NEXT_PUBLIC_CR_ORG_KEY` ist ein maschinelles Zugangsdaten mit dem Präfix `crk_`, das den Agenten auf das Wissen deiner Organisation beschränkt.
+Beide Werte findest du in deinem ContextRocket-Dashboard unter Einstellungen. `NEXT_PUBLIC_CR_AGENT_URL` ist der A2A-Endpunkt des Agenten deiner Organisation. `NEXT_PUBLIC_CR_ORG_KEY` ist ein maschineller Zugriffsschlüssel mit dem Präfix `crk_`, der den Agenten auf das Wissen deiner Organisation beschränkt.
 
 Starte den Entwicklungsserver nach dem Setzen der Variablen neu. Der schwebende Chat-Button verbindet sich sofort. Alle Details zum Umgebungsvariablen-Vertrag und zur Fehlerbehandlung findest du in `docs/integrating-with-contextrocket.md` im Repository.
 

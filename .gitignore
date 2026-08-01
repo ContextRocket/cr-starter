@@ -171,3 +171,6 @@ frontend/coverage/
 
 # local working files, never published
 .local/
+
+# macOS
+.DS_Store

@@ -41,7 +41,16 @@ describe("register action", () => {
     expect(authJwtLogin).toHaveBeenCalledWith({
       body: { username: "a@a.com", password: "Q12341414#" },
     });
-    expect(mockCookiesSet).toHaveBeenCalledWith("accessToken", "token");
+    expect(mockCookiesSet).toHaveBeenCalledWith(
+      "accessToken",
+      "token",
+      expect.objectContaining({
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: expect.any(Boolean),
+      }),
+    );
     expect(redirect).toHaveBeenCalledWith("/dashboard");
   });
 

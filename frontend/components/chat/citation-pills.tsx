@@ -64,13 +64,12 @@ export function CitationPills({
         })}
       </div>
 
-      {sheetOpen && (
-        <SourceSheet
-          sources={sources}
-          linkMode={linkMode}
-          onClose={() => setSheetOpen(false)}
-        />
-      )}
+      <SourceSheet
+        sources={sources}
+        linkMode={linkMode}
+        open={sheetOpen}
+        onClose={() => setSheetOpen(false)}
+      />
     </>
   );
 }

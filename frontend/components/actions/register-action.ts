@@ -65,6 +65,12 @@ export async function register(prevState: unknown, formData: FormData) {
       password: rawPassword,
     };
   }
-  (await cookies()).set("accessToken", data.access_token);
+  // Auth cookie hardening: same flags as the login action.
+  (await cookies()).set("accessToken", data.access_token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+  });
   redirect("/dashboard");
 }

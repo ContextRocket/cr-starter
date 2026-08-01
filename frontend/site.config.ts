@@ -182,9 +182,10 @@ export interface SiteConfig {
  */
 export const siteConfig: SiteConfig = {
   // ── Identity ─────────────────────────────────────────────────────────────
-  companyName: "ContextRocket Starter",
+  companyName: "ContextRocket Starter", // PLACEHOLDER -- replace with your public brand / product name
   legalName: "ContextRocket Starter GmbH", // PLACEHOLDER -- replace with your legal entity name
-  tagline: "Build products on ContextRocket.",
+  tagline: "Build products on ContextRocket.", // PLACEHOLDER -- replace with your brand tagline (home page <h1>)
+  // PLACEHOLDER -- replace with your one-sentence product description (meta tags + JSON-LD)
   description:
     "A Next.js starter for building AI-powered products on ContextRocket. Auth, dashboard shell, and a streaming chat agent included out of the box.",
   siteUrl: "https://example.com", // PLACEHOLDER -- replace with your production domain

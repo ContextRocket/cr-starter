@@ -38,7 +38,49 @@ describe("login action", () => {
     });
 
     expect(cookies).toHaveBeenCalled();
-    expect(mockSet).toHaveBeenCalledWith("accessToken", "1245token");
+    expect(mockSet).toHaveBeenCalledWith(
+      "accessToken",
+      "1245token",
+      expect.objectContaining({
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: expect.any(Boolean),
+      }),
+    );
+  });
+
+  it("sets the secure flag on the auth cookie in production", async () => {
+    const formData = new FormData();
+    formData.set("username", "a@a.com");
+    formData.set("password", "Q12341414#");
+
+    const mockSet = (await cookies()).set as jest.Mock;
+    mockSet.mockClear();
+
+    (authJwtLogin as jest.Mock).mockResolvedValue({
+      data: { access_token: "prodtoken" },
+    });
+
+    const originalEnv = process.env.NODE_ENV;
+    Object.defineProperty(process.env, "NODE_ENV", {
+      value: "production",
+      configurable: true,
+    });
+    try {
+      await login({}, formData);
+    } finally {
+      Object.defineProperty(process.env, "NODE_ENV", {
+        value: originalEnv,
+        configurable: true,
+      });
+    }
+
+    expect(mockSet).toHaveBeenCalledWith(
+      "accessToken",
+      "prodtoken",
+      expect.objectContaining({ secure: true, httpOnly: true }),
+    );
   });
 
   it("should should return an error if the server validation fails", async () => {

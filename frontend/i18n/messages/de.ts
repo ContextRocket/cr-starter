@@ -5,7 +5,7 @@
  * Verified by scripts/check-i18n-parity.js (pre-commit hook).
  *
  * Legal terminology notes:
- *   "Impressum"          -- German legal term (Telemediengesetz TMG); retained verbatim.
+ *   "Impressum"          -- German legal term (§ 5 Digitale-Dienste-Gesetz, DDG); retained verbatim.
  *   "Datenschutzerklärung" -- standard German for "Privacy Policy".
  *   "Handelsregister"    -- Company Register.
  *   "Umsatzsteuer-ID"    -- VAT ID (Umsatzsteuer-Identifikationsnummer).
@@ -127,6 +127,11 @@ export const de = {
   // ── Dashboard: profile ────────────────────────────────────────────────────
   DASHBOARD_PROFILE_TITLE: "Profil und Einstellungen",
 
+  // ── Developer notices (dev-visible configuration warnings) ───────────────
+  DEV_NOTICE_LABEL: "Hinweis für Entwickler:",
+  SITE_CONFIG_URL_WARNING:
+    "Das Feld siteUrl in site.config.ts verweist noch auf example.com. Ersetze es vor der Veröffentlichung durch deine Produktionsdomain.",
+
   // ── Error pages ───────────────────────────────────────────────────────────
   ERROR_GENERIC: "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
   ERROR_DASHBOARD: "Beim Laden dieser Seite ist ein Fehler aufgetreten.",
@@ -162,7 +167,7 @@ export const de = {
   IMPRESSUM_REPRESENTED_BY_LABEL: "Vertreten durch",
   IMPRESSUM_CONTACT_LABEL: "Kontakt",
   IMPRESSUM_DISCLAIMER:
-    "Dieses Impressum ist für gewerbliche Websites in Deutschland und der Europäischen Union gesetzlich vorgeschrieben (TMG). Alle Platzhalter müssen vor der Veröffentlichung durch echte Angaben ersetzt werden.",
+    "Dieses Impressum ist für gewerbliche Websites in Deutschland und der Europäischen Union gesetzlich vorgeschrieben (§ 5 DDG). Alle Platzhalter müssen vor der Veröffentlichung durch echte Angaben ersetzt werden.",
   PRIVACY_TITLE: "Datenschutzerklärung",
   PRIVACY_CONTACT_LABEL: "Datenschutzkontakt",
   PRIVACY_PLACEHOLDER:
@@ -236,7 +241,14 @@ export const de = {
   CHAT_CONNECT_REQUIRED_TITLE: "ContextRocket verbinden",
   CHAT_CONNECT_REQUIRED_BODY:
     "Setze NEXT_PUBLIC_CR_AGENT_URL, um den KI-Agenten zu aktivieren.",
+  CHAT_STREAM_INTERRUPTED:
+    "Die Verbindung wurde unterbrochen, bevor die Antwort abgeschlossen war. Die Antwort ist möglicherweise unvollständig.",
   ACCESSIBILITY_TYPING: "Der Assistent tippt",
+
+  // ── Einbettbares Widget ───────────────────────────────────────────────────
+  EMBED_AGENT_URL_REJECTED_TITLE: "Agenten-URL nicht erlaubt",
+  EMBED_AGENT_URL_REJECTED_BODY:
+    "Der an das eingebettete Widget übergebene agent-url-Parameter stimmt nicht mit dem für diese Website konfigurierten Agenten überein.",
 
   // ── Chat: Blasentypografie ────────────────────────────────────────────────
   CHAT_MORE_DETAIL: "Mehr Details",

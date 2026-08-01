@@ -5,7 +5,7 @@
 Please do **not** open a public GitHub issue for security vulnerabilities.
 
 Report security issues privately via
-[GitHub Security Advisories](https://github.com/your-org/cr-starter/security/advisories/new).
+[GitHub Security Advisories](https://github.com/ContextRocket/cr-starter/security/advisories/new).
 
 Include:
 
