@@ -154,6 +154,46 @@ export const de = {
   PRIVACY_PLACEHOLDER:
     "Dies ist eine Platzhalter-Datenschutzerklärung. Ersetze diese Seite vor der Veröffentlichung durch eine vollständige, rechtskonforme Datenschutzerklärung.",
 
+  // ── Datenschutzerklärung (generierte Abschnitte) ──────────────────────────
+  PRIVACY_GENERATED_NOTICE:
+    "Aus site.config generiert. Vor der Veröffentlichung mit rechtlichem Beistand prüfen.",
+  PRIVACY_INTRO:
+    "Diese Datenschutzerklärung erläutert, wie wir deine personenbezogenen Daten erheben, verwenden und schützen, wenn du diese Website nutzt. Sie ist ein aus der Site-Konfiguration generierter Ausgangspunkt und muss vor der Veröffentlichung durch qualifizierte Rechtsberatung geprüft werden.",
+  PRIVACY_CONTROLLER_HEADING: "Verantwortlicher",
+  PRIVACY_CONTROLLER_INTRO:
+    "Die für die Verarbeitung deiner personenbezogenen Daten verantwortliche Stelle (Verantwortlicher im Sinne der DSGVO) ist:",
+  PRIVACY_CONTACT_INTRO:
+    "Bei Fragen zu deinen personenbezogenen Daten oder zur Ausübung deiner Rechte wende dich an unser Datenschutzteam:",
+  PRIVACY_DATA_HEADING: "Von uns verarbeitete Daten",
+  PRIVACY_DATA_AUTH_HEADING: "Konto- und Authentifizierungsdaten",
+  PRIVACY_DATA_AUTH_BODY:
+    "Bei der Registrierung oder Anmeldung verarbeiten wir deine E-Mail-Adresse, ein gehashtes Passwort und deine bevorzugte Sprache. Diese Daten sind erforderlich, um dein Konto bereitzustellen und zu sichern. Rechtsgrundlage: Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO).",
+  PRIVACY_DATA_COOKIES_HEADING: "Technisch notwendige Cookies",
+  PRIVACY_DATA_COOKIES_BODY:
+    "Wir verwenden technisch notwendige Cookies und Browser-Speicher, um dich eingeloggt zu halten (Authentifizierungssitzung), deine Sprachpräferenz zu merken (Locale-Cookie) und deine Cookie-Einwilligungsentscheidung zu speichern. Diese sind für den Betrieb der Website unerlässlich und bedürfen keiner gesonderten Einwilligung.",
+  PRIVACY_ANALYTICS_HEADING: "Analyse",
+  PRIVACY_ANALYTICS_BODY:
+    "Diese Website verwendet Analyse-Tools, um zu verstehen, wie Besucher den Dienst nutzen. Analyse-Skripte werden nur nach deiner Einwilligung über das Cookie-Banner geladen. Du kannst deine Einwilligung jederzeit widerrufen, indem du den Link zur Datenschutzerklärung im Footer anklickst und die Option zum Zurücksetzen der Einwilligung verwendest. Rechtsgrundlage: Einwilligung (Art. 6 Abs. 1 lit. a DSGVO).",
+  PRIVACY_ANALYTICS_GA_LABEL: "Google Analytics 4 (Google LLC)",
+  PRIVACY_ANALYTICS_POSTHOG_LABEL: "PostHog (PostHog Inc.)",
+  PRIVACY_ANALYTICS_PROVIDERS_INTRO:
+    "Auf dieser Website sind folgende Analyse-Anbieter konfiguriert:",
+  PRIVACY_CONSENT_HEADING: "Cookie-Einwilligung und Widerruf",
+  PRIVACY_CONSENT_BODY:
+    "Beim ersten Besuch fragt ein Cookie-Banner nach deiner Einwilligung zu Analyse-Cookies. Du kannst akzeptieren oder ablehnen. Deine Entscheidung wird im Browser gespeichert. Um deine Wahl zu ändern oder die Einwilligung zu widerrufen, lösche den Eintrag mit dem Schlüssel",
+  PRIVACY_CONSENT_BODY_AFTER_KEY: "aus dem lokalen Speicher deines Browsers.",
+  PRIVACY_RIGHTS_HEADING: "Deine Rechte",
+  PRIVACY_RIGHTS_INTRO:
+    "Gemäß DSGVO hast du folgende Rechte bezüglich deiner personenbezogenen Daten:",
+  PRIVACY_RIGHTS_ACCESS: "Auskunftsrecht (Art. 15 DSGVO)",
+  PRIVACY_RIGHTS_RECTIFICATION: "Recht auf Berichtigung (Art. 16 DSGVO)",
+  PRIVACY_RIGHTS_ERASURE: "Recht auf Löschung (Art. 17 DSGVO)",
+  PRIVACY_RIGHTS_PORTABILITY: "Recht auf Datenübertragbarkeit (Art. 20 DSGVO)",
+  PRIVACY_RIGHTS_COMPLAINT:
+    "Recht auf Beschwerde bei einer Aufsichtsbehörde (Art. 77 DSGVO)",
+  PRIVACY_RIGHTS_OUTRO:
+    "Zur Ausübung deiner Rechte wende dich an die oben genannte Datenschutzadresse.",
+
   // ── Pagination ────────────────────────────────────────────────────────────
   PAGINATION_ITEMS_PER_PAGE: "Einträge pro Seite:",
   PAGINATION_NO_RESULTS: "0 Ergebnisse",

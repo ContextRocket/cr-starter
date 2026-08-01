@@ -151,6 +151,47 @@ export const es = {
   PRIVACY_PLACEHOLDER:
     "Esta es una política de privacidad provisional. Reemplaza esta página con tu declaración de privacidad completa y conforme a la ley antes de publicar el sitio.",
 
+  // ── Política de privacidad (secciones generadas) ──────────────────────────
+  PRIVACY_GENERATED_NOTICE:
+    "Generada desde site.config. Revísala con asesoría legal antes de publicar.",
+  PRIVACY_INTRO:
+    "Esta política de privacidad explica cómo recopilamos, usamos y protegemos tus datos personales cuando utilizas este sitio web. Es un punto de partida generado a partir de la configuración del sitio y debe ser revisado por asesoría legal cualificada antes de publicar el sitio.",
+  PRIVACY_CONTROLLER_HEADING: "Responsable del tratamiento",
+  PRIVACY_CONTROLLER_INTRO:
+    "La entidad responsable del tratamiento de tus datos personales (el responsable en el sentido del RGPD) es:",
+  PRIVACY_CONTACT_INTRO:
+    "Para preguntas sobre tus datos personales o para ejercer tus derechos, contacta con nuestro equipo de privacidad:",
+  PRIVACY_DATA_HEADING: "Datos que tratamos",
+  PRIVACY_DATA_AUTH_HEADING: "Datos de cuenta y autenticación",
+  PRIVACY_DATA_AUTH_BODY:
+    "Cuando te registras o inicias sesión, tratamos tu dirección de correo electrónico, una contraseña cifrada y tu idioma preferido. Estos datos son necesarios para proporcionar y proteger tu cuenta. Base legal: ejecución de un contrato (art. 6.1.b RGPD).",
+  PRIVACY_DATA_COOKIES_HEADING: "Cookies estrictamente necesarias",
+  PRIVACY_DATA_COOKIES_BODY:
+    "Utilizamos cookies y almacenamiento del navegador técnicamente necesarios para mantenerte conectado (sesión de autenticación), recordar tu preferencia de idioma (cookie de configuración regional) y guardar tu elección de consentimiento de cookies. Estas son imprescindibles para el funcionamiento del sitio y no requieren tu consentimiento.",
+  PRIVACY_ANALYTICS_HEADING: "Analítica",
+  PRIVACY_ANALYTICS_BODY:
+    "Este sitio utiliza analítica para comprender cómo los visitantes interactúan con el servicio. Los scripts de analítica solo se cargan una vez que otorgas tu consentimiento a través del banner de cookies. Puedes retirar tu consentimiento en cualquier momento haciendo clic en el enlace de política de privacidad del pie de página y usando la opción de restablecer el consentimiento. Base legal: consentimiento (art. 6.1.a RGPD).",
+  PRIVACY_ANALYTICS_GA_LABEL: "Google Analytics 4 (Google LLC)",
+  PRIVACY_ANALYTICS_POSTHOG_LABEL: "PostHog (PostHog Inc.)",
+  PRIVACY_ANALYTICS_PROVIDERS_INTRO:
+    "Los siguientes proveedores de analítica están configurados en este sitio:",
+  PRIVACY_CONSENT_HEADING: "Consentimiento de cookies y revocación",
+  PRIVACY_CONSENT_BODY:
+    "En tu primera visita, un banner de cookies solicita tu consentimiento para las cookies analíticas. Puedes aceptar o rechazar. Tu elección se almacena en tu navegador. Para cambiar tu elección o retirar el consentimiento, borra el valor almacenado bajo la clave",
+  PRIVACY_CONSENT_BODY_AFTER_KEY: "en el almacenamiento local de tu navegador.",
+  PRIVACY_RIGHTS_HEADING: "Tus derechos",
+  PRIVACY_RIGHTS_INTRO:
+    "En virtud del RGPD tienes los siguientes derechos sobre tus datos personales:",
+  PRIVACY_RIGHTS_ACCESS: "Derecho de acceso (art. 15 RGPD)",
+  PRIVACY_RIGHTS_RECTIFICATION: "Derecho de rectificación (art. 16 RGPD)",
+  PRIVACY_RIGHTS_ERASURE: "Derecho de supresión (art. 17 RGPD)",
+  PRIVACY_RIGHTS_PORTABILITY:
+    "Derecho a la portabilidad de datos (art. 20 RGPD)",
+  PRIVACY_RIGHTS_COMPLAINT:
+    "Derecho a presentar una reclamación ante una autoridad de control (art. 77 RGPD)",
+  PRIVACY_RIGHTS_OUTRO:
+    "Para ejercer tus derechos, contacta con la dirección de privacidad indicada más arriba.",
+
   // ── Pagination ────────────────────────────────────────────────────────────
   PAGINATION_ITEMS_PER_PAGE: "Elementos por página:",
   PAGINATION_NO_RESULTS: "0 resultados",

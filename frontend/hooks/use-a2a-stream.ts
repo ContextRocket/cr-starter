@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import {
   streamTask,
   buildTextTurnParams,
@@ -172,6 +172,19 @@ export function useA2AStream(
   const abortRef = useRef<AbortController | null>(null);
   const slowTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const verySlowTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Guards state updates from a stream that outlives the component: on
+  // unmount the in-flight turn is aborted and late setState calls are dropped.
+  const mountedRef = useRef(true);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      abortRef.current?.abort();
+      if (slowTimerRef.current) clearTimeout(slowTimerRef.current);
+      if (verySlowTimerRef.current) clearTimeout(verySlowTimerRef.current);
+    };
+  }, []);
 
   const clearTimers = useCallback(() => {
     if (slowTimerRef.current) clearTimeout(slowTimerRef.current);
@@ -293,6 +306,7 @@ export function useA2AStream(
             setPhase("completed");
           }
         } catch (err) {
+          if (!mountedRef.current) return;
           if (controller.signal.aborted) {
             setPhase("idle");
           } else {
@@ -303,12 +317,15 @@ export function useA2AStream(
             setMessages((prev) => prev.filter((m) => m.id !== assistantMsgId));
           }
         } finally {
-          resetLatencyFlags();
-          setStreamingText("");
+          if (mountedRef.current) {
+            resetLatencyFlags();
+            setStreamingText("");
+          }
         }
       }
 
       function processEvent(event: A2AEvent) {
+        if (!mountedRef.current) return;
         if (event.type === "TaskStatusUpdateEvent") {
           const state = event.status.state;
 

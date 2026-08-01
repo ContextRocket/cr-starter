@@ -141,10 +141,15 @@ source of truth.
 
 `/impressum` and `/privacy` are required for EU/DE commercial sites.
 
-- Impressum data comes from `siteConfig.legal.*`. Replace every placeholder
-  field before going live.
-- Privacy policy (`frontend/app/privacy/page.tsx`) contains a placeholder.
-  Replace it with your jurisdiction-appropriate statement.
+- **Impressum:** all field values come from `siteConfig.legal.*`. Fill in
+  entity, address, register, vat, and representedBy -- the page renders
+  automatically. Consult your legal advisor to confirm compliance.
+- **Privacy policy:** auto-generated from `siteConfig.legal` and the actual
+  app behaviour (auth/cookie data always; analytics sections appear only when
+  `NEXT_PUBLIC_GA_MEASUREMENT_ID` or `NEXT_PUBLIC_POSTHOG_KEY` are set).
+  Fill in `site.config.legal`, set your analytics keys, then review the
+  generated page with qualified legal counsel before going live. Do not
+  hand-edit the page file; configure `site.config.ts` instead.
 
 ---
 

@@ -150,6 +150,46 @@ export const en = {
   PRIVACY_PLACEHOLDER:
     "This is a placeholder privacy policy. Replace this page with your complete, legally compliant privacy statement before going live.",
 
+  // ── Privacy policy (generated sections) ──────────────────────────────────
+  PRIVACY_GENERATED_NOTICE:
+    "Generated from site.config. Review with legal counsel before launch.",
+  PRIVACY_INTRO:
+    "This privacy policy explains how we collect, use, and protect your personal data when you use this website. It is a starting point generated from the site configuration and must be reviewed by qualified legal counsel before this site goes live.",
+  PRIVACY_CONTROLLER_HEADING: "Data Controller",
+  PRIVACY_CONTROLLER_INTRO:
+    "The entity responsible for processing your personal data (the data controller within the meaning of the GDPR) is:",
+  PRIVACY_CONTACT_INTRO:
+    "For questions about your personal data or to exercise your rights, contact our privacy team:",
+  PRIVACY_DATA_HEADING: "Data We Process",
+  PRIVACY_DATA_AUTH_HEADING: "Account and Authentication Data",
+  PRIVACY_DATA_AUTH_BODY:
+    "When you register or log in, we process your email address, a hashed password, and your preferred language. This data is necessary to provide and secure your account. Legal basis: performance of a contract (Art. 6(1)(b) GDPR).",
+  PRIVACY_DATA_COOKIES_HEADING: "Strictly Necessary Cookies",
+  PRIVACY_DATA_COOKIES_BODY:
+    "We use technically necessary cookies and browser storage to keep you logged in (authentication session), remember your language preference (locale cookie), and store your cookie consent choice. These are essential for the site to function and do not require your consent.",
+  PRIVACY_ANALYTICS_HEADING: "Analytics",
+  PRIVACY_ANALYTICS_BODY:
+    "This site uses analytics to understand how visitors interact with the service. Analytics scripts load only after you grant consent via the cookie banner. You can withdraw consent at any time by clicking the privacy policy link in the footer and using the consent reset option. Legal basis: consent (Art. 6(1)(a) GDPR).",
+  PRIVACY_ANALYTICS_GA_LABEL: "Google Analytics 4 (Google LLC)",
+  PRIVACY_ANALYTICS_POSTHOG_LABEL: "PostHog (PostHog Inc.)",
+  PRIVACY_ANALYTICS_PROVIDERS_INTRO:
+    "The following analytics providers are configured on this site:",
+  PRIVACY_CONSENT_HEADING: "Cookie Consent and Withdrawal",
+  PRIVACY_CONSENT_BODY:
+    "When you first visit, a cookie banner asks for your consent to analytics cookies. You can accept or decline. Your choice is stored in your browser. To change your choice or withdraw consent, clear the consent setting stored under the key",
+  PRIVACY_CONSENT_BODY_AFTER_KEY: "in your browser's local storage.",
+  PRIVACY_RIGHTS_HEADING: "Your Rights",
+  PRIVACY_RIGHTS_INTRO:
+    "Under the GDPR you have the following rights regarding your personal data:",
+  PRIVACY_RIGHTS_ACCESS: "Right of access (Art. 15 GDPR)",
+  PRIVACY_RIGHTS_RECTIFICATION: "Right to rectification (Art. 16 GDPR)",
+  PRIVACY_RIGHTS_ERASURE: "Right to erasure (Art. 17 GDPR)",
+  PRIVACY_RIGHTS_PORTABILITY: "Right to data portability (Art. 20 GDPR)",
+  PRIVACY_RIGHTS_COMPLAINT:
+    "Right to lodge a complaint with a supervisory authority (Art. 77 GDPR)",
+  PRIVACY_RIGHTS_OUTRO:
+    "To exercise your rights, contact the privacy address above.",
+
   // ── Pagination ────────────────────────────────────────────────────────────
   PAGINATION_ITEMS_PER_PAGE: "Items per page:",
   PAGINATION_NO_RESULTS: "0 results",

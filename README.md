@@ -22,11 +22,14 @@ After forking, do these steps before making the site public:
   `favicon-16x16.png`, `favicon-32x32.png`, `apple-icon-180x180.png`,
   `icon-192.png`, `icon-512.png`, `icon-192-maskable.png`,
   `icon-512-maskable.png` with your own brand assets.
-- [ ] **`/impressum`** -- the Impressum page is legally required for
-  DE/EU commercial sites. Verify `site.config.legal` fields are accurate
-  and consult your legal advisor.
-- [ ] **`/privacy`** -- replace the placeholder privacy policy page with
-  a complete, jurisdiction-appropriate privacy statement.
+- [ ] **`/impressum`** -- legally required for DE/EU commercial sites.
+  Fill in all `site.config.legal` fields (entity, address, register, vat,
+  representedBy), then review the generated page with your legal advisor.
+- [ ] **`/privacy`** -- auto-generated from `site.config.legal` and the
+  actual app behaviour (auth data, cookies, analytics when keys are set).
+  Fill in `site.config.legal`, then review the generated page with your
+  legal advisor before going live. Set analytics env keys first so the
+  correct providers appear in the policy.
 - [ ] **`.beads/config.yaml`** -- change `issue-prefix` to your product
   name (e.g. `ACME`).
 - [ ] **`frontend/.env.local`** -- set `NEXT_PUBLIC_CR_AGENT_URL` to your
