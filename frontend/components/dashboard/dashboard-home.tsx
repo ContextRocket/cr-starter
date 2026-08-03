@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { MessageSquare, User, Users } from "lucide-react";
 
 import { t } from "@/i18n/keys";

@@ -1,5 +1,5 @@
 /**
- * Tests for app/faq/page.tsx
+ * Tests for app/[locale]/faq/page.tsx
  *
  * Covers:
  *   - Page renders FAQ entries with question text
@@ -10,8 +10,8 @@
  *
  * Per CR test doctrine:
  *   - Assert testids/behavior + that i18n resolves, never literal copy values.
- *   - The FAQ page is a Server Component that calls fileFaqAdapter.list() at
- *     module load time. We mock the adapter to keep tests hermetic.
+ *   - The FAQ page is a Server Component that calls fileFaqAdapter.list() per
+ *     request (URL locale). We mock the adapter to keep tests hermetic.
  */
 
 import { render } from "@testing-library/react";
@@ -55,19 +55,24 @@ jest.mock("../../lib/faq", () => ({
 }));
 
 // Import after mocking to ensure the page picks up the fake adapter.
-import FaqPage from "@/app/faq/page";
+import FaqPage from "@/app/[locale]/faq/page";
+
+/** Render the FAQ page for a given URL locale (defaults to en). */
+async function renderFaq(locale = "en") {
+  return FaqPage({ params: Promise.resolve({ locale }) });
+}
 
 describe("FAQ Page", () => {
-  it("renders a single h1 with the FAQ page title", () => {
-    render(<FaqPage />);
+  it("renders a single h1 with the FAQ page title", async () => {
+    render(await renderFaq());
     const headings = screen.getAllByRole("heading", { level: 1 });
     expect(headings).toHaveLength(1);
     // Assert the heading resolves to a non-empty string (i18n key resolved).
     expect(headings[0].textContent).toBeTruthy();
   });
 
-  it("renders all FAQ entries as definition term elements", () => {
-    render(<FaqPage />);
+  it("renders all FAQ entries as definition term elements", async () => {
+    render(await renderFaq());
     // Each question is a <dt> with the question text as a link.
     const list = screen.getByTestId("faq-list");
     expect(list).toBeInTheDocument();
@@ -78,8 +83,8 @@ describe("FAQ Page", () => {
     expect(screen.getByText("Where do answers come from?")).toBeInTheDocument();
   });
 
-  it("each entry has an anchor id matching its slug", () => {
-    const { container } = render(<FaqPage />);
+  it("each entry has an anchor id matching its slug", async () => {
+    const { container } = render(await renderFaq());
     const entries = container.querySelectorAll("[data-testid^='faq-entry-']");
     expect(entries.length).toBe(3);
 
@@ -89,14 +94,14 @@ describe("FAQ Page", () => {
     expect(ids).toContain("where-do-answers-come-from");
   });
 
-  it("renders answer content for each entry", () => {
-    render(<FaqPage />);
+  it("renders answer content for each entry", async () => {
+    render(await renderFaq());
     // Verify answer text appears in the document.
     expect(screen.getByText(/This is a starter template/i)).toBeInTheDocument();
   });
 
-  it("emits FAQPage JSON-LD with the correct number of mainEntity items", () => {
-    const { container } = render(<FaqPage />);
+  it("emits FAQPage JSON-LD with the correct number of mainEntity items", async () => {
+    const { container } = render(await renderFaq());
     const scripts = container.querySelectorAll(
       'script[type="application/ld+json"]',
     );
@@ -120,8 +125,8 @@ describe("FAQ Page", () => {
     expect(faqNode!.mainEntity!).toHaveLength(3);
   });
 
-  it("JSON-LD mainEntity items are of type Question", () => {
-    const { container } = render(<FaqPage />);
+  it("JSON-LD mainEntity items are of type Question", async () => {
+    const { container } = render(await renderFaq());
     const scripts = container.querySelectorAll(
       'script[type="application/ld+json"]',
     );
@@ -144,15 +149,16 @@ describe("FAQ Page", () => {
     }
   });
 
-  it("renders a link back to the home page", () => {
-    render(<FaqPage />);
+  it("renders a link back to the home page", async () => {
+    render(await renderFaq());
     const backLink = screen.getByRole("link", { name: /back to home/i });
     expect(backLink).toBeInTheDocument();
+    // The navigation stub renders Link hrefs as given (locale-stripped).
     expect(backLink).toHaveAttribute("href", "/");
   });
 
-  it("i18n keys resolve: page title and description are non-empty strings", () => {
-    render(<FaqPage />);
+  it("i18n keys resolve: page title and description are non-empty strings", async () => {
+    render(await renderFaq());
     const main = screen.getByTestId("faq-page");
     // The title and description come from i18n keys; assert they render as non-empty.
     expect(main.textContent).toBeTruthy();

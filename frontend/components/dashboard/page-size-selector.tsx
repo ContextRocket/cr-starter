@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { t } from "@/i18n/keys";
 
 interface PageSizeSelectorProps {

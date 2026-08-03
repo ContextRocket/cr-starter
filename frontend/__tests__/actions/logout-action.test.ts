@@ -1,7 +1,7 @@
 import { logout } from "@/components/actions/logout-action";
 import { authJwtLogout } from "@/app/clientService";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { redirect } from "@/i18n/redirect";
 
 jest.mock("../../app/clientService", () => ({
   authJwtLogout: jest.fn(),
@@ -15,7 +15,7 @@ jest.mock("next/headers", () => {
   };
 });
 
-jest.mock("next/navigation", () => ({
+jest.mock("../../i18n/redirect", () => ({
   redirect: jest.fn(),
 }));
 

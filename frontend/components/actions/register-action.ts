@@ -1,6 +1,6 @@
 "use server";
 
-import { redirect } from "next/navigation";
+import { redirect } from "@/i18n/redirect";
 import { cookies } from "next/headers";
 
 import { registerRegister, authJwtLogin } from "@/app/clientService";
@@ -72,5 +72,5 @@ export async function register(prevState: unknown, formData: FormData) {
     sameSite: "lax",
     path: "/",
   });
-  redirect("/dashboard");
+  return await redirect("/dashboard");
 }

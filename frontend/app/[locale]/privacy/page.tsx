@@ -15,16 +15,27 @@
  * mirroring the gating logic in lib/analytics.ts.
  */
 
-import { t } from "@/i18n/keys";
+import { setLocale, t } from "@/i18n/keys";
 import { siteConfig } from "@/site.config";
+import { resolveLocale } from "@/i18n/messages";
 import { CONSENT_STORAGE_KEY } from "@/lib/analytics";
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
-export const metadata: Metadata = {
-  title: t("PRIVACY_TITLE"),
-  robots: { index: true, follow: true },
-};
+interface PrivacyPageProps {
+  params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: PrivacyPageProps): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  setLocale(resolveLocale(rawLocale));
+  return {
+    title: t("PRIVACY_TITLE"),
+    robots: { index: true, follow: true },
+  };
+}
 
 /** True when Google Analytics 4 is configured (mirrors analytics.ts gaKey()). */
 const gaEnabled = Boolean(process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID);
@@ -35,7 +46,9 @@ const posthogEnabled = Boolean(process.env.NEXT_PUBLIC_POSTHOG_KEY);
 /** True when at least one analytics provider is configured. */
 const analyticsEnabled = gaEnabled || posthogEnabled;
 
-export default function PrivacyPage() {
+export default async function PrivacyPage({ params }: PrivacyPageProps) {
+  const { locale: rawLocale } = await params;
+  setLocale(resolveLocale(rawLocale));
   const legal = siteConfig.legal;
   const isPlaceholder =
     legal.entity.includes("PLACEHOLDER") ||

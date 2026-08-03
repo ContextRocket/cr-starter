@@ -4,19 +4,7 @@ import "@testing-library/jest-dom";
 
 import { PageSizeSelector } from "@/components/dashboard/page-size-selector";
 
-const mockPush = jest.fn();
-
-jest.mock("next/navigation", () => ({
-  useRouter: () => ({
-    push: mockPush,
-  }),
-}));
-
 describe("PageSizeSelector", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
   it("renders with the current size displayed", () => {
     render(<PageSizeSelector currentSize={10} />);
 

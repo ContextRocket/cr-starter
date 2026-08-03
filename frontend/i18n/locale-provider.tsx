@@ -1,24 +1,21 @@
 "use client";
 
 /**
- * LocaleProvider -- cookie-persisted locale context for the cr-starter.
+ * LocaleProvider - URL-segment locale context for the cr-starter.
  *
- * Adapted from context-rocket/frontend/i18n/locale-provider.tsx.
+ * Adopted from context-rocket/frontend/i18n/locale-provider.tsx (the exact
+ * pattern the starter follows: language code lives in the URL, /en /es /de).
  *
- * This implementation uses a cookie (NEXT_LOCALE) + React context to track
- * the active locale WITHOUT URL segments. The active locale is read on mount
- * from the cookie, and persisted back on change.
+ * The active locale comes from the `[locale]` route segment (passed in as
+ * `initialLocale` by the [locale] layout). Switching locale navigates to the
+ * same page under the new prefix via next-intl's router - no cookie needed.
  *
- * UPGRADE PATH: for full SEO/hreflang support, consider switching to
- * Next.js [locale] URL-segment routing. The message files and LocaleProvider
- * contract are compatible with that upgrade; the main change is reading the
- * locale from the URL param rather than a cookie, and using next-intl or
- * similar. Until then, the cookie approach gives a working multi-locale UI
- * without restructuring the route tree.
+ * A NEXT_LOCALE cookie is still written on change so the root locale
+ * detector (app/page.tsx) can redirect first-time visitors to their last
+ * chosen language instead of the site default.
  *
- * html lang: updated on the client by this provider after hydration.
- * The <html lang> attribute in app/layout.tsx reflects siteConfig.defaultLocale
- * at SSR time. This is a known limitation of the cookie/provider approach.
+ * html lang: set by the [locale] layout from the URL segment, and kept in
+ * sync here on the client after a locale switch.
  */
 
 import {
@@ -26,11 +23,11 @@ import {
   useContext,
   useState,
   useCallback,
-  useEffect,
   type ReactNode,
 } from "react";
+import { usePathname, useRouter } from "@/i18n/navigation";
 import { setLocale, registerLocaleMessages } from "./keys";
-import { resolveLocale, type SupportedLocale } from "./messages";
+import type { SupportedLocale } from "./messages";
 
 /**
  * Explicit per-locale lazy loaders.
@@ -56,13 +53,6 @@ interface LocaleContextValue {
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
 
-/** Read the NEXT_LOCALE cookie (browser-safe). */
-function readLocaleCookie(): SupportedLocale {
-  if (typeof document === "undefined") return "en";
-  const match = document.cookie.match(/(?:^|;\s*)NEXT_LOCALE=([^;]+)/);
-  return resolveLocale(match?.[1]);
-}
-
 /** Persist the locale to a cookie (1-year expiry, lax same-site). */
 function writeLocaleCookie(locale: SupportedLocale) {
   document.cookie = `NEXT_LOCALE=${locale};path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`;
@@ -70,36 +60,35 @@ function writeLocaleCookie(locale: SupportedLocale) {
 
 export function LocaleProvider({
   initialLocale,
+  messages,
   children,
 }: {
-  /**
-   * The locale to initialise with. Pass siteConfig.defaultLocale from the
-   * root server layout; the provider will override this on mount if a
-   * NEXT_LOCALE cookie is present.
-   */
   initialLocale: SupportedLocale;
+  /**
+   * The active non-en locale's message tree, serialised into the RSC payload
+   * by the [locale] layout via `getServerLocaleTree(locale)`. Pass `null`
+   * (or omit) when the active locale is `en` - it is always bundled.
+   */
+  messages?: Record<string, unknown> | null;
   children: ReactNode;
 }) {
+  const router = useRouter();
+  const pathname = usePathname();
   const [locale, setLocaleState] = useState<SupportedLocale>(initialLocale);
 
-  // On mount: read the persisted cookie and switch to it if different.
-  // This runs client-side only, avoiding SSR/hydration mismatch.
-  // The empty dependency array is intentional: we only want this to run once
-  // on mount (reading the cookie), not on every locale change.
-  useEffect(() => {
-    const persisted = readLocaleCookie();
-    if (persisted !== locale) {
-      void ensureRegistered(persisted).then(() => {
-        setLocaleState(persisted);
-        setLocale(persisted);
-        document.documentElement.lang = persisted;
-      });
-    }
-    // The empty dep array is intentional: mount-once cookie read.
-    // Adding `locale` would cause a loop (locale changes -> effect runs -> locale changes).
-  }, []); // mount-once
+  // Register the injected non-en messages BEFORE calling setLocale so that
+  // the very first render (including hydration) resolves strings correctly.
+  // Order matters: register -> setLocale -> children render.
+  if (
+    messages &&
+    initialLocale !== "en" &&
+    !_clientRegistered.has(initialLocale)
+  ) {
+    registerLocaleMessages(initialLocale, messages);
+    _clientRegistered.add(initialLocale);
+  }
 
-  // Keep i18n module state and <html lang> in sync.
+  // Keep i18n module state and <html lang> in sync with current client locale.
   setLocale(locale);
   if (typeof document !== "undefined") {
     document.documentElement.lang = locale;
@@ -109,16 +98,60 @@ export function LocaleProvider({
     (newLocale: SupportedLocale) => {
       if (newLocale === locale) return;
 
-      void ensureRegistered(newLocale).then(() => {
+      const doSwitch = () => {
         writeLocaleCookie(newLocale);
         setLocaleState(newLocale);
         setLocale(newLocale);
         if (typeof document !== "undefined") {
           document.documentElement.lang = newLocale;
         }
-      });
+
+        // usePathname from @/i18n/navigation returns the locale-stripped path
+        // (e.g. "/privacy", not "/es/privacy"). Pass { locale } so next-intl
+        // prefixes the new locale - do not hand-rewrite /es -> /en.
+        router.replace(pathname || "/", { locale: newLocale });
+      };
+
+      if (newLocale === "en" || _clientRegistered.has(newLocale)) {
+        // en is always bundled; already-registered locales need no import.
+        doSwitch();
+        return;
+      }
+
+      // Lazy-load the target locale's tree via its explicit loader (emits a
+      // per-locale chunk; never a directory context - see CLIENT_LOCALE_LOADERS).
+      const loadLocale = CLIENT_LOCALE_LOADERS[newLocale];
+      if (!loadLocale) {
+        // No loader (unexpected locale) - do not switch to an unloaded locale.
+        console.error(
+          `[i18n] changeLocale: no loader registered for "${newLocale}"`,
+        );
+        return;
+      }
+      loadLocale()
+        .then((mod: Record<string, unknown>) => {
+          const tree = mod[newLocale] as Record<string, unknown> | undefined;
+          if (!tree) {
+            // Malformed module - do not switch to an unloaded locale.
+            console.error(
+              `[i18n] changeLocale: module for "${newLocale}" did not export expected key`,
+            );
+            return;
+          }
+          registerLocaleMessages(newLocale, tree);
+          _clientRegistered.add(newLocale);
+          doSwitch();
+        })
+        .catch((err: unknown) => {
+          // Network or parse failure - stay on the current locale. Never
+          // switch to a locale whose tree isn't loaded (raw keys would leak).
+          console.error(
+            `[i18n] changeLocale: failed to load messages for "${newLocale}"`,
+            err,
+          );
+        });
     },
-    [locale],
+    [locale, pathname, router],
   );
 
   return (
@@ -126,35 +159,6 @@ export function LocaleProvider({
       {children}
     </LocaleContext.Provider>
   );
-}
-
-/**
- * Ensure the locale's message tree is loaded and registered.
- * `en` is always bundled. Non-en locales are loaded on first use.
- */
-async function ensureRegistered(locale: SupportedLocale): Promise<void> {
-  if (locale === "en" || _clientRegistered.has(locale)) return;
-
-  const loader = CLIENT_LOCALE_LOADERS[locale];
-  if (!loader) {
-    console.error(`[i18n] No loader registered for locale "${locale}"`);
-    return;
-  }
-
-  try {
-    const mod = await loader();
-    const tree = mod[locale] as Record<string, unknown> | undefined;
-    if (!tree) {
-      console.error(
-        `[i18n] Locale module for "${locale}" did not export expected key`,
-      );
-      return;
-    }
-    registerLocaleMessages(locale, tree);
-    _clientRegistered.add(locale);
-  } catch (err) {
-    console.error(`[i18n] Failed to load messages for "${locale}"`, err);
-  }
 }
 
 export function useLocale(): LocaleContextValue {

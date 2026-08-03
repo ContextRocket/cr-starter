@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 
 import { authJwtLogin } from "@/app/clientService";
-import { redirect } from "next/navigation";
+import { redirect } from "@/i18n/redirect";
 import { loginSchema } from "@/lib/definitions";
 import { getErrorMessage } from "@/lib/utils";
 import { t } from "@/i18n/keys";
@@ -53,5 +53,5 @@ export async function login(prevState: unknown, formData: FormData) {
       server_error: t("ERROR_UNEXPECTED"),
     };
   }
-  redirect("/dashboard");
+  return await redirect("/dashboard");
 }

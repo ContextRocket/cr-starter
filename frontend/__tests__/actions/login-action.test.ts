@@ -11,7 +11,7 @@ jest.mock("next/headers", () => {
   return { cookies: jest.fn().mockResolvedValue({ set: mockSet }) };
 });
 
-jest.mock("next/navigation", () => ({
+jest.mock("../../i18n/redirect", () => ({
   redirect: jest.fn(),
 }));
 

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Bot } from "lucide-react";
 
 import { DashboardBreadcrumb } from "@/components/dashboard/dashboard-breadcrumb";

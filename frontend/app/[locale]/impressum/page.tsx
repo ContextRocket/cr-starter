@@ -13,17 +13,30 @@
  * All field values are read from site.config.legal -- edit only that file.
  */
 
-import { t } from "@/i18n/keys";
+import { setLocale, t } from "@/i18n/keys";
 import { siteConfig } from "@/site.config";
+import { resolveLocale } from "@/i18n/messages";
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
-export const metadata: Metadata = {
-  title: t("IMPRESSUM_TITLE"),
-  robots: { index: true, follow: true },
-};
+interface ImpressumPageProps {
+  params: Promise<{ locale: string }>;
+}
 
-export default function ImpressumPage() {
+export async function generateMetadata({
+  params,
+}: ImpressumPageProps): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  setLocale(resolveLocale(rawLocale));
+  return {
+    title: t("IMPRESSUM_TITLE"),
+    robots: { index: true, follow: true },
+  };
+}
+
+export default async function ImpressumPage({ params }: ImpressumPageProps) {
+  const { locale: rawLocale } = await params;
+  setLocale(resolveLocale(rawLocale));
   const legal = siteConfig.legal;
 
   return (

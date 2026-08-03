@@ -2,7 +2,7 @@ import { render } from "@testing-library/react";
 import { screen, fireEvent, waitFor } from "@testing-library/dom";
 import "@testing-library/jest-dom";
 
-import Page from "@/app/auth/reset-password/page";
+import Page from "@/app/[locale]/auth/reset-password/page";
 import { passwordResetConfirm } from "@/components/actions/password-reset-action";
 import { useSearchParams, notFound } from "next/navigation";
 

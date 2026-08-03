@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { authJwtLogout } from "@/app/clientService";
-import { redirect } from "next/navigation";
+import { redirect } from "@/i18n/redirect";
 
 export async function logout() {
   const cookieStore = await cookies();
@@ -23,5 +23,5 @@ export async function logout() {
   }
 
   cookieStore.delete("accessToken");
-  redirect(`/auth/login`);
+  return await redirect("/auth/login");
 }
