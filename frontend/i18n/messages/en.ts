@@ -153,6 +153,14 @@ export const en = {
     "Answers to common questions about this site, the chat agent, data handling, and customization.",
   FAQ_BACK_HOME: "Back to home",
 
+  // ── Blog ────────────────────────────────────────────────────────────────────
+  BLOG_TITLE: "Blog",
+  BLOG_DESCRIPTION: "Articles, guides, and updates.",
+  BLOG_EMPTY: "No posts yet. Check back soon.",
+  BLOG_BACK_HOME: "Back to home",
+  BLOG_BACK_TO_LIST: "All posts",
+  BLOG_NOT_FOUND: "Post not found",
+
   // ── Legal pages ───────────────────────────────────────────────────────────
   IMPRESSUM_TITLE: "Impressum",
   IMPRESSUM_LEGAL_NOTICE: "Legal Notice",

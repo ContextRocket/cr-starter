@@ -89,6 +89,9 @@ export default function Home() {
             <Link href="/faq" className="hover:underline">
               {t("FOOTER_FAQ")}
             </Link>
+            <Link href="/blog" className="hover:underline">
+              {t("BLOG_TITLE")}
+            </Link>
             <LocaleSwitcher />
           </footer>
         </div>
