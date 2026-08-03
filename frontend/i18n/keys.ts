@@ -6,7 +6,9 @@
  * HOW IT WORKS:
  *   - `en` messages are always bundled (never lazy) and serve as the fallback.
  *   - Non-en locales are registered at runtime:
- *       Server: via LocaleProvider reading the NEXT_LOCALE cookie.
+ *       Server: via `i18n/messages/register-server.ts` imported at the top of
+ *         `app/[locale]/layout.tsx`, then the request locale is set from the
+ *         URL segment (`setLocale(locale)` in the layout).
  *       Client: injected by LocaleProvider before hydration.
  *   - `t(key)` resolves the active locale first, then falls back to English,
  *     then throws if the key is completely missing (fail-fast, never silent).
@@ -17,19 +19,15 @@
  * live as flat properties on each message object (en/es/de). No dot-paths needed
  * for the starter's flat key space.
  *
- * html lang SERVER COMPONENT LIMITATION:
- *   The root <html lang> attribute is set at build time in app/layout.tsx as
- *   siteConfig.defaultLocale. The LocaleProvider updates document.documentElement.lang
- *   on the client after hydration so the live DOM stays in sync. Server-rendered
- *   HTML always reflects the default locale; this is a known trade-off of the
- *   cookie/provider approach (vs. the [locale] URL-segment approach).
- *
- *   UPGRADE PATH: to adopt URL-segment locale routing (recommended for full
- *   SEO/hreflang benefits), move to Next.js i18n routing with a [locale] dynamic
- *   segment. See: https://nextjs.org/docs/app/building-your-application/routing/internationalization
- *   The message files and this key layer are fully compatible with that approach.
+ * LOCALE RESOLUTION (context-rocket URL-segment pattern):
+ *   - Server components: the `[locale]` layout sets the request locale after
+ *     reading the URL segment. React.cache provides per-request isolation.
+ *   - Client components: module variable (set by LocaleProvider) plus
+ *     `document.documentElement.lang` fallback (set by the [locale] layout).
+ *   - The language code lives in the URL (/es, /en) - no cookie needed.
  */
 
+import { cache } from "react";
 import { en } from "./messages/en";
 import { resolveLocale, type SupportedLocale } from "./messages";
 
@@ -64,25 +62,32 @@ export type MessageKey = keyof typeof en;
 // Locale state
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Server-side: React.cache creates a per-request store, preventing race
+// conditions between concurrent requests. On the client, cache is a no-op
+// (returns a new object each call) so we use _clientLocale instead.
+const getRequestLocaleStore = cache((): { locale: SupportedLocale } => ({
+  locale: "en",
+}));
+
 // Client-side module variable -- safe because each browser tab is single-threaded.
 let _clientLocale: SupportedLocale | null = null;
 
-/** Set the active UI locale (called by LocaleProvider). */
+/** Set the active UI locale (called by LocaleProvider and the [locale] layout). */
 export function setLocale(locale: SupportedLocale): void {
-  _clientLocale = locale;
+  if (typeof window !== "undefined") {
+    _clientLocale = locale;
+  }
+  getRequestLocaleStore().locale = locale;
 }
 
 /** Resolve the current locale for the active environment. */
 export function getCurrentLocale(): SupportedLocale {
-  if (typeof window !== "undefined") {
-    if (_clientLocale) return _clientLocale;
-    // Fallback: read from cookie directly (SSR hydration edge case).
-    const match = document.cookie.match(/(?:^|;\s*)NEXT_LOCALE=([^;]+)/);
-    return resolveLocale(match?.[1]);
+  if (typeof window === "undefined") {
+    return getRequestLocaleStore().locale;
   }
-  // Server-side: always returns "en" in the starter (no per-request store).
-  // With [locale] routing this would read the route param instead.
-  return "en";
+  if (_clientLocale) return _clientLocale;
+  // Fallback: read <html lang> set by the [locale] layout (URL-derived).
+  return resolveLocale(document.documentElement.lang);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

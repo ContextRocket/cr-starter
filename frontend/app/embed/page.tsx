@@ -33,7 +33,9 @@
 
 import { parseWidgetConfig, isAllowedAgentUrl } from "@/lib/widget-config";
 import { ChatPanel } from "@/components/chat/chat-panel";
-import { t } from "@/i18n/keys";
+import { setLocale, t } from "@/i18n/keys";
+import type { SupportedLocale } from "@/i18n/messages";
+import { siteConfig } from "@/site.config";
 
 interface EmbedPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -46,6 +48,11 @@ interface EmbedPageProps {
  * passes the typed values to the client ChatPanel.
  */
 export default async function EmbedPage({ searchParams }: EmbedPageProps) {
+  // The embed sits OUTSIDE the [locale] tree (chromeless iframe, no URL
+  // segment). Pin the request locale to the site default so the widget
+  // renders in the primary market language rather than the en fallback.
+  setLocale(siteConfig.defaultLocale as SupportedLocale);
+
   const params = await searchParams;
 
   // Adapt the plain record to the .get() interface parseWidgetConfig expects.

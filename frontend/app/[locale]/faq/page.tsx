@@ -1,15 +1,10 @@
 /**
- * FAQ page -- /faq
+ * FAQ page -- /{locale}/faq
  *
- * Renders the curated FAQ for the default locale (en) at build time.
- * The page is statically generated from content/faq/en.md via the FAQ
- * seam (frontend/lib/faq.ts). Locale switching works the same way as
- * other pages: the LocaleProvider (cookie-based) updates UI copy via t()
- * after hydration, but the FAQ content is served in English by default.
- *
- * To serve FAQ content in the user's locale, extend the FAQ seam with a
- * client-side locale-aware loader or adopt Next.js [locale] URL-segment
- * routing. The content/faq/{locale}.md files are already in place.
+ * Renders the curated FAQ for the URL locale (content/faq/{locale}.md)
+ * via the FAQ seam (frontend/lib/faq.ts). The language code lives in the
+ * URL ([locale] URL-segment routing), so each locale serves its own
+ * content file. es/en/de files are all present.
  *
  * SEAM CONTRACT:
  *   One file -- content/faq/{locale}.md -- powers:
@@ -21,29 +16,42 @@
  */
 
 import type { Metadata } from "next";
-import Link from "next/link";
-import { t } from "@/i18n/keys";
-import { siteConfig } from "@/site.config";
+import { Link } from "@/i18n/navigation";
+import { setLocale, t } from "@/i18n/keys";
+import { resolveLocale } from "@/i18n/messages";
 import { fileFaqAdapter } from "@/lib/faq";
 import { buildFaqJsonLd } from "@/lib/structured-data";
 import { StructuredDataScripts } from "@/components/seo/structured-data-scripts";
 
-export const metadata: Metadata = {
-  title: t("FAQ_PAGE_TITLE"),
-  description: t("FAQ_PAGE_DESCRIPTION"),
-  robots: { index: true, follow: true },
-};
+interface FaqPageProps {
+  params: Promise<{ locale: string }>;
+}
 
-// Statically generated: load the default-locale FAQ at build time.
-// The fileFaqAdapter reads from content/faq/ on the server; parse errors
-// are thrown here and fail the build with a descriptive message.
-const defaultLocaleEntries = fileFaqAdapter.list(siteConfig.defaultLocale);
+export async function generateMetadata({
+  params,
+}: FaqPageProps): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale = resolveLocale(rawLocale);
+  setLocale(locale);
+  return {
+    title: t("FAQ_PAGE_TITLE"),
+    description: t("FAQ_PAGE_DESCRIPTION"),
+    robots: { index: true, follow: true },
+  };
+}
 
-export default function FaqPage() {
+export default async function FaqPage({ params }: FaqPageProps) {
+  const { locale: rawLocale } = await params;
+  const locale = resolveLocale(rawLocale);
+  setLocale(locale);
+  // Server-side: load the FAQ file for the URL locale. The file adapter
+  // reads from content/faq/ and parse errors fail the build.
+  const entries = fileFaqAdapter.list(locale);
+
   return (
     <>
       {/* FAQPage JSON-LD -- the primary structured-data signal for AEO readiness. */}
-      <StructuredDataScripts items={[buildFaqJsonLd(defaultLocaleEntries)]} />
+      <StructuredDataScripts items={[buildFaqJsonLd(entries)]} />
 
       <main
         className="min-h-screen bg-background text-foreground p-8 max-w-2xl mx-auto"
@@ -56,7 +64,7 @@ export default function FaqPage() {
 
         <section aria-label={t("FAQ_PAGE_TITLE")}>
           <dl className="space-y-10" data-testid="faq-list">
-            {defaultLocaleEntries.map((entry) => (
+            {entries.map((entry) => (
               <div
                 key={entry.slug}
                 id={entry.slug}

@@ -2,7 +2,7 @@ import { render } from "@testing-library/react";
 import { screen, fireEvent, waitFor } from "@testing-library/dom";
 import "@testing-library/jest-dom";
 
-import Page from "@/app/auth/register/page";
+import Page from "@/app/[locale]/auth/register/page";
 import { register } from "@/components/actions/register-action";
 
 jest.mock("../../components/actions/register-action", () => ({
@@ -133,16 +133,21 @@ describe("Register Page", () => {
       expect(emailInput).toHaveValue("bad@email.com");
       expect(passwordInput).toHaveValue("invalid_password");
     });
-    expect(screen.getByText("Invalid email address")).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "Password should contain at least one uppercase letter.",
-      ),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "Password should contain at least one special character.",
-      ),
-    ).toBeInTheDocument();
+    // Errors render only after React commits the resolved action state; the
+    // input values above are driven by fireEvent.change, so wait explicitly
+    // for the validation errors to appear (they are async relative to submit).
+    await waitFor(() => {
+      expect(screen.getByText("Invalid email address")).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "Password should contain at least one uppercase letter.",
+        ),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "Password should contain at least one special character.",
+        ),
+      ).toBeInTheDocument();
+    });
   });
 });

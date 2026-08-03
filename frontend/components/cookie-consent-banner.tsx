@@ -12,7 +12,7 @@
  */
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { readConsent, grantConsent, denyConsent } from "@/lib/analytics";
 import { t } from "@/i18n/keys";
 

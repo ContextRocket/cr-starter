@@ -1,8 +1,8 @@
 import { register } from "@/components/actions/register-action";
-import { redirect } from "next/navigation";
+import { redirect } from "@/i18n/redirect";
 import { registerRegister, authJwtLogin } from "@/app/clientService";
 
-jest.mock("next/navigation", () => ({
+jest.mock("../../i18n/redirect", () => ({
   redirect: jest.fn(),
 }));
 

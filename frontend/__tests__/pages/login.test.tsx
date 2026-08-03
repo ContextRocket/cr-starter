@@ -2,7 +2,7 @@ import { render } from "@testing-library/react";
 import { screen, fireEvent, waitFor } from "@testing-library/dom";
 import "@testing-library/jest-dom";
 
-import Page from "@/app/auth/login/page";
+import Page from "@/app/[locale]/auth/login/page";
 import { login } from "@/components/actions/login-action";
 
 jest.mock("../../components/actions/login-action", () => ({

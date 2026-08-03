@@ -3,11 +3,7 @@ import { screen } from "@testing-library/dom";
 import "@testing-library/jest-dom";
 
 import { DashboardBreadcrumb } from "@/components/dashboard/dashboard-breadcrumb";
-
-const mockPathname = jest.fn();
-jest.mock("next/navigation", () => ({
-  usePathname: () => mockPathname(),
-}));
+import { mockPathname } from "../__mocks__/navigation";
 
 const mockPageTitle = jest.fn();
 const mockExtraSegments = jest.fn();
@@ -27,14 +23,14 @@ describe("DashboardBreadcrumb", () => {
   });
 
   it("renders only Dashboard on /dashboard", () => {
-    mockPathname.mockReturnValue("/dashboard");
+    mockPathname.value = "/dashboard";
     render(<DashboardBreadcrumb />);
 
     expect(screen.getByText("Dashboard")).toBeInTheDocument();
   });
 
   it("makes Dashboard a link back to /dashboard when on sub-page", () => {
-    mockPathname.mockReturnValue("/dashboard/settings");
+    mockPathname.value = "/dashboard/settings";
     mockPageTitle.mockReturnValue("Settings");
     render(<DashboardBreadcrumb />);
 
@@ -43,7 +39,7 @@ describe("DashboardBreadcrumb", () => {
   });
 
   it("renders page title from context on sub-pages", () => {
-    mockPathname.mockReturnValue("/dashboard/settings");
+    mockPathname.value = "/dashboard/settings";
     mockPageTitle.mockReturnValue("Settings");
     render(<DashboardBreadcrumb />);
 
@@ -52,7 +48,7 @@ describe("DashboardBreadcrumb", () => {
   });
 
   it("renders extra segments from context", () => {
-    mockPathname.mockReturnValue("/dashboard/something");
+    mockPathname.value = "/dashboard/something";
     mockPageTitle.mockReturnValue("Something");
     mockExtraSegments.mockReturnValue([{ label: "Detail" }]);
     render(<DashboardBreadcrumb />);
@@ -63,7 +59,7 @@ describe("DashboardBreadcrumb", () => {
   });
 
   it("renders the last breadcrumb item as non-link (current page)", () => {
-    mockPathname.mockReturnValue("/dashboard");
+    mockPathname.value = "/dashboard";
     render(<DashboardBreadcrumb />);
 
     const dashboardEl = screen.getByText("Dashboard");

@@ -1,6 +1,10 @@
 import { passwordReset } from "@/components/actions/password-reset-action";
 import { resetForgotPassword } from "@/app/clientService";
 
+jest.mock("../../i18n/redirect", () => ({
+  redirect: jest.fn(),
+}));
+
 jest.mock("../../lib/openapi-client/sdk.gen", () => ({
   resetForgotPassword: jest.fn(),
 }));
