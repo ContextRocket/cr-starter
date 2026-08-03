@@ -157,6 +157,14 @@ export const de = {
     "Antworten auf häufige Fragen zu dieser Website, dem Chat-Agenten, der Datenverarbeitung und der Anpassung.",
   FAQ_BACK_HOME: "Zurück zur Startseite",
 
+  // ── Blog ────────────────────────────────────────────────────────────────────
+  BLOG_TITLE: "Blog",
+  BLOG_DESCRIPTION: "Artikel, Anleitungen und Neuigkeiten.",
+  BLOG_EMPTY: "Noch keine Beiträge. Schauen Sie bald wieder vorbei.",
+  BLOG_BACK_HOME: "Zurück zur Startseite",
+  BLOG_BACK_TO_LIST: "Alle Beiträge",
+  BLOG_NOT_FOUND: "Beitrag nicht gefunden",
+
   // ── Legal pages ───────────────────────────────────────────────────────────
   IMPRESSUM_TITLE: "Impressum",
   IMPRESSUM_LEGAL_NOTICE: "Gesetzlich vorgeschriebene Anbieterangaben",
