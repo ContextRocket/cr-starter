@@ -1,3 +1,17 @@
+/**
+ * Design tokens for the cr-starter.
+ *
+ * FORK OWNERS: edit site.config.ts > theme {} to change colors, borders, and
+ * radius. The CSS variables below reference those values. The single design
+ * touchpoint is site.config.ts — you should rarely need to edit this file.
+ *
+ * Add a .dark {} block below :root to support dark mode. Set the body class
+ * in app/[locale]/layout.tsx if you want dark mode by default.
+ *
+ * To use a custom font, swap the next/font/local import in
+ * app/[locale]/layout.tsx with next/font/google for Google Fonts.
+ */
+
 @import "tailwindcss";
 
 @plugin "tailwindcss-animate";

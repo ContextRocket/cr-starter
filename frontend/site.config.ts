@@ -97,6 +97,31 @@ export interface ChatConfig {
   demoPublicSlug: string;
 }
 
+export interface ThemeConfig {
+  /** <body> background color. Uses CSS light-dark() in globals.css. */
+  background: string;
+  /** Default text color. */
+  foreground: string;
+  /** Card / surface background. */
+  card: string;
+  /** Card text color. */
+  cardForeground: string;
+  /** Primary accent color (buttons, links, highlights). */
+  primary: string;
+  /** Text color on primary backgrounds. */
+  primaryForeground: string;
+  /** Muted/section background. */
+  muted: string;
+  /** Muted text color (body, descriptions). */
+  mutedForeground: string;
+  /** Border color. Use rgba() for translucent borders on dark backgrounds. */
+  border: string;
+  /** Focus ring color. */
+  ring: string;
+  /** Border radius: sm, md, lg, xl, 2xl, 3xl or px unit. */
+  radius: string;
+}
+
 export interface SiteConfig {
   /** Public-facing company / product name used in headers, titles, JSON-LD. */
   companyName: string;
@@ -123,8 +148,13 @@ export interface SiteConfig {
   /**
    * All locale codes supported by the UI. Must match the files in
    * i18n/messages/ and the SUPPORTED_LOCALES array in i18n/messages/index.ts.
+   * Set to a single locale (e.g. ["en"]) to hide the LocaleSwitcher and
+   * collapse multi-language infrastructure.
    */
   locales: readonly string[];
+  /** Visual design tokens. The fork owner's only design touchpoint — edit
+   * these to change colors, borders, and radius without touching globals.css. */
+  theme: ThemeConfig;
   /** Paths to brand assets served from /public (relative to /public). */
   assets: {
     logo: string;
@@ -192,6 +222,25 @@ export const siteConfig: SiteConfig = {
   contactEmail: "hello@example.com", // PLACEHOLDER -- replace with your contact email
   defaultLocale: "en",
   locales: ["en", "es", "de"] as const,
+
+  // ── Design tokens ───────────────────────────────────────────────────────
+  // These flow into globals.css via :root {} variables. Change colors here
+  // instead of editing globals.css directly — the fork's only design surface.
+  // Use hsl() for colors to support light-dark() in globals.css, or hex for
+  // simplicity. The default below is a neutral light theme.
+  theme: {
+    background: "hsl(0 0% 100%)",
+    foreground: "hsl(0 0% 3.9%)",
+    card: "hsl(0 0% 100%)",
+    cardForeground: "hsl(0 0% 3.9%)",
+    primary: "hsl(0 0% 9%)",
+    primaryForeground: "hsl(0 0% 98%)",
+    muted: "hsl(0 0% 96.1%)",
+    mutedForeground: "hsl(0 0% 45.1%)",
+    border: "hsl(0 0% 89.8%)",
+    ring: "hsl(0 0% 3.9%)",
+    radius: "0.5rem",
+  },
 
   // ── Brand assets (files live in frontend/public/) ─────────────────────
   assets: {

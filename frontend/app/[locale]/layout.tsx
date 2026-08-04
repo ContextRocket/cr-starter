@@ -13,7 +13,7 @@ import { getServerLocaleTree } from "@/i18n/messages/register-server";
 import { setLocale, t } from "@/i18n/keys";
 import {
   resolveLocale,
-  SUPPORTED_LOCALES,
+  ACTIVE_LOCALES,
   type SupportedLocale,
 } from "@/i18n/messages";
 import { siteConfig } from "@/site.config";
@@ -30,7 +30,7 @@ const geistMono = localFont({
 });
 
 export function generateStaticParams() {
-  return SUPPORTED_LOCALES.map((locale) => ({ locale }));
+  return ACTIVE_LOCALES.map((locale) => ({ locale }));
 }
 
 /**

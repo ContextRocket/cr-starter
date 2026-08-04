@@ -19,7 +19,7 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useLocale } from "./locale-provider";
 import { t } from "./keys";
-import { SUPPORTED_LOCALES, type SupportedLocale } from "./messages";
+import { SUPPORTED_LOCALES, ACTIVE_LOCALES, type SupportedLocale } from "./messages";
 
 /** Dot-path to the label string for each locale code. */
 const LOCALE_LABEL_PATHS: Record<SupportedLocale, string> = {
@@ -39,6 +39,10 @@ export function LocaleSwitcher({
   onDropdownToggle,
 }: LocaleSwitcherProps) {
   const { locale, changeLocale } = useLocale();
+
+  // No-op for single-language sites — render nothing.
+  if (ACTIVE_LOCALES.length < 2) return null;
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({
     top: 0,
