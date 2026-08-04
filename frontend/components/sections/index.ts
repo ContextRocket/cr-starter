@@ -13,3 +13,4 @@ export { StatsBar, type StatsBarProps } from "./stats-bar";
 export { CtaSection, type CtaSectionProps } from "./cta-section";
 export { FaqSection, type FaqSectionProps } from "./faq-section";
 export { FooterSection, type FooterSectionProps } from "./footer-section";
+export { Navbar, type NavbarProps, type NavLink } from "./navbar";
