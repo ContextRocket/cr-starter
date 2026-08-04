@@ -224,7 +224,12 @@ export function useA2AStream(
   const [phase, setPhase] = useState<StreamPhase>("idle");
   const [streamingText, setStreamingText] = useState("");
   const [error, setError] = useState<StreamError | null>(null);
-  const [threadId, setThreadId] = useState<string | null>(null);
+  const [threadId, setThreadId] = useState<string | null>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("cr_thread_id");
+    }
+    return null;
+  });
 
   // Latency tier flags: derived from phase + timers; managed as refs to
   // avoid re-render storms during the streaming hot path.
@@ -232,6 +237,19 @@ export function useA2AStream(
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
   const [isSlowResponse, setIsSlowResponse] = useState(false);
   const [isVerySlowResponse, setIsVerySlowResponse] = useState(false);
+
+  // Persist thread ID across page refreshes and locale switches so the A2A
+  // conversation continues rather than starting a new thread on remount.
+  // The platform ThreadRepo resolves to the existing thread when the client
+  // forwards a known thread_id.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (threadId) {
+      localStorage.setItem("cr_thread_id", threadId);
+    } else {
+      localStorage.removeItem("cr_thread_id");
+    }
+  }, [threadId]);
 
   const abortRef = useRef<AbortController | null>(null);
   const slowTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
