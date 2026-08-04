@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import createMiddleware from "next-intl/middleware";
-import { SUPPORTED_LOCALES, type SupportedLocale } from "@/i18n/messages";
+import { ACTIVE_LOCALES, type SupportedLocale } from "@/i18n/messages";
 import { siteConfig } from "@/site.config";
 
 const LOCALE_COOKIE = "NEXT_LOCALE";
-const SUPPORTED_LOCALES_LIST = SUPPORTED_LOCALES as readonly string[];
+const ACTIVE_LOCALES_LIST = ACTIVE_LOCALES as readonly string[];
 
 // next-intl middleware: resolves locale from the URL prefix (with
 // Accept-Language + NEXT_LOCALE cookie fallback), syncs the cookie, and
@@ -13,9 +13,11 @@ const SUPPORTED_LOCALES_LIST = SUPPORTED_LOCALES as readonly string[];
 // /dashboard -> /{locale}/dashboard). Adopted from
 // context-rocket/frontend/proxy.ts (the exact pattern the starter follows).
 const intlMiddleware = createMiddleware({
-  locales: SUPPORTED_LOCALES,
+  locales: ACTIVE_LOCALES,
   defaultLocale: siteConfig.defaultLocale as SupportedLocale,
-  localePrefix: "always",
+  // "as-needed" with a single locale removes the URL prefix entirely
+  // (/blog, not /en/blog). Multi-locale sites keep "always" for SEO.
+  localePrefix: ACTIVE_LOCALES.length === 1 ? "as-needed" : "always",
 });
 
 function decodeJwtPayload(token: string): Record<string, unknown> | null {
@@ -50,7 +52,7 @@ function hasExpiredJwtToken(token: string | undefined): boolean {
 }
 
 function isSupportedLocale(locale: string | undefined): locale is string {
-  return !!locale && SUPPORTED_LOCALES_LIST.includes(locale);
+  return !!locale && ACTIVE_LOCALES_LIST.includes(locale);
 }
 
 /**
