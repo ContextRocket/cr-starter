@@ -14,3 +14,6 @@ export { CtaSection, type CtaSectionProps } from "./cta-section";
 export { FaqSection, type FaqSectionProps } from "./faq-section";
 export { FooterSection, type FooterSectionProps } from "./footer-section";
 export { Navbar, type NavbarProps, type NavLink } from "./navbar";
+export { InsightCard, type InsightCardProps } from "./insight-card";
+export { SectionWrapper, type SectionWrapperProps } from "./section-wrapper";
+export { ScrollReveal, type ScrollRevealProps } from "./scroll-reveal";
