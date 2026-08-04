@@ -1,0 +1,15 @@
+/**
+ * Reusable section components for the cr-starter.
+ *
+ * Each component accepts data as props. Fork owners provide their own
+ * content arrays and the component handles layout and styling. All
+ * styles use siteConfig.theme tokens.
+ */
+
+export { HeroSection, type HeroProps } from "./hero";
+export { FeatureGrid, type FeatureGridProps } from "./feature-grid";
+export { TestimonialGrid, type TestimonialGridProps } from "./testimonial-grid";
+export { StatsBar, type StatsBarProps } from "./stats-bar";
+export { CtaSection, type CtaSectionProps } from "./cta-section";
+export { FaqSection, type FaqSectionProps } from "./faq-section";
+export { FooterSection, type FooterSectionProps } from "./footer-section";
