@@ -11,6 +11,7 @@
 
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/site.config";
+import { fileBlogAdapter } from "@/lib/blog";
 
 type ChangeFrequency = NonNullable<
   MetadataRoute.Sitemap[number]["changeFrequency"]
@@ -37,7 +38,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const origin = siteConfig.siteUrl.replace(/\/$/, "");
   const lastModified = new Date();
 
-  return INDEXABLE_ROUTES.map((route) => ({
+  const pages: IndexableRoute[] = [...INDEXABLE_ROUTES];
+
+  // Blog listing
+  pages.push({ path: "blog", priority: 0.8, changeFrequency: "daily" });
+
+  // Individual blog posts
+  try {
+    const posts = fileBlogAdapter.list();
+    for (const post of posts) {
+      pages.push({
+        path: `blog/${post.slug}`,
+        priority: 0.7,
+        changeFrequency: "monthly",
+      });
+    }
+  } catch {
+    // Blog directory might not exist yet — skip gracefully.
+  }
+
+  return pages.map((route) => ({
     url: route.path ? `${origin}/${route.path}` : origin,
     lastModified,
     changeFrequency: route.changeFrequency,
