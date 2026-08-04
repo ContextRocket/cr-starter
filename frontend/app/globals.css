@@ -140,3 +140,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+.brand-name {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+}
+
+
+/* Utility classes for common section backgrounds (edit colors in site.config.ts) */
+.bg-warm { background-color: var(--warm-background, var(--muted)); }
+.bg-warm-surface { background-color: var(--warm-surface, var(--card)); }
+.text-darken { color: var(--darken, var(--foreground)); }
