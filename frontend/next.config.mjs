@@ -1,18 +1,26 @@
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import createNextIntlPlugin from 'next-intl/plugin';
 
+const STATIC_EXPORT = process.env.STATIC_EXPORT === "true";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Static export (S3 / CloudFront): STATIC_EXPORT=true pnpm build
+  // When enabled, generates /out/ with pure HTML/CSS/JS. No server needed.
+  // Chat connects via widget.js embed. No auth, no API routes, no SSR.
+  ...(STATIC_EXPORT && {
+    output: "export",
+    images: { unoptimized: true },
+    trailingSlash: true,
+  }),
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.plugins.push(
         new ForkTsCheckerWebpackPlugin({
-          async: true, // Run type checking synchronously to block the build
+          async: true,
           typescript: {
             configOverwrite: {
-              compilerOptions: {
-                skipLibCheck: true,
-              },
+              compilerOptions: { skipLibCheck: true },
             },
           },
         })
@@ -22,10 +30,6 @@ const nextConfig = {
   },
 };
 
-// Wires next-intl's i18n/request.ts into the Next.js build. The request.ts
-// file resolves locale + messages for every server-side request. This is the
-// context-rocket URL-segment locale pattern: language codes live in the URL
-// (/es, /en) instead of a cookie.
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 export default withNextIntl(nextConfig);
