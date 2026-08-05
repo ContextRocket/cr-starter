@@ -33,6 +33,7 @@
 
 import { parseWidgetConfig, isAllowedAgentUrl } from "@/lib/widget-config";
 import { ChatPanel } from "@/components/chat/chat-panel";
+import { PoweredBy } from "@/components/powered-by";
 import { setLocale, t } from "@/i18n/keys";
 import type { SupportedLocale } from "@/i18n/messages";
 import { siteConfig } from "@/site.config";
@@ -118,6 +119,7 @@ export default async function EmbedPage({ searchParams }: EmbedPageProps) {
         className="flex-1"
         data-testid="embed-chat-panel"
       />
+      <PoweredBy className="mx-auto py-2" />
     </main>
   );
 }
