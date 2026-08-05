@@ -2,6 +2,7 @@
 
 import { t } from "@/i18n/keys";
 import { getCurrentLocale } from "@/i18n/keys";
+import Image from "next/image";
 import { siteConfig } from "@/site.config";
 
 interface ChatEmptyStateProps {
@@ -63,13 +64,17 @@ export function ChatEmptyState({
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(66,100,252,0.10),transparent_44%),radial-gradient(circle_at_bottom,rgba(15,23,42,0.04),transparent_38%)]" />
       <div className="relative flex w-full max-w-2xl flex-col items-center gap-5 px-2 py-4 md:px-6">
-        {/* Avatar / logo placeholder */}
+        {/* Site logo */}
         <div className="relative">
           <div className="absolute inset-[-10px] rounded-full bg-[radial-gradient(circle,rgba(66,100,252,0.15),transparent_68%)] blur-xl" />
-          <div className="relative flex size-20 items-center justify-center rounded-full border border-border/60 bg-card/85 shadow-md">
-            <span className="text-3xl" role="img" aria-label="rocket">
-              🚀
-            </span>
+          <div className="relative flex size-20 items-center justify-center rounded-full border border-border/60 bg-card/85 shadow-md overflow-hidden">
+            <Image
+              src={siteConfig.assets.logo}
+              alt={siteConfig.companyName}
+              width={48}
+              height={48}
+              className="size-12 object-contain"
+            />
           </div>
         </div>
 
