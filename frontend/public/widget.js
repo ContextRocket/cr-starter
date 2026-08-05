@@ -219,6 +219,33 @@
 
     container.appendChild(iframe);
     container.appendChild(fab);
+
+    // Attribution — small, subtle, non-intrusive.
+    var attr = document.createElement("a");
+    attr.href = "https://contextrocket.ai";
+    attr.target = "_blank";
+    attr.rel = "noopener noreferrer";
+    attr.setAttribute(
+      "style",
+      [
+        "display: block",
+        "margin-top: 6px",
+        "font-size: 10px",
+        "color: rgba(0,0,0,0.3)",
+        "text-align: center",
+        "text-decoration: none",
+        "transition: color 0.2s ease",
+      ].join(";"),
+    );
+    attr.textContent = "Powered by ContextRocket";
+    attr.addEventListener("mouseover", function () {
+      attr.style.color = "rgba(0,0,0,0.5)";
+    });
+    attr.addEventListener("mouseout", function () {
+      attr.style.color = "rgba(0,0,0,0.3)";
+    });
+    container.appendChild(attr);
+
     document.body.appendChild(container);
   }
 
