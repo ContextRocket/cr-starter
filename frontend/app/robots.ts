@@ -19,6 +19,8 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/site.config";
 
+
+export const dynamic = "force-static";
 // ── Global crawler policy ─────────────────────────────────────────────────────
 
 const CRAWLER_CONFIG = {

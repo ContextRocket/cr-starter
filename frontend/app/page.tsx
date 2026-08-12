@@ -3,6 +3,8 @@ import { cookies, headers } from "next/headers";
 import { SUPPORTED_LOCALES } from "@/i18n/messages";
 import { siteConfig } from "@/site.config";
 
+export const dynamic = "force-static";
+
 const LOCALE_COOKIE = "NEXT_LOCALE";
 const SUPPORTED_LOCALES_LIST = SUPPORTED_LOCALES as readonly string[];
 

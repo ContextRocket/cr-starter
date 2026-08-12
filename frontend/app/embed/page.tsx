@@ -38,6 +38,8 @@ import { setLocale, t } from "@/i18n/keys";
 import type { SupportedLocale } from "@/i18n/messages";
 import { siteConfig } from "@/site.config";
 
+export const dynamic = "force-static";
+
 interface EmbedPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }

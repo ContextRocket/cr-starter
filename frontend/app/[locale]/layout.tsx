@@ -29,6 +29,8 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+export const dynamic = "force-static";
+
 export function generateStaticParams() {
   return ACTIVE_LOCALES.map((locale) => ({ locale }));
 }
@@ -59,8 +61,15 @@ export default async function LocaleLayout({
   // Server-derived guest signal: no auth cookie means the visitor is a guest.
   // This is what arms the chat conversion-moment nudge; without it the nudge
   // could never fire. (A logged-in visitor never sees the nudge.)
-  const cookieStore = await cookies();
-  const isGuest = !cookieStore.get("accessToken")?.value;
+  // Static export has no request context — default to guest.
+  let isGuest = true;
+  try {
+    const cookieStore = await cookies();
+    isGuest = !cookieStore.get("accessToken")?.value;
+  } catch {
+    // Static export — no cookies API available.
+    isGuest = true;
+  }
 
   // Dev-visible configuration warning: an unreplaced siteUrl placeholder
   // poisons every canonical/OG/JSON-LD signal. Same pattern as the

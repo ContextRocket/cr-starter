@@ -15,12 +15,23 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { setLocale, t } from "@/i18n/keys";
-import { resolveLocale } from "@/i18n/messages";
+import { resolveLocale, ACTIVE_LOCALES } from "@/i18n/messages";
 import { fileBlogAdapter } from "@/lib/blog";
 import { siteConfig } from "@/site.config";
 
 interface BlogPostPageProps {
   params: Promise<{ locale: string; slug: string }>;
+}
+
+export function generateStaticParams() {
+  const posts = fileBlogAdapter.list();
+  const params: { locale: string; slug: string }[] = [];
+  for (const locale of ACTIVE_LOCALES) {
+    for (const post of posts) {
+      params.push({ locale, slug: post.slug });
+    }
+  }
+  return params;
 }
 
 export async function generateMetadata({
