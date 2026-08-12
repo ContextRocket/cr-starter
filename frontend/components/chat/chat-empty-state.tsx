@@ -40,10 +40,10 @@ export function ChatEmptyState({
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(66,100,252,0.08),transparent_50%)]" />
         <div className="relative max-w-md rounded-2xl border border-border/60 bg-card/85 px-6 py-8 shadow-md backdrop-blur-sm">
           <h2 className="text-xl font-semibold tracking-tight text-foreground">
-            {t("CHAT_CONNECT_REQUIRED_TITLE")}
+            {t("chat.connect.required.title")}
           </h2>
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            {t("CHAT_CONNECT_REQUIRED_BODY")}
+            {t("chat.connect.required.body")}
           </p>
         </div>
       </div>
@@ -83,13 +83,13 @@ export function ChatEmptyState({
             data-testid="chat-empty-title"
             className="text-2xl font-semibold tracking-tight text-foreground md:text-4xl"
           >
-            {title ?? t("CHAT_EMPTY_TITLE")}
+            {title ?? t("chat.empty.title")}
           </h1>
           <p
             data-testid="chat-empty-subtitle"
             className="text-sm leading-6 text-muted-foreground"
           >
-            {subtitle ?? t("CHAT_EMPTY_SUBTITLE")}
+            {subtitle ?? t("chat.empty.subtitle")}
           </p>
         </div>
 

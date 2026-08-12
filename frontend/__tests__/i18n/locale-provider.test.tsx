@@ -181,8 +181,8 @@ describe("LocaleProvider", () => {
           <div />
         </LocaleProvider>,
       );
-      expect(() => t("AUTH_LOGIN_TITLE")).not.toThrow();
-      const value = t("AUTH_LOGIN_TITLE");
+      expect(() => t("auth.login.title")).not.toThrow();
+      const value = t("auth.login.title");
       expect(typeof value).toBe("string");
       expect(value.length).toBeGreaterThan(0);
     });

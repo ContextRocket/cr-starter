@@ -11,300 +11,414 @@
  */
 
 export const es = {
-  // ── Locale labels ─────────────────────────────────────────────────────────
+  home: {
+    subtitle: "Crea productos con ContextRocket. Autenticación, estructura de panel y seguridad de tipos basada en OpenAPI incluidas. El estado de conversación y las ejecuciones de agente se delegan a ContextRocket vía A2A.",
+    cta: "Ir al panel",
+    widget: {
+      section: {
+        title: "Añade el agente a cualquier sitio web",
+        body: "Una etiqueta de script añade un botón de chat flotante a cualquier página. El botón abre un iframe respaldado por tu agente de ContextRocket, sin React, sin empaquetador ni cambios en el servidor del sitio anfitrión. El botón flotante de esta página es el mismo componente; incrústalo en otros sitios con el fragmento de código siguiente."
+      },
+      snippet: {
+        note: "Copia el fragmento, reemplaza la URL del agente y añádelo antes de </body>."
+      }
+    }
+  },
+  auth: {
+    login: {
+      title: "Iniciar sesión",
+      description: "Introduce tu correo electrónico para acceder a tu cuenta.",
+      submit: "Entrar",
+      no: {
+        account: "¿No tienes cuenta?"
+      },
+      sign: {
+        up: "Registrarse"
+      }
+    },
+    forgot: {
+      password: "¿Has olvidado tu contraseña?"
+    },
+    register: {
+      title: "Crear cuenta",
+      description: "Introduce tu correo electrónico y contraseña para crear tu cuenta.",
+      submit: "Crear cuenta",
+      back: "Volver al inicio de sesión"
+    },
+    password: {
+      recovery: {
+        title: "Recuperar contraseña",
+        description: "Introduce tu correo electrónico para recibir instrucciones para restablecer tu contraseña.",
+        submit: "Enviar",
+        back: "Volver al inicio de sesión"
+      },
+      reset: {
+        title: "Restablecer contraseña",
+        description: "Introduce la nueva contraseña y confírmala.",
+        submit: "Enviar",
+        loading: "Cargando formulario de restablecimiento...",
+        success: "Instrucciones para restablecer la contraseña enviadas a tu correo."
+      }
+    }
+  },
+  form: {
+    email: "Correo electrónico",
+    password: "Contraseña",
+    passwordConfirm: "Confirmar contraseña",
+    username: "Nombre de usuario",
+    placeholder: {
+      email: "m@example.com"
+    },
+    validation: {
+      password: {
+        min: "La contraseña debe tener al menos 8 caracteres.",
+        uppercase: "La contraseña debe contener al menos una letra mayúscula.",
+        special: "La contraseña debe contener al menos un carácter especial.",
+        required: "La contraseña es obligatoria"
+      },
+      passwords: {
+        match: "Las contraseñas deben coincidir."
+      },
+      token: {
+        required: "El token es obligatorio"
+      },
+      email: {
+        invalid: "Dirección de correo electrónico no válida"
+      },
+      username: {
+        required: "El nombre de usuario es obligatorio"
+      }
+    }
+  },
+  nav: {
+    dashboard: "Panel",
+    logout: "Cerrar sesión",
+    welcome: "Bienvenido a tu panel"
+  },
+  dashboard: {
+    title: "Panel",
+    subtitle: "Tu espacio de trabajo con ContextRocket. Configura tu aplicación y conéctate a ContextRocket para ejecuciones de agente, estado de conversación y gestión del conocimiento.",
+    card: {
+      chat: {
+        title: "Continuar el chat",
+        description: "Tu historial de conversación está guardado. Retoma donde lo dejaste.",
+        action: "Abrir chat"
+      },
+      profile: {
+        title: "Perfil y ajustes",
+        description: "Actualiza tu correo, contraseña o preferencia de idioma.",
+        action: "Editar perfil"
+      },
+      users: {
+        title: "Usuarios",
+        description: "Revisa cuentas registradas y sesiones de invitado.",
+        action: "Ver usuarios"
+      }
+    },
+    guest: {
+      prompt: {
+        title: "Guarda tu conversación",
+        description: "Crea una cuenta gratuita para conservar tu historial de chat. Tu conversación actual continuará de todos modos.",
+        action: "Crear cuenta"
+      }
+    },
+    users: {
+      title: "Usuarios",
+      description: "Todas las cuentas registradas y de invitado.",
+      col: {
+        email: "Correo electrónico",
+        type: "Tipo",
+        status: "Estado"
+      },
+      type: {
+        guest: "Invitado",
+        registered: "Registrado"
+      },
+      status: {
+        active: "Activo",
+        inactive: "Inactivo"
+      },
+      forbidden: "Esta página es solo para operadores."
+    },
+    profile: {
+      title: "Perfil y ajustes"
+    }
+  },
+  dev: {
+    notice: {
+      label: "Aviso para desarrolladores:"
+    },
+    siteConfigUrlWarning: "El campo siteUrl de site.config.ts todavía apunta a example.com. Sustitúyelo por tu dominio de producción antes de publicar el sitio."
+  },
+  error: {
+    generic: "Algo ha salido mal. Por favor, inténtalo de nuevo.",
+    dashboard: "Algo ha salido mal al cargar esta página.",
+    try: {
+      again: "Intentar de nuevo"
+    },
+    unexpected: "Se ha producido un error inesperado. Por favor, inténtalo más tarde.",
+    network: "Error de red",
+    no: {
+      token: "No se encontró el token de acceso",
+      data: "El servidor no devolvió datos"
+    },
+    unknown: "Error desconocido",
+    internal: "Error interno del servidor"
+  },
+  footer: {
+    impressum: "Impressum",
+    privacy: "Política de privacidad",
+    faq: "Preguntas frecuentes"
+  },
+  faq: {
+    page: {
+      title: "Preguntas frecuentes",
+      description: "Respuestas a preguntas comunes sobre este sitio, el agente de chat, el tratamiento de datos y la personalización."
+    },
+    back: {
+      home: "Volver al inicio"
+    }
+  },
+  blog: {
+    title: "Blog",
+    description: "Artículos, guías y novedades.",
+    empty: "Aún no hay publicaciones. Vuelve pronto.",
+    back: {
+      home: "Volver al inicio",
+      to: {
+        list: "Todas las publicaciones"
+      }
+    },
+    not: {
+      found: "Publicación no encontrada"
+    }
+  },
+  impressum: {
+    title: "Impressum",
+    legal: {
+      notice: "Aviso legal"
+    },
+    entity: {
+      label: "Entidad"
+    },
+    address: {
+      label: "Dirección"
+    },
+    register: {
+      label: "Registro mercantil"
+    },
+    vat: {
+      label: "NIF/CIF"
+    },
+    represented: {
+      by: {
+        label: "Representado por"
+      }
+    },
+    contact: {
+      label: "Contacto"
+    },
+    disclaimer: "Este Impressum es legalmente obligatorio para sitios web comerciales en Alemania y la Unión Europea. Todos los valores de ejemplo deben reemplazarse antes de publicar el sitio."
+  },
+  privacy: {
+    title: "Política de privacidad",
+    contact: {
+      label: "Contacto de privacidad",
+      intro: "Para preguntas sobre tus datos personales o para ejercer tus derechos, contacta con nuestro equipo de privacidad:"
+    },
+    placeholder: "Esta es una política de privacidad provisional. Reemplaza esta página con tu declaración de privacidad completa y conforme a la ley antes de publicar el sitio.",
+    generated: {
+      notice: "Generada desde site.config. Revísala con asesoría legal antes de publicar."
+    },
+    intro: "Esta política de privacidad explica cómo recopilamos, usamos y protegemos tus datos personales cuando utilizas este sitio web. Es un punto de partida generado a partir de la configuración del sitio y debe ser revisado por asesoría legal cualificada antes de publicar el sitio.",
+    controller: {
+      heading: "Responsable del tratamiento",
+      intro: "La entidad responsable del tratamiento de tus datos personales (el responsable en el sentido del RGPD) es:"
+    },
+    data: {
+      heading: "Datos que tratamos",
+      auth: {
+        heading: "Datos de cuenta y autenticación",
+        body: "Cuando te registras o inicias sesión, tratamos tu dirección de correo electrónico, una contraseña cifrada y tu idioma preferido. Estos datos son necesarios para proporcionar y proteger tu cuenta. Base legal: ejecución de un contrato (art. 6.1.b RGPD)."
+      },
+      cookies: {
+        heading: "Cookies estrictamente necesarias",
+        body: "Utilizamos cookies y almacenamiento del navegador técnicamente necesarios para mantenerte conectado (sesión de autenticación), recordar tu preferencia de idioma (cookie de configuración regional) y guardar tu elección de consentimiento de cookies. Estas son imprescindibles para el funcionamiento del sitio y no requieren tu consentimiento."
+      }
+    },
+    analytics: {
+      heading: "Analítica",
+      body: "Este sitio utiliza analítica para comprender cómo los visitantes interactúan con el servicio. Los scripts de analítica solo se cargan una vez que otorgas tu consentimiento a través del banner de cookies. Puedes retirar tu consentimiento en cualquier momento haciendo clic en el enlace de política de privacidad del pie de página y usando la opción de restablecer el consentimiento. Base legal: consentimiento (art. 6.1.a RGPD).",
+      ga: {
+        label: "Google Analytics 4 (Google LLC)"
+      },
+      posthog: {
+        label: "PostHog (PostHog Inc.)"
+      },
+      providers: {
+        intro: "Los siguientes proveedores de analítica están configurados en este sitio:"
+      }
+    },
+    consent: {
+      heading: "Consentimiento de cookies y revocación",
+      body: "En tu primera visita, un banner de cookies solicita tu consentimiento para las cookies analíticas. Puedes aceptar o rechazar. Tu elección se almacena en tu navegador. Para cambiar tu elección o retirar el consentimiento, borra el valor almacenado bajo la clave",
+      bodyAfterKey: "en el almacenamiento local de tu navegador."
+    },
+    rights: {
+      heading: "Tus derechos",
+      intro: "En virtud del RGPD tienes los siguientes derechos sobre tus datos personales:",
+      access: "Derecho de acceso (art. 15 RGPD)",
+      rectification: "Derecho de rectificación (art. 16 RGPD)",
+      erasure: "Derecho de supresión (art. 17 RGPD)",
+      portability: "Derecho a la portabilidad de datos (art. 20 RGPD)",
+      complaint: "Derecho a presentar una reclamación ante una autoridad de control (art. 77 RGPD)",
+      outro: "Para ejercer tus derechos, contacta con la dirección de privacidad indicada más arriba."
+    }
+  },
+  pagination: {
+    items: {
+      per: {
+        page: "Elementos por página:"
+      }
+    },
+    no: {
+      results: "0 resultados"
+    }
+  },
+  chat: {
+    placeholder: "Pregunta lo que quieras...",
+    placeholderStreaming: "Pensando...",
+    thinking: "Pensando",
+    slow: {
+      response: {
+        title: "Aún procesando...",
+        hint: "Esto está tardando un poco más de lo habitual."
+      }
+    },
+    very: {
+      slow: {
+        response: {
+          hint: "Aún procesando. Las preguntas complejas requieren más tiempo."
+        }
+      }
+    },
+    send: "Enviar",
+    stop: "Detener",
+    empty: {
+      title: "¿En qué puedo ayudarte?",
+      subtitle: "Escribe una pregunta para empezar."
+    },
+    copy: "Copiar",
+    copied: "Copiado",
+    sources: "Fuentes",
+    scroll: {
+      to: {
+        bottom: "Ir al final"
+      }
+    },
+    clear: "Borrar chat",
+    open: "Abrir chat",
+    close: "Cerrar chat",
+    expand: "Ampliar a pantalla completa",
+    collapse: "Reducir al panel",
+    connect: {
+      required: {
+        title: "Conecta ContextRocket",
+        body: "Establece NEXT_PUBLIC_CR_AGENT_URL para activar el agente de IA."
+      }
+    },
+    stream: {
+      interrupted: "La conexión se ha interrumpido antes de completar la respuesta. La respuesta puede estar incompleta."
+    },
+    typing: "El asistente está escribiendo",
+    more: {
+      detail: "Más detalles"
+    },
+    less: {
+      detail: "Menos detalles"
+    },
+    suggestions: {
+      label: "Sugerencias de seguimiento"
+    },
+    source: {
+      sheet: {
+        title: "Fuentes",
+        open: "Abrir fuente"
+      },
+      cited: {
+        section: "Sección citada"
+      },
+      publisher: "Editor",
+      date: "Fecha",
+      license: "Licencia"
+    },
+    sourceSheet: {
+      openNewTab: "Abrir en nueva pestaña"
+    },
+    policy: {
+      card: {
+        source: "Fuente"
+      }
+    },
+    nudge: {
+      title: "Guarda tu conversación",
+      body: "Crea una cuenta gratuita para conservar todo tu historial de chat. Tu conversación actual continuará de todos modos.",
+      action: "Crear cuenta",
+      dismiss: "Descartar"
+    },
+    link: {
+      preview: {
+        title: "Vista previa del enlace",
+        open: "Abrir en nueva pestaña"
+      }
+    },
+    grounded: "Fundamentada",
+    partially: {
+      grounded: "Parcialmente fundamentada"
+    },
+    ungrounded: "Sin fundamentar",
+    groundedClaimsChecked: "afirmaciones verificadas",
+    demo: {
+      badge: "Demo",
+      error: {
+        slug: {
+          not: {
+            found: "El agente de demostración no está disponible. Contacta con el propietario del sitio para activar la demo pública."
+          }
+        },
+        unauthorized: "Se ha rechazado el acceso a la demo. Es posible que la demo pública no esté habilitada para este agente."
+      }
+    }
+  },
+  embed: {
+    agent: {
+      url: {
+        rejected: {
+          title: "URL del agente no permitida",
+          body: "El parámetro agent-url proporcionado al widget embebido no coincide con el agente configurado para este sitio."
+        }
+      }
+    }
+  },
+  cookie: {
+    consent: {
+      aria: {
+        label: "Consentimiento de cookies"
+      },
+      title: "Este sitio utiliza cookies",
+      body: "Usamos cookies analíticas para mejorar tu experiencia. Consulta nuestra",
+      policy: {
+        link: "Política de privacidad"
+      },
+      accept: "Aceptar",
+      decline: "Rechazar"
+    }
+  }
+,
   locale: {
     labelEnglish: "Inglés",
     labelSpanish: "Español",
     labelGerman: "Alemán",
     changeLanguage: "Cambiar idioma",
   },
-
-  // ── Home / landing ────────────────────────────────────────────────────────
-  HOME_SUBTITLE:
-    "Crea productos con ContextRocket. Autenticación, estructura de panel y seguridad de tipos basada en OpenAPI incluidas. El estado de conversación y las ejecuciones de agente se delegan a ContextRocket vía A2A.",
-  HOME_CTA: "Ir al panel",
-
-  // ── Home: sección del widget embebible ───────────────────────────────────
-  HOME_WIDGET_SECTION_TITLE: "Añade el agente a cualquier sitio web",
-  HOME_WIDGET_SECTION_BODY:
-    "Una etiqueta de script añade un botón de chat flotante a cualquier página. El botón abre un iframe respaldado por tu agente de ContextRocket, sin React, sin empaquetador ni cambios en el servidor del sitio anfitrión. El botón flotante de esta página es el mismo componente; incrústalo en otros sitios con el fragmento de código siguiente.",
-  HOME_WIDGET_SNIPPET_NOTE:
-    "Copia el fragmento, reemplaza la URL del agente y añádelo antes de </body>.",
-
-  // ── Auth: login ───────────────────────────────────────────────────────────
-  AUTH_LOGIN_TITLE: "Iniciar sesión",
-  AUTH_LOGIN_DESCRIPTION:
-    "Introduce tu correo electrónico para acceder a tu cuenta.",
-  AUTH_LOGIN_SUBMIT: "Entrar",
-  AUTH_LOGIN_NO_ACCOUNT: "¿No tienes cuenta?",
-  AUTH_LOGIN_SIGN_UP: "Registrarse",
-  AUTH_FORGOT_PASSWORD: "¿Has olvidado tu contraseña?",
-
-  // ── Auth: register ────────────────────────────────────────────────────────
-  AUTH_REGISTER_TITLE: "Crear cuenta",
-  AUTH_REGISTER_DESCRIPTION:
-    "Introduce tu correo electrónico y contraseña para crear tu cuenta.",
-  AUTH_REGISTER_SUBMIT: "Crear cuenta",
-  AUTH_REGISTER_BACK: "Volver al inicio de sesión",
-
-  // ── Auth: password recovery ───────────────────────────────────────────────
-  AUTH_PASSWORD_RECOVERY_TITLE: "Recuperar contraseña",
-  AUTH_PASSWORD_RECOVERY_DESCRIPTION:
-    "Introduce tu correo electrónico para recibir instrucciones para restablecer tu contraseña.",
-  AUTH_PASSWORD_RECOVERY_SUBMIT: "Enviar",
-  AUTH_PASSWORD_RECOVERY_BACK: "Volver al inicio de sesión",
-  AUTH_PASSWORD_RESET_TITLE: "Restablecer contraseña",
-  AUTH_PASSWORD_RESET_DESCRIPTION:
-    "Introduce la nueva contraseña y confírmala.",
-  AUTH_PASSWORD_RESET_SUBMIT: "Enviar",
-  AUTH_PASSWORD_RESET_LOADING: "Cargando formulario de restablecimiento...",
-  AUTH_PASSWORD_RESET_SUCCESS:
-    "Instrucciones para restablecer la contraseña enviadas a tu correo.",
-
-  // ── Form labels (shared) ──────────────────────────────────────────────────
-  FORM_EMAIL: "Correo electrónico",
-  FORM_PASSWORD: "Contraseña",
-  FORM_PASSWORD_CONFIRM: "Confirmar contraseña",
-  FORM_USERNAME: "Nombre de usuario",
-  FORM_PLACEHOLDER_EMAIL: "m@example.com",
-
-  // ── Validation messages ───────────────────────────────────────────────────
-  FORM_VALIDATION_PASSWORD_MIN:
-    "La contraseña debe tener al menos 8 caracteres.",
-  FORM_VALIDATION_PASSWORD_UPPERCASE:
-    "La contraseña debe contener al menos una letra mayúscula.",
-  FORM_VALIDATION_PASSWORD_SPECIAL:
-    "La contraseña debe contener al menos un carácter especial.",
-  FORM_VALIDATION_PASSWORDS_MATCH: "Las contraseñas deben coincidir.",
-  FORM_VALIDATION_TOKEN_REQUIRED: "El token es obligatorio",
-  FORM_VALIDATION_EMAIL_INVALID: "Dirección de correo electrónico no válida",
-  FORM_VALIDATION_PASSWORD_REQUIRED: "La contraseña es obligatoria",
-  FORM_VALIDATION_USERNAME_REQUIRED: "El nombre de usuario es obligatorio",
-
-  // ── Navigation / breadcrumbs ──────────────────────────────────────────────
-  NAV_DASHBOARD: "Panel",
-  NAV_LOGOUT: "Cerrar sesión",
-
-  // ── Dashboard (landing when logged in) ────────────────────────────────────
-  NAV_WELCOME: "Bienvenido a tu panel",
-  DASHBOARD_TITLE: "Panel",
-  DASHBOARD_SUBTITLE:
-    "Tu espacio de trabajo con ContextRocket. Configura tu aplicación y conéctate a ContextRocket para ejecuciones de agente, estado de conversación y gestión del conocimiento.",
-  // Cards
-  DASHBOARD_CARD_CHAT_TITLE: "Continuar el chat",
-  DASHBOARD_CARD_CHAT_DESCRIPTION:
-    "Tu historial de conversación está guardado. Retoma donde lo dejaste.",
-  DASHBOARD_CARD_CHAT_ACTION: "Abrir chat",
-  DASHBOARD_CARD_PROFILE_TITLE: "Perfil y ajustes",
-  DASHBOARD_CARD_PROFILE_DESCRIPTION:
-    "Actualiza tu correo, contraseña o preferencia de idioma.",
-  DASHBOARD_CARD_PROFILE_ACTION: "Editar perfil",
-  DASHBOARD_CARD_USERS_TITLE: "Usuarios",
-  DASHBOARD_CARD_USERS_DESCRIPTION:
-    "Revisa cuentas registradas y sesiones de invitado.",
-  DASHBOARD_CARD_USERS_ACTION: "Ver usuarios",
-  // Guest dashboard prompt
-  DASHBOARD_GUEST_PROMPT_TITLE: "Guarda tu conversación",
-  DASHBOARD_GUEST_PROMPT_DESCRIPTION:
-    "Crea una cuenta gratuita para conservar tu historial de chat. Tu conversación actual continuará de todos modos.",
-  DASHBOARD_GUEST_PROMPT_ACTION: "Crear cuenta",
-
-  // ── Dashboard: users list (operator only) ─────────────────────────────────
-  DASHBOARD_USERS_TITLE: "Usuarios",
-  DASHBOARD_USERS_DESCRIPTION: "Todas las cuentas registradas y de invitado.",
-  DASHBOARD_USERS_COL_EMAIL: "Correo electrónico",
-  DASHBOARD_USERS_COL_TYPE: "Tipo",
-  DASHBOARD_USERS_COL_STATUS: "Estado",
-  DASHBOARD_USERS_TYPE_GUEST: "Invitado",
-  DASHBOARD_USERS_TYPE_REGISTERED: "Registrado",
-  DASHBOARD_USERS_STATUS_ACTIVE: "Activo",
-  DASHBOARD_USERS_STATUS_INACTIVE: "Inactivo",
-  DASHBOARD_USERS_FORBIDDEN: "Esta página es solo para operadores.",
-
-  // ── Dashboard: profile ────────────────────────────────────────────────────
-  DASHBOARD_PROFILE_TITLE: "Perfil y ajustes",
-
-  // ── Developer notices (dev-visible configuration warnings) ───────────────
-  DEV_NOTICE_LABEL: "Aviso para desarrolladores:",
-  SITE_CONFIG_URL_WARNING:
-    "El campo siteUrl de site.config.ts todavía apunta a example.com. Sustitúyelo por tu dominio de producción antes de publicar el sitio.",
-
-  // ── Error pages ───────────────────────────────────────────────────────────
-  ERROR_GENERIC: "Algo ha salido mal. Por favor, inténtalo de nuevo.",
-  ERROR_DASHBOARD: "Algo ha salido mal al cargar esta página.",
-  ERROR_TRY_AGAIN: "Intentar de nuevo",
-  ERROR_UNEXPECTED:
-    "Se ha producido un error inesperado. Por favor, inténtalo más tarde.",
-  ERROR_NETWORK: "Error de red",
-  ERROR_NO_TOKEN: "No se encontró el token de acceso",
-  ERROR_NO_DATA: "El servidor no devolvió datos",
-  ERROR_UNKNOWN: "Error desconocido",
-
-  // ── Backend error keys ────────────────────────────────────────────────────
-  ERROR_INTERNAL: "Error interno del servidor",
-
-  // ── Footer ────────────────────────────────────────────────────────────────
-  FOOTER_IMPRESSUM: "Impressum",
-  FOOTER_PRIVACY: "Política de privacidad",
-  FOOTER_FAQ: "Preguntas frecuentes",
-
-  // ── Página de preguntas frecuentes ────────────────────────────────────────
-  FAQ_PAGE_TITLE: "Preguntas frecuentes",
-  FAQ_PAGE_DESCRIPTION:
-    "Respuestas a preguntas comunes sobre este sitio, el agente de chat, el tratamiento de datos y la personalización.",
-  FAQ_BACK_HOME: "Volver al inicio",
-
-  // ── Blog ────────────────────────────────────────────────────────────────────
-  BLOG_TITLE: "Blog",
-  BLOG_DESCRIPTION: "Artículos, guías y novedades.",
-  BLOG_EMPTY: "Aún no hay publicaciones. Vuelve pronto.",
-  BLOG_BACK_HOME: "Volver al inicio",
-  BLOG_BACK_TO_LIST: "Todas las publicaciones",
-  BLOG_NOT_FOUND: "Publicación no encontrada",
-
-  // ── Legal pages ───────────────────────────────────────────────────────────
-  IMPRESSUM_TITLE: "Impressum",
-  IMPRESSUM_LEGAL_NOTICE: "Aviso legal",
-  IMPRESSUM_ENTITY_LABEL: "Entidad",
-  IMPRESSUM_ADDRESS_LABEL: "Dirección",
-  IMPRESSUM_REGISTER_LABEL: "Registro mercantil",
-  IMPRESSUM_VAT_LABEL: "NIF/CIF",
-  IMPRESSUM_REPRESENTED_BY_LABEL: "Representado por",
-  IMPRESSUM_CONTACT_LABEL: "Contacto",
-  IMPRESSUM_DISCLAIMER:
-    "Este Impressum es legalmente obligatorio para sitios web comerciales en Alemania y la Unión Europea. Todos los valores de ejemplo deben reemplazarse antes de publicar el sitio.",
-  PRIVACY_TITLE: "Política de privacidad",
-  PRIVACY_CONTACT_LABEL: "Contacto de privacidad",
-  PRIVACY_PLACEHOLDER:
-    "Esta es una política de privacidad provisional. Reemplaza esta página con tu declaración de privacidad completa y conforme a la ley antes de publicar el sitio.",
-
-  // ── Política de privacidad (secciones generadas) ──────────────────────────
-  PRIVACY_GENERATED_NOTICE:
-    "Generada desde site.config. Revísala con asesoría legal antes de publicar.",
-  PRIVACY_INTRO:
-    "Esta política de privacidad explica cómo recopilamos, usamos y protegemos tus datos personales cuando utilizas este sitio web. Es un punto de partida generado a partir de la configuración del sitio y debe ser revisado por asesoría legal cualificada antes de publicar el sitio.",
-  PRIVACY_CONTROLLER_HEADING: "Responsable del tratamiento",
-  PRIVACY_CONTROLLER_INTRO:
-    "La entidad responsable del tratamiento de tus datos personales (el responsable en el sentido del RGPD) es:",
-  PRIVACY_CONTACT_INTRO:
-    "Para preguntas sobre tus datos personales o para ejercer tus derechos, contacta con nuestro equipo de privacidad:",
-  PRIVACY_DATA_HEADING: "Datos que tratamos",
-  PRIVACY_DATA_AUTH_HEADING: "Datos de cuenta y autenticación",
-  PRIVACY_DATA_AUTH_BODY:
-    "Cuando te registras o inicias sesión, tratamos tu dirección de correo electrónico, una contraseña cifrada y tu idioma preferido. Estos datos son necesarios para proporcionar y proteger tu cuenta. Base legal: ejecución de un contrato (art. 6.1.b RGPD).",
-  PRIVACY_DATA_COOKIES_HEADING: "Cookies estrictamente necesarias",
-  PRIVACY_DATA_COOKIES_BODY:
-    "Utilizamos cookies y almacenamiento del navegador técnicamente necesarios para mantenerte conectado (sesión de autenticación), recordar tu preferencia de idioma (cookie de configuración regional) y guardar tu elección de consentimiento de cookies. Estas son imprescindibles para el funcionamiento del sitio y no requieren tu consentimiento.",
-  PRIVACY_ANALYTICS_HEADING: "Analítica",
-  PRIVACY_ANALYTICS_BODY:
-    "Este sitio utiliza analítica para comprender cómo los visitantes interactúan con el servicio. Los scripts de analítica solo se cargan una vez que otorgas tu consentimiento a través del banner de cookies. Puedes retirar tu consentimiento en cualquier momento haciendo clic en el enlace de política de privacidad del pie de página y usando la opción de restablecer el consentimiento. Base legal: consentimiento (art. 6.1.a RGPD).",
-  PRIVACY_ANALYTICS_GA_LABEL: "Google Analytics 4 (Google LLC)",
-  PRIVACY_ANALYTICS_POSTHOG_LABEL: "PostHog (PostHog Inc.)",
-  PRIVACY_ANALYTICS_PROVIDERS_INTRO:
-    "Los siguientes proveedores de analítica están configurados en este sitio:",
-  PRIVACY_CONSENT_HEADING: "Consentimiento de cookies y revocación",
-  PRIVACY_CONSENT_BODY:
-    "En tu primera visita, un banner de cookies solicita tu consentimiento para las cookies analíticas. Puedes aceptar o rechazar. Tu elección se almacena en tu navegador. Para cambiar tu elección o retirar el consentimiento, borra el valor almacenado bajo la clave",
-  PRIVACY_CONSENT_BODY_AFTER_KEY: "en el almacenamiento local de tu navegador.",
-  PRIVACY_RIGHTS_HEADING: "Tus derechos",
-  PRIVACY_RIGHTS_INTRO:
-    "En virtud del RGPD tienes los siguientes derechos sobre tus datos personales:",
-  PRIVACY_RIGHTS_ACCESS: "Derecho de acceso (art. 15 RGPD)",
-  PRIVACY_RIGHTS_RECTIFICATION: "Derecho de rectificación (art. 16 RGPD)",
-  PRIVACY_RIGHTS_ERASURE: "Derecho de supresión (art. 17 RGPD)",
-  PRIVACY_RIGHTS_PORTABILITY:
-    "Derecho a la portabilidad de datos (art. 20 RGPD)",
-  PRIVACY_RIGHTS_COMPLAINT:
-    "Derecho a presentar una reclamación ante una autoridad de control (art. 77 RGPD)",
-  PRIVACY_RIGHTS_OUTRO:
-    "Para ejercer tus derechos, contacta con la dirección de privacidad indicada más arriba.",
-
-  // ── Pagination ────────────────────────────────────────────────────────────
-  PAGINATION_ITEMS_PER_PAGE: "Elementos por página:",
-  PAGINATION_NO_RESULTS: "0 resultados",
-
-  // ── Chat ──────────────────────────────────────────────────────────────────
-  CHAT_PLACEHOLDER: "Pregunta lo que quieras...",
-  CHAT_PLACEHOLDER_STREAMING: "Pensando...",
-  CHAT_THINKING: "Pensando",
-  CHAT_SLOW_RESPONSE_TITLE: "Aún procesando...",
-  CHAT_SLOW_RESPONSE_HINT: "Esto está tardando un poco más de lo habitual.",
-  CHAT_VERY_SLOW_RESPONSE_HINT:
-    "Aún procesando. Las preguntas complejas requieren más tiempo.",
-  CHAT_SEND: "Enviar",
-  CHAT_STOP: "Detener",
-  CHAT_EMPTY_TITLE: "¿En qué puedo ayudarte?",
-  CHAT_EMPTY_SUBTITLE: "Escribe una pregunta para empezar.",
-  CHAT_COPY: "Copiar",
-  CHAT_COPIED: "Copiado",
-  CHAT_SOURCES: "Fuentes",
-  CHAT_SCROLL_TO_BOTTOM: "Ir al final",
-  CHAT_CLEAR: "Borrar chat",
-  CHAT_OPEN: "Abrir chat",
-  CHAT_CLOSE: "Cerrar chat",
-  CHAT_EXPAND: "Ampliar a pantalla completa",
-  CHAT_COLLAPSE: "Reducir al panel",
-  CHAT_CONNECT_REQUIRED_TITLE: "Conecta ContextRocket",
-  CHAT_CONNECT_REQUIRED_BODY:
-    "Establece NEXT_PUBLIC_CR_AGENT_URL para activar el agente de IA.",
-  CHAT_STREAM_INTERRUPTED:
-    "La conexión se ha interrumpido antes de completar la respuesta. La respuesta puede estar incompleta.",
-  ACCESSIBILITY_TYPING: "El asistente está escribiendo",
-
-  // ── Widget embebible ──────────────────────────────────────────────────────
-  EMBED_AGENT_URL_REJECTED_TITLE: "URL del agente no permitida",
-  EMBED_AGENT_URL_REJECTED_BODY:
-    "El parámetro agent-url proporcionado al widget embebido no coincide con el agente configurado para este sitio.",
-
-  // ── Chat: tipografía de burbuja ───────────────────────────────────────────
-  CHAT_MORE_DETAIL: "Más detalles",
-  CHAT_LESS_DETAIL: "Menos detalles",
-
-  // ── Chat: sugerencias ─────────────────────────────────────────────────────
-  CHAT_SUGGESTIONS_LABEL: "Sugerencias de seguimiento",
-
-  // ── Chat: ficha de fuentes ────────────────────────────────────────────────
-  CHAT_SOURCE_SHEET_TITLE: "Fuentes",
-  CHAT_SOURCE_SHEET_OPEN: "Abrir fuente",
-  CHAT_SOURCE_SHEET_OPEN_NEW_TAB: "Abrir en nueva pestaña",
-  CHAT_SOURCE_CITED_SECTION: "Sección citada",
-  CHAT_SOURCE_PUBLISHER: "Editor",
-  CHAT_SOURCE_DATE: "Fecha",
-  CHAT_SOURCE_LICENSE: "Licencia",
-
-  // ── Chat: tarjeta de clase de política ────────────────────────────────────
-  CHAT_POLICY_CARD_SOURCE: "Fuente",
-
-  // ── Chat: aviso de conversión ─────────────────────────────────────────────
-  CHAT_NUDGE_TITLE: "Guarda tu conversación",
-  CHAT_NUDGE_BODY:
-    "Crea una cuenta gratuita para conservar todo tu historial de chat. Tu conversación actual continuará de todos modos.",
-  CHAT_NUDGE_ACTION: "Crear cuenta",
-  CHAT_NUDGE_DISMISS: "Descartar",
-
-  // ── Chat: vista previa de enlace ──────────────────────────────────────────
-  CHAT_LINK_PREVIEW_TITLE: "Vista previa del enlace",
-  CHAT_LINK_PREVIEW_OPEN: "Abrir en nueva pestaña",
-
-  // ── Cookie consent ────────────────────────────────────────────────────────
-  COOKIE_CONSENT_ARIA_LABEL: "Consentimiento de cookies",
-  COOKIE_CONSENT_TITLE: "Este sitio utiliza cookies",
-  COOKIE_CONSENT_BODY:
-    "Usamos cookies analíticas para mejorar tu experiencia. Consulta nuestra",
-  COOKIE_CONSENT_POLICY_LINK: "Política de privacidad",
-  COOKIE_CONSENT_ACCEPT: "Aceptar",
-  COOKIE_CONSENT_DECLINE: "Rechazar",
-
-  // ── Chat: indicador de respuesta fundamentada ─────────────────────────────
-  CHAT_GROUNDED: "Fundamentada",
-  CHAT_PARTIALLY_GROUNDED: "Parcialmente fundamentada",
-  CHAT_UNGROUNDED: "Sin fundamentar",
-  CHAT_GROUNDED_CLAIMS_CHECKED: "afirmaciones verificadas",
-
-  // ── Chat: modo demo ───────────────────────────────────────────────────────
-  CHAT_DEMO_BADGE: "Demo",
-  CHAT_DEMO_ERROR_SLUG_NOT_FOUND:
-    "El agente de demostración no está disponible. Contacta con el propietario del sitio para activar la demo pública.",
-  CHAT_DEMO_ERROR_UNAUTHORIZED:
-    "Se ha rechazado el acceso a la demo. Es posible que la demo pública no esté habilitada para este agente.",
 } as const;

@@ -45,7 +45,7 @@ export function StreamStatusStack({
           <div className="flex items-center gap-2.5">
             <TypingIndicator />
             <p className="text-xs font-semibold text-foreground">
-              {t("CHAT_PLACEHOLDER_STREAMING")}
+              {t("chat.placeholderStreaming")}
             </p>
           </div>
         </div>
@@ -57,12 +57,12 @@ export function StreamStatusStack({
           className="max-w-xs rounded-xl border border-border/80 bg-muted/60 p-3"
         >
           <p className="text-xs font-semibold text-foreground">
-            {t("CHAT_SLOW_RESPONSE_TITLE")}
+            {t("chat.slow.response.title")}
           </p>
           <p className="mt-1 text-xs text-muted-foreground">
             {isVerySlowResponse
-              ? t("CHAT_VERY_SLOW_RESPONSE_HINT")
-              : t("CHAT_SLOW_RESPONSE_HINT")}
+              ? t("chat.very.slow.response.hint")
+              : t("chat.slow.response.hint")}
           </p>
         </div>
       )}

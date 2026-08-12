@@ -128,7 +128,7 @@ export function ChatFab({
       <button
         ref={fabButtonRef}
         onClick={() => setOpen((prev) => !prev)}
-        aria-label={open ? t("CHAT_CLOSE") : t("CHAT_OPEN")}
+        aria-label={open ? t("chat.close") : t("chat.open")}
         aria-expanded={open}
         data-testid="chat-fab-button"
         className={cn(
@@ -157,12 +157,12 @@ export function ChatFab({
           {/* Fullscreen header with collapse button */}
           <div className="flex items-center justify-between border-b border-border/60 px-4 py-2.5">
             <span className="text-sm font-semibold text-foreground">
-              {welcomeTitle ?? t("CHAT_OPEN")}
+              {welcomeTitle ?? t("chat.open")}
             </span>
             <div className="flex items-center gap-1">
               <button
                 onClick={() => setFullscreen(false)}
-                aria-label={t("CHAT_COLLAPSE")}
+                aria-label={t("chat.collapse")}
                 data-testid="chat-fab-collapse"
                 className="flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
@@ -170,7 +170,7 @@ export function ChatFab({
               </button>
               <button
                 onClick={() => setOpen(false)}
-                aria-label={t("CHAT_CLOSE")}
+                aria-label={t("chat.close")}
                 className="flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                 data-testid="chat-fab-fullscreen-close"
               >
@@ -225,7 +225,7 @@ export function ChatFab({
                       data-testid="chat-fab-demo-badge"
                       className="inline-flex items-center rounded-full border border-primary/20 bg-primary/8 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-primary/70"
                     >
-                      {t("CHAT_DEMO_BADGE")}
+                      {t("chat.demo.badge")}
                     </span>
                   ) : (
                     <span />
@@ -233,7 +233,7 @@ export function ChatFab({
                   {fullscreenEnabled && (
                     <button
                       onClick={() => setFullscreen(true)}
-                      aria-label={t("CHAT_EXPAND")}
+                      aria-label={t("chat.expand")}
                       data-testid="chat-fab-expand"
                       className="flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                     >

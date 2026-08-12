@@ -35,14 +35,14 @@ export default function Home() {
             </h1>
           </div>
           <p className="text-lg text-muted-foreground mb-8">
-            {t("HOME_SUBTITLE")}
+            {t("home.subtitle")}
           </p>
 
           {/* Footer strip: legal links required for EU/DE compliance */}
           <nav aria-label="Main navigation">
             <Link href="/dashboard">
               <Button className="px-8 py-4 text-xl font-semibold rounded-full shadow-lg">
-                {t("HOME_CTA")}
+                {t("home.cta")}
               </Button>
             </Link>
           </nav>
@@ -61,13 +61,13 @@ export default function Home() {
               id="widget-section-heading"
               className="text-xl font-semibold text-foreground"
             >
-              {t("HOME_WIDGET_SECTION_TITLE")}
+              {t("home.widget.section.title")}
             </h2>
             <p className="mt-3 text-sm leading-6 text-muted-foreground">
-              {t("HOME_WIDGET_SECTION_BODY")}
+              {t("home.widget.section.body")}
             </p>
             <p className="mt-4 text-xs font-medium text-muted-foreground">
-              {t("HOME_WIDGET_SNIPPET_NOTE")}
+              {t("home.widget.snippet.note")}
             </p>
             <pre className="mt-3 overflow-x-auto rounded-lg bg-muted/80 px-4 py-3 text-xs leading-relaxed text-foreground">
               <code>{`<script
@@ -81,16 +81,16 @@ export default function Home() {
 
           <footer className="mt-16 text-sm text-muted-foreground flex gap-4 justify-center items-center">
             <Link href="/impressum" className="hover:underline">
-              {t("FOOTER_IMPRESSUM")}
+              {t("footer.impressum")}
             </Link>
             <Link href="/privacy" className="hover:underline">
-              {t("FOOTER_PRIVACY")}
+              {t("footer.privacy")}
             </Link>
             <Link href="/faq" className="hover:underline">
-              {t("FOOTER_FAQ")}
+              {t("footer.faq")}
             </Link>
             <Link href="/blog" className="hover:underline">
-              {t("BLOG_TITLE")}
+              {t("blog.title")}
             </Link>
             <LocaleSwitcher />
           </footer>

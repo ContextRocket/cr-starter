@@ -43,18 +43,18 @@ export default function Page() {
         <Card className="w-full max-w-sm">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-semibold">
-              {t("AUTH_REGISTER_TITLE")}
+              {t("auth.register.title")}
             </CardTitle>
-            <CardDescription>{t("AUTH_REGISTER_DESCRIPTION")}</CardDescription>
+            <CardDescription>{t("auth.register.description")}</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-6 p-6">
             <div className="grid gap-3">
-              <Label htmlFor="email">{t("FORM_EMAIL")}</Label>
+              <Label htmlFor="email">{t("form.email")}</Label>
               <Input
                 id="email"
                 name="email"
                 type="email"
-                placeholder={t("FORM_PLACEHOLDER_EMAIL")}
+                placeholder={t("form.placeholder.email")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -62,7 +62,7 @@ export default function Page() {
               <FieldError state={state} field="email" />
             </div>
             <div className="grid gap-3">
-              <Label htmlFor="password">{t("FORM_PASSWORD")}</Label>
+              <Label htmlFor="password">{t("form.password")}</Label>
               <Input
                 id="password"
                 name="password"
@@ -73,14 +73,14 @@ export default function Page() {
               />
               <FieldError state={state} field="password" />
             </div>
-            <SubmitButton text={t("AUTH_REGISTER_SUBMIT")} />
+            <SubmitButton text={t("auth.register.submit")} />
             <FormError state={state} />
             <div className="mt-4 text-center text-sm text-muted-foreground">
               <Link
                 href="/auth/login"
                 className="underline underline-offset-4 hover:text-foreground"
               >
-                {t("AUTH_REGISTER_BACK")}
+                {t("auth.register.back")}
               </Link>
             </div>
           </CardContent>

@@ -25,7 +25,7 @@ export function PageSizeSelector({ currentSize }: PageSizeSelectorProps) {
   return (
     <div className="flex items-center space-x-2">
       <span className="text-sm text-muted-foreground">
-        {t("PAGINATION_ITEMS_PER_PAGE")}
+        {t("pagination.items.per.page")}
       </span>
       <Select value={currentSize.toString()} onValueChange={handleSizeChange}>
         <SelectTrigger className="w-20">

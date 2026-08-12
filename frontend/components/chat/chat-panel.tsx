@@ -179,7 +179,7 @@ export function ChatPanel({
           onSend={handleSend}
           onStop={chat.abort}
           isStreaming={isStreaming}
-          placeholder={t("CHAT_PLACEHOLDER")}
+          placeholder={t("chat.placeholder")}
         />
       )}
     </div>

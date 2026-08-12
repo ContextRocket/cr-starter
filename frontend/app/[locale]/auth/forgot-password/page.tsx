@@ -26,24 +26,24 @@ export default function Page() {
         <Card className="w-full max-w-sm">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-semibold">
-              {t("AUTH_PASSWORD_RECOVERY_TITLE")}
+              {t("auth.password.recovery.title")}
             </CardTitle>
             <CardDescription>
-              {t("AUTH_PASSWORD_RECOVERY_DESCRIPTION")}
+              {t("auth.password.recovery.description")}
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-6 p-6">
             <div className="grid gap-3">
-              <Label htmlFor="email">{t("FORM_EMAIL")}</Label>
+              <Label htmlFor="email">{t("form.email")}</Label>
               <Input
                 id="email"
                 name="email"
                 type="email"
-                placeholder={t("FORM_PLACEHOLDER_EMAIL")}
+                placeholder={t("form.placeholder.email")}
                 required
               />
             </div>
-            <SubmitButton text={t("AUTH_PASSWORD_RECOVERY_SUBMIT")} />
+            <SubmitButton text={t("auth.password.recovery.submit")} />
             <FormError state={state} />
             <div className="mt-2 text-sm text-center text-muted-foreground">
               {state?.message && <p>{state.message}</p>}
@@ -53,7 +53,7 @@ export default function Page() {
                 href="/auth/login"
                 className="underline underline-offset-4 hover:text-foreground"
               >
-                {t("AUTH_PASSWORD_RECOVERY_BACK")}
+                {t("auth.password.recovery.back")}
               </Link>
             </div>
           </CardContent>

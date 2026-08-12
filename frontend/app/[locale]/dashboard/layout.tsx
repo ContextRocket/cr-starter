@@ -24,7 +24,7 @@ export default function DashboardLayout({
         <div className="flex flex-col items-center gap-8">
           <Link
             href="/dashboard"
-            title={t("NAV_DASHBOARD")}
+            title={t("nav.dashboard")}
             className="flex items-center justify-center rounded-full bg-primary/10 p-3 transition-all duration-200 hover:scale-105 hover:bg-primary/20"
           >
             <Bot className="h-8 w-8 text-primary" />
@@ -47,7 +47,7 @@ export default function DashboardLayout({
                 <DropdownMenuContent align="end" side="bottom">
                   <DropdownMenuItem>
                     <button onClick={logout} className="block w-full text-left">
-                      {t("NAV_LOGOUT")}
+                      {t("nav.logout")}
                     </button>
                   </DropdownMenuItem>
                 </DropdownMenuContent>

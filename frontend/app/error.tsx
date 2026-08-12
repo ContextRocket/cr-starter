@@ -22,9 +22,9 @@ export default function GlobalError({
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-4 p-8">
-      <p className="text-muted-foreground">{t("ERROR_GENERIC")}</p>
+      <p className="text-muted-foreground">{t("error.generic")}</p>
       <Button variant="outline" onClick={reset}>
-        {t("ERROR_TRY_AGAIN")}
+        {t("error.try.again")}
       </Button>
     </div>
   );

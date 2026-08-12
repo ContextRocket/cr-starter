@@ -28,14 +28,14 @@ export function DashboardHome({ isOperator }: DashboardHomeProps) {
       <DashboardCard
         data-testid="dashboard-card-chat"
         icon={<MessageSquare className="h-6 w-6" />}
-        title={t("DASHBOARD_CARD_CHAT_TITLE")}
-        description={t("DASHBOARD_CARD_CHAT_DESCRIPTION")}
+        title={t("dashboard.card.chat.title")}
+        description={t("dashboard.card.chat.description")}
         action={
           <Link
             href="/chat"
             className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
           >
-            {t("DASHBOARD_CARD_CHAT_ACTION")}
+            {t("dashboard.card.chat.action")}
           </Link>
         }
       />
@@ -43,14 +43,14 @@ export function DashboardHome({ isOperator }: DashboardHomeProps) {
       <DashboardCard
         data-testid="dashboard-card-profile"
         icon={<User className="h-6 w-6" />}
-        title={t("DASHBOARD_CARD_PROFILE_TITLE")}
-        description={t("DASHBOARD_CARD_PROFILE_DESCRIPTION")}
+        title={t("dashboard.card.profile.title")}
+        description={t("dashboard.card.profile.description")}
         action={
           <Link
             href="/dashboard/profile"
             className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
           >
-            {t("DASHBOARD_CARD_PROFILE_ACTION")}
+            {t("dashboard.card.profile.action")}
           </Link>
         }
       />
@@ -59,14 +59,14 @@ export function DashboardHome({ isOperator }: DashboardHomeProps) {
         <DashboardCard
           data-testid="dashboard-card-users"
           icon={<Users className="h-6 w-6" />}
-          title={t("DASHBOARD_CARD_USERS_TITLE")}
-          description={t("DASHBOARD_CARD_USERS_DESCRIPTION")}
+          title={t("dashboard.card.users.title")}
+          description={t("dashboard.card.users.description")}
           action={
             <Link
               href="/dashboard/users"
               className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
             >
-              {t("DASHBOARD_CARD_USERS_ACTION")}
+              {t("dashboard.card.users.action")}
             </Link>
           }
         />
@@ -86,16 +86,16 @@ export function GuestPrompt() {
     >
       <div className="text-center max-w-md">
         <h1 className="text-2xl font-bold text-foreground mb-2">
-          {t("DASHBOARD_GUEST_PROMPT_TITLE")}
+          {t("dashboard.guest.prompt.title")}
         </h1>
         <p className="text-muted-foreground mb-6">
-          {t("DASHBOARD_GUEST_PROMPT_DESCRIPTION")}
+          {t("dashboard.guest.prompt.description")}
         </p>
         <Link
           href="/auth/register"
           className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
         >
-          {t("DASHBOARD_GUEST_PROMPT_ACTION")}
+          {t("dashboard.guest.prompt.action")}
         </Link>
       </div>
     </div>

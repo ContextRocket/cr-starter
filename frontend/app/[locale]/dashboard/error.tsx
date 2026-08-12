@@ -22,9 +22,9 @@ export default function DashboardError({
 
   return (
     <div className="flex flex-col items-center justify-center gap-4 py-12">
-      <p className="text-muted-foreground">{t("ERROR_DASHBOARD")}</p>
+      <p className="text-muted-foreground">{t("error.dashboard")}</p>
       <Button variant="outline" onClick={reset}>
-        {t("ERROR_TRY_AGAIN")}
+        {t("error.try.again")}
       </Button>
     </div>
   );

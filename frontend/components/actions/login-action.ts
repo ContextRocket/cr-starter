@@ -50,7 +50,7 @@ export async function login(prevState: unknown, formData: FormData) {
   } catch (err) {
     logger.error("[LOGIN] Error:", err);
     return {
-      server_error: t("ERROR_UNEXPECTED"),
+      server_error: t("error.unexpected"),
     };
   }
   return await redirect("/dashboard");

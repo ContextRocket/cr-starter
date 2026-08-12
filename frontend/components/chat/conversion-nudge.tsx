@@ -82,7 +82,7 @@ export function ConversionNudge({ isGuest, onAction }: ConversionNudgeProps) {
           : "opacity-0 translate-y-2 pointer-events-none",
       )}
       role="complementary"
-      aria-label={t("CHAT_NUDGE_TITLE")}
+      aria-label={t("chat.nudge.title")}
     >
       <div
         className={cn(
@@ -94,7 +94,7 @@ export function ConversionNudge({ isGuest, onAction }: ConversionNudgeProps) {
         {/* Dismiss button */}
         <button
           onClick={handleDismiss}
-          aria-label={t("CHAT_NUDGE_DISMISS")}
+          aria-label={t("chat.nudge.dismiss")}
           data-testid="conversion-nudge-dismiss"
           className="absolute right-2 top-2 flex size-6 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         >
@@ -102,10 +102,10 @@ export function ConversionNudge({ isGuest, onAction }: ConversionNudgeProps) {
         </button>
 
         <p className="pr-6 text-sm font-medium text-foreground">
-          {t("CHAT_NUDGE_TITLE")}
+          {t("chat.nudge.title")}
         </p>
         <p className="mt-0.5 pr-6 text-xs text-muted-foreground">
-          {t("CHAT_NUDGE_BODY")}
+          {t("chat.nudge.body")}
         </p>
 
         <button
@@ -116,7 +116,7 @@ export function ConversionNudge({ isGuest, onAction }: ConversionNudgeProps) {
             "transition-opacity hover:opacity-90",
           )}
         >
-          {t("CHAT_NUDGE_ACTION")}
+          {t("chat.nudge.action")}
         </button>
       </div>
     </div>

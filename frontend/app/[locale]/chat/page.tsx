@@ -25,10 +25,10 @@ export default function ChatPage() {
         data-testid="chat-page-disabled"
       >
         <h1 className="text-2xl font-semibold text-foreground">
-          {t("CHAT_CONNECT_REQUIRED_TITLE")}
+          {t("chat.connect.required.title")}
         </h1>
         <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-          {t("CHAT_CONNECT_REQUIRED_BODY")}
+          {t("chat.connect.required.body")}
         </p>
       </main>
     );
@@ -40,7 +40,7 @@ export default function ChatPage() {
         <header className="flex items-center justify-between gap-4">
           <Image
             src={siteConfig.assets.logo}
-            alt={t("HOME_LOGO_ALT")}
+            alt={siteConfig.companyName}
             width={200}
             height={77}
             className="h-12 w-auto rounded-sm"

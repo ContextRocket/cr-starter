@@ -39,7 +39,7 @@ export function CitationPills({
       <div
         data-testid="citation-pills"
         className="flex flex-wrap items-center gap-1.5 pt-1"
-        aria-label={t("CHAT_SOURCES")}
+        aria-label={t("chat.sources")}
       >
         {sources.map((source, i) => {
           const label = `[${i + 1}]`;

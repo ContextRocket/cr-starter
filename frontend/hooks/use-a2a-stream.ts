@@ -177,14 +177,14 @@ function classifyError(
     ) {
       return {
         kind: "auth",
-        message: t("CHAT_DEMO_ERROR_UNAUTHORIZED"),
+        message: t("chat.demo.error.unauthorized"),
         errorKey,
       };
     }
     if (errorKey?.includes("no published content")) {
       return {
         kind: "agent_failed",
-        message: t("CHAT_DEMO_ERROR_SLUG_NOT_FOUND"),
+        message: t("chat.demo.error.slug.not.found"),
         errorKey,
       };
     }
@@ -433,7 +433,7 @@ export function useA2AStream(
               }
               setError({
                 kind: "interrupted",
-                message: t("CHAT_STREAM_INTERRUPTED"),
+                message: t("chat.stream.interrupted"),
               });
               setStreamingText("");
               setPhase("failed");

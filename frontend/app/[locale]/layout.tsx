@@ -91,8 +91,8 @@ export default async function LocaleLayout({
                 data-testid="siteurl-placeholder-warning"
                 className="border-b border-yellow-500 bg-yellow-50 px-4 py-2 text-center text-sm text-yellow-900"
               >
-                <strong>{t("DEV_NOTICE_LABEL")}</strong>{" "}
-                {t("SITE_CONFIG_URL_WARNING")}
+                <strong>{t("dev.notice.label")}</strong>{" "}
+                {t("dev.siteConfigUrlWarning")}
               </div>
             )}
             {children}
