@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import { screen } from "@testing-library/dom";
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 
 import Home from "@/app/[locale]/page";
 import { LocaleProvider } from "@/i18n/locale-provider";

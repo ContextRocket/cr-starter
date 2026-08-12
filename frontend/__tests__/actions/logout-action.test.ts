@@ -1,36 +1,37 @@
 import { logout } from "@/components/actions/logout-action";
 import { authJwtLogout } from "@/app/clientService";
 import { cookies } from "next/headers";
+import type { Mock } from "vitest";
 import { redirect } from "@/i18n/redirect";
 
-jest.mock("../../app/clientService", () => ({
-  authJwtLogout: jest.fn(),
+vi.mock("../../app/clientService", () => ({
+  authJwtLogout: vi.fn(),
 }));
 
-jest.mock("next/headers", () => {
-  const mockGet = jest.fn();
-  const mockDelete = jest.fn();
+vi.mock("next/headers", () => {
+  const mockGet = vi.fn();
+  const mockDelete = vi.fn();
   return {
-    cookies: jest.fn().mockResolvedValue({ get: mockGet, delete: mockDelete }),
+    cookies: vi.fn().mockResolvedValue({ get: mockGet, delete: mockDelete }),
   };
 });
 
-jest.mock("../../i18n/redirect", () => ({
-  redirect: jest.fn(),
+vi.mock("../../i18n/redirect", () => ({
+  redirect: vi.fn(),
 }));
 
 describe("logout action", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("calls logout API, deletes cookie, and redirects to login", async () => {
     const mockCookieStore = await cookies();
-    (mockCookieStore.get as jest.Mock).mockReturnValue({
+    (mockCookieStore.get as Mock).mockReturnValue({
       value: "test-token",
     });
 
-    (authJwtLogout as jest.Mock).mockResolvedValue({});
+    (authJwtLogout as Mock).mockResolvedValue({});
 
     await logout();
 
@@ -43,7 +44,7 @@ describe("logout action", () => {
 
   it("returns error when no access token", async () => {
     const mockCookieStore = await cookies();
-    (mockCookieStore.get as jest.Mock).mockReturnValue(undefined);
+    (mockCookieStore.get as Mock).mockReturnValue(undefined);
 
     const result = await logout();
 
@@ -53,12 +54,12 @@ describe("logout action", () => {
 
   it("returns error message on API failure", async () => {
     const mockCookieStore = await cookies();
-    (mockCookieStore.get as jest.Mock).mockReturnValue({
+    (mockCookieStore.get as Mock).mockReturnValue({
       value: "test-token",
     });
 
     const mockError = "UNAUTHORIZED";
-    (authJwtLogout as jest.Mock).mockResolvedValue({ error: mockError });
+    (authJwtLogout as Mock).mockResolvedValue({ error: mockError });
 
     const result = await logout();
 

@@ -5,14 +5,15 @@
  * literal translated copy values (en strings differ from es/de).
  */
 
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import React from "react";
 
 import { LocaleProvider, useLocale } from "@/i18n/locale-provider";
 import { getCurrentLocale, t, setLocale } from "@/i18n/keys";
 import { SUPPORTED_LOCALES } from "@/i18n/messages";
+import type { MockInstance } from "vitest";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -79,9 +80,9 @@ describe("LocaleProvider", () => {
 
   describe("useLocale outside provider", () => {
     // Suppress the expected error output in this test.
-    let consoleError: jest.SpyInstance;
+    let consoleError: MockInstance;
     beforeEach(() => {
-      consoleError = jest.spyOn(console, "error").mockImplementation(() => {});
+      consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
     });
     afterEach(() => {
       consoleError.mockRestore();
@@ -122,9 +123,12 @@ describe("LocaleProvider", () => {
       });
 
       // After switching to "de" the state updates.
-      // Note: loading the de module is async (dynamic import); in jsdom it
-      // resolves, but we just verify the state changed without asserting copy.
-      expect(screen.getByTestId("active-locale")).toHaveTextContent("de");
+      // Note: loading the de module is async (dynamic import); under Vitest it
+      // resolves outside the click's act() window, so wait for the state
+      // change without asserting copy.
+      await waitFor(() => {
+        expect(screen.getByTestId("active-locale")).toHaveTextContent("de");
+      });
     });
 
     it("is a no-op when switching to the same locale", async () => {
@@ -157,8 +161,10 @@ describe("LocaleProvider", () => {
         await user.click(screen.getByTestId("change-locale-btn"));
       });
 
-      // Cookie should contain the new locale.
-      expect(document.cookie).toContain("NEXT_LOCALE=es");
+      // Cookie should contain the new locale (async module load: waitFor).
+      await waitFor(() => {
+        expect(document.cookie).toContain("NEXT_LOCALE=es");
+      });
     });
   });
 

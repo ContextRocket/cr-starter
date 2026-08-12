@@ -1,18 +1,22 @@
 import { render } from "@testing-library/react";
 import { screen } from "@testing-library/dom";
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 
 import { DashboardBreadcrumb } from "@/components/dashboard/dashboard-breadcrumb";
 import { mockPathname } from "../__mocks__/navigation";
 
-const mockPageTitle = jest.fn();
-const mockExtraSegments = jest.fn();
-jest.mock("../../components/dashboard/breadcrumb-context", () => ({
+// vi.mock factories are hoisted above the module body, so the mocks used by
+// the factory live in vi.hoisted().
+const { mockPageTitle, mockExtraSegments } = vi.hoisted(() => ({
+  mockPageTitle: vi.fn(),
+  mockExtraSegments: vi.fn(),
+}));
+vi.mock("../../components/dashboard/breadcrumb-context", () => ({
   usePageTitle: () => ({
     pageTitle: mockPageTitle(),
-    setPageTitle: jest.fn(),
+    setPageTitle: vi.fn(),
     extraSegments: mockExtraSegments(),
-    setExtraSegments: jest.fn(),
+    setExtraSegments: vi.fn(),
   }),
 }));
 

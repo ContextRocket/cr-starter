@@ -1,24 +1,25 @@
 import { passwordResetConfirm } from "@/components/actions/password-reset-action";
 import { resetResetPassword } from "@/app/clientService";
+import type { Mock } from "vitest";
 import { redirect } from "@/i18n/redirect";
 
-jest.mock("../../i18n/redirect", () => ({
-  redirect: jest.fn(),
+vi.mock("../../i18n/redirect", () => ({
+  redirect: vi.fn(),
 }));
 
-jest.mock("../../lib/openapi-client/sdk.gen", () => ({
-  resetResetPassword: jest.fn(),
+vi.mock("../../lib/openapi-client/sdk.gen", () => ({
+  resetResetPassword: vi.fn(),
 }));
 
-jest.mock("../../lib/clientConfig", () => ({
+vi.mock("../../lib/clientConfig", () => ({
   client: {
-    setConfig: jest.fn(),
+    setConfig: vi.fn(),
   },
 }));
 
 describe("password reset confirm action", () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should call resetPassword with the correct input", async () => {
@@ -27,7 +28,7 @@ describe("password reset confirm action", () => {
     formData.set("password", "P12345678#");
     formData.set("passwordConfirm", "P12345678#");
     // Mock a successful password reset confirm
-    (resetResetPassword as jest.Mock).mockResolvedValue({});
+    (resetResetPassword as Mock).mockResolvedValue({});
 
     await passwordResetConfirm({}, formData);
 
@@ -44,7 +45,7 @@ describe("password reset confirm action", () => {
     formData.set("passwordConfirm", "P12345678#");
 
     // Mock a failed password reset
-    (resetResetPassword as jest.Mock).mockResolvedValue({
+    (resetResetPassword as Mock).mockResolvedValue({
       error: { detail: "Invalid token" },
     });
 
@@ -74,11 +75,11 @@ describe("password reset confirm action", () => {
   });
 
   it("should handle unexpected errors and return server error message", async () => {
-    const consoleSpy = jest.spyOn(console, "error").mockImplementation();
+    const consoleSpy = vi.spyOn(console, "error").mockImplementation();
 
     // Mock the resetResetPassword to throw an error
     const mockError = new Error("Network error");
-    (resetResetPassword as jest.Mock).mockRejectedValue(mockError);
+    (resetResetPassword as Mock).mockRejectedValue(mockError);
 
     const formData = new FormData();
     formData.append("resetToken", "token");

@@ -1,16 +1,16 @@
 import { render } from "@testing-library/react";
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import { toast } from "sonner";
 
 import { ErrorToast } from "@/components/dashboard/error-toast";
 
-jest.mock("sonner", () => ({
-  toast: { error: jest.fn() },
+vi.mock("sonner", () => ({
+  toast: { error: vi.fn() },
 }));
 
 describe("ErrorToast", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("calls toast.error with the provided message on mount", () => {

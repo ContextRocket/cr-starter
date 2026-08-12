@@ -30,14 +30,14 @@ function makeSSEBody(
 }
 
 function mockStreamFetch(events: Record<string, unknown>[]) {
-  global.fetch = jest.fn().mockResolvedValueOnce({
+  global.fetch = vi.fn().mockResolvedValueOnce({
     ok: true,
     body: makeSSEBody(events),
   });
 }
 
 function mockFetchError(message: string) {
-  global.fetch = jest.fn().mockRejectedValueOnce(new TypeError(message));
+  global.fetch = vi.fn().mockRejectedValueOnce(new TypeError(message));
 }
 
 // ── Tests ─────────────────────────────────────────────────────────────────────
@@ -46,7 +46,7 @@ const AGENT_URL = "http://localhost:8100";
 
 describe("useA2AStream", () => {
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe("initial state", () => {
@@ -148,7 +148,7 @@ describe("useA2AStream", () => {
   describe("abort", () => {
     it("returns to idle phase after abort", () => {
       // Never resolves — simulates a hanging stream.
-      global.fetch = jest.fn().mockReturnValueOnce(new Promise(() => {}));
+      global.fetch = vi.fn().mockReturnValueOnce(new Promise(() => {}));
 
       const { result } = renderHook(() => useA2AStream({ baseUrl: AGENT_URL }));
 
@@ -166,7 +166,7 @@ describe("useA2AStream", () => {
     });
 
     it("removes the pending assistant message after abort", () => {
-      global.fetch = jest.fn().mockReturnValueOnce(new Promise(() => {}));
+      global.fetch = vi.fn().mockReturnValueOnce(new Promise(() => {}));
 
       const { result } = renderHook(() => useA2AStream({ baseUrl: AGENT_URL }));
 
@@ -187,7 +187,7 @@ describe("useA2AStream", () => {
 
   describe("clearThread", () => {
     it("resets all state to initial values", () => {
-      global.fetch = jest.fn().mockReturnValueOnce(new Promise(() => {}));
+      global.fetch = vi.fn().mockReturnValueOnce(new Promise(() => {}));
 
       const { result } = renderHook(() => useA2AStream({ baseUrl: AGENT_URL }));
 
@@ -226,7 +226,7 @@ describe("useA2AStream", () => {
 
   describe("empty message guard", () => {
     it("does not call fetch for empty messages", () => {
-      const fetchSpy = jest.fn();
+      const fetchSpy = vi.fn();
       global.fetch = fetchSpy;
 
       const { result } = renderHook(() => useA2AStream({ baseUrl: AGENT_URL }));
@@ -374,7 +374,7 @@ describe("useA2AStream", () => {
 
   describe("demo-slug mode — anon request shaping", () => {
     it("includes public_slug in metadata when demoPublicSlug is set and no token", async () => {
-      const fetchSpy = jest.fn().mockResolvedValueOnce({
+      const fetchSpy = vi.fn().mockResolvedValueOnce({
         ok: true,
         body: makeSSEBody([
           {
@@ -406,7 +406,7 @@ describe("useA2AStream", () => {
     });
 
     it("does NOT include public_slug when a bearerToken is present", async () => {
-      const fetchSpy = jest.fn().mockResolvedValueOnce({
+      const fetchSpy = vi.fn().mockResolvedValueOnce({
         ok: true,
         body: makeSSEBody([
           {
@@ -440,7 +440,7 @@ describe("useA2AStream", () => {
     });
 
     it("uses no Authorization header in demo-slug mode (no token)", async () => {
-      const fetchSpy = jest.fn().mockResolvedValueOnce({
+      const fetchSpy = vi.fn().mockResolvedValueOnce({
         ok: true,
         body: makeSSEBody([
           {
@@ -589,8 +589,7 @@ describe("useA2AStream", () => {
       // Second fetch hangs forever WITHOUT rejecting, so the second turn is
       // still in-flight while the first turn's AbortError settles.
       const secondFetch = () => new Promise(() => {});
-      global.fetch = jest
-        .fn()
+      global.fetch = vi        .fn()
         .mockImplementationOnce(firstFetch)
         .mockImplementationOnce(secondFetch);
 
@@ -618,8 +617,7 @@ describe("useA2AStream", () => {
 
     it("completes the second turn normally after the first was superseded", async () => {
       const firstFetch = hangingFetchThatRejectsOnAbort();
-      global.fetch = jest
-        .fn()
+      global.fetch = vi        .fn()
         .mockImplementationOnce(firstFetch)
         .mockImplementationOnce(() =>
           Promise.resolve({
@@ -685,13 +683,13 @@ describe("useA2AStream", () => {
 
   describe("three-tier latency flags (fake timers)", () => {
     afterEach(() => {
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
 
     it("sets isSlowResponse after 8s and isVerySlowResponse after 20s", () => {
-      jest.useFakeTimers();
+      vi.useFakeTimers();
       // Hanging stream: no first token ever arrives.
-      global.fetch = jest.fn().mockReturnValueOnce(new Promise(() => {}));
+      global.fetch = vi.fn().mockReturnValueOnce(new Promise(() => {}));
 
       const { result } = renderHook(() => useA2AStream({ baseUrl: AGENT_URL }));
 
@@ -703,7 +701,7 @@ describe("useA2AStream", () => {
       expect(result.current.isVerySlowResponse).toBe(false);
 
       act(() => {
-        jest.advanceTimersByTime(8_000);
+        vi.advanceTimersByTime(8_000);
       });
       expect(result.current.isSlowResponse).toBe(true);
       expect(result.current.isVerySlowResponse).toBe(false);
@@ -712,14 +710,14 @@ describe("useA2AStream", () => {
       expect(result.current.isWaitingForResponse).toBe(true);
 
       act(() => {
-        jest.advanceTimersByTime(12_000);
+        vi.advanceTimersByTime(12_000);
       });
       expect(result.current.isVerySlowResponse).toBe(true);
     });
 
     it("clears the slow tiers on abort", () => {
-      jest.useFakeTimers();
-      global.fetch = jest.fn().mockReturnValueOnce(new Promise(() => {}));
+      vi.useFakeTimers();
+      global.fetch = vi.fn().mockReturnValueOnce(new Promise(() => {}));
 
       const { result } = renderHook(() => useA2AStream({ baseUrl: AGENT_URL }));
 
@@ -727,7 +725,7 @@ describe("useA2AStream", () => {
         result.current.sendMessage("Hello");
       });
       act(() => {
-        jest.advanceTimersByTime(8_000);
+        vi.advanceTimersByTime(8_000);
       });
       expect(result.current.isSlowResponse).toBe(true);
 

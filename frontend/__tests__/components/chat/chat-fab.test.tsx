@@ -9,39 +9,44 @@ import type { UseA2AStreamResult } from "@/hooks/use-a2a-stream";
 // Hoisted-state fixture: the mock hook returns ONE stable chat object so the
 // tests can assert that both layouts (drawer + fullscreen) receive the same
 // conversation and that layout toggles never abort the stream.
-const mockAbort = jest.fn();
-const mockChat: UseA2AStreamResult = {
-  messages: [
-    {
-      id: "m1",
-      role: "user",
-      content: "Hi",
-      createdAt: "2026-01-01T00:00:00Z",
-    },
-    {
-      id: "m2",
-      role: "assistant",
-      content: "Hello there",
-      createdAt: "2026-01-01T00:00:01Z",
-    },
-  ],
-  phase: "completed",
-  streamingText: "",
-  isThinking: false,
-  isWaitingForResponse: false,
-  isSlowResponse: false,
-  isVerySlowResponse: false,
-  error: null,
-  threadId: "thread-42",
-  sendMessage: jest.fn(),
-  abort: mockAbort,
-  clearThread: jest.fn(),
-};
+// vi.mock factories are hoisted above the module body, so the fixture lives
+// in vi.hoisted() to be reachable from both the factory and the tests.
+const { mockAbort, mockChat } = vi.hoisted(() => {
+  const mockAbort = vi.fn();
+  const mockChat: UseA2AStreamResult = {
+    messages: [
+      {
+        id: "m1",
+        role: "user",
+        content: "Hi",
+        createdAt: "2026-01-01T00:00:00Z",
+      },
+      {
+        id: "m2",
+        role: "assistant",
+        content: "Hello there",
+        createdAt: "2026-01-01T00:00:01Z",
+      },
+    ],
+    phase: "completed",
+    streamingText: "",
+    isThinking: false,
+    isWaitingForResponse: false,
+    isSlowResponse: false,
+    isVerySlowResponse: false,
+    error: null,
+    threadId: "thread-42",
+    sendMessage: vi.fn(),
+    abort: mockAbort,
+    clearThread: vi.fn(),
+  };
+  return { mockAbort, mockChat };
+});
 
-// jest.mock calls are hoisted so we use relative paths from this test file
+// vi.mock calls are hoisted so we use relative paths from this test file
 // to ensure the resolver can find them before the module graph is built.
 // The panel mock surfaces the chat prop contents so continuity is observable.
-jest.mock("../../../components/chat/chat-panel", () => ({
+vi.mock("../../../components/chat/chat-panel", () => ({
   ChatPanel: ({
     "data-testid": testId,
     chat,
@@ -60,8 +65,8 @@ jest.mock("../../../components/chat/chat-panel", () => ({
   ),
 }));
 
-jest.mock("../../../hooks/use-a2a-stream", () => ({
-  useA2AStream: jest.fn(() => mockChat),
+vi.mock("../../../hooks/use-a2a-stream", () => ({
+  useA2AStream: vi.fn(() => mockChat),
 }));
 
 import { ChatFab } from "@/components/chat/chat-fab";

@@ -31,7 +31,7 @@ describe("ChatEmptyState", () => {
   });
 
   it("renders icebreaker chips when onIcebreakerSelect is provided", () => {
-    render(<ChatEmptyState onIcebreakerSelect={jest.fn()} />);
+    render(<ChatEmptyState onIcebreakerSelect={vi.fn()} />);
     // The site config ships with 4 en icebreakers by default.
     expect(screen.getByTestId("icebreaker-chips")).toBeInTheDocument();
     expect(screen.getByTestId("icebreaker-chip-1")).toBeInTheDocument();
@@ -46,7 +46,7 @@ describe("ChatEmptyState", () => {
   });
 
   it("calls onIcebreakerSelect with the message when a chip is clicked", () => {
-    const handleSelect = jest.fn();
+    const handleSelect = vi.fn();
     render(<ChatEmptyState onIcebreakerSelect={handleSelect} />);
 
     fireEvent.click(screen.getByTestId("icebreaker-chip-1"));

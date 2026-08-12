@@ -1,21 +1,24 @@
 import { register } from "@/components/actions/register-action";
 import { redirect } from "@/i18n/redirect";
 import { registerRegister, authJwtLogin } from "@/app/clientService";
+import type { Mock } from "vitest";
 
-jest.mock("../../i18n/redirect", () => ({
-  redirect: jest.fn(),
+vi.mock("../../i18n/redirect", () => ({
+  redirect: vi.fn(),
 }));
 
-const mockCookiesSet = jest.fn();
-jest.mock("next/headers", () => ({
-  cookies: jest.fn(() => ({
+// vi.mock factories are hoisted above the module body, so the mock used by
+// the factory lives in vi.hoisted().
+const { mockCookiesSet } = vi.hoisted(() => ({ mockCookiesSet: vi.fn() }));
+vi.mock("next/headers", () => ({
+  cookies: vi.fn(() => ({
     set: mockCookiesSet,
   })),
 }));
 
-jest.mock("../../app/clientService", () => ({
-  registerRegister: jest.fn(),
-  authJwtLogin: jest.fn(),
+vi.mock("../../app/clientService", () => ({
+  registerRegister: vi.fn(),
+  authJwtLogin: vi.fn(),
 }));
 
 describe("register action", () => {
@@ -28,8 +31,8 @@ describe("register action", () => {
     formData.set("email", "a@a.com");
     formData.set("password", "Q12341414#");
 
-    (registerRegister as jest.Mock).mockResolvedValue({});
-    (authJwtLogin as jest.Mock).mockResolvedValue({
+    (registerRegister as Mock).mockResolvedValue({});
+    (authJwtLogin as Mock).mockResolvedValue({
       data: { access_token: "token" },
     });
 
@@ -59,7 +62,7 @@ describe("register action", () => {
     formData.set("email", "a@a.com");
     formData.set("password", "Q12341414#");
 
-    (registerRegister as jest.Mock).mockResolvedValue({
+    (registerRegister as Mock).mockResolvedValue({
       error: {
         detail: "REGISTER_USER_ALREADY_EXISTS",
       },
@@ -102,11 +105,11 @@ describe("register action", () => {
   });
 
   it("should handle unexpected errors and return server error with preserved values", async () => {
-    const consoleSpy = jest.spyOn(console, "error").mockImplementation();
+    const consoleSpy = vi.spyOn(console, "error").mockImplementation();
 
     // Mock the registerRegister to throw an error
     const mockError = new Error("Network error");
-    (registerRegister as jest.Mock).mockRejectedValue(mockError);
+    (registerRegister as Mock).mockRejectedValue(mockError);
 
     const formData = new FormData();
     formData.append("email", "testuser@example.com");

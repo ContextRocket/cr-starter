@@ -6,7 +6,7 @@
  * and key SETS MATCH -- not literal translated copy values.
  *
  * Running the parity script (node scripts/check-i18n-parity.js) provides
- * the ground-truth AST check; these Jest tests give CI-integrated coverage.
+ * the ground-truth AST check; these Vitest tests give CI-integrated coverage.
  */
 
 import { en } from "@/i18n/messages/en";
