@@ -18,14 +18,16 @@ import {
 } from "@/i18n/messages";
 import { siteConfig } from "@/site.config";
 
+// Fonts: swap the src for a different face, or replace with
+// next/font/google for Inter/JetBrains Mono — no component changes needed.
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
+  variable: "--font-sans",
   weight: "100 900",
 });
 const geistMono = localFont({
   src: "../fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
+  variable: "--font-mono",
   weight: "100 900",
 });
 
