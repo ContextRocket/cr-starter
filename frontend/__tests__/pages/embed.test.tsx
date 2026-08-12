@@ -5,7 +5,7 @@
  * behavior by calling it as a plain async function (no HTTP stack needed)
  * and asserting on the returned JSX via @testing-library/react.
  *
- * jest.mock paths must be relative (not @/ aliases) because jest.mock is
+ * vi.mock paths must be relative (not @/ aliases) because vi.mock is
  * hoisted before the module resolver runs -- see chat-fab.test.tsx pattern.
  *
  * The ChatPanel client component is mocked so the embed page can render in
@@ -20,11 +20,11 @@
 
 import { render } from "@testing-library/react";
 import { screen } from "@testing-library/dom";
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 
 // ChatPanel is a "use client" component with useA2AStream. Mock it with a
-// relative path (jest.mock is hoisted before alias resolution).
-jest.mock("../../components/chat/chat-panel", () => ({
+// relative path (vi.mock is hoisted before alias resolution).
+vi.mock("../../components/chat/chat-panel", () => ({
   ChatPanel: ({ "data-testid": testId }: { "data-testid"?: string }) => (
     <div data-testid={testId ?? "chat-panel"}>Chat panel</div>
   ),

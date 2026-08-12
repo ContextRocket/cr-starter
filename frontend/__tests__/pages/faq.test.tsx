@@ -16,15 +16,15 @@
 
 import { render } from "@testing-library/react";
 import { screen } from "@testing-library/dom";
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 
 // Mock the FAQ adapter before importing the page, so the page uses our fake
 // entries rather than reading content/faq/en.md from the filesystem.
 //
-// NOTE: jest.mock calls are hoisted, so we use the relative path from this
+// NOTE: vi.mock calls are hoisted, so we use the relative path from this
 // test file rather than the @/ alias. The page imports via @/lib/faq which
-// Jest resolves to the same module -- both paths hit the same mock.
-jest.mock("../../lib/faq", () => ({
+// Vitest resolves to the same module -- both paths hit the same mock.
+vi.mock("../../lib/faq", () => ({
   fileFaqAdapter: {
     list: () => [
       {
@@ -50,8 +50,8 @@ jest.mock("../../lib/faq", () => ({
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, ""),
-  parseFaqMarkdown: jest.fn(),
-  FileFaqAdapter: jest.fn(),
+  parseFaqMarkdown: vi.fn(),
+  FileFaqAdapter: vi.fn(),
 }));
 
 // Import after mocking to ensure the page picks up the fake adapter.

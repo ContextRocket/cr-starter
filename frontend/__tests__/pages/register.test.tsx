@@ -1,17 +1,18 @@
 import { render } from "@testing-library/react";
 import { screen, fireEvent, waitFor } from "@testing-library/dom";
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 
 import Page from "@/app/[locale]/auth/register/page";
 import { register } from "@/components/actions/register-action";
+import type { Mock } from "vitest";
 
-jest.mock("../../components/actions/register-action", () => ({
-  register: jest.fn(),
+vi.mock("../../components/actions/register-action", () => ({
+  register: vi.fn(),
 }));
 
 describe("Register Page", () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("renders the form with email and password input and submit button", () => {
@@ -26,7 +27,7 @@ describe("Register Page", () => {
 
   it("displays success message on successful form submission", async () => {
     // Mock a successful register
-    (register as jest.Mock).mockResolvedValue({});
+    (register as Mock).mockResolvedValue({});
 
     render(<Page />);
 
@@ -47,7 +48,7 @@ describe("Register Page", () => {
   });
 
   it("displays server validation error if register fails and preserves form values", async () => {
-    (register as jest.Mock).mockResolvedValue({
+    (register as Mock).mockResolvedValue({
       server_validation_error: "User already exists",
       email: "already@already.com",
       password: "@1231231%a",
@@ -71,7 +72,7 @@ describe("Register Page", () => {
   });
 
   it("displays server error for unexpected errors and preserves form values", async () => {
-    (register as jest.Mock).mockResolvedValue({
+    (register as Mock).mockResolvedValue({
       server_error: "An unexpected error occurred. Please try again later.",
       email: "test@test.com",
       password: "@1231231%a",
@@ -104,7 +105,7 @@ describe("Register Page", () => {
   });
 
   it("displays validation errors and preserves form values when email and password are invalid", async () => {
-    (register as jest.Mock).mockResolvedValue({
+    (register as Mock).mockResolvedValue({
       errors: {
         email: ["Invalid email address"],
         password: [

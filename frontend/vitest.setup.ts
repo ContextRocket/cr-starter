@@ -1,23 +1,22 @@
 // Global test setup for the frontend test suite.
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 
 // ---------------------------------------------------------------------------
 // @/i18n/navigation -> test stub (global)
 //
 // next-intl's createNavigation helpers (Link/usePathname/useRouter) need a
-// Next.js request or router context that jest cannot provide. Every test
-// renders against the stub in __tests__/__mocks__/navigation.tsx (see that
-// file for the contract, including the mutable mockPathname/mockRouter).
+// Next.js request or router context that the jsdom test environment cannot
+// provide. Every test renders against the stub in
+// __tests__/__mocks__/navigation.tsx (see that file for the contract,
+// including the mutable mockPathname/mockRouter).
 //
-// Note: the Next SWC transformer rewrites `@/` aliases to relative paths at
-// transform time, so a moduleNameMapper regex never matches this specifier,
-// and jest.mock("@/...") paths cannot be resolved by jest's resolver. Use a
-// relative path here: it resolves to the same absolute module the (rewritten)
-// source imports resolve to, so the mock applies everywhere.
-jest.mock(
-  "./i18n/navigation",
-  () => jest.requireActual("./__tests__/__mocks__/navigation"),
-);
+// Note: relative paths are used because vi.mock factories are hoisted before
+// the module resolver runs; the relative specifier resolves to the same
+// absolute module the (aliased) source imports resolve to, so the mock
+// applies everywhere.
+vi.mock("./i18n/navigation", async () => {
+  return await vi.importActual("./__tests__/__mocks__/navigation");
+});
 
 // Polyfill TextEncoder / TextDecoder for jsdom (missing from older jsdom versions).
 // Required by the A2A streaming client and any test that creates ReadableStreams.

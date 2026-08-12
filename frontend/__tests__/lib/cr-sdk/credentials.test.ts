@@ -22,7 +22,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 // ── Storage helpers ───────────────────────────────────────────────────────────
@@ -63,7 +63,7 @@ describe("ensureToken -- backend disabled", () => {
 
 describe("ensureToken -- backend enabled, unauthenticated (guest auth seam fix)", () => {
   it("calls POST /auth/guest when no token is stored and backend is enabled", async () => {
-    const fetchMock = jest.fn().mockResolvedValueOnce({
+    const fetchMock = vi.fn().mockResolvedValueOnce({
       ok: true,
       json: async () => ({
         access_token: "guest-jwt-abc",
@@ -83,7 +83,7 @@ describe("ensureToken -- backend enabled, unauthenticated (guest auth seam fix)"
   });
 
   it("stores the guest JWT after provisioning", async () => {
-    global.fetch = jest.fn().mockResolvedValueOnce({
+    global.fetch = vi.fn().mockResolvedValueOnce({
       ok: true,
       json: async () => ({
         access_token: "guest-jwt-stored",
@@ -98,7 +98,7 @@ describe("ensureToken -- backend enabled, unauthenticated (guest auth seam fix)"
 
   it("does not call POST /auth/guest when a token is already stored", async () => {
     setStoredToken("already-have-token");
-    const fetchMock = jest.fn();
+    const fetchMock = vi.fn();
     global.fetch = fetchMock;
 
     const token = await ensureToken(true, BACKEND_URL);
@@ -108,7 +108,7 @@ describe("ensureToken -- backend enabled, unauthenticated (guest auth seam fix)"
   });
 
   it("throws when POST /auth/guest returns a non-ok status", async () => {
-    global.fetch = jest.fn().mockResolvedValueOnce({
+    global.fetch = vi.fn().mockResolvedValueOnce({
       ok: false,
       status: 503,
       statusText: "Service Unavailable",
@@ -129,7 +129,7 @@ describe("ensureToken -- concurrent call de-duplication", () => {
       resolveFirst = resolve;
     });
 
-    const fetchMock = jest.fn().mockReturnValueOnce(firstFetchPromise);
+    const fetchMock = vi.fn().mockReturnValueOnce(firstFetchPromise);
     global.fetch = fetchMock;
 
     // Fire two concurrent calls before the first resolves.

@@ -1,18 +1,19 @@
 import { login } from "@/components/actions/login-action";
 import { authJwtLogin } from "@/app/clientService";
 import { cookies } from "next/headers";
+import type { Mock } from "vitest";
 
-jest.mock("../../app/clientService", () => ({
-  authJwtLogin: jest.fn(),
+vi.mock("../../app/clientService", () => ({
+  authJwtLogin: vi.fn(),
 }));
 
-jest.mock("next/headers", () => {
-  const mockSet = jest.fn();
-  return { cookies: jest.fn().mockResolvedValue({ set: mockSet }) };
+vi.mock("next/headers", () => {
+  const mockSet = vi.fn();
+  return { cookies: vi.fn().mockResolvedValue({ set: mockSet }) };
 });
 
-jest.mock("../../i18n/redirect", () => ({
-  redirect: jest.fn(),
+vi.mock("../../i18n/redirect", () => ({
+  redirect: vi.fn(),
 }));
 
 describe("login action", () => {
@@ -24,7 +25,7 @@ describe("login action", () => {
     const mockSet = (await cookies()).set;
 
     // Mock a successful login
-    (authJwtLogin as jest.Mock).mockResolvedValue({
+    (authJwtLogin as Mock).mockResolvedValue({
       data: { access_token: "1245token" },
     });
 
@@ -55,25 +56,20 @@ describe("login action", () => {
     formData.set("username", "a@a.com");
     formData.set("password", "Q12341414#");
 
-    const mockSet = (await cookies()).set as jest.Mock;
+    const mockSet = (await cookies()).set as Mock;
     mockSet.mockClear();
 
-    (authJwtLogin as jest.Mock).mockResolvedValue({
+    (authJwtLogin as Mock).mockResolvedValue({
       data: { access_token: "prodtoken" },
     });
 
-    const originalEnv = process.env.NODE_ENV;
-    Object.defineProperty(process.env, "NODE_ENV", {
-      value: "production",
-      configurable: true,
-    });
+    // Vitest's process.env is a proxy: stub env vars via vi.stubEnv instead
+    // of Object.defineProperty (which the proxy rejects).
+    vi.stubEnv("NODE_ENV", "production");
     try {
       await login({}, formData);
     } finally {
-      Object.defineProperty(process.env, "NODE_ENV", {
-        value: originalEnv,
-        configurable: true,
-      });
+      vi.unstubAllEnvs();
     }
 
     expect(mockSet).toHaveBeenCalledWith(
@@ -89,7 +85,7 @@ describe("login action", () => {
     formData.set("password", "Q12341414#");
 
     // Mock a failed login
-    (authJwtLogin as jest.Mock).mockResolvedValue({
+    (authJwtLogin as Mock).mockResolvedValue({
       error: {
         detail: "LOGIN_BAD_CREDENTIALS",
       },
@@ -131,11 +127,11 @@ describe("login action", () => {
   });
 
   it("should handle unexpected errors and return server error message", async () => {
-    const consoleSpy = jest.spyOn(console, "error").mockImplementation();
+    const consoleSpy = vi.spyOn(console, "error").mockImplementation();
 
     // Mock the authJwtLogin to throw an error
     const mockError = new Error("Network error");
-    (authJwtLogin as jest.Mock).mockRejectedValue(mockError);
+    (authJwtLogin as Mock).mockRejectedValue(mockError);
 
     const formData = new FormData();
     formData.append("username", "testuser");

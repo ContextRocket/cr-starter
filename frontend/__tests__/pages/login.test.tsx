@@ -1,17 +1,18 @@
 import { render } from "@testing-library/react";
 import { screen, fireEvent, waitFor } from "@testing-library/dom";
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 
 import Page from "@/app/[locale]/auth/login/page";
 import { login } from "@/components/actions/login-action";
+import type { Mock } from "vitest";
 
-jest.mock("../../components/actions/login-action", () => ({
-  login: jest.fn(),
+vi.mock("../../components/actions/login-action", () => ({
+  login: vi.fn(),
 }));
 
 describe("Login Page", () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("renders the form with username and password input and submit button", () => {
@@ -25,7 +26,7 @@ describe("Login Page", () => {
   });
 
   it("calls login in successful form submission", async () => {
-    (login as jest.Mock).mockResolvedValue({});
+    (login as Mock).mockResolvedValue({});
 
     render(<Page />);
 
@@ -49,7 +50,7 @@ describe("Login Page", () => {
 
   it("displays error message if login fails", async () => {
     // Mock a failed login
-    (login as jest.Mock).mockResolvedValue({
+    (login as Mock).mockResolvedValue({
       server_validation_error: "LOGIN_BAD_CREDENTIALS",
     });
 
@@ -69,7 +70,7 @@ describe("Login Page", () => {
   });
 
   it("displays server error for unexpected errors", async () => {
-    (login as jest.Mock).mockResolvedValue({
+    (login as Mock).mockResolvedValue({
       server_error: "An unexpected error occurred. Please try again later.",
     });
 

@@ -86,21 +86,21 @@ function makeSources(count: number): DeduplicatedSource[] {
 describe("SourceSheet", () => {
   it("renders with data-testid source-sheet when open", () => {
     render(
-      <SourceSheet sources={makeSources(1)} open={true} onClose={jest.fn()} />,
+      <SourceSheet sources={makeSources(1)} open={true} onClose={vi.fn()} />,
     );
     expect(screen.getByTestId("source-sheet")).toBeInTheDocument();
   });
 
   it("renders nothing when closed", () => {
     render(
-      <SourceSheet sources={makeSources(1)} open={false} onClose={jest.fn()} />,
+      <SourceSheet sources={makeSources(1)} open={false} onClose={vi.fn()} />,
     );
     expect(screen.queryByTestId("source-sheet")).not.toBeInTheDocument();
   });
 
   it("renders one source item per source", () => {
     render(
-      <SourceSheet sources={makeSources(3)} open={true} onClose={jest.fn()} />,
+      <SourceSheet sources={makeSources(3)} open={true} onClose={vi.fn()} />,
     );
     expect(screen.getByTestId("source-item-1")).toBeInTheDocument();
     expect(screen.getByTestId("source-item-2")).toBeInTheDocument();
@@ -108,7 +108,7 @@ describe("SourceSheet", () => {
   });
 
   it("calls onClose when the close button is clicked", () => {
-    const handleClose = jest.fn();
+    const handleClose = vi.fn();
     render(
       <SourceSheet
         sources={makeSources(1)}
@@ -122,7 +122,7 @@ describe("SourceSheet", () => {
   });
 
   it("calls onClose when Escape is pressed (real dialog semantics)", () => {
-    const handleClose = jest.fn();
+    const handleClose = vi.fn();
     render(
       <SourceSheet
         sources={makeSources(1)}
@@ -136,7 +136,7 @@ describe("SourceSheet", () => {
   });
 
   it("portals out of a transformed ancestor container", () => {
-    const handleClose = jest.fn();
+    const handleClose = vi.fn();
     const { container } = render(
       <div style={{ transform: "translateY(4px)" }} data-testid="drawer-host">
         <SourceSheet
@@ -155,7 +155,7 @@ describe("SourceSheet", () => {
 
   it("moves focus inside the dialog on open (focus trap entry)", () => {
     render(
-      <SourceSheet sources={makeSources(1)} open={true} onClose={jest.fn()} />,
+      <SourceSheet sources={makeSources(1)} open={true} onClose={vi.fn()} />,
     );
     const dialog = screen.getByRole("dialog");
     expect(dialog.contains(document.activeElement)).toBe(true);
@@ -170,7 +170,7 @@ describe("SourceSheet", () => {
         excerpts: [],
       },
     ];
-    render(<SourceSheet sources={sources} open={true} onClose={jest.fn()} />);
+    render(<SourceSheet sources={sources} open={true} onClose={vi.fn()} />);
     expect(screen.getByText("My Important Source")).toBeInTheDocument();
   });
 
@@ -182,14 +182,14 @@ describe("SourceSheet", () => {
         excerpts: ["The key finding was X."],
       },
     ];
-    render(<SourceSheet sources={sources} open={true} onClose={jest.fn()} />);
+    render(<SourceSheet sources={sources} open={true} onClose={vi.fn()} />);
     expect(screen.getByTestId("source-excerpt-1-1")).toBeInTheDocument();
     expect(screen.getByText("The key finding was X.")).toBeInTheDocument();
   });
 
   it("shows an open button when the source has a safe URL", () => {
     render(
-      <SourceSheet sources={makeSources(1)} open={true} onClose={jest.fn()} />,
+      <SourceSheet sources={makeSources(1)} open={true} onClose={vi.fn()} />,
     );
     expect(screen.getByTestId("source-open-1")).toBeInTheDocument();
   });
@@ -198,7 +198,7 @@ describe("SourceSheet", () => {
     const sources: DeduplicatedSource[] = [
       { key: "internal", title: "Internal Doc", excerpts: [] },
     ];
-    render(<SourceSheet sources={sources} open={true} onClose={jest.fn()} />);
+    render(<SourceSheet sources={sources} open={true} onClose={vi.fn()} />);
     expect(screen.queryByTestId("source-open-1")).not.toBeInTheDocument();
   });
 
@@ -211,7 +211,7 @@ describe("SourceSheet", () => {
         excerpts: [],
       },
     ];
-    render(<SourceSheet sources={sources} open={true} onClose={jest.fn()} />);
+    render(<SourceSheet sources={sources} open={true} onClose={vi.fn()} />);
     expect(screen.queryByTestId("source-open-1")).not.toBeInTheDocument();
   });
 
@@ -224,12 +224,12 @@ describe("SourceSheet", () => {
         excerpts: [],
       },
     ];
-    render(<SourceSheet sources={sources} open={true} onClose={jest.fn()} />);
+    render(<SourceSheet sources={sources} open={true} onClose={vi.fn()} />);
     expect(screen.queryByTestId("source-open-1")).not.toBeInTheDocument();
   });
 
   it("never passes an unsafe URL to window.open", () => {
-    const openSpy = jest.spyOn(window, "open").mockImplementation(() => null);
+    const openSpy = vi.spyOn(window, "open").mockImplementation(() => null);
     const sources: DeduplicatedSource[] = [
       {
         key: "good",
@@ -238,7 +238,7 @@ describe("SourceSheet", () => {
         excerpts: [],
       },
     ];
-    render(<SourceSheet sources={sources} open={true} onClose={jest.fn()} />);
+    render(<SourceSheet sources={sources} open={true} onClose={vi.fn()} />);
 
     fireEvent.click(screen.getByTestId("source-open-1"));
     expect(openSpy).toHaveBeenCalledWith(
@@ -260,7 +260,7 @@ describe("SourceSheet", () => {
         license: "CC-BY 4.0",
       },
     ];
-    render(<SourceSheet sources={sources} open={true} onClose={jest.fn()} />);
+    render(<SourceSheet sources={sources} open={true} onClose={vi.fn()} />);
     expect(screen.getByText("Acme Corp")).toBeInTheDocument();
     expect(screen.getByText("2024-01-15")).toBeInTheDocument();
     expect(screen.getByText("CC-BY 4.0")).toBeInTheDocument();
@@ -270,14 +270,14 @@ describe("SourceSheet", () => {
     const sources: DeduplicatedSource[] = [
       { key: "k1", title: "Doc", excerpts: [] },
     ];
-    render(<SourceSheet sources={sources} open={true} onClose={jest.fn()} />);
+    render(<SourceSheet sources={sources} open={true} onClose={vi.fn()} />);
     // Neither publisher nor date labels should appear.
     expect(screen.queryByText("Acme Corp")).not.toBeInTheDocument();
   });
 
   it("exposes dialog semantics via role=dialog", () => {
     render(
-      <SourceSheet sources={makeSources(1)} open={true} onClose={jest.fn()} />,
+      <SourceSheet sources={makeSources(1)} open={true} onClose={vi.fn()} />,
     );
     expect(screen.getByRole("dialog")).toBeInTheDocument();
   });

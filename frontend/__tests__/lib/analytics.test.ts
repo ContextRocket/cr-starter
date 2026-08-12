@@ -53,14 +53,14 @@ function withEnv(key: string, value: string, fn: () => void) {
 beforeEach(() => {
   localStorage.clear();
   resetScripts();
-  // Reset the idempotency flags by re-importing is not possible in Jest without
-  // jest.resetModules(), so we rely on clearing localStorage and removing scripts
+  // Reset the idempotency flags by re-importing is not possible in Vitest without
+  // vi.resetModules(), so we rely on clearing localStorage and removing scripts
   // to observe observable effects. The _gaLoaded/_posthogLoaded flags stay set
   // across tests in the same module instance; we test idempotency explicitly.
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 // ── Consent persistence ───────────────────────────────────────────────────────

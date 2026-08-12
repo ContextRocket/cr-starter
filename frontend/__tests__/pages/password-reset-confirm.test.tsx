@@ -1,28 +1,29 @@
 import { render } from "@testing-library/react";
 import { screen, fireEvent, waitFor } from "@testing-library/dom";
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
+import type { Mock } from "vitest";
 
 import Page from "@/app/[locale]/auth/reset-password/page";
 import { passwordResetConfirm } from "@/components/actions/password-reset-action";
 import { useSearchParams, notFound } from "next/navigation";
 
-jest.mock("next/navigation", () => ({
-  ...jest.requireActual("next/navigation"),
-  useSearchParams: jest.fn(),
-  notFound: jest.fn(),
+vi.mock("next/navigation", async () => ({
+  ...(await vi.importActual("next/navigation")),
+  useSearchParams: vi.fn(),
+  notFound: vi.fn(),
 }));
 
-jest.mock("../../components/actions/password-reset-action", () => ({
-  passwordResetConfirm: jest.fn(),
+vi.mock("../../components/actions/password-reset-action", () => ({
+  passwordResetConfirm: vi.fn(),
 }));
 
 describe("Password Reset Confirm Page", () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("renders the form with password and confirm password input and submit button", () => {
-    (useSearchParams as jest.Mock).mockImplementation(() => ({
+    (useSearchParams as Mock).mockImplementation(() => ({
       get: (key: string) => (key === "token" ? "mock-token" : null),
     }));
 
@@ -34,7 +35,7 @@ describe("Password Reset Confirm Page", () => {
   });
 
   it("renders the 404 page in case there is not a token", () => {
-    (useSearchParams as jest.Mock).mockImplementation(() => ({
+    (useSearchParams as Mock).mockImplementation(() => ({
       get: (key: string) => (key === "token" ? "" : undefined),
     }));
 
@@ -44,12 +45,12 @@ describe("Password Reset Confirm Page", () => {
   });
 
   it("displays error message if password reset fails", async () => {
-    (useSearchParams as jest.Mock).mockImplementation(() => ({
+    (useSearchParams as Mock).mockImplementation(() => ({
       get: (key: string) => (key === "token" ? "invalid-mock-token" : null),
     }));
 
     // Mock a successful password reset
-    (passwordResetConfirm as jest.Mock).mockResolvedValue({
+    (passwordResetConfirm as Mock).mockResolvedValue({
       server_validation_error: "Invalid Token",
     });
 
@@ -75,12 +76,12 @@ describe("Password Reset Confirm Page", () => {
     expect(passwordResetConfirm).toHaveBeenCalledWith(undefined, formData);
   });
   it("displays validation errors if password is invalid and don't match", async () => {
-    (useSearchParams as jest.Mock).mockImplementation(() => ({
+    (useSearchParams as Mock).mockImplementation(() => ({
       get: (key: string) => (key === "token" ? "mock-token" : null),
     }));
 
     // Mock a successful password reset
-    (passwordResetConfirm as jest.Mock).mockResolvedValue({
+    (passwordResetConfirm as Mock).mockResolvedValue({
       errors: {
         password: ["Password should contain at least one uppercase letter."],
         passwordConfirm: ["Passwords must match."],

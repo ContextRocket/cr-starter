@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import { screen } from "@testing-library/dom";
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 
 import { PagePagination } from "@/components/dashboard/page-pagination";
 

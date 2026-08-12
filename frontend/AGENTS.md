@@ -41,7 +41,7 @@ frontend/
     clientConfig.ts        OpenAPI client base URL
   i18n/
     keys.ts                All user-facing strings [FORK-OWNS]
-  __tests__/               Jest tests (mirror source layout)
+  __tests__/               Vitest tests (mirror source layout)
     lib/cr-sdk/            cr-sdk unit tests (seam-fix coverage)
     hooks/                 Hook tests
     lib/                   Client and utility tests
@@ -54,7 +54,7 @@ frontend/
 
 ```bash
 make start-frontend         # Next.js on :3100
-make test-frontend          # Jest unit tests
+make test-frontend          # Vitest unit tests
 make test-e2e               # Playwright E2E (auto-starts servers)
 pnpm run lint               # ESLint
 pnpm run tsc                # TypeScript typecheck
@@ -110,11 +110,11 @@ Backend error keys come back as raw strings; translate them with `translateError
 
 ## Testing conventions
 
-- Jest + React Testing Library.  Tests live in `__tests__/`.
+- Vitest + React Testing Library.  Tests live in `__tests__/`.
 - Test **behavior**, not implementation details.
 - Keep components thin -- extract logic into hooks or `lib/`.
-- For fetch mocks, assign `global.fetch = jest.fn()` (not `jest.spyOn`).
-- `afterEach(() => jest.restoreAllMocks())` to clean up.
+- For fetch mocks, assign `global.fetch = vi.fn()` (not `vi.spyOn`).
+- `afterEach(() => vi.restoreAllMocks())` to clean up.
 
 ## OpenAPI client
 

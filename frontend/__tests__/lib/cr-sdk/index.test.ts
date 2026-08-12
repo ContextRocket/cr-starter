@@ -15,7 +15,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 // ── resolveCRConfig ───────────────────────────────────────────────────────────
@@ -52,7 +52,7 @@ describe("createCRClient", () => {
 
   it("ensureToken provisions a guest JWT when backendEnabled=true", async () => {
     const enabledConfig = { ...config, backendEnabled: true };
-    global.fetch = jest.fn().mockResolvedValueOnce({
+    global.fetch = vi.fn().mockResolvedValueOnce({
       ok: true,
       json: async () => ({
         access_token: "sdk-guest-jwt",
@@ -66,7 +66,7 @@ describe("createCRClient", () => {
   });
 
   it("agentCard delegates to fetchAgentCard", async () => {
-    global.fetch = jest.fn().mockResolvedValueOnce({
+    global.fetch = vi.fn().mockResolvedValueOnce({
       ok: true,
       json: async () => ({ name: "Test Agent", version: "1.0" }),
     });
@@ -102,7 +102,7 @@ describe("createCRClient", () => {
       },
     });
 
-    const fetchMock = jest.fn().mockResolvedValueOnce({
+    const fetchMock = vi.fn().mockResolvedValueOnce({
       ok: true,
       body,
     });
@@ -147,7 +147,7 @@ describe("createCRClient", () => {
       },
     });
 
-    const fetchMock = jest.fn().mockResolvedValueOnce({
+    const fetchMock = vi.fn().mockResolvedValueOnce({
       ok: true,
       body,
     });
