@@ -1,82 +1,16 @@
-import { cookies } from "next/headers";
-
-import { usersCurrentUser, listUsers } from "@/app/clientService";
 import { t } from "@/i18n/keys";
+
+export const dynamic = "force-static";
 
 /**
  * Operator-only users list page.
  *
- * Shows a simple table: email, type (guest/registered), status (active/inactive).
- * No bulk actions. Redirects non-superusers to an honest "forbidden" message.
+ * In the standard SSR build, this checks the JWT cookie, verifies superuser
+ * status, and lists users from the API. For static export, there is no auth
+ * and no API — always show the forbidden message.
  */
-export default async function UsersPage() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("accessToken")?.value;
-
-  if (!token) {
-    return <Forbidden />;
-  }
-
-  const { data: me, error: meError } = await usersCurrentUser({
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  if (meError || !me || !me.is_superuser) {
-    return <Forbidden />;
-  }
-
-  const { data, error } = await listUsers({
-    query: { limit: 200 },
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  return (
-    <div data-testid="dashboard-users-page">
-      <h1 className="text-2xl font-bold mb-2">{t("dashboard.users.title")}</h1>
-      <p className="text-muted-foreground mb-6">
-        {t("dashboard.users.description")}
-      </p>
-
-      {error || !data ? (
-        <p className="text-destructive">{t("error.generic")}</p>
-      ) : (
-        <div className="overflow-x-auto rounded-md border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">
-                  {t("dashboard.users.col.email")}
-                </th>
-                <th className="px-4 py-3 text-left font-medium">
-                  {t("dashboard.users.col.type")}
-                </th>
-                <th className="px-4 py-3 text-left font-medium">
-                  {t("dashboard.users.col.status")}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.items.map((user) => (
-                <tr key={user.id} className="border-b last:border-0">
-                  <td className="px-4 py-3 font-mono text-xs">{user.email}</td>
-                  <td className="px-4 py-3">
-                    {user.is_guest
-                      ? t("dashboard.users.type.guest")
-                      : t("dashboard.users.type.registered")}
-                  </td>
-                  <td className="px-4 py-3">
-                    {user.is_active
-                      ? t("dashboard.users.status.active")
-                      : t("dashboard.users.status.inactive")}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </div>
-  );
+export default function UsersPage() {
+  return <Forbidden />;
 }
 
 function Forbidden() {

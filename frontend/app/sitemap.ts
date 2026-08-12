@@ -13,6 +13,8 @@ import type { MetadataRoute } from "next";
 import { siteConfig } from "@/site.config";
 import { fileBlogAdapter } from "@/lib/blog";
 
+export const dynamic = "force-static";
+
 type ChangeFrequency = NonNullable<
   MetadataRoute.Sitemap[number]["changeFrequency"]
 >;

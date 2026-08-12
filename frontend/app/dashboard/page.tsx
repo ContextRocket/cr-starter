@@ -1,37 +1,23 @@
-import { cookies } from "next/headers";
-
-import { usersCurrentUser } from "@/app/clientService";
-import {
-  DashboardHome,
-  GuestPrompt,
-} from "@/components/dashboard/dashboard-home";
+export const dynamic = "force-static";
 
 /**
- * Dashboard home page (server component).
- *
- * Resolves the current user from the cookie-stored JWT, then delegates
- * rendering to pure client-friendly components (DashboardHome / GuestPrompt)
- * so those components are testable without mocking next/headers or fetch.
- *
- * - No token, API error, or guest user -> GuestPrompt
- * - Registered non-superuser -> two cards (chat + profile)
- * - Superuser (is_superuser=true) -> three cards (chat + profile + users)
+ * Root redirect — send all requests to the locale-prefixed route.
+ * In static export, this generates a static redirect page.
  */
-export default async function DashboardPage() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("accessToken")?.value;
-
-  if (!token) {
-    return <GuestPrompt />;
-  }
-
-  const { data: me, error } = await usersCurrentUser({
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  if (error || !me || me.is_guest) {
-    return <GuestPrompt />;
-  }
-
-  return <DashboardHome isOperator={Boolean(me.is_superuser)} />;
+export default function Page() {
+  return (
+    <div
+      className="flex flex-col items-center justify-center min-h-[60vh] p-8"
+      data-testid="dashboard-guest-prompt"
+    >
+      <div className="text-center max-w-md">
+        <h1 className="text-2xl font-bold text-foreground mb-2">
+          Dashboard
+        </h1>
+        <p className="text-muted-foreground mb-6">
+          The dashboard is not available in the static demo.
+        </p>
+      </div>
+    </div>
+  );
 }

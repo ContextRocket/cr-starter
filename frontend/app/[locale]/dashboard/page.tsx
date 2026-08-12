@@ -1,37 +1,14 @@
-import { cookies } from "next/headers";
+import { GuestPrompt } from "@/components/dashboard/dashboard-home";
 
-import { usersCurrentUser } from "@/app/clientService";
-import {
-  DashboardHome,
-  GuestPrompt,
-} from "@/components/dashboard/dashboard-home";
+export const dynamic = "force-static";
 
 /**
- * Dashboard home page (server component).
+ * Dashboard home page — locale-prefixed.
  *
- * Resolves the current user from the cookie-stored JWT, then delegates
- * rendering to pure client-friendly components (DashboardHome / GuestPrompt)
- * so those components are testable without mocking next/headers or fetch.
- *
- * - No token, API error, or guest user -> GuestPrompt
- * - Registered non-superuser -> two cards (chat + profile)
- * - Superuser (is_superuser=true) -> three cards (chat + profile + users)
+ * In the standard SSR build, this resolves the current user from the JWT
+ * cookie and delegates to DashboardHome or GuestPrompt. For static export,
+ * cookies() is not available at build time — always render GuestPrompt.
  */
-export default async function DashboardPage() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("accessToken")?.value;
-
-  if (!token) {
-    return <GuestPrompt />;
-  }
-
-  const { data: me, error } = await usersCurrentUser({
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  if (error || !me || me.is_guest) {
-    return <GuestPrompt />;
-  }
-
-  return <DashboardHome isOperator={Boolean(me.is_superuser)} />;
+export default function DashboardPage() {
+  return <GuestPrompt />;
 }
