@@ -56,6 +56,18 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+
+  /* Semantic tokens (context-rocket pattern) */
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-error: var(--error);
+  --color-error-foreground: var(--error-foreground);
+  --color-disabled: var(--disabled);
+  --color-disabled-foreground: var(--disabled-foreground);
 }
 
 /*
@@ -102,6 +114,18 @@
   --chart-4: hsl(43 74% 66%);
   --chart-5: hsl(27 87% 67%);
   --radius: 0.5rem;
+
+  /* Semantic tokens (override per fork in site.config.ts theme) */
+  --success: #10b981;
+  --success-foreground: #ffffff;
+  --warning: #fbbf24;
+  --warning-foreground: #0a0a0a;
+  --info: #3b82f6;
+  --info-foreground: #ffffff;
+  --error: #ef4444;
+  --error-foreground: #ffffff;
+  --disabled: #e5e7eb;
+  --disabled-foreground: #9ca3af;
 }
 
 .dark {
