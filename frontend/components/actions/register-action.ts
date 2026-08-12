@@ -49,7 +49,7 @@ export async function register(prevState: unknown, formData: FormData) {
   } catch (err) {
     logger.error("Registration error:", err);
     return {
-      server_error: t("ERROR_UNEXPECTED"),
+      server_error: t("error.unexpected"),
       email: rawEmail,
       password: rawPassword,
     };
@@ -60,7 +60,7 @@ export async function register(prevState: unknown, formData: FormData) {
   });
   if (loginError || !data?.access_token) {
     return {
-      server_error: t("ERROR_UNEXPECTED"),
+      server_error: t("error.unexpected"),
       email: rawEmail,
       password: rawPassword,
     };

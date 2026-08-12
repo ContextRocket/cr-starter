@@ -12,9 +12,9 @@ export default function ProfilePage() {
   return (
     <div data-testid="dashboard-profile-page">
       <h1 className="text-2xl font-bold mb-2">
-        {t("DASHBOARD_PROFILE_TITLE")}
+        {t("dashboard.profile.title")}
       </h1>
-      <p className="text-muted-foreground">{t("DASHBOARD_SUBTITLE")}</p>
+      <p className="text-muted-foreground">{t("dashboard.subtitle")}</p>
     </div>
   );
 }

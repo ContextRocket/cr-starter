@@ -32,7 +32,7 @@ export async function generateMetadata({
 
   const { slug } = await params;
   const post = fileBlogAdapter.get(slug);
-  if (!post) return { title: t("BLOG_NOT_FOUND") };
+  if (!post) return { title: t("blog.not.found") };
 
   return {
     title: `${post.title} | ${siteConfig.companyName}`,
@@ -154,10 +154,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       <nav className="mt-12 pt-6 border-t border-border text-sm flex justify-between">
         <Link href="/blog" className="text-muted-foreground hover:underline">
-          &larr; {t("BLOG_BACK_TO_LIST")}
+          &larr; {t("blog.back.to.list")}
         </Link>
         <Link href="/" className="text-muted-foreground hover:underline">
-          {t("BLOG_BACK_HOME")}
+          {t("blog.back.home")}
         </Link>
       </nav>
     </main>

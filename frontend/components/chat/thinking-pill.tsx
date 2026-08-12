@@ -28,7 +28,7 @@ export function ThinkingPill() {
       aria-live="polite"
     >
       <Brain className="h-3.5 w-3.5 opacity-70" />
-      <span>{t("CHAT_THINKING")}</span>
+      <span>{t("chat.thinking")}</span>
       <span className="text-[#8e8e8e]">·</span>
       <span className="tabular-nums text-[#8e8e8e]">{elapsed}s</span>
     </span>

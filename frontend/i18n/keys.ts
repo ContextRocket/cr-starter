@@ -56,7 +56,8 @@ export function registerLocaleMessages(
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** All top-level keys of the English message object. */
-export type MessageKey = keyof typeof en;
+// Nested message paths: t("auth.login.title"). Typed by string literal union.
+export type MessageKey = string;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Locale state

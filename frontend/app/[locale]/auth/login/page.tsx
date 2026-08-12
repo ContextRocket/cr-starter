@@ -25,42 +25,42 @@ export default function Page() {
         <Card className="w-full max-w-sm">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-semibold">
-              {t("AUTH_LOGIN_TITLE")}
+              {t("auth.login.title")}
             </CardTitle>
-            <CardDescription>{t("AUTH_LOGIN_DESCRIPTION")}</CardDescription>
+            <CardDescription>{t("auth.login.description")}</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-6 p-6">
             <div className="grid gap-3">
-              <Label htmlFor="username">{t("FORM_USERNAME")}</Label>
+              <Label htmlFor="username">{t("form.username")}</Label>
               <Input
                 id="username"
                 name="username"
                 type="email"
-                placeholder={t("FORM_PLACEHOLDER_EMAIL")}
+                placeholder={t("form.placeholder.email")}
                 required
               />
               <FieldError state={state} field="username" />
             </div>
             <div className="grid gap-3">
-              <Label htmlFor="password">{t("FORM_PASSWORD")}</Label>
+              <Label htmlFor="password">{t("form.password")}</Label>
               <Input id="password" name="password" type="password" required />
               <FieldError state={state} field="password" />
               <Link
                 href="/auth/forgot-password"
                 className="ml-auto inline-block text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground"
               >
-                {t("AUTH_FORGOT_PASSWORD")}
+                {t("auth.forgot.password")}
               </Link>
             </div>
-            <SubmitButton text={t("AUTH_LOGIN_SUBMIT")} />
+            <SubmitButton text={t("auth.login.submit")} />
             <FormError state={state} />
             <div className="mt-4 text-center text-sm text-muted-foreground">
-              {t("AUTH_LOGIN_NO_ACCOUNT")}{" "}
+              {t("auth.login.no.account")}{" "}
               <Link
                 href="/auth/register"
                 className="underline underline-offset-4 hover:text-foreground"
               >
-                {t("AUTH_LOGIN_SIGN_UP")}
+                {t("auth.login.sign.up")}
               </Link>
             </div>
           </CardContent>

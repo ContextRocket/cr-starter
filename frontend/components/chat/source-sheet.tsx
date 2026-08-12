@@ -124,13 +124,13 @@ export function SourceSheet({
         {/* Header */}
         <div className="flex items-center justify-between border-b border-border/60 px-4 py-3">
           <DialogTitle className="text-sm font-semibold text-foreground">
-            {t("CHAT_SOURCE_SHEET_TITLE")}
+            {t("chat.source.sheet.title")}
             <span className="ml-2 text-xs font-normal text-muted-foreground">
               ({sources.length})
             </span>
           </DialogTitle>
           <DialogClose
-            aria-label={t("CHAT_CLOSE")}
+            aria-label={t("chat.close")}
             className="flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             data-testid="source-sheet-close"
           >
@@ -200,12 +200,12 @@ function SourceItem({ source, index, linkMode }: SourceItemProps) {
         {href && (
           <button
             onClick={openLink}
-            aria-label={t("CHAT_SOURCE_SHEET_OPEN")}
+            aria-label={t("chat.source.sheet.open")}
             className="shrink-0 flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/10"
             data-testid={`source-open-${index + 1}`}
           >
             <ExternalLinkIcon className="size-3" aria-hidden />
-            {t("CHAT_SOURCE_SHEET_OPEN")}
+            {t("chat.source.sheet.open")}
           </button>
         )}
       </div>
@@ -215,19 +215,19 @@ function SourceItem({ source, index, linkMode }: SourceItemProps) {
         <dl className="mt-2 flex flex-wrap gap-x-4 gap-y-0.5 text-xs text-muted-foreground">
           {source.publisher && (
             <div className="flex gap-1">
-              <dt className="font-medium">{t("CHAT_SOURCE_PUBLISHER")}:</dt>
+              <dt className="font-medium">{t("chat.source.publisher")}:</dt>
               <dd>{source.publisher}</dd>
             </div>
           )}
           {source.date && (
             <div className="flex gap-1">
-              <dt className="font-medium">{t("CHAT_SOURCE_DATE")}:</dt>
+              <dt className="font-medium">{t("chat.source.date")}:</dt>
               <dd>{source.date}</dd>
             </div>
           )}
           {source.license && (
             <div className="flex gap-1">
-              <dt className="font-medium">{t("CHAT_SOURCE_LICENSE")}:</dt>
+              <dt className="font-medium">{t("chat.source.license")}:</dt>
               <dd>{source.license}</dd>
             </div>
           )}
@@ -261,7 +261,7 @@ function SourceItem({ source, index, linkMode }: SourceItemProps) {
             className="mt-1.5 flex items-center gap-1 text-xs font-medium text-primary hover:underline"
           >
             <ExternalLinkIcon className="size-3" aria-hidden />
-            {t("CHAT_SOURCE_SHEET_OPEN_NEW_TAB")}
+            {t("chat.sourceSheet.openNewTab")}
           </button>
         </div>
       )}

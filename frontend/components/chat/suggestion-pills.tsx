@@ -37,7 +37,7 @@ export function SuggestionPills({
   return (
     <div
       className="flex flex-wrap gap-1.5 pt-1"
-      aria-label={t("CHAT_SUGGESTIONS_LABEL")}
+      aria-label={t("chat.suggestions.label")}
       data-testid="suggestion-pills"
     >
       {suggestions.map((text, i) => (

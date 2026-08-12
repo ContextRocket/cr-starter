@@ -69,7 +69,7 @@ function buildCrumbs(
   pageTitle?: string,
   extraSegments: BreadcrumbSegment[] = [],
 ): Crumb[] {
-  const crumbs: Crumb[] = [{ label: t("NAV_DASHBOARD"), href: "/dashboard" }];
+  const crumbs: Crumb[] = [{ label: t("nav.dashboard"), href: "/dashboard" }];
 
   if (pathname === "/dashboard") {
     return crumbs;

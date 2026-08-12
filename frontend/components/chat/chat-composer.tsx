@@ -97,7 +97,7 @@ export function ChatComposer({
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={placeholder ?? t("CHAT_PLACEHOLDER")}
+          placeholder={placeholder ?? t("chat.placeholder")}
           disabled={false}
           rows={1}
           className={cn(
@@ -106,14 +106,14 @@ export function ChatComposer({
             "focus:outline-none focus:ring-0",
           )}
           style={{ minHeight: "44px", maxHeight: "200px" }}
-          aria-label={placeholder ?? t("CHAT_PLACEHOLDER")}
+          aria-label={placeholder ?? t("chat.placeholder")}
           data-testid="chat-composer-input"
         />
         <div className="flex items-center justify-end px-2 pb-2">
           <button
             type="submit"
             disabled={!isStreaming && !canSend}
-            aria-label={isStreaming ? t("CHAT_STOP") : t("CHAT_SEND")}
+            aria-label={isStreaming ? t("chat.stop") : t("chat.send")}
             data-testid="chat-send-button"
             className={cn(
               "flex size-11 items-center justify-center rounded-full transition-colors",

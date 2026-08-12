@@ -52,7 +52,7 @@ export function CookieConsentBanner() {
     <div
       role="dialog"
       aria-modal="false"
-      aria-label={t("COOKIE_CONSENT_ARIA_LABEL")}
+      aria-label={t("cookie.consent.aria.label")}
       data-testid="cookie-consent-banner"
       className={[
         "fixed bottom-3 left-3 right-3 z-50",
@@ -63,17 +63,17 @@ export function CookieConsentBanner() {
     >
       <div className="flex flex-col gap-2.5 px-4 py-3">
         <p className="text-sm font-semibold leading-snug text-foreground">
-          {t("COOKIE_CONSENT_TITLE")}
+          {t("cookie.consent.title")}
         </p>
 
         <p className="text-sm leading-relaxed text-muted-foreground">
-          {t("COOKIE_CONSENT_BODY")}{" "}
+          {t("cookie.consent.body")}{" "}
           <Link
             href={PRIVACY_HREF}
             className="underline underline-offset-2 transition-colors duration-200 hover:text-foreground"
             data-testid="cookie-consent-policy-link"
           >
-            {t("COOKIE_CONSENT_POLICY_LINK")}
+            {t("cookie.consent.policy.link")}
           </Link>
         </p>
 
@@ -84,7 +84,7 @@ export function CookieConsentBanner() {
             data-testid="cookie-consent-decline"
             className="inline-flex min-h-9 items-center justify-center rounded-md border border-border bg-background px-3 text-sm font-medium transition-colors hover:bg-muted"
           >
-            {t("COOKIE_CONSENT_DECLINE")}
+            {t("cookie.consent.decline")}
           </button>
           <button
             type="button"
@@ -92,7 +92,7 @@ export function CookieConsentBanner() {
             data-testid="cookie-consent-accept"
             className="inline-flex min-h-9 items-center justify-center rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            {t("COOKIE_CONSENT_ACCEPT")}
+            {t("cookie.consent.accept")}
           </button>
         </div>
       </div>

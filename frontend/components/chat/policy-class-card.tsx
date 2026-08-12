@@ -93,7 +93,7 @@ export function PolicyClassCard({
           {policyClass.cited_source && (
             <p className="mt-1 text-xs text-muted-foreground">
               <span className="font-medium">
-                {t("CHAT_POLICY_CARD_SOURCE")}:{" "}
+                {t("chat.policy.card.source")}:{" "}
               </span>
               {policyClass.cited_source}
             </p>

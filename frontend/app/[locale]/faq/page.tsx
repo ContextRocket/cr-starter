@@ -34,8 +34,8 @@ export async function generateMetadata({
   const locale = resolveLocale(rawLocale);
   setLocale(locale);
   return {
-    title: t("FAQ_PAGE_TITLE"),
-    description: t("FAQ_PAGE_DESCRIPTION"),
+    title: t("faq.page.title"),
+    description: t("faq.page.description"),
     robots: { index: true, follow: true },
   };
 }
@@ -57,12 +57,12 @@ export default async function FaqPage({ params }: FaqPageProps) {
         className="min-h-screen bg-background text-foreground p-8 max-w-2xl mx-auto"
         data-testid="faq-page"
       >
-        <h1 className="text-3xl font-bold mb-2">{t("FAQ_PAGE_TITLE")}</h1>
+        <h1 className="text-3xl font-bold mb-2">{t("faq.page.title")}</h1>
         <p className="text-sm text-muted-foreground mb-10">
-          {t("FAQ_PAGE_DESCRIPTION")}
+          {t("faq.page.description")}
         </p>
 
-        <section aria-label={t("FAQ_PAGE_TITLE")}>
+        <section aria-label={t("faq.page.title")}>
           <dl className="space-y-10" data-testid="faq-list">
             {entries.map((entry) => (
               <div
@@ -114,7 +114,7 @@ export default async function FaqPage({ params }: FaqPageProps) {
 
         <nav className="mt-12 text-sm">
           <Link href="/" className="text-muted-foreground hover:underline">
-            &larr; {t("FAQ_BACK_HOME")}
+            &larr; {t("faq.back.home")}
           </Link>
         </nav>
       </main>

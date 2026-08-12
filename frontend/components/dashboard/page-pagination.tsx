@@ -33,7 +33,7 @@ export function PagePagination({
     <div className="flex items-center gap-1 text-sm text-muted-foreground">
       <span className="mr-2 whitespace-nowrap">
         {totalItems === 0
-          ? t("PAGINATION_NO_RESULTS")
+          ? t("pagination.no.results")
           : `${(currentPage - 1) * pageSize + 1}–${Math.min(currentPage * pageSize, totalItems)} of ${totalItems}`}
       </span>
 

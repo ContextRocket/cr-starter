@@ -24,8 +24,8 @@ export async function generateMetadata({
   const locale = resolveLocale((await params).locale);
   setLocale(locale);
   return {
-    title: t("BLOG_TITLE"),
-    description: t("BLOG_DESCRIPTION"),
+    title: t("blog.title"),
+    description: t("blog.description"),
     robots: { index: true, follow: true },
   };
 }
@@ -40,9 +40,9 @@ export default async function BlogPage({ params }: BlogPageProps) {
       className="min-h-screen bg-background text-foreground p-8 max-w-3xl mx-auto"
       data-testid="blog-page"
     >
-      <h1 className="text-3xl font-bold mb-2">{t("BLOG_TITLE")}</h1>
+      <h1 className="text-3xl font-bold mb-2">{t("blog.title")}</h1>
       <p className="text-sm text-muted-foreground mb-10">
-        {t("BLOG_DESCRIPTION")}
+        {t("blog.description")}
       </p>
 
       {posts.length === 0 ? (
@@ -50,10 +50,10 @@ export default async function BlogPage({ params }: BlogPageProps) {
           className="text-sm text-muted-foreground"
           data-testid="blog-empty"
         >
-          {t("BLOG_EMPTY")}
+          {t("blog.empty")}
         </p>
       ) : (
-        <section aria-label={t("BLOG_TITLE")} className="space-y-8">
+        <section aria-label={t("blog.title")} className="space-y-8">
           {posts.map((post) => (
             <article
               key={post.slug}
@@ -88,7 +88,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
 
       <nav className="mt-12 text-sm">
         <Link href="/" className="text-muted-foreground hover:underline">
-          &larr; {t("BLOG_BACK_HOME")}
+          &larr; {t("blog.back.home")}
         </Link>
       </nav>
     </main>

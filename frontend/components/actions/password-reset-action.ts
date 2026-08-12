@@ -21,11 +21,11 @@ export async function passwordReset(prevState: unknown, formData: FormData) {
     if (error) {
       return { server_validation_error: getErrorMessage(error) };
     }
-    return { message: t("AUTH_PASSWORD_RESET_SUCCESS") };
+    return { message: t("auth.password.reset.success") };
   } catch (err) {
     logger.error("Password reset error:", err);
     return {
-      server_error: t("ERROR_UNEXPECTED"),
+      server_error: t("error.unexpected"),
     };
   }
 }
@@ -62,7 +62,7 @@ export async function passwordResetConfirm(
   } catch (err) {
     logger.error("Password reset confirmation error:", err);
     return {
-      server_error: t("ERROR_UNEXPECTED"),
+      server_error: t("error.unexpected"),
     };
   }
 }

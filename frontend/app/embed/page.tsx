@@ -81,10 +81,10 @@ export default async function EmbedPage({ searchParams }: EmbedPageProps) {
         data-testid="embed-page-rejected"
       >
         <h1 className="text-xl font-semibold text-foreground">
-          {t("EMBED_AGENT_URL_REJECTED_TITLE")}
+          {t("embed.agent.url.rejected.title")}
         </h1>
         <p className="mt-2 max-w-xs text-sm text-muted-foreground">
-          {t("EMBED_AGENT_URL_REJECTED_BODY")}
+          {t("embed.agent.url.rejected.body")}
         </p>
       </main>
     );
@@ -99,10 +99,10 @@ export default async function EmbedPage({ searchParams }: EmbedPageProps) {
         data-testid="embed-page-unconfigured"
       >
         <h1 className="text-xl font-semibold text-foreground">
-          {t("CHAT_CONNECT_REQUIRED_TITLE")}
+          {t("chat.connect.required.title")}
         </h1>
         <p className="mt-2 max-w-xs text-sm text-muted-foreground">
-          {t("CHAT_CONNECT_REQUIRED_BODY")}
+          {t("chat.connect.required.body")}
         </p>
       </main>
     );

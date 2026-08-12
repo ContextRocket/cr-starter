@@ -29,7 +29,7 @@ export async function generateMetadata({
   const { locale: rawLocale } = await params;
   setLocale(resolveLocale(rawLocale));
   return {
-    title: t("IMPRESSUM_TITLE"),
+    title: t("impressum.title"),
     robots: { index: true, follow: true },
   };
 }
@@ -41,9 +41,9 @@ export default async function ImpressumPage({ params }: ImpressumPageProps) {
 
   return (
     <main className="min-h-screen bg-background text-foreground p-8 max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-2">{t("IMPRESSUM_TITLE")}</h1>
+      <h1 className="text-3xl font-bold mb-2">{t("impressum.title")}</h1>
       <p className="text-sm text-muted-foreground mb-8">
-        {t("IMPRESSUM_LEGAL_NOTICE")}
+        {t("impressum.legal.notice")}
       </p>
 
       {/* PLACEHOLDER WARNING -- visible in development to prompt replacement */}
@@ -53,37 +53,37 @@ export default async function ImpressumPage({ params }: ImpressumPageProps) {
           className="mb-8 border border-yellow-500 bg-yellow-50 text-yellow-900 p-4 rounded text-sm"
           role="alert"
         >
-          <strong>{t("DEV_NOTICE_LABEL")}</strong> {t("IMPRESSUM_DISCLAIMER")}
+          <strong>{t("dev.notice.label")}</strong> {t("impressum.disclaimer")}
         </div>
       ) : null}
 
       <dl className="space-y-4">
         <div>
-          <dt className="font-semibold">{t("IMPRESSUM_ENTITY_LABEL")}</dt>
+          <dt className="font-semibold">{t("impressum.entity.label")}</dt>
           <dd className="text-muted-foreground">{legal.entity}</dd>
         </div>
         <div>
-          <dt className="font-semibold">{t("IMPRESSUM_ADDRESS_LABEL")}</dt>
+          <dt className="font-semibold">{t("impressum.address.label")}</dt>
           <dd className="text-muted-foreground whitespace-pre-line">
             {legal.address}
           </dd>
         </div>
         <div>
-          <dt className="font-semibold">{t("IMPRESSUM_REGISTER_LABEL")}</dt>
+          <dt className="font-semibold">{t("impressum.register.label")}</dt>
           <dd className="text-muted-foreground">{legal.register}</dd>
         </div>
         <div>
-          <dt className="font-semibold">{t("IMPRESSUM_VAT_LABEL")}</dt>
+          <dt className="font-semibold">{t("impressum.vat.label")}</dt>
           <dd className="text-muted-foreground">{legal.vat}</dd>
         </div>
         <div>
           <dt className="font-semibold">
-            {t("IMPRESSUM_REPRESENTED_BY_LABEL")}
+            {t("impressum.represented.by.label")}
           </dt>
           <dd className="text-muted-foreground">{legal.representedBy}</dd>
         </div>
         <div>
-          <dt className="font-semibold">{t("IMPRESSUM_CONTACT_LABEL")}</dt>
+          <dt className="font-semibold">{t("impressum.contact.label")}</dt>
           <dd className="text-muted-foreground">
             <a
               href={`mailto:${siteConfig.contactEmail}`}

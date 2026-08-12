@@ -69,32 +69,31 @@ describe("i18n parity", () => {
   describe("key resolution", () => {
     // Spot-check that known keys resolve to non-empty strings in all three
     // locales. We assert keys RESOLVE (truthy string), not copy values.
-    const spotCheckKeys: Array<keyof typeof en> = [
-      "AUTH_LOGIN_TITLE",
-      "FORM_EMAIL",
-      "FOOTER_PRIVACY",
-      "IMPRESSUM_TITLE",
-      "COOKIE_CONSENT_ACCEPT",
-      "CHAT_SEND",
-      "DASHBOARD_TITLE",
-    ];
+    const spotCheckKeys = [
+      "auth.login.title",
+      "form.email",
+      "footer.privacy",
+      "impressum.title",
+      "cookie.consent.accept",
+      "chat.send",
+      "dashboard.title",
+    ] as const;
+
+    const getPath = (tree: MessageTree, path: string): unknown =>
+      path.split(".").reduce<unknown>((acc, seg) => {
+        if (acc && typeof acc === "object") {
+          return (acc as MessageTree)[seg];
+        }
+        return undefined;
+      }, tree);
 
     for (const key of spotCheckKeys) {
-      it(`"${key}" resolves to a non-empty string in en`, () => {
-        expect(typeof en[key]).toBe("string");
-        expect((en[key] as string).length).toBeGreaterThan(0);
-      });
-
-      it(`"${key}" resolves to a non-empty string in es`, () => {
-        const value = (es as unknown as Record<string, unknown>)[key];
-        expect(typeof value).toBe("string");
-        expect((value as string).length).toBeGreaterThan(0);
-      });
-
-      it(`"${key}" resolves to a non-empty string in de`, () => {
-        const value = (de as unknown as Record<string, unknown>)[key];
-        expect(typeof value).toBe("string");
-        expect((value as string).length).toBeGreaterThan(0);
+      it(`"${key}" resolves to a non-empty string in all locales`, () => {
+        for (const tree of [en, es, de]) {
+          const value = getPath(tree as unknown as MessageTree, key);
+          expect(typeof value).toBe("string");
+          expect((value as string).length).toBeGreaterThan(0);
+        }
       });
     }
 

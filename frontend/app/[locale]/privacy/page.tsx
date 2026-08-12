@@ -32,7 +32,7 @@ export async function generateMetadata({
   const { locale: rawLocale } = await params;
   setLocale(resolveLocale(rawLocale));
   return {
-    title: t("PRIVACY_TITLE"),
+    title: t("privacy.title"),
     robots: { index: true, follow: true },
   };
 }
@@ -56,14 +56,14 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
 
   return (
     <main className="min-h-screen bg-background text-foreground p-8 max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-2">{t("PRIVACY_TITLE")}</h1>
+      <h1 className="text-3xl font-bold mb-2">{t("privacy.title")}</h1>
 
       {/* Generated-from-config notice */}
       <p
         className="text-xs text-muted-foreground mb-6 italic"
         data-testid="privacy-generated-notice"
       >
-        {t("PRIVACY_GENERATED_NOTICE")}
+        {t("privacy.generated.notice")}
       </p>
 
       {/* Placeholder warning -- visible when legal fields have not been filled */}
@@ -73,21 +73,21 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
           role="alert"
           data-testid="privacy-placeholder-warning"
         >
-          <strong>{t("IMPRESSUM_DISCLAIMER")}</strong>
+          <strong>{t("impressum.disclaimer")}</strong>
         </div>
       ) : null}
 
       <section className="space-y-8 text-foreground">
         {/* Intro */}
-        <p className="text-sm text-muted-foreground">{t("PRIVACY_INTRO")}</p>
+        <p className="text-sm text-muted-foreground">{t("privacy.intro")}</p>
 
         {/* Data Controller */}
         <div data-testid="privacy-controller-section">
           <h2 className="text-xl font-semibold mb-2">
-            {t("PRIVACY_CONTROLLER_HEADING")}
+            {t("privacy.controller.heading")}
           </h2>
           <p className="text-sm text-muted-foreground mb-3">
-            {t("PRIVACY_CONTROLLER_INTRO")}
+            {t("privacy.controller.intro")}
           </p>
           <address
             className="not-italic text-sm text-muted-foreground"
@@ -102,10 +102,10 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
         {/* Privacy Contact */}
         <div data-testid="privacy-contact-section">
           <h2 className="text-xl font-semibold mb-2">
-            {t("PRIVACY_CONTACT_LABEL")}
+            {t("privacy.contact.label")}
           </h2>
           <p className="text-sm text-muted-foreground mb-2">
-            {t("PRIVACY_CONTACT_INTRO")}
+            {t("privacy.contact.intro")}
           </p>
           <a
             href={`mailto:${legal.privacyContact}`}
@@ -119,26 +119,26 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
         {/* Data Processing */}
         <div>
           <h2 className="text-xl font-semibold mb-4">
-            {t("PRIVACY_DATA_HEADING")}
+            {t("privacy.data.heading")}
           </h2>
 
           {/* Auth data */}
           <div className="mb-4">
             <h3 className="text-base font-semibold mb-1">
-              {t("PRIVACY_DATA_AUTH_HEADING")}
+              {t("privacy.data.auth.heading")}
             </h3>
             <p className="text-sm text-muted-foreground">
-              {t("PRIVACY_DATA_AUTH_BODY")}
+              {t("privacy.data.auth.body")}
             </p>
           </div>
 
           {/* Strictly-necessary cookies */}
           <div className="mb-4">
             <h3 className="text-base font-semibold mb-1">
-              {t("PRIVACY_DATA_COOKIES_HEADING")}
+              {t("privacy.data.cookies.heading")}
             </h3>
             <p className="text-sm text-muted-foreground">
-              {t("PRIVACY_DATA_COOKIES_BODY")}
+              {t("privacy.data.cookies.body")}
             </p>
           </div>
 
@@ -146,18 +146,18 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
           {analyticsEnabled ? (
             <div data-testid="privacy-analytics-section">
               <h3 className="text-base font-semibold mb-1">
-                {t("PRIVACY_ANALYTICS_HEADING")}
+                {t("privacy.analytics.heading")}
               </h3>
               <p className="text-sm text-muted-foreground mb-2">
-                {t("PRIVACY_ANALYTICS_BODY")}
+                {t("privacy.analytics.body")}
               </p>
               <p className="text-sm text-muted-foreground mb-1">
-                {t("PRIVACY_ANALYTICS_PROVIDERS_INTRO")}
+                {t("privacy.analytics.providers.intro")}
               </p>
               <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
-                {gaEnabled ? <li>{t("PRIVACY_ANALYTICS_GA_LABEL")}</li> : null}
+                {gaEnabled ? <li>{t("privacy.analytics.ga.label")}</li> : null}
                 {posthogEnabled ? (
-                  <li>{t("PRIVACY_ANALYTICS_POSTHOG_LABEL")}</li>
+                  <li>{t("privacy.analytics.posthog.label")}</li>
                 ) : null}
               </ul>
             </div>
@@ -167,34 +167,34 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
         {/* Cookie Consent and Withdrawal */}
         <div>
           <h2 className="text-xl font-semibold mb-2">
-            {t("PRIVACY_CONSENT_HEADING")}
+            {t("privacy.consent.heading")}
           </h2>
           <p className="text-sm text-muted-foreground">
-            {t("PRIVACY_CONSENT_BODY")}{" "}
+            {t("privacy.consent.body")}{" "}
             <code className="font-mono bg-muted px-1 rounded text-xs">
               {CONSENT_STORAGE_KEY}
             </code>{" "}
-            {t("PRIVACY_CONSENT_BODY_AFTER_KEY")}
+            {t("privacy.consent.bodyAfterKey")}
           </p>
         </div>
 
         {/* User Rights */}
         <div>
           <h2 className="text-xl font-semibold mb-2">
-            {t("PRIVACY_RIGHTS_HEADING")}
+            {t("privacy.rights.heading")}
           </h2>
           <p className="text-sm text-muted-foreground mb-2">
-            {t("PRIVACY_RIGHTS_INTRO")}
+            {t("privacy.rights.intro")}
           </p>
           <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
-            <li>{t("PRIVACY_RIGHTS_ACCESS")}</li>
-            <li>{t("PRIVACY_RIGHTS_RECTIFICATION")}</li>
-            <li>{t("PRIVACY_RIGHTS_ERASURE")}</li>
-            <li>{t("PRIVACY_RIGHTS_PORTABILITY")}</li>
-            <li>{t("PRIVACY_RIGHTS_COMPLAINT")}</li>
+            <li>{t("privacy.rights.access")}</li>
+            <li>{t("privacy.rights.rectification")}</li>
+            <li>{t("privacy.rights.erasure")}</li>
+            <li>{t("privacy.rights.portability")}</li>
+            <li>{t("privacy.rights.complaint")}</li>
           </ul>
           <p className="text-sm text-muted-foreground mt-2">
-            {t("PRIVACY_RIGHTS_OUTRO")}
+            {t("privacy.rights.outro")}
           </p>
         </div>
       </section>

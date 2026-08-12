@@ -32,26 +32,26 @@ export default async function UsersPage() {
 
   return (
     <div data-testid="dashboard-users-page">
-      <h1 className="text-2xl font-bold mb-2">{t("DASHBOARD_USERS_TITLE")}</h1>
+      <h1 className="text-2xl font-bold mb-2">{t("dashboard.users.title")}</h1>
       <p className="text-muted-foreground mb-6">
-        {t("DASHBOARD_USERS_DESCRIPTION")}
+        {t("dashboard.users.description")}
       </p>
 
       {error || !data ? (
-        <p className="text-destructive">{t("ERROR_GENERIC")}</p>
+        <p className="text-destructive">{t("error.generic")}</p>
       ) : (
         <div className="overflow-x-auto rounded-md border">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b bg-muted/50">
                 <th className="px-4 py-3 text-left font-medium">
-                  {t("DASHBOARD_USERS_COL_EMAIL")}
+                  {t("dashboard.users.col.email")}
                 </th>
                 <th className="px-4 py-3 text-left font-medium">
-                  {t("DASHBOARD_USERS_COL_TYPE")}
+                  {t("dashboard.users.col.type")}
                 </th>
                 <th className="px-4 py-3 text-left font-medium">
-                  {t("DASHBOARD_USERS_COL_STATUS")}
+                  {t("dashboard.users.col.status")}
                 </th>
               </tr>
             </thead>
@@ -61,13 +61,13 @@ export default async function UsersPage() {
                   <td className="px-4 py-3 font-mono text-xs">{user.email}</td>
                   <td className="px-4 py-3">
                     {user.is_guest
-                      ? t("DASHBOARD_USERS_TYPE_GUEST")
-                      : t("DASHBOARD_USERS_TYPE_REGISTERED")}
+                      ? t("dashboard.users.type.guest")
+                      : t("dashboard.users.type.registered")}
                   </td>
                   <td className="px-4 py-3">
                     {user.is_active
-                      ? t("DASHBOARD_USERS_STATUS_ACTIVE")
-                      : t("DASHBOARD_USERS_STATUS_INACTIVE")}
+                      ? t("dashboard.users.status.active")
+                      : t("dashboard.users.status.inactive")}
                   </td>
                 </tr>
               ))}
@@ -85,7 +85,7 @@ function Forbidden() {
       className="flex items-center justify-center min-h-[40vh]"
       data-testid="dashboard-users-forbidden"
     >
-      <p className="text-muted-foreground">{t("DASHBOARD_USERS_FORBIDDEN")}</p>
+      <p className="text-muted-foreground">{t("dashboard.users.forbidden")}</p>
     </div>
   );
 }

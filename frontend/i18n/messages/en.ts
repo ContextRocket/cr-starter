@@ -14,296 +14,414 @@
  */
 
 export const en = {
-  // ── Locale labels (used by LocaleSwitcher) ───────────────────────────────
+  home: {
+    subtitle: "Build products on ContextRocket. Auth, dashboard shell, and OpenAPI-driven type safety included. Conversation state and agent runs delegate to ContextRocket via A2A.",
+    cta: "Go to Dashboard",
+    widget: {
+      section: {
+        title: "Add the agent to any website",
+        body: "One script tag drops a floating chat button onto any page. The button opens an iframe backed by your ContextRocket agent -- no React, no bundler, no backend changes on the host site. The floating button on this page is the same component; embed it elsewhere with the snippet below."
+      },
+      snippet: {
+        note: "Copy the snippet, replace the agent URL, and add it before </body>."
+      }
+    }
+  },
+  auth: {
+    login: {
+      title: "Login",
+      description: "Enter your email below to log in to your account.",
+      submit: "Sign In",
+      no: {
+        account: "Don't have an account?"
+      },
+      sign: {
+        up: "Sign up"
+      }
+    },
+    forgot: {
+      password: "Forgot your password?"
+    },
+    register: {
+      title: "Sign Up",
+      description: "Enter your email and password below to create your account.",
+      submit: "Sign Up",
+      back: "Back to login"
+    },
+    password: {
+      recovery: {
+        title: "Password Recovery",
+        description: "Enter your email to receive instructions to reset your password.",
+        submit: "Send",
+        back: "Back to login"
+      },
+      reset: {
+        title: "Reset your Password",
+        description: "Enter the new password and confirm it.",
+        submit: "Send",
+        loading: "Loading reset form...",
+        success: "Password reset instructions sent to your email."
+      }
+    }
+  },
+  form: {
+    email: "Email",
+    password: "Password",
+    passwordConfirm: "Password Confirm",
+    username: "Username",
+    placeholder: {
+      email: "m@example.com"
+    },
+    validation: {
+      password: {
+        min: "Password should be at least 8 characters.",
+        uppercase: "Password should contain at least one uppercase letter.",
+        special: "Password should contain at least one special character.",
+        required: "Password is required"
+      },
+      passwords: {
+        match: "Passwords must match."
+      },
+      token: {
+        required: "Token is required"
+      },
+      email: {
+        invalid: "Invalid email address"
+      },
+      username: {
+        required: "Username is required"
+      }
+    }
+  },
+  nav: {
+    dashboard: "Dashboard",
+    logout: "Logout",
+    welcome: "Welcome to your Dashboard"
+  },
+  dashboard: {
+    title: "Dashboard",
+    subtitle: "Your ContextRocket-powered workspace. Configure your application and connect to ContextRocket for agent runs, conversation state, and knowledge management.",
+    card: {
+      chat: {
+        title: "Continue chatting",
+        description: "Your conversation history is saved. Pick up where you left off.",
+        action: "Open chat"
+      },
+      profile: {
+        title: "Profile & settings",
+        description: "Update your email, password, or language preference.",
+        action: "Edit profile"
+      },
+      users: {
+        title: "Users",
+        description: "Review registered accounts and guest sessions.",
+        action: "View users"
+      }
+    },
+    guest: {
+      prompt: {
+        title: "Save your conversation",
+        description: "Create a free account to keep your chat history. Your current conversation will continue either way.",
+        action: "Create account"
+      }
+    },
+    users: {
+      title: "Users",
+      description: "All registered and guest accounts.",
+      col: {
+        email: "Email",
+        type: "Type",
+        status: "Status"
+      },
+      type: {
+        guest: "Guest",
+        registered: "Registered"
+      },
+      status: {
+        active: "Active",
+        inactive: "Inactive"
+      },
+      forbidden: "This page is for operators only."
+    },
+    profile: {
+      title: "Profile & settings"
+    }
+  },
+  dev: {
+    notice: {
+      label: "Developer notice:"
+    },
+    siteConfigUrlWarning: "siteUrl in site.config.ts still points at example.com. Replace it with your production domain before going live."
+  },
+  error: {
+    generic: "Something went wrong. Please try again.",
+    dashboard: "Something went wrong loading this page.",
+    try: {
+      again: "Try again"
+    },
+    unexpected: "An unexpected error occurred. Please try again later.",
+    network: "Network error",
+    no: {
+      token: "No access token found",
+      data: "No data returned from server"
+    },
+    unknown: "Unknown error",
+    internal: "Internal server error"
+  },
+  footer: {
+    impressum: "Impressum",
+    privacy: "Privacy Policy",
+    faq: "FAQ"
+  },
+  faq: {
+    page: {
+      title: "Frequently Asked Questions",
+      description: "Answers to common questions about this site, the chat agent, data handling, and customization."
+    },
+    back: {
+      home: "Back to home"
+    }
+  },
+  blog: {
+    title: "Blog",
+    description: "Articles, guides, and updates.",
+    empty: "No posts yet. Check back soon.",
+    back: {
+      home: "Back to home",
+      to: {
+        list: "All posts"
+      }
+    },
+    not: {
+      found: "Post not found"
+    }
+  },
+  impressum: {
+    title: "Impressum",
+    legal: {
+      notice: "Legal Notice"
+    },
+    entity: {
+      label: "Entity"
+    },
+    address: {
+      label: "Address"
+    },
+    register: {
+      label: "Company Register"
+    },
+    vat: {
+      label: "VAT ID"
+    },
+    represented: {
+      by: {
+        label: "Represented by"
+      }
+    },
+    contact: {
+      label: "Contact"
+    },
+    disclaimer: "This Impressum is legally required for commercial websites in Germany and the European Union. All placeholder values must be replaced before going live."
+  },
+  privacy: {
+    title: "Privacy Policy",
+    contact: {
+      label: "Privacy Contact",
+      intro: "For questions about your personal data or to exercise your rights, contact our privacy team:"
+    },
+    placeholder: "This is a placeholder privacy policy. Replace this page with your complete, legally compliant privacy statement before going live.",
+    generated: {
+      notice: "Generated from site.config. Review with legal counsel before launch."
+    },
+    intro: "This privacy policy explains how we collect, use, and protect your personal data when you use this website. It is a starting point generated from the site configuration and must be reviewed by qualified legal counsel before this site goes live.",
+    controller: {
+      heading: "Data Controller",
+      intro: "The entity responsible for processing your personal data (the data controller within the meaning of the GDPR) is:"
+    },
+    data: {
+      heading: "Data We Process",
+      auth: {
+        heading: "Account and Authentication Data",
+        body: "When you register or log in, we process your email address, a hashed password, and your preferred language. This data is necessary to provide and secure your account. Legal basis: performance of a contract (Art. 6(1)(b) GDPR)."
+      },
+      cookies: {
+        heading: "Strictly Necessary Cookies",
+        body: "We use technically necessary cookies and browser storage to keep you logged in (authentication session), remember your language preference (locale cookie), and store your cookie consent choice. These are essential for the site to function and do not require your consent."
+      }
+    },
+    analytics: {
+      heading: "Analytics",
+      body: "This site uses analytics to understand how visitors interact with the service. Analytics scripts load only after you grant consent via the cookie banner. You can withdraw consent at any time by clicking the privacy policy link in the footer and using the consent reset option. Legal basis: consent (Art. 6(1)(a) GDPR).",
+      ga: {
+        label: "Google Analytics 4 (Google LLC)"
+      },
+      posthog: {
+        label: "PostHog (PostHog Inc.)"
+      },
+      providers: {
+        intro: "The following analytics providers are configured on this site:"
+      }
+    },
+    consent: {
+      heading: "Cookie Consent and Withdrawal",
+      body: "When you first visit, a cookie banner asks for your consent to analytics cookies. You can accept or decline. Your choice is stored in your browser. To change your choice or withdraw consent, clear the consent setting stored under the key",
+      bodyAfterKey: "in your browser's local storage."
+    },
+    rights: {
+      heading: "Your Rights",
+      intro: "Under the GDPR you have the following rights regarding your personal data:",
+      access: "Right of access (Art. 15 GDPR)",
+      rectification: "Right to rectification (Art. 16 GDPR)",
+      erasure: "Right to erasure (Art. 17 GDPR)",
+      portability: "Right to data portability (Art. 20 GDPR)",
+      complaint: "Right to lodge a complaint with a supervisory authority (Art. 77 GDPR)",
+      outro: "To exercise your rights, contact the privacy address above."
+    }
+  },
+  pagination: {
+    items: {
+      per: {
+        page: "Items per page:"
+      }
+    },
+    no: {
+      results: "0 results"
+    }
+  },
+  chat: {
+    placeholder: "Ask anything...",
+    placeholderStreaming: "Thinking...",
+    thinking: "Thinking",
+    slow: {
+      response: {
+        title: "Still working...",
+        hint: "This is taking a little longer than usual."
+      }
+    },
+    very: {
+      slow: {
+        response: {
+          hint: "Still processing. Complex questions take time."
+        }
+      }
+    },
+    send: "Send",
+    stop: "Stop",
+    empty: {
+      title: "How can I help?",
+      subtitle: "Ask a question to get started."
+    },
+    copy: "Copy",
+    copied: "Copied",
+    sources: "Sources",
+    scroll: {
+      to: {
+        bottom: "Scroll to bottom"
+      }
+    },
+    clear: "Clear chat",
+    open: "Open chat",
+    close: "Close chat",
+    expand: "Expand to full screen",
+    collapse: "Collapse to panel",
+    connect: {
+      required: {
+        title: "Connect ContextRocket",
+        body: "Set NEXT_PUBLIC_CR_AGENT_URL to enable the AI agent."
+      }
+    },
+    stream: {
+      interrupted: "The connection was interrupted before the answer finished. The reply may be incomplete."
+    },
+    typing: "Assistant is typing",
+    more: {
+      detail: "More detail"
+    },
+    less: {
+      detail: "Less detail"
+    },
+    suggestions: {
+      label: "Suggested follow-ups"
+    },
+    source: {
+      sheet: {
+        title: "Sources",
+        open: "Open source"
+      },
+      cited: {
+        section: "Cited section"
+      },
+      publisher: "Publisher",
+      date: "Date",
+      license: "License"
+    },
+    sourceSheet: {
+      openNewTab: "Open in new tab"
+    },
+    policy: {
+      card: {
+        source: "Source"
+      }
+    },
+    nudge: {
+      title: "Save your conversation",
+      body: "Create a free account to keep your full chat history. Your current conversation continues either way.",
+      action: "Create account",
+      dismiss: "Dismiss"
+    },
+    link: {
+      preview: {
+        title: "Link preview",
+        open: "Open in new tab"
+      }
+    },
+    grounded: "Grounded",
+    partially: {
+      grounded: "Partially grounded"
+    },
+    ungrounded: "Ungrounded",
+    groundedClaimsChecked: "claims checked",
+    demo: {
+      badge: "Demo",
+      error: {
+        slug: {
+          not: {
+            found: "The demo agent is not available. Contact the site owner to enable the public demo."
+          }
+        },
+        unauthorized: "Demo access was refused. The public demo may not be enabled for this agent."
+      }
+    }
+  },
+  embed: {
+    agent: {
+      url: {
+        rejected: {
+          title: "Agent URL not allowed",
+          body: "The agent-url passed to the embed widget does not match the agent configured for this site."
+        }
+      }
+    }
+  },
+  cookie: {
+    consent: {
+      aria: {
+        label: "Cookie consent"
+      },
+      title: "This site uses cookies",
+      body: "We use analytics cookies to improve your experience. See our",
+      policy: {
+        link: "Privacy Policy"
+      },
+      accept: "Accept",
+      decline: "Decline"
+    }
+  }
+,
   locale: {
     labelEnglish: "English",
     labelSpanish: "Spanish",
     labelGerman: "German",
     changeLanguage: "Change language",
   },
-
-  // ── Home / landing ────────────────────────────────────────────────────────
-  HOME_SUBTITLE:
-    "Build products on ContextRocket. Auth, dashboard shell, and OpenAPI-driven type safety included. Conversation state and agent runs delegate to ContextRocket via A2A.",
-  HOME_CTA: "Go to Dashboard",
-
-  // ── Home: embeddable widget section ──────────────────────────────────────
-  HOME_WIDGET_SECTION_TITLE: "Add the agent to any website",
-  HOME_WIDGET_SECTION_BODY:
-    "One script tag drops a floating chat button onto any page. The button opens an iframe backed by your ContextRocket agent -- no React, no bundler, no backend changes on the host site. The floating button on this page is the same component; embed it elsewhere with the snippet below.",
-  HOME_WIDGET_SNIPPET_NOTE:
-    "Copy the snippet, replace the agent URL, and add it before </body>.",
-
-  // ── Auth: login ───────────────────────────────────────────────────────────
-  AUTH_LOGIN_TITLE: "Login",
-  AUTH_LOGIN_DESCRIPTION: "Enter your email below to log in to your account.",
-  AUTH_LOGIN_SUBMIT: "Sign In",
-  AUTH_LOGIN_NO_ACCOUNT: "Don't have an account?",
-  AUTH_LOGIN_SIGN_UP: "Sign up",
-  AUTH_FORGOT_PASSWORD: "Forgot your password?",
-
-  // ── Auth: register ────────────────────────────────────────────────────────
-  AUTH_REGISTER_TITLE: "Sign Up",
-  AUTH_REGISTER_DESCRIPTION:
-    "Enter your email and password below to create your account.",
-  AUTH_REGISTER_SUBMIT: "Sign Up",
-  AUTH_REGISTER_BACK: "Back to login",
-
-  // ── Auth: password recovery ───────────────────────────────────────────────
-  AUTH_PASSWORD_RECOVERY_TITLE: "Password Recovery",
-  AUTH_PASSWORD_RECOVERY_DESCRIPTION:
-    "Enter your email to receive instructions to reset your password.",
-  AUTH_PASSWORD_RECOVERY_SUBMIT: "Send",
-  AUTH_PASSWORD_RECOVERY_BACK: "Back to login",
-  AUTH_PASSWORD_RESET_TITLE: "Reset your Password",
-  AUTH_PASSWORD_RESET_DESCRIPTION: "Enter the new password and confirm it.",
-  AUTH_PASSWORD_RESET_SUBMIT: "Send",
-  AUTH_PASSWORD_RESET_LOADING: "Loading reset form...",
-  AUTH_PASSWORD_RESET_SUCCESS:
-    "Password reset instructions sent to your email.",
-
-  // ── Form labels (shared) ──────────────────────────────────────────────────
-  FORM_EMAIL: "Email",
-  FORM_PASSWORD: "Password",
-  FORM_PASSWORD_CONFIRM: "Password Confirm",
-  FORM_USERNAME: "Username",
-  FORM_PLACEHOLDER_EMAIL: "m@example.com",
-
-  // ── Validation messages ───────────────────────────────────────────────────
-  FORM_VALIDATION_PASSWORD_MIN: "Password should be at least 8 characters.",
-  FORM_VALIDATION_PASSWORD_UPPERCASE:
-    "Password should contain at least one uppercase letter.",
-  FORM_VALIDATION_PASSWORD_SPECIAL:
-    "Password should contain at least one special character.",
-  FORM_VALIDATION_PASSWORDS_MATCH: "Passwords must match.",
-  FORM_VALIDATION_TOKEN_REQUIRED: "Token is required",
-  FORM_VALIDATION_EMAIL_INVALID: "Invalid email address",
-  FORM_VALIDATION_PASSWORD_REQUIRED: "Password is required",
-  FORM_VALIDATION_USERNAME_REQUIRED: "Username is required",
-
-  // ── Navigation / breadcrumbs ──────────────────────────────────────────────
-  NAV_DASHBOARD: "Dashboard",
-  NAV_LOGOUT: "Logout",
-
-  // ── Dashboard (landing when logged in) ────────────────────────────────────
-  NAV_WELCOME: "Welcome to your Dashboard",
-  DASHBOARD_TITLE: "Dashboard",
-  DASHBOARD_SUBTITLE:
-    "Your ContextRocket-powered workspace. Configure your application and connect to ContextRocket for agent runs, conversation state, and knowledge management.",
-  // Cards
-  DASHBOARD_CARD_CHAT_TITLE: "Continue chatting",
-  DASHBOARD_CARD_CHAT_DESCRIPTION:
-    "Your conversation history is saved. Pick up where you left off.",
-  DASHBOARD_CARD_CHAT_ACTION: "Open chat",
-  DASHBOARD_CARD_PROFILE_TITLE: "Profile & settings",
-  DASHBOARD_CARD_PROFILE_DESCRIPTION:
-    "Update your email, password, or language preference.",
-  DASHBOARD_CARD_PROFILE_ACTION: "Edit profile",
-  DASHBOARD_CARD_USERS_TITLE: "Users",
-  DASHBOARD_CARD_USERS_DESCRIPTION:
-    "Review registered accounts and guest sessions.",
-  DASHBOARD_CARD_USERS_ACTION: "View users",
-  // Guest dashboard prompt
-  DASHBOARD_GUEST_PROMPT_TITLE: "Save your conversation",
-  DASHBOARD_GUEST_PROMPT_DESCRIPTION:
-    "Create a free account to keep your chat history. Your current conversation will continue either way.",
-  DASHBOARD_GUEST_PROMPT_ACTION: "Create account",
-
-  // ── Dashboard: users list (operator only) ─────────────────────────────────
-  DASHBOARD_USERS_TITLE: "Users",
-  DASHBOARD_USERS_DESCRIPTION: "All registered and guest accounts.",
-  DASHBOARD_USERS_COL_EMAIL: "Email",
-  DASHBOARD_USERS_COL_TYPE: "Type",
-  DASHBOARD_USERS_COL_STATUS: "Status",
-  DASHBOARD_USERS_TYPE_GUEST: "Guest",
-  DASHBOARD_USERS_TYPE_REGISTERED: "Registered",
-  DASHBOARD_USERS_STATUS_ACTIVE: "Active",
-  DASHBOARD_USERS_STATUS_INACTIVE: "Inactive",
-  DASHBOARD_USERS_FORBIDDEN: "This page is for operators only.",
-
-  // ── Dashboard: profile ────────────────────────────────────────────────────
-  DASHBOARD_PROFILE_TITLE: "Profile & settings",
-
-  // ── Developer notices (dev-visible configuration warnings) ───────────────
-  DEV_NOTICE_LABEL: "Developer notice:",
-  SITE_CONFIG_URL_WARNING:
-    "siteUrl in site.config.ts still points at example.com. Replace it with your production domain before going live.",
-
-  // ── Error pages ───────────────────────────────────────────────────────────
-  ERROR_GENERIC: "Something went wrong. Please try again.",
-  ERROR_DASHBOARD: "Something went wrong loading this page.",
-  ERROR_TRY_AGAIN: "Try again",
-  ERROR_UNEXPECTED: "An unexpected error occurred. Please try again later.",
-  ERROR_NETWORK: "Network error",
-  ERROR_NO_TOKEN: "No access token found",
-  ERROR_NO_DATA: "No data returned from server",
-  ERROR_UNKNOWN: "Unknown error",
-
-  // ── Backend error keys (returned as raw keys from API) ────────────────────
-  ERROR_INTERNAL: "Internal server error",
-
-  // ── Footer ────────────────────────────────────────────────────────────────
-  FOOTER_IMPRESSUM: "Impressum",
-  FOOTER_PRIVACY: "Privacy Policy",
-  FOOTER_FAQ: "FAQ",
-
-  // ── FAQ page ──────────────────────────────────────────────────────────────
-  FAQ_PAGE_TITLE: "Frequently Asked Questions",
-  FAQ_PAGE_DESCRIPTION:
-    "Answers to common questions about this site, the chat agent, data handling, and customization.",
-  FAQ_BACK_HOME: "Back to home",
-
-  // ── Blog ────────────────────────────────────────────────────────────────────
-  BLOG_TITLE: "Blog",
-  BLOG_DESCRIPTION: "Articles, guides, and updates.",
-  BLOG_EMPTY: "No posts yet. Check back soon.",
-  BLOG_BACK_HOME: "Back to home",
-  BLOG_BACK_TO_LIST: "All posts",
-  BLOG_NOT_FOUND: "Post not found",
-
-  // ── Legal pages ───────────────────────────────────────────────────────────
-  IMPRESSUM_TITLE: "Impressum",
-  IMPRESSUM_LEGAL_NOTICE: "Legal Notice",
-  IMPRESSUM_ENTITY_LABEL: "Entity",
-  IMPRESSUM_ADDRESS_LABEL: "Address",
-  IMPRESSUM_REGISTER_LABEL: "Company Register",
-  IMPRESSUM_VAT_LABEL: "VAT ID",
-  IMPRESSUM_REPRESENTED_BY_LABEL: "Represented by",
-  IMPRESSUM_CONTACT_LABEL: "Contact",
-  IMPRESSUM_DISCLAIMER:
-    "This Impressum is legally required for commercial websites in Germany and the European Union. All placeholder values must be replaced before going live.",
-  PRIVACY_TITLE: "Privacy Policy",
-  PRIVACY_CONTACT_LABEL: "Privacy Contact",
-  PRIVACY_PLACEHOLDER:
-    "This is a placeholder privacy policy. Replace this page with your complete, legally compliant privacy statement before going live.",
-
-  // ── Privacy policy (generated sections) ──────────────────────────────────
-  PRIVACY_GENERATED_NOTICE:
-    "Generated from site.config. Review with legal counsel before launch.",
-  PRIVACY_INTRO:
-    "This privacy policy explains how we collect, use, and protect your personal data when you use this website. It is a starting point generated from the site configuration and must be reviewed by qualified legal counsel before this site goes live.",
-  PRIVACY_CONTROLLER_HEADING: "Data Controller",
-  PRIVACY_CONTROLLER_INTRO:
-    "The entity responsible for processing your personal data (the data controller within the meaning of the GDPR) is:",
-  PRIVACY_CONTACT_INTRO:
-    "For questions about your personal data or to exercise your rights, contact our privacy team:",
-  PRIVACY_DATA_HEADING: "Data We Process",
-  PRIVACY_DATA_AUTH_HEADING: "Account and Authentication Data",
-  PRIVACY_DATA_AUTH_BODY:
-    "When you register or log in, we process your email address, a hashed password, and your preferred language. This data is necessary to provide and secure your account. Legal basis: performance of a contract (Art. 6(1)(b) GDPR).",
-  PRIVACY_DATA_COOKIES_HEADING: "Strictly Necessary Cookies",
-  PRIVACY_DATA_COOKIES_BODY:
-    "We use technically necessary cookies and browser storage to keep you logged in (authentication session), remember your language preference (locale cookie), and store your cookie consent choice. These are essential for the site to function and do not require your consent.",
-  PRIVACY_ANALYTICS_HEADING: "Analytics",
-  PRIVACY_ANALYTICS_BODY:
-    "This site uses analytics to understand how visitors interact with the service. Analytics scripts load only after you grant consent via the cookie banner. You can withdraw consent at any time by clicking the privacy policy link in the footer and using the consent reset option. Legal basis: consent (Art. 6(1)(a) GDPR).",
-  PRIVACY_ANALYTICS_GA_LABEL: "Google Analytics 4 (Google LLC)",
-  PRIVACY_ANALYTICS_POSTHOG_LABEL: "PostHog (PostHog Inc.)",
-  PRIVACY_ANALYTICS_PROVIDERS_INTRO:
-    "The following analytics providers are configured on this site:",
-  PRIVACY_CONSENT_HEADING: "Cookie Consent and Withdrawal",
-  PRIVACY_CONSENT_BODY:
-    "When you first visit, a cookie banner asks for your consent to analytics cookies. You can accept or decline. Your choice is stored in your browser. To change your choice or withdraw consent, clear the consent setting stored under the key",
-  PRIVACY_CONSENT_BODY_AFTER_KEY: "in your browser's local storage.",
-  PRIVACY_RIGHTS_HEADING: "Your Rights",
-  PRIVACY_RIGHTS_INTRO:
-    "Under the GDPR you have the following rights regarding your personal data:",
-  PRIVACY_RIGHTS_ACCESS: "Right of access (Art. 15 GDPR)",
-  PRIVACY_RIGHTS_RECTIFICATION: "Right to rectification (Art. 16 GDPR)",
-  PRIVACY_RIGHTS_ERASURE: "Right to erasure (Art. 17 GDPR)",
-  PRIVACY_RIGHTS_PORTABILITY: "Right to data portability (Art. 20 GDPR)",
-  PRIVACY_RIGHTS_COMPLAINT:
-    "Right to lodge a complaint with a supervisory authority (Art. 77 GDPR)",
-  PRIVACY_RIGHTS_OUTRO:
-    "To exercise your rights, contact the privacy address above.",
-
-  // ── Pagination ────────────────────────────────────────────────────────────
-  PAGINATION_ITEMS_PER_PAGE: "Items per page:",
-  PAGINATION_NO_RESULTS: "0 results",
-
-  // ── Chat ──────────────────────────────────────────────────────────────────
-  CHAT_PLACEHOLDER: "Ask anything...",
-  CHAT_PLACEHOLDER_STREAMING: "Thinking...",
-  CHAT_THINKING: "Thinking",
-  CHAT_SLOW_RESPONSE_TITLE: "Still working...",
-  CHAT_SLOW_RESPONSE_HINT: "This is taking a little longer than usual.",
-  CHAT_VERY_SLOW_RESPONSE_HINT:
-    "Still processing. Complex questions take time.",
-  CHAT_SEND: "Send",
-  CHAT_STOP: "Stop",
-  CHAT_EMPTY_TITLE: "How can I help?",
-  CHAT_EMPTY_SUBTITLE: "Ask a question to get started.",
-  CHAT_COPY: "Copy",
-  CHAT_COPIED: "Copied",
-  CHAT_SOURCES: "Sources",
-  CHAT_SCROLL_TO_BOTTOM: "Scroll to bottom",
-  CHAT_CLEAR: "Clear chat",
-  CHAT_OPEN: "Open chat",
-  CHAT_CLOSE: "Close chat",
-  CHAT_EXPAND: "Expand to full screen",
-  CHAT_COLLAPSE: "Collapse to panel",
-  CHAT_CONNECT_REQUIRED_TITLE: "Connect ContextRocket",
-  CHAT_CONNECT_REQUIRED_BODY:
-    "Set NEXT_PUBLIC_CR_AGENT_URL to enable the AI agent.",
-  CHAT_STREAM_INTERRUPTED:
-    "The connection was interrupted before the answer finished. The reply may be incomplete.",
-  ACCESSIBILITY_TYPING: "Assistant is typing",
-
-  // ── Embed widget ──────────────────────────────────────────────────────────
-  EMBED_AGENT_URL_REJECTED_TITLE: "Agent URL not allowed",
-  EMBED_AGENT_URL_REJECTED_BODY:
-    "The agent-url passed to the embed widget does not match the agent configured for this site.",
-
-  // ── Chat: bubble typography ───────────────────────────────────────────────
-  CHAT_MORE_DETAIL: "More detail",
-  CHAT_LESS_DETAIL: "Less detail",
-
-  // ── Chat: suggestion pills ────────────────────────────────────────────────
-  CHAT_SUGGESTIONS_LABEL: "Suggested follow-ups",
-
-  // ── Chat: citation source sheet ───────────────────────────────────────────
-  CHAT_SOURCE_SHEET_TITLE: "Sources",
-  CHAT_SOURCE_SHEET_OPEN: "Open source",
-  CHAT_SOURCE_SHEET_OPEN_NEW_TAB: "Open in new tab",
-  CHAT_SOURCE_CITED_SECTION: "Cited section",
-  CHAT_SOURCE_PUBLISHER: "Publisher",
-  CHAT_SOURCE_DATE: "Date",
-  CHAT_SOURCE_LICENSE: "License",
-
-  // ── Chat: policy-class card ───────────────────────────────────────────────
-  CHAT_POLICY_CARD_SOURCE: "Source",
-
-  // ── Chat: conversion nudge ────────────────────────────────────────────────
-  CHAT_NUDGE_TITLE: "Save your conversation",
-  CHAT_NUDGE_BODY:
-    "Create a free account to keep your full chat history. Your current conversation continues either way.",
-  CHAT_NUDGE_ACTION: "Create account",
-  CHAT_NUDGE_DISMISS: "Dismiss",
-
-  // ── Chat: link preview sheet ──────────────────────────────────────────────
-  CHAT_LINK_PREVIEW_TITLE: "Link preview",
-  CHAT_LINK_PREVIEW_OPEN: "Open in new tab",
-
-  // ── Cookie consent ────────────────────────────────────────────────────────
-  COOKIE_CONSENT_ARIA_LABEL: "Cookie consent",
-  COOKIE_CONSENT_TITLE: "This site uses cookies",
-  COOKIE_CONSENT_BODY:
-    "We use analytics cookies to improve your experience. See our",
-  COOKIE_CONSENT_POLICY_LINK: "Privacy Policy",
-  COOKIE_CONSENT_ACCEPT: "Accept",
-  COOKIE_CONSENT_DECLINE: "Decline",
-
-  // ── Chat: faithfulness / grounded indicator ───────────────────────────────
-  CHAT_GROUNDED: "Grounded",
-  CHAT_PARTIALLY_GROUNDED: "Partially grounded",
-  CHAT_UNGROUNDED: "Ungrounded",
-  /** Tooltip suffix when checked_claims count is available, e.g. "3 claims checked" */
-  CHAT_GROUNDED_CLAIMS_CHECKED: "claims checked",
-
-  // ── Chat: demo mode ───────────────────────────────────────────────────────
-  CHAT_DEMO_BADGE: "Demo",
-  CHAT_DEMO_ERROR_SLUG_NOT_FOUND:
-    "The demo agent is not available. Contact the site owner to enable the public demo.",
-  CHAT_DEMO_ERROR_UNAUTHORIZED:
-    "Demo access was refused. The public demo may not be enabled for this agent.",
 } as const;

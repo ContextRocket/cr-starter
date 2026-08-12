@@ -31,21 +31,21 @@ function ResetPasswordForm() {
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">
-            {t("AUTH_PASSWORD_RESET_TITLE")}
+            {t("auth.password.reset.title")}
           </CardTitle>
           <CardDescription>
-            {t("AUTH_PASSWORD_RESET_DESCRIPTION")}
+            {t("auth.password.reset.description")}
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="password">{t("FORM_PASSWORD")}</Label>
+            <Label htmlFor="password">{t("form.password")}</Label>
             <Input id="password" name="password" type="password" required />
           </div>
           <FieldError state={state} field="password" />
           <div className="grid gap-2">
             <Label htmlFor="passwordConfirm">
-              {t("FORM_PASSWORD_CONFIRM")}
+              {t("form.passwordConfirm")}
             </Label>
             <Input
               id="passwordConfirm"
@@ -62,7 +62,7 @@ function ResetPasswordForm() {
             value={token}
             readOnly
           />
-          <SubmitButton text={t("AUTH_PASSWORD_RESET_SUBMIT")} />
+          <SubmitButton text={t("auth.password.reset.submit")} />
           <FormError state={state} />
         </CardContent>
       </Card>
@@ -73,7 +73,7 @@ function ResetPasswordForm() {
 export default function Page() {
   return (
     <div className="flex h-screen w-full items-center justify-center bg-muted px-4">
-      <Suspense fallback={<div>{t("AUTH_PASSWORD_RESET_LOADING")}</div>}>
+      <Suspense fallback={<div>{t("auth.password.reset.loading")}</div>}>
         <ResetPasswordForm />
       </Suspense>
     </div>

@@ -208,11 +208,11 @@ export function MessageList({
         <button
           onClick={scrollToBottom}
           className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 rounded-full border border-border/80 bg-background px-3 py-1.5 text-xs font-semibold text-foreground shadow-md transition-opacity hover:opacity-80"
-          aria-label={t("CHAT_SCROLL_TO_BOTTOM")}
+          aria-label={t("chat.scroll.to.bottom")}
           data-testid="scroll-to-bottom"
         >
           <ArrowDownIcon className="size-3.5" />
-          {t("CHAT_SCROLL_TO_BOTTOM")}
+          {t("chat.scroll.to.bottom")}
         </button>
       )}
     </div>
@@ -300,7 +300,7 @@ function MessageBubble({
               data-testid="more-detail-toggle"
               className="self-start rounded-md px-1.5 py-0.5 text-xs font-medium text-primary transition-colors hover:bg-primary/10"
             >
-              {expanded ? t("CHAT_LESS_DETAIL") : t("CHAT_MORE_DETAIL")}
+              {expanded ? t("chat.less.detail") : t("chat.more.detail")}
             </button>
           )}
 
@@ -360,7 +360,7 @@ function GroundedChip({
 
   const claimsTitle =
     checked_claims > 0
-      ? `${checked_claims} ${t("CHAT_GROUNDED_CLAIMS_CHECKED")}`
+      ? `${checked_claims} ${t("chat.groundedClaimsChecked")}`
       : undefined;
 
   if (state === "grounded") {
@@ -371,7 +371,7 @@ function GroundedChip({
         className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[11px] font-medium text-emerald-700"
       >
         <CheckCircle2Icon className="size-3" aria-hidden />
-        {t("CHAT_GROUNDED")}
+        {t("chat.grounded")}
       </span>
     );
   }
@@ -384,7 +384,7 @@ function GroundedChip({
         className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-700"
       >
         <CircleDashedIcon className="size-3" aria-hidden />
-        {t("CHAT_UNGROUNDED")}
+        {t("chat.ungrounded")}
       </span>
     );
   }
