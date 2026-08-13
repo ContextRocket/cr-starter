@@ -86,11 +86,35 @@ export interface CtaBand {
   cta: CallToAction;
 }
 
+/** Features section: optional heading fields + the feature cards. */
+export interface FeaturesSection {
+  label?: string;
+  title: string;
+  subtitle?: string;
+  items: FeatureItem[];
+}
+
+/** FAQ section: a heading + the questions. */
+export interface FaqSectionContent {
+  title: string;
+  items: FaqItem[];
+}
+
+/** Testimonials section: optional label + a heading + the quotes. */
+export interface TestimonialsSection {
+  label?: string;
+  title: string;
+  items: Testimonial[];
+}
+
 export interface CompanyConfig {
   hero?: HeroContent;
-  features?: FeatureItem[];
-  faq?: FaqItem[];
-  testimonials?: Testimonial[];
+  /** Features / offerings, with a section heading. */
+  features?: FeaturesSection;
+  /** FAQ, with a section heading. */
+  faq?: FaqSectionContent;
+  /** Testimonials, with a section heading. */
+  testimonials?: TestimonialsSection;
   /** Social-proof logos, with an optional heading. */
   logos?: { heading?: string; items: LogoItem[] };
   stats?: StatItem[];
@@ -110,23 +134,35 @@ export const company: CompanyConfig = {
     primaryCta: { label: "Get started", href: "/" }, // PLACEHOLDER
     secondaryCta: { label: "Learn more", href: "/blog" }, // PLACEHOLDER
   },
-  features: [
-    { title: "Feature one", description: "What it does and why it helps." }, // PLACEHOLDER
-    { title: "Feature two", description: "What it does and why it helps." }, // PLACEHOLDER
-    { title: "Feature three", description: "What it does and why it helps." }, // PLACEHOLDER
-  ],
-  faq: [
-    { question: "What is this?", answer: "A short, plain-language answer." }, // PLACEHOLDER
-    { question: "Who is it for?", answer: "A short, plain-language answer." }, // PLACEHOLDER
-  ],
-  testimonials: [
-    {
-      quote: "A short, specific quote from a real customer.", // PLACEHOLDER
-      author: "Full Name",
-      role: "Title",
-      company: "Company",
-    },
-  ],
+  features: {
+    label: "Features", // PLACEHOLDER
+    title: "Everything you need", // PLACEHOLDER
+    subtitle: "A short line describing the section.", // PLACEHOLDER
+    items: [
+      { title: "Feature one", description: "What it does and why it helps." }, // PLACEHOLDER
+      { title: "Feature two", description: "What it does and why it helps." }, // PLACEHOLDER
+      { title: "Feature three", description: "What it does and why it helps." }, // PLACEHOLDER
+    ],
+  },
+  faq: {
+    title: "Frequently asked questions", // PLACEHOLDER
+    items: [
+      { question: "What is this?", answer: "A short, plain-language answer." }, // PLACEHOLDER
+      { question: "Who is it for?", answer: "A short, plain-language answer." }, // PLACEHOLDER
+    ],
+  },
+  testimonials: {
+    label: "Testimonials", // PLACEHOLDER
+    title: "What people say", // PLACEHOLDER
+    items: [
+      {
+        quote: "A short, specific quote from a real customer.", // PLACEHOLDER
+        author: "Full Name",
+        role: "Title",
+        company: "Company",
+      },
+    ],
+  },
   logos: {
     heading: "Trusted by", // PLACEHOLDER
     items: [
