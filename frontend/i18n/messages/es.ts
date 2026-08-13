@@ -191,6 +191,9 @@ export const es = {
     },
     not: {
       found: "Publicación no encontrada"
+    },
+    min: {
+      read: "min de lectura"
     }
   },
   impressum: {

@@ -14,6 +14,7 @@
  *     date: "2026-07-15"
  *     image: "/images/blog/post-hero.jpg"  (optional)
  *     excerpt: "Short description for listing cards." (optional)
+ *     series: 5                              (optional; enables ordering + prefix)
  *     ---
  *   Body in Markdown (the post content).
  *
@@ -49,6 +50,11 @@ export interface BlogFrontmatter {
   image?: string;
   /** Optional excerpt for listing cards. Falls back to first 200 chars. */
   excerpt?: string;
+  /**
+   * Optional series position. When present, listings can order posts by this
+   * number (ascending) and show a zero-padded prefix (e.g. "05").
+   */
+  series?: number;
 }
 
 /** A single parsed blog post (standalone page). */
@@ -98,9 +104,10 @@ function parseFrontmatterBlock(fmBlock: string): RawFrontmatter {
     if (colonIdx === -1) continue;
     const key = trimmed.slice(0, colonIdx).trim();
     let value = trimmed.slice(colonIdx + 1).trim();
-    // Strip surrounding quotes.
-    if ((value.startsWith('"') && value.endsWith('"')) ||
-        (value.startsWith("'") && value.endsWith("'"))) {
+    // Strip surrounding quotes; unescape \" and \\ inside double-quoted values.
+    if (value.startsWith('"') && value.endsWith('"')) {
+      value = value.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, "\\");
+    } else if (value.startsWith("'") && value.endsWith("'")) {
       value = value.slice(1, -1);
     }
     result[key] = value;
@@ -156,6 +163,10 @@ function extractFrontmatter(
     );
   }
 
+  const seriesRaw = raw.series?.trim();
+  const series =
+    seriesRaw && /^\d+$/.test(seriesRaw) ? Number(seriesRaw) : undefined;
+
   return [
     {
       title: raw.title.trim(),
@@ -163,6 +174,7 @@ function extractFrontmatter(
       date: raw.date.trim(),
       image: raw.image?.trim() || undefined,
       excerpt: raw.excerpt?.trim() || undefined,
+      series,
     },
     body,
   ];

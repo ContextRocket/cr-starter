@@ -194,6 +194,9 @@ export const de = {
     },
     not: {
       found: "Beitrag nicht gefunden"
+    },
+    min: {
+      read: "Min. Lesezeit"
     }
   },
   impressum: {
