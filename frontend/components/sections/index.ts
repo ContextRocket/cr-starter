@@ -12,6 +12,8 @@ export { TestimonialGrid, type TestimonialGridProps } from "./testimonial-grid";
 export { StatsBar, type StatsBarProps } from "./stats-bar";
 export { CtaSection, type CtaSectionProps } from "./cta-section";
 export { FaqSection, type FaqSectionProps } from "./faq-section";
+export { LogoCloud, type LogoCloudProps } from "./logo-cloud";
+export { MarketingSections } from "./marketing-sections";
 export { FooterSection, type FooterSectionProps } from "./footer-section";
 export { Navbar, type NavbarProps, type NavLink } from "./navbar";
 export { InsightCard, type InsightCardProps } from "./insight-card";
