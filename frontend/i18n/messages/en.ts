@@ -194,6 +194,9 @@ export const en = {
     },
     not: {
       found: "Post not found"
+    },
+    min: {
+      read: "min read"
     }
   },
   impressum: {

@@ -33,7 +33,14 @@ export async function generateMetadata({
 export default async function BlogPage({ params }: BlogPageProps) {
   const locale = resolveLocale((await params).locale);
   setLocale(locale);
-  const posts = fileBlogAdapter.list();
+  // Order by series (ascending) when posts declare one; otherwise newest
+  // first. A mixed set keeps series posts ahead of unseried ones.
+  const posts = fileBlogAdapter.list().sort((a, b) => {
+    if (a.series != null && b.series != null) return a.series - b.series;
+    if (a.series != null) return -1;
+    if (b.series != null) return 1;
+    return a.date < b.date ? 1 : -1;
+  });
 
   return (
     <main
@@ -65,6 +72,11 @@ export default async function BlogPage({ params }: BlogPageProps) {
                 className="group block space-y-2"
               >
                 <h2 className="text-xl font-semibold group-hover:text-primary transition-colors">
+                  {post.series != null ? (
+                    <span className="font-normal text-muted-foreground">
+                      {String(post.series).padStart(2, "0")}{" "}
+                    </span>
+                  ) : null}
                   {post.title}
                 </h2>
                 <p className="text-xs text-muted-foreground">

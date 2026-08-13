@@ -17,6 +17,7 @@ import { Link } from "@/i18n/navigation";
 import { setLocale, t } from "@/i18n/keys";
 import { resolveLocale, ACTIVE_LOCALES } from "@/i18n/messages";
 import { fileBlogAdapter } from "@/lib/blog";
+import { renderInlineMarkdown } from "@/lib/inline-markdown";
 import { siteConfig } from "@/site.config";
 
 interface BlogPostPageProps {
@@ -63,6 +64,22 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const post = fileBlogAdapter.get(slug);
   if (!post) notFound();
 
+  // Optional series ordering enables prev/next between posts.
+  const ordered = fileBlogAdapter
+    .list()
+    .filter((p) => p.series != null)
+    .sort((a, b) => (a.series ?? 0) - (b.series ?? 0));
+  const idx = ordered.findIndex((p) => p.slug === post.slug);
+  const prev = idx > 0 ? ordered[idx - 1] : null;
+  const next =
+    idx >= 0 && idx < ordered.length - 1 ? ordered[idx + 1] : null;
+  const seriesPrefix = (n: number) => String(n).padStart(2, "0");
+
+  const readingMinutes = Math.max(
+    1,
+    Math.round(post.bodyMarkdown.split(/\s+/).filter(Boolean).length / 200),
+  );
+
   return (
     <main
       className="min-h-screen bg-background text-foreground p-8 max-w-3xl mx-auto"
@@ -70,15 +87,28 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     >
       <article>
         <header className="mb-8">
-          <h1 className="text-3xl font-bold mb-3">{post.title}</h1>
+          <h1 className="text-3xl font-bold mb-3">
+            {post.series != null ? (
+              <span className="font-normal text-muted-foreground">
+                {seriesPrefix(post.series)}{" "}
+              </span>
+            ) : null}
+            {post.title}
+          </h1>
           <p className="text-sm text-muted-foreground">
             {post.author} &middot;{" "}
             {new Date(post.date).toLocaleDateString(locale, {
               year: "numeric",
               month: "long",
               day: "numeric",
-            })}
+            })}{" "}
+            &middot; {readingMinutes} {t("blog.min.read")}
           </p>
+          {post.excerpt ? (
+            <p className="mt-3 text-lg text-muted-foreground">
+              {post.excerpt}
+            </p>
+          ) : null}
         </header>
 
         {post.image ? (
@@ -140,30 +170,68 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               );
             }
 
-            // Inline code (backtick-wrapped)
-            const withInlineCode = trimmed.replace(
-              /`([^`]+)`/g,
-              (_match: string, code: string) =>
-                `<code class="bg-muted px-1 rounded text-xs font-mono">${code}</code>`,
-            );
-
             // Horizontal rule
             if (trimmed === "---") {
               return <hr key={i} className="my-6 border-border" />;
             }
 
+            // Standalone image: a block that is only a Markdown image.
+            const imageMatch = /^!\[([^\]]*)\]\(([^)]+)\)$/.exec(trimmed);
+            if (imageMatch) {
+              const [, alt, src] = imageMatch;
+              return (
+                <Image
+                  key={i}
+                  src={src}
+                  alt={alt}
+                  width={1200}
+                  height={800}
+                  className="my-8 h-auto w-full rounded-xl object-cover"
+                />
+              );
+            }
+
+            // Inline Markdown (links, bold, images, code) via the shared helper.
             return (
               <p
                 key={i}
                 className="mt-3 leading-7"
-                dangerouslySetInnerHTML={{ __html: withInlineCode }}
+                dangerouslySetInnerHTML={{
+                  __html: renderInlineMarkdown(trimmed),
+                }}
               />
             );
           })}
         </div>
       </article>
 
-      <nav className="mt-12 pt-6 border-t border-border text-sm flex justify-between">
+      {prev || next ? (
+        <nav className="mt-12 flex justify-between gap-4 border-y border-border py-4 text-sm">
+          {prev ? (
+            <Link
+              href={`/blog/${prev.slug}`}
+              className="text-muted-foreground hover:underline"
+            >
+              &larr;{" "}
+              {prev.series != null ? seriesPrefix(prev.series) + " " : ""}
+              {prev.title}
+            </Link>
+          ) : (
+            <span />
+          )}
+          {next ? (
+            <Link
+              href={`/blog/${next.slug}`}
+              className="ml-auto text-right text-muted-foreground hover:underline"
+            >
+              {next.series != null ? seriesPrefix(next.series) + " " : ""}
+              {next.title} &rarr;
+            </Link>
+          ) : null}
+        </nav>
+      ) : null}
+
+      <nav className="mt-8 text-sm flex justify-between">
         <Link href="/blog" className="text-muted-foreground hover:underline">
           &larr; {t("blog.back.to.list")}
         </Link>
