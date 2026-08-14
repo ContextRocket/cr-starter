@@ -17,6 +17,8 @@ import { setLocale, t } from "@/i18n/keys";
 import { siteConfig } from "@/site.config";
 import { resolveLocale } from "@/i18n/messages";
 import { buildAlternates } from "@/lib/seo";
+import { buildBreadcrumbListJsonLd } from "@/lib/structured-data";
+import { StructuredDataScripts } from "@/components/seo/structured-data-scripts";
 import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 
@@ -39,10 +41,20 @@ export async function generateMetadata({
 
 export default async function ImpressumPage({ params }: ImpressumPageProps) {
   const { locale: rawLocale } = await params;
-  setLocale(resolveLocale(rawLocale));
+  const locale = resolveLocale(rawLocale);
+  setLocale(locale);
   const legal = siteConfig.legal;
 
+  // Home > Impressum breadcrumb (absolute, locale-prefixed URLs).
+  const origin = siteConfig.siteUrl.replace(/\/$/, "");
+  const breadcrumb = buildBreadcrumbListJsonLd([
+    { name: t("breadcrumb.home"), url: `${origin}/${locale}` },
+    { name: t("impressum.title"), url: `${origin}/${locale}/impressum` },
+  ]);
+
   return (
+    <>
+    <StructuredDataScripts items={[breadcrumb]} />
     <main className="min-h-screen bg-background text-foreground p-8 max-w-2xl mx-auto">
       <h1 className="text-3xl font-bold mb-2">{t("impressum.title")}</h1>
       <p className="text-sm text-muted-foreground mb-8">
@@ -104,5 +116,6 @@ export default async function ImpressumPage({ params }: ImpressumPageProps) {
         </Link>
       </nav>
     </main>
+    </>
   );
 }

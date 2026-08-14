@@ -173,6 +173,142 @@ export function buildPersonJsonLd(input: PersonJsonLdInput): JsonLdNode {
   };
 }
 
+/**
+ * JSON-LD BreadcrumbList for a non-home indexable page.
+ *
+ * Emits a schema.org BreadcrumbList with one ListItem per crumb, numbered
+ * 1..n. Callers pass already-resolved (locale-aware) names and absolute
+ * URLs, so this builder stays pure and locale-agnostic. Inject via
+ * `<StructuredDataScripts items={[buildBreadcrumbListJsonLd(items)]} />`.
+ *
+ * @param items Ordered crumb chain, e.g.
+ *   `[{ name: "Home", url: origin }, { name: "Blog", url: `${origin}/en/blog` }]`.
+ */
+export function buildBreadcrumbListJsonLd(
+  items: { name: string; url: string }[],
+): JsonLdNode {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+}
+
+/**
+ * Input for a BlogPosting JSON-LD node. All strings are already resolved
+ * to absolute URLs / active-locale copy by the caller (the blog post page
+ * resolves title/description and builds the locale-prefixed url), keeping
+ * this builder pure and locale-agnostic.
+ */
+export interface BlogPostingJsonLdInput {
+  title: string;
+  description: string;
+  /** Absolute canonical URL of the post (locale-prefixed). */
+  url: string;
+  /** ISO date string (YYYY-MM-DD). */
+  datePublished: string;
+  /** ISO date string; defaults to `datePublished` when omitted. */
+  dateModified?: string;
+  /** Author display name. */
+  author: string;
+  /** Absolute or root-relative hero image URL; falls back to the site logo. */
+  imageUrl?: string;
+}
+
+/**
+ * JSON-LD BlogPosting / Article payload for a single blog post.
+ *
+ * Anchors `publisher` (and, when no image is supplied, `image`) to the site
+ * Organization node emitted on the home page (`${origin}/#organization`) so
+ * crawlers reconcile the article to the same entity. `mainEntityOfPage`
+ * points back at the canonical URL. Inject via
+ * `<StructuredDataScripts items={[buildBlogPostingJsonLd(input)]} />`.
+ */
+export function buildBlogPostingJsonLd(input: BlogPostingJsonLdInput): JsonLdNode {
+  const origin = siteConfig.siteUrl.replace(/\/$/, "");
+  const imageUrl = input.imageUrl
+    ? input.imageUrl.startsWith("http")
+      ? input.imageUrl
+      : `${origin}${input.imageUrl.startsWith("/") ? "" : "/"}${input.imageUrl}`
+    : `${origin}${siteConfig.assets.logo}`;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": `${input.url}#article`,
+    headline: input.title,
+    description: input.description,
+    image: imageUrl,
+    datePublished: input.datePublished,
+    dateModified: input.dateModified ?? input.datePublished,
+    url: input.url,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": input.url,
+    },
+    author: {
+      "@type": "Person",
+      name: input.author,
+    },
+    publisher: {
+      "@id": `${origin}/#organization`,
+    },
+  };
+}
+
+/**
+ * Input for a SoftwareApplication JSON-LD node. Every field is optional so a
+ * fork with pricing can pass its product name / description / offers while
+ * the generic starter falls back to `siteConfig`.
+ */
+export interface SoftwareApplicationJsonLdInput {
+  /** Product name; defaults to `siteConfig.companyName`. */
+  name?: string;
+  /** Product description; defaults to `siteConfig.description`. */
+  description?: string;
+  /**
+   * schema.org Offer / AggregateOffer node describing pricing. Passed through
+   * verbatim so a fork can shape it (single Offer, AggregateOffer with tiers,
+   * etc.). Omitted entirely when not supplied.
+   */
+  offers?: JsonLdNode;
+}
+
+/**
+ * JSON-LD SoftwareApplication payload for a product landing page.
+ *
+ * NOTE: the generic starter ships no product / pricing page, so nothing wires
+ * this today. It is exported as an available helper so a fork that adds a
+ * pricing page can emit a SoftwareApplication node (with its `offers`) in one
+ * line, anchored to the site Organization as publisher. Inject via
+ * `<StructuredDataScripts items={[buildSoftwareApplicationJsonLd({ offers })]} />`.
+ */
+export function buildSoftwareApplicationJsonLd(
+  input: SoftwareApplicationJsonLdInput = {},
+): JsonLdNode {
+  const origin = siteConfig.siteUrl.replace(/\/$/, "");
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "@id": `${origin}/#software`,
+    name: input.name ?? siteConfig.companyName,
+    url: origin,
+    description: input.description ?? siteConfig.description,
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    publisher: {
+      "@id": `${origin}/#organization`,
+    },
+    ...(input.offers ? { offers: input.offers } : {}),
+  };
+}
+
 /** Lowercase, hyphenate a name for use in a stable @id fragment. */
 function slugify(value: string): string {
   return value

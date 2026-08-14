@@ -14,6 +14,9 @@ import { setLocale, t } from "@/i18n/keys";
 import { resolveLocale } from "@/i18n/messages";
 import { fileBlogAdapter } from "@/lib/blog";
 import { buildAlternates } from "@/lib/seo";
+import { buildBreadcrumbListJsonLd } from "@/lib/structured-data";
+import { StructuredDataScripts } from "@/components/seo/structured-data-scripts";
+import { siteConfig } from "@/site.config";
 
 interface BlogPageProps {
   params: Promise<{ locale: string }>;
@@ -44,7 +47,16 @@ export default async function BlogPage({ params }: BlogPageProps) {
     return a.date < b.date ? 1 : -1;
   });
 
+  // Home > Blog breadcrumb (absolute, locale-prefixed URLs).
+  const origin = siteConfig.siteUrl.replace(/\/$/, "");
+  const breadcrumb = buildBreadcrumbListJsonLd([
+    { name: t("breadcrumb.home"), url: `${origin}/${locale}` },
+    { name: t("blog.title"), url: `${origin}/${locale}/blog` },
+  ]);
+
   return (
+    <>
+    <StructuredDataScripts items={[breadcrumb]} />
     <main
       className="min-h-screen bg-background text-foreground p-8 max-w-3xl mx-auto"
       data-testid="blog-page"
@@ -106,5 +118,6 @@ export default async function BlogPage({ params }: BlogPageProps) {
         </Link>
       </nav>
     </main>
+    </>
   );
 }
