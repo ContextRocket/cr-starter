@@ -182,8 +182,8 @@ export default async function PreviewPage({
             name: "Mark MacMahon",
             role: t("preview.team.mark.role"),
             bioParagraphs: teamBio,
-            // Preview placeholder — a fork supplies its own team photo; the starter ships no brand image.
-            imageUrl: "/icon-512.png",
+            // Neutral, unbranded placeholder — a fork supplies its own team photo.
+            imageUrl: "/placeholder.svg",
           },
         ]}
       />
@@ -191,8 +191,8 @@ export default async function PreviewPage({
       <div className="px-6 py-24 sm:py-32">
         <div className="relative mx-auto aspect-[3/4] max-w-[360px]">
           <HeroInsights
-            // Preview placeholder — a fork supplies its own team photo; the starter ships no brand image.
-            imageSrc="/icon-512.png"
+            // Neutral, unbranded placeholder — a fork supplies its own hero art.
+            imageSrc="/placeholder.svg"
             imageClassName="relative h-full w-full"
             scoreBadge={{
               title: t("preview.heroInsights.scoreTitle"),
