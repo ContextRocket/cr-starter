@@ -1,9 +1,14 @@
 /**
  * Sitemap route -- served at /sitemap.xml.
  *
- * Lists every public page with its canonical URL and last-modified
- * date. Add new public routes to INDEXABLE_ROUTES to include them
- * automatically.
+ * Every public page is served under a `[locale]` URL segment (en/es/de),
+ * so each route emits ONE entry at the default-locale-prefixed URL with a
+ * full `alternates.languages` hreflang map: one absolute URL per supported
+ * locale plus an `x-default` pointing at the default-locale variant. This
+ * matches the actual `[locale]` routes -- an unprefixed `x-default` would
+ * point at a URL that does not exist.
+ *
+ * Add new public routes to INDEXABLE_ROUTES to include them automatically.
  *
  * Adapted from context-rocket/frontend/app/sitemap.ts and
  * context-rocket/frontend/lib/public-site.ts (buildPublicSitemapEntries).
@@ -11,6 +16,7 @@
 
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/site.config";
+import { SUPPORTED_LOCALES } from "@/i18n/messages";
 import { fileBlogAdapter } from "@/lib/blog";
 
 export const dynamic = "force-static";
@@ -38,7 +44,12 @@ const INDEXABLE_ROUTES: readonly IndexableRoute[] = [
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const origin = siteConfig.siteUrl.replace(/\/$/, "");
+  const defaultLocale = siteConfig.defaultLocale;
   const lastModified = new Date();
+
+  /** Build a locale-prefixed absolute URL for an in-locale path segment. */
+  const localeUrl = (locale: string, path: string): string =>
+    path ? `${origin}/${locale}/${path}` : `${origin}/${locale}`;
 
   const pages: IndexableRoute[] = [...INDEXABLE_ROUTES];
 
@@ -59,15 +70,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Blog directory might not exist yet — skip gracefully.
   }
 
-  return pages.map((route) => ({
-    url: route.path ? `${origin}/${route.path}` : origin,
-    lastModified,
-    changeFrequency: route.changeFrequency,
-    priority: route.priority,
-    alternates: {
-      languages: {
-        "x-default": route.path ? `${origin}/${route.path}` : origin,
-      },
-    },
-  }));
+  return pages.map((route) => {
+    const languages: Record<string, string> = {};
+    for (const locale of SUPPORTED_LOCALES) {
+      languages[locale] = localeUrl(locale, route.path);
+    }
+    languages["x-default"] = localeUrl(defaultLocale, route.path);
+
+    return {
+      url: localeUrl(defaultLocale, route.path),
+      lastModified,
+      changeFrequency: route.changeFrequency,
+      priority: route.priority,
+      alternates: { languages },
+    };
+  });
 }

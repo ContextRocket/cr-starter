@@ -13,6 +13,7 @@ import { Link } from "@/i18n/navigation";
 import { setLocale, t } from "@/i18n/keys";
 import { resolveLocale } from "@/i18n/messages";
 import { fileBlogAdapter } from "@/lib/blog";
+import { buildAlternates } from "@/lib/seo";
 
 interface BlogPageProps {
   params: Promise<{ locale: string }>;
@@ -26,6 +27,7 @@ export async function generateMetadata({
   return {
     title: t("blog.title"),
     description: t("blog.description"),
+    alternates: buildAlternates(locale, "/blog"),
     robots: { index: true, follow: true },
   };
 }

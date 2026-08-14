@@ -18,6 +18,7 @@ import { setLocale, t } from "@/i18n/keys";
 import { resolveLocale, ACTIVE_LOCALES } from "@/i18n/messages";
 import { fileBlogAdapter } from "@/lib/blog";
 import { renderInlineMarkdown } from "@/lib/inline-markdown";
+import { buildAlternates } from "@/lib/seo";
 import { siteConfig } from "@/site.config";
 
 interface BlogPostPageProps {
@@ -52,6 +53,7 @@ export async function generateMetadata({
     openGraph: post.image
       ? { images: [{ url: post.image }] }
       : undefined,
+    alternates: buildAlternates(locale, `/blog/${slug}`),
     robots: { index: true, follow: true },
   };
 }
