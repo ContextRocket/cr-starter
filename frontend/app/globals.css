@@ -163,7 +163,9 @@
   --tertiary-hover: hsl(0 0% 86%);
   --tertiary-soft: hsl(0 0% 9% / 0.05);
   --muted: hsl(0 0% 96.1%);
-  --muted-foreground: hsl(0 0% 45.1%);
+  /* 43% (not 45.1%) so muted-foreground text clears WCAG 2 AA 4.5:1 contrast
+     on the --muted (#f5f5f5) background used across cards/secondary copy. */
+  --muted-foreground: hsl(0 0% 43%);
   --accent: hsl(0 0% 96.1%);
   --accent-foreground: hsl(0 0% 9%);
   --destructive: hsl(0 84.2% 60.2%);
