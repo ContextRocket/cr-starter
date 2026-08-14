@@ -1,31 +1,46 @@
-import type { ReactNode } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
+import { SparklesIcon } from "@heroicons/react/24/solid";
 import { cn } from "@/lib/utils";
 
 type CardColor = "primary" | "blue" | "yellow" | "green" | "neutral";
 
-const colorMap: Record<CardColor, { bg: string; iconBg: string }> = {
-  primary: { bg: "bg-primary", iconBg: "bg-primary/15" },
-  blue: { bg: "bg-blue-500", iconBg: "bg-blue-500/15" },
-  yellow: { bg: "bg-amber-400", iconBg: "bg-amber-400/15" },
-  green: { bg: "bg-emerald-500", iconBg: "bg-emerald-500/15" },
-  neutral: { bg: "bg-muted", iconBg: "bg-muted" },
+/**
+ * Solid accent background per color. The default card renders its icon inside
+ * a SOLID colored box (matching the reference hero overlay); the badge uses the
+ * same accent as its pill background. Colors resolve to theme tokens where one
+ * exists (primary/neutral) and to a fixed accent otherwise.
+ */
+const colorMap: Record<CardColor, string> = {
+  primary: "bg-primary",
+  blue: "bg-blue-500",
+  yellow: "bg-amber-400",
+  green: "bg-emerald-500",
+  neutral: "bg-muted",
 };
 
-export interface InsightCardProps {
+export interface InsightCardProps extends HTMLAttributes<HTMLDivElement> {
   variant?: "default" | "badge";
   color?: CardColor;
-  icon: ReactNode;
+  /** Icon node. Optional: the badge falls back to a Sparkles glyph. */
+  icon?: ReactNode;
   title: string;
   description?: string;
+  /** Standalone alignment helper (mx-auto / ml-auto) for non-overlay use. */
+  align?: "left" | "center" | "right";
   className?: string;
-  style?: React.CSSProperties;
 }
 
 /**
- * Floating insight card — used in hero section overlays.
+ * Floating insight card — used in hero-overlay compositions (see HeroInsights).
  * Two variants:
- *   badge  — pill-shaped, colored background, compact
- *   default — white rounded card with colored icon box
+ *   badge   — pill with a small uppercase title over a bold value
+ *             (e.g. "LLM Score" / "72%"); defaults to a Sparkles icon.
+ *   default — card with a solid colored icon box, title + optional description.
+ *
+ * Content-agnostic: all copy/colors/icons arrive as props and every surface is
+ * themed via design tokens (bg-primary, bg-card, text-muted-foreground, …), so
+ * a fork restyles it entirely through siteConfig.theme. Extra DOM attributes
+ * (data-testid, aria-*, style, …) pass through to the root element.
  */
 export function InsightCard({
   variant = "default",
@@ -33,23 +48,36 @@ export function InsightCard({
   icon,
   title,
   description,
+  align = "left",
   className,
-  style,
+  ...props
 }: InsightCardProps) {
-  const colors = colorMap[color];
+  const alignClass =
+    align === "center" ? "mx-auto" : align === "right" ? "ml-auto" : undefined;
 
   if (variant === "badge") {
     return (
       <div
         className={cn(
-          "inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-primary-foreground shadow-lg",
-          colors.bg,
+          "inline-flex items-center gap-2 rounded-full px-3 py-2 text-primary-foreground shadow-lg",
+          colorMap[color],
+          alignClass,
           className,
         )}
-        style={style}
+        suppressHydrationWarning
+        {...props}
       >
-        {icon}
-        <span>{title}</span>
+        {icon ?? <SparklesIcon className="size-4" />}
+        <div className="text-left leading-snug">
+          <div className="text-[10px] font-semibold uppercase tracking-wide">
+            {title}
+          </div>
+          {description && (
+            <div className="text-base font-extrabold leading-tight">
+              {description}
+            </div>
+          )}
+        </div>
       </div>
     );
   }
@@ -57,21 +85,21 @@ export function InsightCard({
   return (
     <div
       className={cn(
-        "rounded-xl bg-card border border-border p-4 shadow-lg max-w-[240px]",
+        "rounded-xl border border-border bg-card p-4 shadow-lg max-w-[280px]",
+        alignClass,
         className,
       )}
-      style={style}
+      suppressHydrationWarning
+      {...props}
     >
       <div className="flex items-start gap-3">
         <div
           className={cn(
             "flex size-9 shrink-0 items-center justify-center rounded-lg",
-            colors.iconBg,
+            colorMap[color],
           )}
         >
-          <span className={cn("size-5", colors.bg !== "bg-muted" ? colors.bg : "text-foreground")}>
-            {icon}
-          </span>
+          {icon}
         </div>
         <div>
           <p className="text-sm font-semibold leading-tight">{title}</p>
