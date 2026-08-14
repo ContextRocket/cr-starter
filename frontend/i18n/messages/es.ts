@@ -27,6 +27,13 @@ export const es = {
       title: "Del blog",
       subtitle: "Guías, investigación y novedades del producto.",
       viewAll: "Ver todas las publicaciones"
+    },
+    integrations: {
+      label: "Integraciones",
+      title: "Conectado con las herramientas que importan",
+      body1: "Se conecta con las herramientas que tu equipo ya usa, para que tus datos fluyan sin trabajo adicional.",
+      body2: "Estas integraciones te permiten actuar sobre señales reales y mantener todo sincronizado.",
+      cta: "Ver todas las integraciones"
     }
   },
   auth: {
