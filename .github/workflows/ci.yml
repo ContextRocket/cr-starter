@@ -75,11 +75,30 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          # Node 22 matches frontend/.nvmrc. Vitest v4's forks worker needs
+          # webidl.util.markAsUncloneable, which is undefined on Node 20 -- the
+          # unit/coverage gate fails there.
+          node-version: "22"
 
       - name: Install Node dependencies
         working-directory: ./frontend
         run: pnpm install
+
+      - name: Typecheck
+        working-directory: ./frontend
+        run: pnpm run typecheck
+
+      - name: Lint
+        working-directory: ./frontend
+        run: pnpm run lint
+
+      - name: i18n parity
+        working-directory: ./frontend
+        run: pnpm run i18n:check
+
+      - name: Static build
+        working-directory: ./frontend
+        run: pnpm run build:static
 
       - name: Run tests
         working-directory: ./frontend
@@ -91,6 +110,70 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           flag-name: node-coverage
           parallel: true
+
+  e2e-frontend:
+    name: Playwright E2E
+
+    runs-on: ubuntu-latest
+
+    # Playwright boots the backend (uvicorn) and frontend itself; the backend
+    # reads DATABASE_URL from the job env. Port 5452 matches the template's
+    # dev-db port (DB_PORT) so the backend's default DATABASE_URL resolves here.
+    env:
+      DATABASE_URL: postgresql+asyncpg://postgres:password@localhost:5452/app_db
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: app_db
+        ports:
+          - 5452:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install the backend
+        working-directory: ./backend
+        run: uv sync --all-extras --dev
+
+      - name: Apply database migrations
+        working-directory: ./backend
+        run: uv run alembic upgrade head
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Node dependencies
+        working-directory: ./frontend
+        run: pnpm install
+
+      - name: Install Playwright browsers
+        working-directory: ./frontend
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run E2E tests
+        working-directory: ./frontend
+        run: pnpm run test:e2e
 
   finish:
 
