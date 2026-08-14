@@ -5,6 +5,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import "../globals.css";
 import { ChatFab } from "@/components/chat/chat-fab";
+import { AosProvider } from "@/components/ui/aos-provider";
 import { CookieConsentBanner } from "@/components/cookie-consent-banner";
 import { LocaleProvider } from "@/i18n/locale-provider";
 // Register all locale trees server-side before any t() call.
@@ -64,7 +65,7 @@ export default async function LocaleLayout({
   // This is what arms the chat conversion-moment nudge; without it the nudge
   // could never fire. (A logged-in visitor never sees the nudge.)
   // Static export has no request context — default to guest.
-  let isGuest = true;
+  let isGuest: boolean;
   try {
     const cookieStore = await cookies();
     isGuest = !cookieStore.get("accessToken")?.value;
@@ -94,6 +95,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <AosProvider />
         <NextIntlClientProvider locale={locale} messages={messages}>
           <LocaleProvider initialLocale={locale} messages={localeMessages}>
             {showSiteUrlWarning && (
