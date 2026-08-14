@@ -36,7 +36,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          # Matches frontend/.nvmrc and ci.yml.
+          node-version: "22"
 
       - name: Install Node dependencies
         working-directory: ./frontend
@@ -44,3 +45,12 @@ jobs:
 
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
+        env:
+          # These hooks assume a local zsh + nvm + pnpm login shell (or a running
+          # backend, for the codegen hooks) and cannot run on the CI runner —
+          # a `zsh -lc` login shell there loses pnpm from PATH. The equivalent
+          # gates run robustly in ci.yml (typecheck / lint / i18n / build), so
+          # skip the environment-dependent hooks here and let pre-commit CI
+          # enforce the portable ones (ruff, file hygiene). Local `pre-commit`
+          # behaviour is unchanged (nothing is skipped locally).
+          SKIP: frontend-lint,frontend-prettier,frontend-tsc,generate-openapi-schema,generate-frontend-client,i18n-parity
