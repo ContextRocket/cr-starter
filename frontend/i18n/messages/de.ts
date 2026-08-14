@@ -529,6 +529,15 @@ export const de = {
         message: "Du erhältst keine weiteren E-Mails aus dieser Liste. Du kannst dich jederzeit erneut anmelden.",
         action: "Zurück zur Startseite"
       }
+    },
+    surface: {
+      terminal: {
+        heading: "Terminal-Oberfläche",
+        body: "Diese Seite wird auf der inneren Oberfläche gerendert: eine Monospace-Schrift und rechtwinklige Ecken, pro Routengruppe umgeschaltet aus derselben Token-Basis wie die Marketing-Seiten.",
+        cardTitle: "Gleiche Tokens, andere Oberfläche",
+        cardDescription: "Nur die aktive Schrift und der Eckenradius ändern sich; Farben und Semantik bleiben gemeinsam.",
+        action: "Primäre Aktion"
+      }
     }
   },
 } as const;
