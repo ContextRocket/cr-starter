@@ -46,7 +46,8 @@ export const es = {
       errors: {
         emailRequired: "Introduce tu correo electrónico.",
         emailInvalid: "Introduce una dirección de correo válida.",
-        consentRequired: "Acepta la política de privacidad para continuar."
+        consentRequired: "Acepta la política de privacidad para continuar.",
+        submitFailed: "Algo salió mal. Inténtalo de nuevo."
       }
     }
   },

@@ -49,7 +49,8 @@ export const de = {
       errors: {
         emailRequired: "Bitte gib deine E-Mail-Adresse ein.",
         emailInvalid: "Bitte gib eine gültige E-Mail-Adresse ein.",
-        consentRequired: "Bitte akzeptiere die Datenschutzerklärung, um fortzufahren."
+        consentRequired: "Bitte akzeptiere die Datenschutzerklärung, um fortzufahren.",
+        submitFailed: "Etwas ist schiefgelaufen. Bitte versuche es erneut."
       }
     }
   },

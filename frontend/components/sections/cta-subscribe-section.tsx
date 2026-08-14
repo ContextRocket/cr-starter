@@ -6,14 +6,19 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { SectionWrapper } from "@/components/sections/section-wrapper";
+import { submitForm } from "@/lib/forms";
+import type { FormKey } from "@/forms.config";
 
 /**
  * CtaSubscribeSection — an email subscribe / waitlist CTA band.
  *
- * UI-only and props-driven (cr-starter convention): all copy is passed in
- * (localize at the call site), and submission is OPTIONAL. With no `onSubmit`
- * the form validates client-side and shows the success state locally — no
- * backend required. A fork can pass `onSubmit` to wire an API later. The band
+ * Props-driven (cr-starter convention): all copy is passed in (localize at the
+ * call site). Submission is config-driven and optional:
+ *   - pass `formKey` to submit via `forms.config.ts` (the endpoint lives in
+ *     config, not here — e.g. a ContextRocket structured app);
+ *   - or pass a custom `onSubmit`;
+ *   - or neither → UI-only (validates + shows success locally, no network).
+ * With `formKey` set but no endpoint configured, it stays UI-only. The band
  * animates in via AOS (initialized by <AosProvider/>).
  */
 export interface CtaSubscribeSectionProps {
@@ -25,15 +30,21 @@ export interface CtaSubscribeSectionProps {
   consentLabel: ReactNode;
   /** Message shown after a successful submit. */
   successMessage: string;
-  /** Validation messages. */
+  /** Validation + submit-failure messages. */
   errors: {
     emailRequired: string;
     emailInvalid: string;
     consentRequired: string;
+    submitFailed: string;
   };
   /**
-   * Optional submit handler (e.g. to POST to an API). When omitted, the form
-   * simply shows the success state — no backend needed.
+   * Which entry in `forms.config.ts` to submit to. When its endpoint is empty,
+   * the form stays UI-only.
+   */
+  formKey?: FormKey;
+  /**
+   * Custom submit handler; overrides `formKey`. When both are omitted the form
+   * is UI-only.
    */
   onSubmit?: (email: string) => Promise<void> | void;
   className?: string;
@@ -51,6 +62,7 @@ export function CtaSubscribeSection({
   consentLabel,
   successMessage,
   errors,
+  formKey,
   onSubmit,
   className,
   backgroundClass = "bg-muted",
@@ -61,6 +73,7 @@ export function CtaSubscribeSection({
     email?: string;
     consent?: string;
   }>({});
+  const [submitError, setSubmitError] = useState<string | undefined>();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -75,8 +88,12 @@ export function CtaSubscribeSection({
 
     try {
       setLoading(true);
-      await onSubmit?.(email.trim());
+      setSubmitError(undefined);
+      if (onSubmit) await onSubmit(email.trim());
+      else if (formKey) await submitForm(formKey, { email: email.trim() });
       setSubmitted(true);
+    } catch {
+      setSubmitError(errors.submitFailed);
     } finally {
       setLoading(false);
     }
@@ -141,6 +158,9 @@ export function CtaSubscribeSection({
                 <p className="mt-2 text-sm text-destructive">
                   {fieldErrors.consent}
                 </p>
+              ) : null}
+              {submitError ? (
+                <p className="mt-2 text-sm text-destructive">{submitError}</p>
               ) : null}
             </form>
           </>
