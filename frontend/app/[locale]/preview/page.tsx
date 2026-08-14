@@ -92,9 +92,9 @@ export default async function PreviewPage({
   ];
 
   const heroInsightIcons = [
-    <BoltIcon key="bolt" className="size-5" />,
-    <GlobeAltIcon key="globe" className="size-5" />,
-    <ArrowPathIcon key="refresh" className="size-5" />,
+    <BoltIcon key="bolt" className="size-5 text-white" />,
+    <GlobeAltIcon key="globe" className="size-5 text-white" />,
+    <ArrowPathIcon key="refresh" className="size-5 text-white" />,
   ];
   const heroInsightMeta: Array<{
     color: HeroInsightCard["color"];

@@ -72,12 +72,13 @@ export function HeroInsights({
           sizes="(min-width: 1024px) 460px, 90vw"
         />
 
-        {/* Score badge — scales in first */}
+        {/* Score badge — scales in first. Two-line badge (label over value);
+            InsightCard falls back to a Sparkles glyph when no icon is given. */}
         {scoreBadge && (
           <InsightCard
             variant="badge"
-            icon={null}
-            title={`${scoreBadge.title} ${scoreBadge.value}`}
+            title={scoreBadge.title}
+            description={scoreBadge.value}
             className={`absolute ${scoreBadge.positionClassName}`}
             style={{
               opacity: imageLoaded ? 1 : 0,
