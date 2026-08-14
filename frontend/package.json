@@ -22,7 +22,19 @@
     "lighthouse": "lhci autorun",
     "trim-assets": "node scripts/trim-assets.js",
     "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,html}'",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "test:integration": "pnpm run test:e2e",
+    "verify": "pnpm run typecheck && pnpm run lint && pnpm run i18n:check && pnpm run test && pnpm run build:static",
+    "verify:full": "pnpm run verify && pnpm run test:integration"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,css,html,md}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@headlessui/react": "^2.2.10",
@@ -70,6 +82,7 @@
     "fork-ts-checker-webpack-plugin": "^9.1.0",
     "globals": "^17.3.0",
     "jsdom": "^30.0.1",
+    "lint-staged": "^17.3.0",
     "postcss": "^8.4.49",
     "prettier": "^3.8.1",
     "sharp": "^0.35.3",
