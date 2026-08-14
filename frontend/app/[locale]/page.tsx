@@ -6,14 +6,31 @@
  * site.config -- no hardcoded company name here.
  */
 
+import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { Bot } from "lucide-react";
 import { t } from "@/i18n/keys";
+import { resolveLocale } from "@/i18n/messages";
 import { buildHomeJsonLd } from "@/lib/structured-data";
+import { buildAlternates } from "@/lib/seo";
 import { StructuredDataScripts } from "@/components/seo/structured-data-scripts";
 import { LocaleSwitcher } from "@/i18n/locale-switcher";
 import { siteConfig } from "@/site.config";
+
+interface HomePageProps {
+  params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: HomePageProps): Promise<Metadata> {
+  const locale = resolveLocale((await params).locale);
+  return {
+    alternates: buildAlternates(locale, ""),
+    robots: { index: true, follow: true },
+  };
+}
 
 export default function Home() {
   return (

@@ -19,6 +19,7 @@ import { setLocale, t } from "@/i18n/keys";
 import { siteConfig } from "@/site.config";
 import { resolveLocale } from "@/i18n/messages";
 import { CONSENT_STORAGE_KEY } from "@/lib/analytics";
+import { buildAlternates } from "@/lib/seo";
 import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 
@@ -30,9 +31,11 @@ export async function generateMetadata({
   params,
 }: PrivacyPageProps): Promise<Metadata> {
   const { locale: rawLocale } = await params;
-  setLocale(resolveLocale(rawLocale));
+  const locale = resolveLocale(rawLocale);
+  setLocale(locale);
   return {
     title: t("privacy.title"),
+    alternates: buildAlternates(locale, "/privacy"),
     robots: { index: true, follow: true },
   };
 }

@@ -21,6 +21,7 @@ import { setLocale, t } from "@/i18n/keys";
 import { resolveLocale } from "@/i18n/messages";
 import { fileFaqAdapter } from "@/lib/faq";
 import { buildFaqJsonLd } from "@/lib/structured-data";
+import { buildAlternates } from "@/lib/seo";
 import { StructuredDataScripts } from "@/components/seo/structured-data-scripts";
 
 interface FaqPageProps {
@@ -36,6 +37,7 @@ export async function generateMetadata({
   return {
     title: t("faq.page.title"),
     description: t("faq.page.description"),
+    alternates: buildAlternates(locale, "/faq"),
     robots: { index: true, follow: true },
   };
 }

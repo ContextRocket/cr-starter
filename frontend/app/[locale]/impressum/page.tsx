@@ -16,6 +16,7 @@
 import { setLocale, t } from "@/i18n/keys";
 import { siteConfig } from "@/site.config";
 import { resolveLocale } from "@/i18n/messages";
+import { buildAlternates } from "@/lib/seo";
 import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 
@@ -27,9 +28,11 @@ export async function generateMetadata({
   params,
 }: ImpressumPageProps): Promise<Metadata> {
   const { locale: rawLocale } = await params;
-  setLocale(resolveLocale(rawLocale));
+  const locale = resolveLocale(rawLocale);
+  setLocale(locale);
   return {
     title: t("impressum.title"),
+    alternates: buildAlternates(locale, "/impressum"),
     robots: { index: true, follow: true },
   };
 }
