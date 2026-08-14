@@ -18,6 +18,23 @@
 
 @custom-variant dark (&:is(.dark, .dark *));
 
+/*
+ * DESIGN-TOKEN CONTRACT (Layer 1 — generic, source of truth)
+ * ----------------------------------------------------------
+ * These generic semantic tokens (--primary / --secondary / --tertiary, each with
+ * -hover / -soft / -foreground; plus --muted, --accent, semantic --success/
+ * --warning/--info/--error, and --text-secondary/-tertiary) are the SINGLE source
+ * of truth. A derived product (e.g. ContextRocket) keeps its brand vocabulary as
+ * thin ALIASES in its own globals — e.g. `--cr-pink: var(--primary)`,
+ * `--cr-cyan: var(--tertiary)`, `--cr-blue: var(--info)` — never a parallel value
+ * system. This starter never hardcodes brand color names; forks re-brand via
+ * `siteConfig.theme` in site.config.ts.
+ *
+ * NOTE (known gap, tracked separately): siteConfig.theme is currently read only by
+ * the OG-image/icon routes, not injected into :root at runtime. Wiring that seam is
+ * a separate lane; this contract defines the names it will drive.
+ */
+
 @theme {
   /* Fonts — set in the [locale] layout via next/font. Swap the font files
      (or switch to next/font/google) without touching component classes. */
@@ -46,6 +63,13 @@
 
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-secondary-soft: var(--secondary-soft);
+
+  --color-tertiary: var(--tertiary);
+  --color-tertiary-foreground: var(--tertiary-foreground);
+  --color-tertiary-hover: var(--tertiary-hover);
+  --color-tertiary-soft: var(--tertiary-soft);
 
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
@@ -132,6 +156,12 @@
   --primary-soft: hsl(0 0% 9% / 0.08);
   --secondary: hsl(0 0% 96.1%);
   --secondary-foreground: hsl(0 0% 9%);
+  --secondary-hover: hsl(0 0% 92%);
+  --secondary-soft: hsl(0 0% 9% / 0.05);
+  --tertiary: hsl(0 0% 92%);
+  --tertiary-foreground: hsl(0 0% 9%);
+  --tertiary-hover: hsl(0 0% 86%);
+  --tertiary-soft: hsl(0 0% 9% / 0.05);
   --muted: hsl(0 0% 96.1%);
   --muted-foreground: hsl(0 0% 45.1%);
   --accent: hsl(0 0% 96.1%);
@@ -172,6 +202,12 @@
   --primary-foreground: hsl(0 0% 9%);
   --secondary: hsl(0 0% 14.9%);
   --secondary-foreground: hsl(0 0% 98%);
+  --secondary-hover: hsl(0 0% 20%);
+  --secondary-soft: hsl(0 0% 98% / 0.08);
+  --tertiary: hsl(0 0% 14.9%);
+  --tertiary-foreground: hsl(0 0% 98%);
+  --tertiary-hover: hsl(0 0% 20%);
+  --tertiary-soft: hsl(0 0% 98% / 0.08);
   --muted: hsl(0 0% 14.9%);
   --muted-foreground: hsl(0 0% 63.9%);
   --accent: hsl(0 0% 14.9%);
