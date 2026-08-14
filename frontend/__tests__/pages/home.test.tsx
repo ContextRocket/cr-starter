@@ -2,62 +2,59 @@ import { render } from "@testing-library/react";
 import { screen } from "@testing-library/dom";
 import "@testing-library/jest-dom/vitest";
 
-import Home from "@/app/[locale]/page";
-import { LocaleProvider } from "@/i18n/locale-provider";
-import { siteConfig } from "@/site.config";
+// The home page renders <MarketingSections /> (from company.config), a blog
+// teaser (only when posts exist), and a newsletter CTA. Mock the blog adapter
+// to an empty list so the test is hermetic and the FeaturedArticles teaser is
+// deterministically absent -- keeping the single-h1 assertion clean.
+//
+// NOTE: vi.mock is hoisted; use the relative path from this test file. The page
+// imports via @/lib/blog which Vitest resolves to the same module.
+vi.mock("../../lib/blog", () => ({
+  fileBlogAdapter: {
+    list: () => [],
+    get: () => null,
+  },
+  FileBlogAdapter: vi.fn(),
+  parseBlogPost: vi.fn(),
+}));
 
-// Helper: wrap a component in LocaleProvider (required by LocaleSwitcher).
-function withLocale(ui: React.ReactElement) {
-  return <LocaleProvider initialLocale="en">{ui}</LocaleProvider>;
+import Home from "@/app/[locale]/page";
+import { company } from "@/company.config";
+
+/** Render the home page for a given URL locale (defaults to en). */
+async function renderHome(locale = "en") {
+  return Home({ params: Promise.resolve({ locale }) });
 }
 
 describe("Home Page", () => {
-  it("renders a single h1 from site.config tagline", () => {
-    render(withLocale(<Home />));
+  it("renders a single h1 from the company hero headline", async () => {
+    render(await renderHome());
 
     const headings = screen.getAllByRole("heading", { level: 1 });
     expect(headings).toHaveLength(1);
-    expect(headings[0]).toHaveTextContent(siteConfig.tagline);
+    expect(headings[0]).toHaveTextContent(company.hero!.headline);
   });
 
-  it("renders a link to the dashboard", () => {
-    render(withLocale(<Home />));
+  it("renders the hero subhead", async () => {
+    render(await renderHome());
 
-    const dashboardLink = screen.getByRole("link", {
-      name: /go to dashboard/i,
-    });
-    expect(dashboardLink).toBeInTheDocument();
-    expect(dashboardLink).toHaveAttribute("href", "/dashboard");
+    // The hero subhead comes from company.config, not the old minimal home.
+    expect(screen.getByText(company.hero!.subhead!)).toBeInTheDocument();
   });
 
-  it("renders the description text from i18n keys", () => {
-    render(withLocale(<Home />));
+  it("renders the newsletter subscribe form", async () => {
+    render(await renderHome());
 
-    // The phrase appears in the tagline (h1) and in the subtitle paragraph.
-    const matches = screen.getAllByText(/Build products on ContextRocket/i);
-    expect(matches.length).toBeGreaterThanOrEqual(1);
+    // The subscribe CTA lives on the home page (formKey="subscribe"); its email
+    // input is the deterministic anchor.
+    const email = screen
+      .getAllByRole("textbox")
+      .find((el) => el.getAttribute("type") === "email");
+    expect(email).toBeInTheDocument();
   });
 
-  it("renders footer links to impressum and privacy", () => {
-    render(withLocale(<Home />));
-
-    const impressumLink = screen.getByRole("link", { name: /impressum/i });
-    expect(impressumLink).toHaveAttribute("href", "/impressum");
-
-    const privacyLink = screen.getByRole("link", { name: /privacy/i });
-    expect(privacyLink).toHaveAttribute("href", "/privacy");
-  });
-
-  it("renders the locale switcher in the footer", () => {
-    render(withLocale(<Home />));
-
-    // LocaleSwitcher is mounted in the footer; verify its trigger exists.
-    const switcher = screen.getByTestId("locale-switcher");
-    expect(switcher).toBeInTheDocument();
-  });
-
-  it("renders JSON-LD script tags for Organization and WebSite", () => {
-    const { container } = render(withLocale(<Home />));
+  it("renders JSON-LD script tags for Organization and WebSite", async () => {
+    const { container } = render(await renderHome());
 
     const scripts = container.querySelectorAll(
       'script[type="application/ld+json"]',

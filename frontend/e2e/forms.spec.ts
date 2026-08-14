@@ -1,7 +1,7 @@
 import { test, expect, type Request } from "@playwright/test";
 
 /**
- * E2E: the subscribe form on /preview.
+ * E2E: the subscribe form on the home page (/).
  *
  * The subscribe CTA uses `formKey="subscribe"`, whose `forms.config` endpoint
  * is empty — so a valid submit must show the LOCAL success state and make NO
@@ -40,7 +40,7 @@ test.describe("Subscribe form (UI-only)", () => {
     };
     page.on("request", record);
 
-    await page.goto("/en/preview", { waitUntil: "domcontentloaded" });
+    await page.goto("/en", { waitUntil: "domcontentloaded" });
 
     const { email, form } = await subscribeForm(page);
     await email.scrollIntoViewIfNeeded();
@@ -64,7 +64,7 @@ test.describe("Subscribe form (UI-only)", () => {
   test("empty email shows the required-error and does not succeed", async ({
     page,
   }) => {
-    await page.goto("/en/preview", { waitUntil: "domcontentloaded" });
+    await page.goto("/en", { waitUntil: "domcontentloaded" });
     const { email, form } = await subscribeForm(page);
     await email.scrollIntoViewIfNeeded();
     await form.locator('input[type="checkbox"]').check();
@@ -77,7 +77,7 @@ test.describe("Subscribe form (UI-only)", () => {
   test("invalid email shows the invalid-error and does not succeed", async ({
     page,
   }) => {
-    await page.goto("/en/preview", { waitUntil: "domcontentloaded" });
+    await page.goto("/en", { waitUntil: "domcontentloaded" });
     const { email, form } = await subscribeForm(page);
     await email.scrollIntoViewIfNeeded();
     await email.fill("not-an-email");

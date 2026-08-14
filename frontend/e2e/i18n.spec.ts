@@ -55,11 +55,4 @@ test.describe("Locale switching", () => {
       expect(content).not.toContain("noindex");
     }
   });
-
-  test("the /preview page is noindex", async ({ page }) => {
-    await page.goto("/en/preview", { waitUntil: "domcontentloaded" });
-    const robots = page.locator('meta[name="robots"]');
-    await expect(robots).toHaveCount(1);
-    await expect(robots).toHaveAttribute("content", /noindex/);
-  });
 });
