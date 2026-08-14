@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Inter",
+    "url": "https://rsms.me/inter/",
+    "license": "OFL-1.1",
+    "note": "A typeface carefully crafted and designed for computer screens."
+  },
+  {
+    "name": "Heroicons",
+    "url": "https://heroicons.com/",
+    "license": "MIT",
+    "note": "Beautiful hand-crafted SVG icons by the makers of Tailwind CSS."
+  },
+  {
+    "name": "Tailwind CSS",
+    "url": "https://tailwindcss.com/",
+    "license": "MIT",
+    "note": "A utility-first CSS framework for rapidly building custom UIs."
+  }
+]

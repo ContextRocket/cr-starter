@@ -513,6 +513,22 @@ export const de = {
           desc: "Aktualisierungen fließen ein, sobald sich deine Inhalte ändern."
         }
       }
+    },
+    attribution: {
+      title: "Danksagungen & Attributionen",
+      subtitle: "Die Schriften, Icons und Open-Source-Bibliotheken, die diese Vorlage antreiben."
+    },
+    status: {
+      confirmed: {
+        title: "Abonnement bestätigt",
+        message: "Deine E-Mail ist bestätigt. Du bist bereit, Neuigkeiten zu empfangen.",
+        action: "Zurück zur Startseite"
+      },
+      unsubscribed: {
+        title: "Du wurdest abgemeldet",
+        message: "Du erhältst keine weiteren E-Mails aus dieser Liste. Du kannst dich jederzeit erneut anmelden.",
+        action: "Zurück zur Startseite"
+      }
     }
   },
 } as const;

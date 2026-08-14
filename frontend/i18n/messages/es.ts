@@ -510,6 +510,22 @@ export const es = {
           desc: "Las actualizaciones fluyen a medida que cambia tu contenido."
         }
       }
+    },
+    attribution: {
+      title: "Créditos y atribuciones",
+      subtitle: "Las tipografías, los iconos y las bibliotecas de código abierto que impulsan esta plantilla."
+    },
+    status: {
+      confirmed: {
+        title: "Suscripción confirmada",
+        message: "Tu correo está verificado. Ya está todo listo para recibir novedades.",
+        action: "Volver al inicio"
+      },
+      unsubscribed: {
+        title: "Te has dado de baja",
+        message: "No recibirás más correos de esta lista. Puedes volver a suscribirte cuando quieras.",
+        action: "Regresar al inicio"
+      }
     }
   },
 } as const;
