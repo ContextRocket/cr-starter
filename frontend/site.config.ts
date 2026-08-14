@@ -122,6 +122,41 @@ export interface ThemeConfig {
   radius: string;
 }
 
+/**
+ * Internal link-target map.
+ *
+ * Next.js routes are file-based, so this does NOT create or move route files.
+ * It governs where internal LINKS point (nav items, "view all" hrefs, CTA
+ * targets), letting a fork remap a link -- e.g. point "blog" at a different
+ * path or an external URL -- without editing component code.
+ *
+ * Every field is REQUIRED so callers get a total, typo-safe map; the siteConfig
+ * object supplies sensible defaults, so a fork only overrides the keys that
+ * differ. Values are same-origin paths (leading "/") or absolute URLs.
+ */
+export interface PathsConfig {
+  /** Home / landing target. Default "/". */
+  home: string;
+  /** Blog index target. Default "/blog". */
+  blog: string;
+  /** Pricing page target. Default "/pricing". */
+  pricing: string;
+  /** Features page target. Default "/features". */
+  features: string;
+  /** About page target. Default "/about". */
+  about: string;
+  /** FAQ page target. Default "/faq". */
+  faq: string;
+  /** Privacy policy target. Default "/privacy". */
+  privacy: string;
+  /** Contact page target. Default "/contact". */
+  contact: string;
+  /** Sign-up / register target. Default "/auth/register". */
+  signup: string;
+  /** Login target. Default "/auth/login". */
+  login: string;
+}
+
 export interface SiteConfig {
   /** Public-facing company / product name used in headers, titles, JSON-LD. */
   companyName: string;
@@ -171,6 +206,13 @@ export interface SiteConfig {
     linkedin: string;
     github: string;
   };
+  /**
+   * Internal link targets. Next.js routes are file-based; this map governs
+   * where LINKS point (nav, "view all", CTAs), letting a fork remap a link
+   * (e.g. point "blog" at a different path or an external URL) without editing
+   * components. Values are same-origin paths (leading "/") or absolute URLs.
+   */
+  paths: PathsConfig;
   /**
    * Whether the named AI-crawler tier (GPTBot, ClaudeBot, PerplexityBot,
    * Google-Extended, ...) may crawl the site. Default true: being readable
@@ -258,6 +300,26 @@ export const siteConfig: SiteConfig = {
     twitter: "", // PLACEHOLDER e.g. "https://twitter.com/yourhandle"
     linkedin: "", // PLACEHOLDER e.g. "https://linkedin.com/company/your-co"
     github: "", // PLACEHOLDER e.g. "https://github.com/your-org"
+  },
+
+  // ── Internal link targets ─────────────────────────────────────────────
+  // Where internal LINKS point (nav, "view all", CTAs). Next.js routes are
+  // file-based, so this does not create or move route files -- it only remaps
+  // link hrefs. A fork overrides ONLY the keys that differ (e.g. a fork ported
+  // from another site can point "blog" at its existing path or an external URL)
+  // and inherits the defaults below for the rest. Values are same-origin paths
+  // (leading "/") or absolute URLs. Resolve via lib/paths.ts `path(key)`.
+  paths: {
+    home: "/",
+    blog: "/blog",
+    pricing: "/pricing",
+    features: "/features",
+    about: "/about",
+    faq: "/faq",
+    privacy: "/privacy",
+    contact: "/contact",
+    signup: "/auth/register",
+    login: "/auth/login",
   },
 
   // ── Crawling posture ──────────────────────────────────────────────────

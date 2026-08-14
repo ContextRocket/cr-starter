@@ -29,6 +29,16 @@ const eslintConfig = [
       ...nextPlugin.configs.recommended.rules,
       ...nextPlugin.configs["core-web-vitals"].rules,
       "@typescript-eslint/no-empty-object-type": "off",
+      // Underscore-prefixed args/vars are a deliberate "intentionally unused"
+      // signal (e.g. server-action stubs that must keep the React signature).
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
     },
   },
   // CommonJS config files (root-level *.js and *.cjs)
@@ -39,6 +49,16 @@ const eslintConfig = [
         ...globals.node,
       },
       sourceType: "commonjs",
+    },
+  },
+  // ESM config files (e.g. next.config.mjs) execute in Node at build time —
+  // give them Node globals so `process`, `__dirname` shims, etc. resolve.
+  {
+    files: ["*.config.mjs", "next.config.mjs"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
     },
   },
   // Browser script: public/widget.js is a plain browser script (no bundler,
