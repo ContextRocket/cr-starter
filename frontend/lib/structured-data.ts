@@ -126,6 +126,62 @@ export function buildFaqJsonLd(entries: FaqEntry[]): JsonLdNode {
 }
 
 /**
+ * Input for a Person JSON-LD node. Strings are already resolved to the
+ * active locale by the caller (the about page resolves them via t() before
+ * building the node), keeping this builder pure and locale-agnostic.
+ */
+export interface PersonJsonLdInput {
+  name: string;
+  jobTitle: string;
+  description: string;
+  imageUrl: string;
+  sameAs: string[];
+  knowsAbout: string[];
+}
+
+/**
+ * JSON-LD Person payload for an about/founder/team page.
+ *
+ * Emits a schema.org Person node (name, jobTitle, description, image,
+ * sameAs, knowsAbout) with worksFor anchored to the site Organization, so
+ * crawlers reconcile the person to the same entity as the home page.
+ * Inject via `<StructuredDataScripts items={[buildPersonJsonLd(input)]} />`.
+ */
+export function buildPersonJsonLd(input: PersonJsonLdInput): JsonLdNode {
+  const origin = siteConfig.siteUrl.replace(/\/$/, "");
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${origin}/#person-${slugify(input.name)}`,
+    name: input.name,
+    jobTitle: input.jobTitle,
+    description: input.description,
+    // Absolute-ize a relative image path; keep an absolute http(s) URL as-is.
+    image: input.imageUrl.startsWith("http")
+      ? input.imageUrl
+      : `${origin}${input.imageUrl}`,
+    url: `${origin}/about`,
+    sameAs: input.sameAs.filter(Boolean),
+    knowsAbout: input.knowsAbout,
+    worksFor: {
+      "@type": "Organization",
+      "@id": `${origin}/#organization`,
+      name: siteConfig.companyName,
+      url: origin,
+    },
+  };
+}
+
+/** Lowercase, hyphenate a name for use in a stable @id fragment. */
+function slugify(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+/**
  * Strip common Markdown syntax to produce a plain-text string suitable for
  * JSON-LD answer text. Language-agnostic; does not alter word content.
  *
