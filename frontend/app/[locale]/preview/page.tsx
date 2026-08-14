@@ -9,6 +9,7 @@
 
 import { MarketingSections } from "@/components/sections/marketing-sections";
 import { FeaturedArticles } from "@/components/sections/featured-articles";
+import { IntegrationsSection } from "@/components/sections/integrations-section";
 import { setLocale, t } from "@/i18n/keys";
 import { resolveLocale } from "@/i18n/messages";
 import type { BlogPost } from "@/lib/blog";
@@ -48,6 +49,20 @@ export default async function PreviewPage({
   return (
     <main>
       <MarketingSections />
+      <IntegrationsSection
+        logos={[
+          { src: "/icon-192.png", alt: "Integration one" },
+          { src: "/icon-192.png", alt: "Integration two" },
+          { src: "/icon-192.png", alt: "Integration three" },
+        ]}
+        label={t("home.integrations.label")}
+        title={t("home.integrations.title")}
+        paragraphs={[
+          t("home.integrations.body1"),
+          t("home.integrations.body2"),
+        ]}
+        cta={{ label: t("home.integrations.cta"), href: "/features" }}
+      />
       <FeaturedArticles
         posts={samplePosts}
         locale={locale}

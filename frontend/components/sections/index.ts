@@ -16,6 +16,11 @@ export {
   FeaturedArticles,
   type FeaturedArticlesProps,
 } from "./featured-articles";
+export {
+  IntegrationsSection,
+  type IntegrationsSectionProps,
+  type IntegrationsLogo,
+} from "./integrations-section";
 export { LogoCloud, type LogoCloudProps } from "./logo-cloud";
 export { MarketingSections } from "./marketing-sections";
 export { FooterSection, type FooterSectionProps } from "./footer-section";

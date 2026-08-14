@@ -30,6 +30,13 @@ export const de = {
       title: "Aus dem Blog",
       subtitle: "Anleitungen, Recherche und Produkt-Updates.",
       viewAll: "Alle Beiträge ansehen"
+    },
+    integrations: {
+      label: "Integrationen",
+      title: "Verbunden mit den Tools, die zählen",
+      body1: "Verbindet sich mit den Tools, die dein Team bereits nutzt, damit deine Daten ohne Mehraufwand einfließen.",
+      body2: "Diese Integrationen ermöglichen es, auf echte Signale zu reagieren und alles synchron zu halten.",
+      cta: "Alle Integrationen ansehen"
     }
   },
   auth: {
