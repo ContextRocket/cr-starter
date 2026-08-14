@@ -49,7 +49,8 @@ export const en = {
       errors: {
         emailRequired: "Please enter your email.",
         emailInvalid: "Please enter a valid email address.",
-        consentRequired: "Please accept the privacy policy to continue."
+        consentRequired: "Please accept the privacy policy to continue.",
+        submitFailed: "Something went wrong. Please try again."
       }
     }
   },

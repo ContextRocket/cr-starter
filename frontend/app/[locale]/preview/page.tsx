@@ -73,6 +73,7 @@ export default async function PreviewPage({
         viewAllLabel={t("home.featured.viewAll")}
       />
       <CtaSubscribeSection
+        formKey="subscribe"
         title={t("home.subscribe.title")}
         subtitle={t("home.subscribe.subtitle")}
         emailPlaceholder={t("home.subscribe.placeholder")}
@@ -90,6 +91,7 @@ export default async function PreviewPage({
           emailRequired: t("home.subscribe.errors.emailRequired"),
           emailInvalid: t("home.subscribe.errors.emailInvalid"),
           consentRequired: t("home.subscribe.errors.consentRequired"),
+          submitFailed: t("home.subscribe.errors.submitFailed"),
         }}
       />
     </main>
