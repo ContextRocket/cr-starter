@@ -102,14 +102,14 @@ export function CtaSubscribeSection({
   return (
     <SectionWrapper backgroundClass={backgroundClass} className={className}>
       <div
-        className="mx-auto max-w-2xl text-center"
+        className="mx-auto max-w-3xl overflow-hidden rounded-3xl border border-border bg-card px-6 py-14 text-center shadow-sm sm:px-12 sm:py-16"
         data-aos="fade-up"
         suppressHydrationWarning
       >
         {submitted ? (
           <div className="flex flex-col items-center gap-3">
             <CheckCircleIcon
-              className="h-10 w-10 text-primary"
+              className="h-12 w-12 text-primary"
               aria-hidden
             />
             <p className="text-lg font-medium text-foreground">
@@ -118,24 +118,34 @@ export function CtaSubscribeSection({
           </div>
         ) : (
           <>
-            <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               {title}
             </h2>
             {subtitle ? (
-              <p className="mt-3 text-muted-foreground">{subtitle}</p>
+              <p className="mx-auto mt-3 max-w-xl text-base text-muted-foreground">
+                {subtitle}
+              </p>
             ) : null}
 
-            <form onSubmit={handleSubmit} className="mt-8" noValidate>
-              <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+            <form
+              onSubmit={handleSubmit}
+              className="mx-auto mt-8 max-w-lg"
+              noValidate
+            >
+              <div className="flex flex-col gap-3 sm:flex-row">
                 <Input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder={emailPlaceholder}
                   aria-invalid={fieldErrors.email ? true : undefined}
-                  className="sm:max-w-xs"
+                  className="h-12 flex-1 rounded-full px-5 text-base shadow-sm"
                 />
-                <Button type="submit" disabled={loading}>
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="h-12 rounded-full px-8 text-base font-semibold shadow-sm"
+                >
                   {submitLabel}
                 </Button>
               </div>
@@ -145,12 +155,12 @@ export function CtaSubscribeSection({
                 </p>
               ) : null}
 
-              <label className="mt-4 flex items-start justify-center gap-2 text-left text-sm text-muted-foreground">
+              <label className="mt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground">
                 <input
                   type="checkbox"
                   checked={consent}
                   onChange={(e) => setConsent(e.target.checked)}
-                  className="mt-1 size-4 shrink-0 rounded border-border"
+                  className="size-4 shrink-0 rounded border-border accent-primary"
                 />
                 <span className={cn("max-w-md")}>{consentLabel}</span>
               </label>
