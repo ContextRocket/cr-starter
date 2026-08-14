@@ -48,7 +48,16 @@ export default defineConfig({
       port: frontendPort,
       reuseExistingServer: !process.env.CI,
       timeout: 30_000,
-      env: { PORT: String(frontendPort), FRONTEND_PORT: String(frontendPort) },
+      env: {
+        PORT: String(frontendPort),
+        FRONTEND_PORT: String(frontendPort),
+        // Server actions call the backend via the OpenAPI client, whose base
+        // URL is read from API_BASE_URL at runtime (lib/clientConfig.ts).
+        // Point it at the Playwright-managed backend so registration/login
+        // flows actually reach the API instead of resolving to a relative URL.
+        API_BASE_URL: `http://127.0.0.1:${backendPort}`,
+        NEXT_PUBLIC_API_BASE_URL: `http://127.0.0.1:${backendPort}`,
+      },
     },
   ],
 });

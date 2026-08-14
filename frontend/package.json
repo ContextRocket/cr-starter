@@ -11,6 +11,8 @@
     "start:test": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next start --hostname 127.0.0.1 --port ${PORT:-3100}",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "typecheck": "tsc --noEmit",
+    "i18n:check": "node scripts/check-i18n-parity.js",
     "generate-client": "openapi-ts",
     "test": "vitest run",
     "test:e2e": "pnpm run build && playwright test",
