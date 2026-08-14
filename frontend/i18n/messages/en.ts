@@ -454,4 +454,65 @@ export const en = {
     labelGerman: "German",
     changeLanguage: "Change language",
   },
+  preview: {
+    pricing: {
+      title: "Simple, transparent pricing",
+      subtitle: "Pricing",
+      perMonth: "/month",
+      standard: {
+        name: "Standard",
+        price: "€29",
+        description: "Everything a small team needs to get started.",
+        cta: "Start free",
+        features: {
+          "0": "Up to 5 team members",
+          "1": "10 GB storage",
+          "2": "Community support",
+          "3": "Weekly reports"
+        }
+      },
+      enterprise: {
+        name: "Enterprise",
+        price: "€99",
+        description: "Advanced controls and support for growing organizations.",
+        cta: "Contact sales",
+        features: {
+          "0": "Unlimited team members",
+          "1": "1 TB storage",
+          "2": "Priority support",
+          "3": "Custom integrations",
+          "4": "Audit log and SSO"
+        }
+      }
+    },
+    team: {
+      title: "Meet the team",
+      subtitle: "The people building the product.",
+      mark: {
+        role: "Founder & CTO",
+        bio: {
+          "0": "Mark leads product and engineering, focused on grounded, verifiable brand articulation.",
+          "1": "He previously built agentic platforms and cares deeply about developer experience."
+        }
+      }
+    },
+    heroInsights: {
+      scoreTitle: "Answer Readiness",
+      scoreValue: "92",
+      cards: {
+        "0": {
+          title: "Grounded citations",
+          desc: "Every answer links back to your real content."
+        },
+        "1": {
+          title: "Consistent everywhere",
+          desc: "The same articulation across every surface."
+        },
+        "2": {
+          title: "Always current",
+          desc: "Updates flow in as your content changes."
+        }
+      }
+    }
+  },
 } as const;

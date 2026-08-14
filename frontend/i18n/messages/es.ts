@@ -451,4 +451,65 @@ export const es = {
     labelGerman: "Alemán",
     changeLanguage: "Cambiar idioma",
   },
+  preview: {
+    pricing: {
+      title: "Precios sencillos y transparentes",
+      subtitle: "Precios",
+      perMonth: "/mes",
+      standard: {
+        name: "Estándar",
+        price: "29 €",
+        description: "Todo lo que un equipo pequeño necesita para empezar.",
+        cta: "Empezar gratis",
+        features: {
+          "0": "Hasta 5 miembros del equipo",
+          "1": "10 GB de almacenamiento",
+          "2": "Soporte de la comunidad",
+          "3": "Informes semanales"
+        }
+      },
+      enterprise: {
+        name: "Empresa",
+        price: "99 €",
+        description: "Controles avanzados y soporte para organizaciones en crecimiento.",
+        cta: "Contactar con ventas",
+        features: {
+          "0": "Miembros del equipo ilimitados",
+          "1": "1 TB de almacenamiento",
+          "2": "Soporte prioritario",
+          "3": "Integraciones personalizadas",
+          "4": "Registro de auditoría y SSO"
+        }
+      }
+    },
+    team: {
+      title: "Conoce al equipo",
+      subtitle: "Las personas que construyen el producto.",
+      mark: {
+        role: "Fundador y CTO",
+        bio: {
+          "0": "Mark dirige producto e ingeniería, centrado en una articulación de marca fundamentada y verificable.",
+          "1": "Anteriormente construyó plataformas agénticas y le importa profundamente la experiencia de desarrollo."
+        }
+      }
+    },
+    heroInsights: {
+      scoreTitle: "Preparación de respuestas",
+      scoreValue: "92",
+      cards: {
+        "0": {
+          title: "Citas fundamentadas",
+          desc: "Cada respuesta enlaza con tu contenido real."
+        },
+        "1": {
+          title: "Coherente en todas partes",
+          desc: "La misma articulación en cada superficie."
+        },
+        "2": {
+          title: "Siempre actualizado",
+          desc: "Las actualizaciones fluyen a medida que cambia tu contenido."
+        }
+      }
+    }
+  },
 } as const;
