@@ -33,3 +33,18 @@ export { InsightCard, type InsightCardProps } from "./insight-card";
 export { SectionWrapper, type SectionWrapperProps } from "./section-wrapper";
 export { ScrollReveal, type ScrollRevealProps } from "./scroll-reveal";
 export { SectionHeader, type SectionHeaderProps } from './section-header';
+export {
+  PricingSection,
+  type PricingSectionProps,
+  type PricingTier,
+} from "./pricing-section";
+export {
+  TeamSection,
+  type TeamSectionProps,
+  type TeamMember,
+} from "./team-section";
+export {
+  HeroInsights,
+  type HeroInsightsProps,
+  type HeroInsightCard,
+} from "./hero-insights";

@@ -454,4 +454,65 @@ export const de = {
     labelGerman: "Deutsch",
     changeLanguage: "Sprache wechseln",
   },
+  preview: {
+    pricing: {
+      title: "Einfache, transparente Preise",
+      subtitle: "Preise",
+      perMonth: "/Monat",
+      standard: {
+        name: "Standard",
+        price: "29 €",
+        description: "Alles, was ein kleines Team für den Start braucht.",
+        cta: "Kostenlos starten",
+        features: {
+          "0": "Bis zu 5 Teammitglieder",
+          "1": "10 GB Speicher",
+          "2": "Community-Support",
+          "3": "Wöchentliche Berichte"
+        }
+      },
+      enterprise: {
+        name: "Enterprise",
+        price: "99 €",
+        description: "Erweiterte Steuerung und Support für wachsende Organisationen.",
+        cta: "Vertrieb kontaktieren",
+        features: {
+          "0": "Unbegrenzte Teammitglieder",
+          "1": "1 TB Speicher",
+          "2": "Priorisierter Support",
+          "3": "Individuelle Integrationen",
+          "4": "Audit-Log und SSO"
+        }
+      }
+    },
+    team: {
+      title: "Lerne das Team kennen",
+      subtitle: "Die Menschen, die das Produkt entwickeln.",
+      mark: {
+        role: "Gründer & CTO",
+        bio: {
+          "0": "Mark leitet Produkt und Technik mit Fokus auf fundierte, überprüfbare Markenartikulation.",
+          "1": "Zuvor hat er agentische Plattformen gebaut und legt großen Wert auf die Entwicklererfahrung."
+        }
+      }
+    },
+    heroInsights: {
+      scoreTitle: "Antwortbereitschaft",
+      scoreValue: "92",
+      cards: {
+        "0": {
+          title: "Fundierte Quellenangaben",
+          desc: "Jede Antwort verweist auf deine echten Inhalte."
+        },
+        "1": {
+          title: "Überall konsistent",
+          desc: "Dieselbe Artikulation auf jeder Oberfläche."
+        },
+        "2": {
+          title: "Immer aktuell",
+          desc: "Aktualisierungen fließen ein, sobald sich deine Inhalte ändern."
+        }
+      }
+    }
+  },
 } as const;
