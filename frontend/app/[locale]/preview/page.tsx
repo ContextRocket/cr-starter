@@ -9,6 +9,8 @@
 
 import { MarketingSections } from "@/components/sections/marketing-sections";
 import { FeaturedArticles } from "@/components/sections/featured-articles";
+import { setLocale, t } from "@/i18n/keys";
+import { resolveLocale } from "@/i18n/messages";
 import type { BlogPost } from "@/lib/blog";
 
 export const metadata = {
@@ -35,15 +37,23 @@ const samplePosts: BlogPost[] = [
   },
 ];
 
-export default function PreviewPage() {
+export default async function PreviewPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const locale = resolveLocale((await params).locale);
+  setLocale(locale);
+
   return (
     <main>
       <MarketingSections />
       <FeaturedArticles
         posts={samplePosts}
-        title="From the blog"
-        subtitle="Guides, research, and product updates."
-        viewAllLabel="View all posts"
+        locale={locale}
+        title={t("home.featured.title")}
+        subtitle={t("home.featured.subtitle")}
+        viewAllLabel={t("home.featured.viewAll")}
       />
     </main>
   );

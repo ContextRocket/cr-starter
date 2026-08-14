@@ -22,6 +22,11 @@ export const es = {
       snippet: {
         note: "Copia el fragmento, reemplaza la URL del agente y añádelo antes de </body>."
       }
+    },
+    featured: {
+      title: "Del blog",
+      subtitle: "Guías, investigación y novedades del producto.",
+      viewAll: "Ver todas las publicaciones"
     }
   },
   auth: {

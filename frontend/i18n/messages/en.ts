@@ -25,6 +25,11 @@ export const en = {
       snippet: {
         note: "Copy the snippet, replace the agent URL, and add it before </body>."
       }
+    },
+    featured: {
+      title: "From the blog",
+      subtitle: "Guides, research, and product updates.",
+      viewAll: "View all posts"
     }
   },
   auth: {
