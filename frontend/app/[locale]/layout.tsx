@@ -92,8 +92,22 @@ export default async function LocaleLayout({
   // `en` for non-en static routes.
   const messages = await getMessages({ locale });
 
+  const origin = siteConfig.siteUrl.replace(/\/$/, "");
+
   return (
     <html lang={locale} suppressHydrationWarning>
+      <head>
+        {/* RSS feed discovery. The root layout sets `alternates.types`, but
+            each locale page overrides `alternates` (canonical + hreflang), so
+            we emit the discovery <link> here where it survives on every
+            user-facing page. */}
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title={`${siteConfig.companyName} — Blog`}
+          href={`${origin}/feed.xml`}
+        />
+      </head>
       <body
         data-surface="marketing"
         className={`${geistSans.variable} ${geistMono.variable}`}

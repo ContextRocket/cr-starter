@@ -20,6 +20,8 @@ import { siteConfig } from "@/site.config";
 import { resolveLocale } from "@/i18n/messages";
 import { CONSENT_STORAGE_KEY } from "@/lib/analytics";
 import { buildAlternates } from "@/lib/seo";
+import { buildBreadcrumbListJsonLd } from "@/lib/structured-data";
+import { StructuredDataScripts } from "@/components/seo/structured-data-scripts";
 import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 
@@ -51,13 +53,23 @@ const analyticsEnabled = gaEnabled || posthogEnabled;
 
 export default async function PrivacyPage({ params }: PrivacyPageProps) {
   const { locale: rawLocale } = await params;
-  setLocale(resolveLocale(rawLocale));
+  const locale = resolveLocale(rawLocale);
+  setLocale(locale);
   const legal = siteConfig.legal;
   const isPlaceholder =
     legal.entity.includes("PLACEHOLDER") ||
     legal.entity === "ContextRocket Starter GmbH";
 
+  // Home > Privacy breadcrumb (absolute, locale-prefixed URLs).
+  const origin = siteConfig.siteUrl.replace(/\/$/, "");
+  const breadcrumb = buildBreadcrumbListJsonLd([
+    { name: t("breadcrumb.home"), url: `${origin}/${locale}` },
+    { name: t("privacy.title"), url: `${origin}/${locale}/privacy` },
+  ]);
+
   return (
+    <>
+    <StructuredDataScripts items={[breadcrumb]} />
     <main className="min-h-screen bg-background text-foreground p-8 max-w-2xl mx-auto">
       <h1 className="text-3xl font-bold mb-2">{t("privacy.title")}</h1>
 
@@ -208,5 +220,6 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
         </Link>
       </nav>
     </main>
+    </>
   );
 }

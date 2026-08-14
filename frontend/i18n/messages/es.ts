@@ -206,6 +206,9 @@ export const es = {
       home: "Volver al inicio"
     }
   },
+  breadcrumb: {
+    home: "Inicio"
+  },
   blog: {
     title: "Blog",
     description: "Artículos, guías y novedades.",

@@ -20,9 +20,13 @@ import { Link } from "@/i18n/navigation";
 import { setLocale, t } from "@/i18n/keys";
 import { resolveLocale } from "@/i18n/messages";
 import { fileFaqAdapter } from "@/lib/faq";
-import { buildFaqJsonLd } from "@/lib/structured-data";
+import {
+  buildFaqJsonLd,
+  buildBreadcrumbListJsonLd,
+} from "@/lib/structured-data";
 import { buildAlternates } from "@/lib/seo";
 import { StructuredDataScripts } from "@/components/seo/structured-data-scripts";
+import { siteConfig } from "@/site.config";
 
 interface FaqPageProps {
   params: Promise<{ locale: string }>;
@@ -50,10 +54,17 @@ export default async function FaqPage({ params }: FaqPageProps) {
   // reads from content/faq/ and parse errors fail the build.
   const entries = fileFaqAdapter.list(locale);
 
+  // Home > FAQ breadcrumb (absolute, locale-prefixed URLs).
+  const origin = siteConfig.siteUrl.replace(/\/$/, "");
+  const breadcrumb = buildBreadcrumbListJsonLd([
+    { name: t("breadcrumb.home"), url: `${origin}/${locale}` },
+    { name: t("faq.page.title"), url: `${origin}/${locale}/faq` },
+  ]);
+
   return (
     <>
-      {/* FAQPage JSON-LD -- the primary structured-data signal for AEO readiness. */}
-      <StructuredDataScripts items={[buildFaqJsonLd(entries)]} />
+      {/* FAQPage + BreadcrumbList JSON-LD -- structured-data signals for AEO. */}
+      <StructuredDataScripts items={[buildFaqJsonLd(entries), breadcrumb]} />
 
       <main
         className="min-h-screen bg-background text-foreground p-8 max-w-2xl mx-auto"

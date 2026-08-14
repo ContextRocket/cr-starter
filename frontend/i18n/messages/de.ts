@@ -209,6 +209,9 @@ export const de = {
       home: "Zurück zur Startseite"
     }
   },
+  breadcrumb: {
+    home: "Startseite"
+  },
   blog: {
     title: "Blog",
     description: "Artikel, Anleitungen und Neuigkeiten.",
