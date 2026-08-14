@@ -37,6 +37,20 @@ export const en = {
       body1: "Connects with the tools your team already uses, so your data flows in without extra work.",
       body2: "These integrations let you act on real signals and keep everything in sync.",
       cta: "See all integrations"
+    },
+    subscribe: {
+      title: "Stay in the loop",
+      subtitle: "Get occasional updates and insights from our team. No spam.",
+      placeholder: "you@example.com",
+      submit: "Subscribe",
+      consent: "I agree to receive emails and accept the",
+      privacyLink: "privacy policy",
+      success: "Thanks — you're on the list.",
+      errors: {
+        emailRequired: "Please enter your email.",
+        emailInvalid: "Please enter a valid email address.",
+        consentRequired: "Please accept the privacy policy to continue."
+      }
     }
   },
   auth: {

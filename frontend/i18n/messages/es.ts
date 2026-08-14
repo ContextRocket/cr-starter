@@ -34,6 +34,20 @@ export const es = {
       body1: "Se conecta con las herramientas que tu equipo ya usa, para que tus datos fluyan sin trabajo adicional.",
       body2: "Estas integraciones te permiten actuar sobre señales reales y mantener todo sincronizado.",
       cta: "Ver todas las integraciones"
+    },
+    subscribe: {
+      title: "Mantente al día",
+      subtitle: "Recibe novedades y consejos ocasionales de nuestro equipo. Sin spam.",
+      placeholder: "tu@ejemplo.com",
+      submit: "Suscribirse",
+      consent: "Acepto recibir correos y acepto la",
+      privacyLink: "política de privacidad",
+      success: "Gracias, ya estás en la lista.",
+      errors: {
+        emailRequired: "Introduce tu correo electrónico.",
+        emailInvalid: "Introduce una dirección de correo válida.",
+        consentRequired: "Acepta la política de privacidad para continuar."
+      }
     }
   },
   auth: {

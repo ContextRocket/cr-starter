@@ -11,6 +11,10 @@ export { FeatureGrid, type FeatureGridProps } from "./feature-grid";
 export { TestimonialGrid, type TestimonialGridProps } from "./testimonial-grid";
 export { StatsBar, type StatsBarProps } from "./stats-bar";
 export { CtaSection, type CtaSectionProps } from "./cta-section";
+export {
+  CtaSubscribeSection,
+  type CtaSubscribeSectionProps,
+} from "./cta-subscribe-section";
 export { FaqSection, type FaqSectionProps } from "./faq-section";
 export {
   FeaturedArticles,
