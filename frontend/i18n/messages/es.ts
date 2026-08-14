@@ -526,6 +526,15 @@ export const es = {
         message: "No recibirás más correos de esta lista. Puedes volver a suscribirte cuando quieras.",
         action: "Regresar al inicio"
       }
+    },
+    surface: {
+      terminal: {
+        heading: "Superficie de terminal",
+        body: "Esta página se renderiza en la superficie interior: una tipografía monoespaciada y esquinas rectas, conmutada por grupo de rutas desde la misma base de tokens que las páginas de marketing.",
+        cardTitle: "Mismos tokens, otra superficie",
+        cardDescription: "Solo cambian la fuente activa y el radio de las esquinas; los colores y la semántica se comparten.",
+        action: "Acción principal"
+      }
     }
   },
 } as const;

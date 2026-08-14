@@ -189,6 +189,12 @@
   --error-foreground: #ffffff;
   --disabled: #e5e7eb;
   --disabled-foreground: #9ca3af;
+
+  /* Active font family — indirection so a route-group can flip the whole
+     surface between the sans (marketing) and mono (terminal) face without
+     touching component classes. Default = marketing. See the surface blocks
+     below. */
+  --font-active: var(--font-sans);
 }
 
 .dark {
@@ -224,13 +230,50 @@
   --chart-5: hsl(340 75% 55%);
 }
 
+/*
+ * SURFACE SPLIT (Layer 2 — one token foundation, two surfaces)
+ * -----------------------------------------------------------
+ * A single site renders two surfaces from the SAME Layer-1 tokens above:
+ *   • outer/marketing (the DEFAULT) — sans face, rounded corners.
+ *   • inner/terminal  — mono face, square corners.
+ * The surface is switched per route-group by setting `data-surface` on that
+ * group's layout wrapper; these blocks override only a couple of tokens
+ * (`--font-active`, `--radius`) — never the color values. The site default is
+ * set on <body> in app/[locale]/layout.tsx (data-surface="marketing").
+ *
+ * Intended ContextRocket map (a derived product wires it this way):
+ *   terminal  = home (Probe) / dashboard / auth
+ *   marketing = pricing / about / features / blog / legal / contact
+ */
+[data-surface="marketing"] {
+  --font-active: var(--font-sans);
+  --radius: 0.5rem;
+  font-family: var(--font-active);
+}
+[data-surface="terminal"] {
+  --font-active: var(--font-mono);
+  --radius: 0px;
+  font-family: var(--font-active);
+
+  /* Tailwind v4 bakes the default radius SCALE (--radius-lg/-md/-sm and the
+     literal -xl/-xs) from @theme; re-derive the scale from this surface's
+     --radius so shadcn's rounded-lg/-md/-xl utilities go square here too. */
+  --radius-lg: var(--radius);
+  --radius-md: var(--radius);
+  --radius-sm: var(--radius);
+  --radius-xl: var(--radius);
+  --radius-xs: var(--radius);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
 
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-active);
   }
 }
 

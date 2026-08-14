@@ -94,7 +94,10 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body
+        data-surface="marketing"
+        className={`${geistSans.variable} ${geistMono.variable}`}
+      >
         <AosProvider />
         <NextIntlClientProvider locale={locale} messages={messages}>
           <LocaleProvider initialLocale={locale} messages={localeMessages}>

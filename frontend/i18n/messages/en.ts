@@ -529,6 +529,15 @@ export const en = {
         message: "You won't receive any more emails from this list. You can resubscribe anytime.",
         action: "Return home"
       }
+    },
+    surface: {
+      terminal: {
+        heading: "Terminal surface",
+        body: "This page renders on the inner surface: a mono typeface and square corners, switched per route-group from the same token foundation as the marketing pages.",
+        cardTitle: "Same tokens, different surface",
+        cardDescription: "Only the active font and corner radius change — colors and semantics stay shared.",
+        action: "Primary action"
+      }
     }
   },
 } as const;
