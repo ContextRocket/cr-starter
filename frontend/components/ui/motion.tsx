@@ -1,54 +1,68 @@
 "use client";
 
-import { motion, type HTMLMotionProps, useReducedMotion } from "framer-motion";
-import type { ReactNode } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
-export interface MotionProps extends Omit<HTMLMotionProps<"div">, "children"> {
+/**
+ * Animation wrappers — standardized on AOS (Animate On Scroll).
+ *
+ * FadeIn / SlideIn render `data-aos` attributes; AOS (initialized by
+ * <AosProvider/>) animates them as they scroll into view. The `delay` prop is
+ * kept in SECONDS for API compatibility and converted to AOS milliseconds.
+ * ScaleOnHover is a hover effect (not a scroll animation), so it stays a pure
+ * CSS transition.
+ */
+export interface MotionProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
+  /** Entrance delay in seconds (converted to AOS ms). */
   delay?: number;
 }
 
+function toMs(seconds: number): number {
+  return Math.round(seconds * 1000);
+}
+
 export function FadeIn({ children, className, delay = 0, ...props }: MotionProps) {
-  const reduceMotion = useReducedMotion();
   return (
-    <motion.div
-      initial={reduceMotion ? false : { opacity: 0, y: 15 }}
-      animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-      transition={reduceMotion ? undefined : { duration: 0.4, delay, ease: [0.25, 0.1, 0.25, 1] }}
+    <div
+      data-aos="fade-up"
+      data-aos-delay={toMs(delay)}
       className={className}
       {...props}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
 export function SlideIn({ children, className, delay = 0, ...props }: MotionProps) {
-  const reduceMotion = useReducedMotion();
   return (
-    <motion.div
-      initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-      animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-      transition={reduceMotion ? undefined : { duration: 0.25, delay, ease: [0.25, 0.1, 0.25, 1] }}
+    <div
+      data-aos="fade-up"
+      data-aos-delay={toMs(delay)}
+      data-aos-duration="250"
       className={className}
       {...props}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
-export function ScaleOnHover({ children, className, ...props }: Omit<MotionProps, "delay">) {
-  const reduceMotion = useReducedMotion();
+export function ScaleOnHover({
+  children,
+  className,
+  ...props
+}: Omit<MotionProps, "delay">) {
   return (
-    <motion.div
-      whileHover={reduceMotion ? undefined : { scale: 1.02 }}
-      whileTap={reduceMotion ? undefined : { scale: 0.98 }}
-      transition={reduceMotion ? undefined : { type: "spring", stiffness: 400, damping: 17 }}
-      className={className}
+    <div
+      className={cn(
+        "transition-transform duration-200 ease-out hover:scale-[1.02] active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none",
+        className,
+      )}
       {...props}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
