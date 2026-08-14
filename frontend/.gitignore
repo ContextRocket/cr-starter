@@ -12,6 +12,9 @@
 /test-results
 /blob-report
 
+# lighthouse ci (local + CI report output)
+/.lighthouseci
+
 # next.js
 /.next/
 /out/

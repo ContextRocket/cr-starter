@@ -19,6 +19,7 @@
     "test:e2e:ui": "pnpm run build && playwright test --ui",
     "test:e2e:headed": "pnpm run build && playwright test --headed",
     "coverage": "vitest run --coverage",
+    "lighthouse": "lhci autorun",
     "trim-assets": "node scripts/trim-assets.js",
     "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,html}'",
     "tsc": "tsc"
@@ -46,7 +47,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@hey-api/openapi-ts": "^0.92.4",
-    "@types/aos": "^3.0.7",
+    "@lhci/cli": "^0.15.1",
     "@next/eslint-plugin-next": "16.2.6",
     "@playwright/test": "^1.58.2",
     "@tailwindcss/postcss": "^4.3.0",
@@ -54,6 +55,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
+    "@types/aos": "^3.0.7",
     "@types/node": "^25.2.3",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",

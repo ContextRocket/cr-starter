@@ -11,6 +11,7 @@
  */
 import type { Metadata } from "next";
 
+import { WebVitals } from "@/components/analytics/web-vitals";
 import { siteConfig } from "@/site.config";
 
 /**
@@ -68,5 +69,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return children;
+  // <WebVitals /> renders null; it registers the field-performance reporter
+  // above every route group. The [locale] layout still owns <html>/<body>.
+  return (
+    <>
+      {children}
+      <WebVitals />
+    </>
+  );
 }

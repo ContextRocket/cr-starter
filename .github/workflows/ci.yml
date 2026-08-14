@@ -175,6 +175,51 @@ jobs:
         working-directory: ./frontend
         run: pnpm run test:e2e
 
+  lighthouse-frontend:
+    name: Lighthouse CI
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Node dependencies
+        working-directory: ./frontend
+        run: pnpm install
+
+      # LHCI drives a real Chrome. Reuse the same Playwright install path the
+      # e2e job uses so the runner has a Chromium binary, then resolve its
+      # exact executable path and hand it to LHCI via CHROME_PATH.
+      - name: Install Chromium for Lighthouse
+        id: chromium
+        working-directory: ./frontend
+        run: |
+          pnpm exec playwright install --with-deps chromium
+          CHROME_BIN="$(pnpm exec node -e "console.log(require('@playwright/test').chromium.executablePath())")"
+          echo "path=${CHROME_BIN}" >> "$GITHUB_OUTPUT"
+
+      - name: Static build
+        working-directory: ./frontend
+        run: pnpm run build:static
+
+      - name: Lighthouse CI
+        working-directory: ./frontend
+        env:
+          CHROME_PATH: ${{ steps.chromium.outputs.path }}
+        run: pnpm run lighthouse
+
   finish:
 
     name: Coveralls
