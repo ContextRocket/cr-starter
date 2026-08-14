@@ -10,6 +10,8 @@
 import { MarketingSections } from "@/components/sections/marketing-sections";
 import { FeaturedArticles } from "@/components/sections/featured-articles";
 import { IntegrationsSection } from "@/components/sections/integrations-section";
+import { CtaSubscribeSection } from "@/components/sections/cta-subscribe-section";
+import { Link } from "@/i18n/navigation";
 import { setLocale, t } from "@/i18n/keys";
 import { resolveLocale } from "@/i18n/messages";
 import type { BlogPost } from "@/lib/blog";
@@ -69,6 +71,26 @@ export default async function PreviewPage({
         title={t("home.featured.title")}
         subtitle={t("home.featured.subtitle")}
         viewAllLabel={t("home.featured.viewAll")}
+      />
+      <CtaSubscribeSection
+        title={t("home.subscribe.title")}
+        subtitle={t("home.subscribe.subtitle")}
+        emailPlaceholder={t("home.subscribe.placeholder")}
+        submitLabel={t("home.subscribe.submit")}
+        successMessage={t("home.subscribe.success")}
+        consentLabel={
+          <>
+            {t("home.subscribe.consent")}{" "}
+            <Link href="/privacy" className="underline hover:no-underline">
+              {t("home.subscribe.privacyLink")}
+            </Link>
+          </>
+        }
+        errors={{
+          emailRequired: t("home.subscribe.errors.emailRequired"),
+          emailInvalid: t("home.subscribe.errors.emailInvalid"),
+          consentRequired: t("home.subscribe.errors.consentRequired"),
+        }}
       />
     </main>
   );

@@ -37,6 +37,20 @@ export const de = {
       body1: "Verbindet sich mit den Tools, die dein Team bereits nutzt, damit deine Daten ohne Mehraufwand einfließen.",
       body2: "Diese Integrationen ermöglichen es, auf echte Signale zu reagieren und alles synchron zu halten.",
       cta: "Alle Integrationen ansehen"
+    },
+    subscribe: {
+      title: "Bleib auf dem Laufenden",
+      subtitle: "Erhalte gelegentlich Updates und Einblicke von unserem Team. Kein Spam.",
+      placeholder: "du@beispiel.com",
+      submit: "Abonnieren",
+      consent: "Ich stimme zu, E-Mails zu erhalten, und akzeptiere die",
+      privacyLink: "Datenschutzerklärung",
+      success: "Danke – du bist dabei.",
+      errors: {
+        emailRequired: "Bitte gib deine E-Mail-Adresse ein.",
+        emailInvalid: "Bitte gib eine gültige E-Mail-Adresse ein.",
+        consentRequired: "Bitte akzeptiere die Datenschutzerklärung, um fortzufahren."
+      }
     }
   },
   auth: {
