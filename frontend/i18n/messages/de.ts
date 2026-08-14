@@ -122,6 +122,7 @@ export const de = {
   },
   nav: {
     dashboard: "Dashboard",
+    blog: "Blog",
     logout: "Abmelden",
     welcome: "Willkommen in deinem Dashboard"
   },
@@ -214,7 +215,10 @@ export const de = {
   },
   blog: {
     title: "Blog",
+    subtitle: "Artikel, Anleitungen und Produkt-Neuigkeiten.",
     description: "Artikel, Anleitungen und Neuigkeiten.",
+    featured: "Empfohlen",
+    all_posts: "Alle Beiträge",
     empty: "Noch keine Beiträge. Schauen Sie bald wieder vorbei.",
     back: {
       home: "Zurück zur Startseite",

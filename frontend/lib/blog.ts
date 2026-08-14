@@ -15,6 +15,7 @@
  *     image: "/images/blog/post-hero.jpg"  (optional)
  *     excerpt: "Short description for listing cards." (optional)
  *     series: 5                              (optional; enables ordering + prefix)
+ *     featured: true                         (optional; promotes to Featured section)
  *     ---
  *   Body in Markdown (the post content).
  *
@@ -55,6 +56,12 @@ export interface BlogFrontmatter {
    * number (ascending) and show a zero-padded prefix (e.g. "05").
    */
   series?: number;
+  /**
+   * Optional "featured" flag. When `featured: true` in frontmatter, the post
+   * appears in the Featured section of the blog index (larger card) instead of
+   * the all-posts grid. Absent/false posts render in the all-posts grid.
+   */
+  featured?: boolean;
 }
 
 /** A single parsed blog post (standalone page). */
@@ -167,6 +174,8 @@ function extractFrontmatter(
   const series =
     seriesRaw && /^\d+$/.test(seriesRaw) ? Number(seriesRaw) : undefined;
 
+  const featured = raw.featured?.trim().toLowerCase() === "true";
+
   return [
     {
       title: raw.title.trim(),
@@ -175,6 +184,7 @@ function extractFrontmatter(
       image: raw.image?.trim() || undefined,
       excerpt: raw.excerpt?.trim() || undefined,
       series,
+      featured,
     },
     body,
   ];

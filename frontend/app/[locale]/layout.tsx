@@ -8,6 +8,9 @@ import { ChatFab } from "@/components/chat/chat-fab";
 import { AosProvider } from "@/components/ui/aos-provider";
 import { CookieConsentBanner } from "@/components/cookie-consent-banner";
 import { LocaleProvider } from "@/i18n/locale-provider";
+import { SiteChrome } from "@/components/sections/site-chrome";
+import type { NavLink } from "@/components/sections/navbar";
+import type { FooterLink } from "@/components/sections/footer-section";
 // Register all locale trees server-side before any t() call.
 // MUST be imported before `t` so the registry is populated for SSR.
 import { getServerLocaleTree } from "@/i18n/messages/register-server";
@@ -94,6 +97,30 @@ export default async function LocaleLayout({
 
   const origin = siteConfig.siteUrl.replace(/\/$/, "");
 
+  // Site navbar links, resolved server-side and locale-prefixed. The Navbar
+  // uses a plain next/link, so hrefs must carry the /{locale} segment. The Blog
+  // link is gated on the blog feature flag (cr-starter defaults it ON); a fork
+  // that disables the blog drops the link automatically. The dashboard/auth/
+  // terminal surfaces render their own chrome — SiteChrome hides this navbar
+  // there so there is no double header.
+  const navLinks: NavLink[] = [
+    ...(siteConfig.features.blog
+      ? [{ label: t("nav.blog"), href: `/${locale}${siteConfig.paths.blog}` }]
+      : []),
+    { label: t("nav.dashboard"), href: `/${locale}${siteConfig.paths.home}dashboard` },
+  ];
+  const navLogo = {
+    src: siteConfig.assets.logo,
+    alt: siteConfig.companyName,
+    width: 120,
+    height: 24,
+  };
+  const footerLinks: FooterLink[] = [
+    { label: t("footer.impressum"), href: `/${locale}/impressum` },
+    { label: t("footer.privacy"), href: `/${locale}${siteConfig.paths.privacy}` },
+    { label: t("footer.faq"), href: `/${locale}${siteConfig.paths.faq}` },
+  ];
+
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
@@ -125,7 +152,14 @@ export default async function LocaleLayout({
                 {t("dev.siteConfigUrlWarning")}
               </div>
             )}
-            {children}
+            <SiteChrome
+              links={navLinks}
+              logo={navLogo}
+              footerLinks={footerLinks}
+              companyName={siteConfig.companyName}
+            >
+              {children}
+            </SiteChrome>
             <Toaster position="bottom-right" richColors />
             {process.env.NEXT_PUBLIC_CHAT_FAB_ENABLED === "true" && (
               <ChatFab

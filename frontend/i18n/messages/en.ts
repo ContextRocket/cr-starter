@@ -122,6 +122,7 @@ export const en = {
   },
   nav: {
     dashboard: "Dashboard",
+    blog: "Blog",
     logout: "Logout",
     welcome: "Welcome to your Dashboard"
   },
@@ -214,7 +215,10 @@ export const en = {
   },
   blog: {
     title: "Blog",
+    subtitle: "Articles, guides, and product updates.",
     description: "Articles, guides, and updates.",
+    featured: "Featured",
+    all_posts: "All posts",
     empty: "No posts yet. Check back soon.",
     back: {
       home: "Back to home",

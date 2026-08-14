@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { Link as LocaleLink } from "@/i18n/navigation";
 import Image from "next/image";
 
 export interface NavLink {
@@ -28,7 +29,7 @@ export function Navbar({ links, logo, className = "" }: NavbarProps) {
         className="max-w-screen-xl px-4 sm:px-8 mx-auto flex items-center justify-between h-16"
       >
         {/* Logo */}
-        <Link href="/" className="shrink-0 flex items-center">
+        <LocaleLink href="/" className="shrink-0 flex items-center">
           <Image
             src={logo.src}
             alt={logo.alt}
@@ -38,7 +39,7 @@ export function Navbar({ links, logo, className = "" }: NavbarProps) {
             style={{ marginTop: "-6px", width: "auto" }}
             priority
           />
-        </Link>
+        </LocaleLink>
 
         {/* Desktop links */}
         <div className="hidden lg:flex items-center gap-8">
@@ -68,7 +69,11 @@ export function Navbar({ links, logo, className = "" }: NavbarProps) {
         <div className="fixed inset-0 z-50" />
         <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-200">
           <div className="flex items-center justify-between">
-            <Link href="/" className="-m-1.5 p-1.5" onClick={() => setMobileMenuOpen(false)}>
+            <LocaleLink
+              href="/"
+              className="-m-1.5 p-1.5"
+              onClick={() => setMobileMenuOpen(false)}
+            >
               <Image
                 src={logo.src}
                 alt={logo.alt}
@@ -77,7 +82,7 @@ export function Navbar({ links, logo, className = "" }: NavbarProps) {
                 className="h-6 w-auto"
                 style={{ marginTop: "-4px", width: "auto" }}
               />
-            </Link>
+            </LocaleLink>
             <button
               type="button"
               onClick={() => setMobileMenuOpen(false)}

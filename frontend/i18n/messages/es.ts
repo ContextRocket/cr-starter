@@ -119,6 +119,7 @@ export const es = {
   },
   nav: {
     dashboard: "Panel",
+    blog: "Blog",
     logout: "Cerrar sesión",
     welcome: "Bienvenido a tu panel"
   },
@@ -211,7 +212,10 @@ export const es = {
   },
   blog: {
     title: "Blog",
+    subtitle: "Artículos, guías y novedades del producto.",
     description: "Artículos, guías y novedades.",
+    featured: "Destacado",
+    all_posts: "Todas las publicaciones",
     empty: "Aún no hay publicaciones. Vuelve pronto.",
     back: {
       home: "Volver al inicio",

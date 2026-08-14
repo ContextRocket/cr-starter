@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-label="Blog post illustration" preserveAspectRatio="xMidYMid slice">
+  <!--
+    Neutral, unbranded 16:9 hero used by the starter's example blog posts. It
+    exercises the card/article image path (post.image present). Replace with
+    your own post artwork; posts that omit `image` fall back to a gradient.
+  -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e5e7eb" />
+      <stop offset="1" stop-color="#cbd5e1" />
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#g)" />
+  <g fill="none" stroke="#94a3b8" stroke-width="6">
+    <circle cx="640" cy="360" r="120" />
+    <path d="M520 360 h240 M640 240 v240" />
+  </g>
+</svg>

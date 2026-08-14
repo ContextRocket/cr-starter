@@ -184,6 +184,23 @@ export interface PathsConfig {
   login: string;
 }
 
+/**
+ * Feature flags — toggle whole surfaces on/off for a fork.
+ *
+ * cr-starter is the reusable base: features default ON here so the reference
+ * site shows the full product. A fork that does not want a given surface flips
+ * the flag to `false`; the nav link disappears and the routes render an empty
+ * state (the route files still exist — Next.js routing is file-based — but the
+ * link into them is gated so the surface is effectively hidden).
+ */
+export interface FeaturesConfig {
+  /**
+   * Whether the conventional blog surface is enabled. When true, the Blog nav
+   * link is shown and /blog renders the index + posts. Default true.
+   */
+  blog: boolean;
+}
+
 export interface SiteConfig {
   /** Public-facing company / product name used in headers, titles, JSON-LD. */
   companyName: string;
@@ -240,6 +257,12 @@ export interface SiteConfig {
    * components. Values are same-origin paths (leading "/") or absolute URLs.
    */
   paths: PathsConfig;
+  /**
+   * Feature flags. Toggle whole surfaces on/off for a fork. Defaults are ON
+   * in cr-starter (the reference) so the full product is visible; a fork flips
+   * a flag to false to hide that surface.
+   */
+  features: FeaturesConfig;
   /**
    * Whether the named AI-crawler tier (GPTBot, ClaudeBot, PerplexityBot,
    * Google-Extended, ...) may crawl the site. Default true: being readable
@@ -359,6 +382,15 @@ export const siteConfig: SiteConfig = {
     contact: "/contact",
     signup: "/auth/register",
     login: "/auth/login",
+  },
+
+  // ── Feature flags ─────────────────────────────────────────────────────
+  // Toggle whole surfaces on/off. cr-starter is the reusable base, so flags
+  // default ON and the reference site shows the full product. A fork flips a
+  // flag to false to hide that surface (the nav link disappears; the routes
+  // render an empty state).
+  features: {
+    blog: true,
   },
 
   // ── Crawling posture ──────────────────────────────────────────────────

@@ -109,9 +109,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     <>
     <StructuredDataScripts items={[breadcrumb, blogPosting]} />
     <main
-      className="min-h-screen bg-background text-foreground p-8 max-w-3xl mx-auto"
+      className="min-h-screen bg-warm text-foreground"
       data-testid={`blog-post-${post.slug}`}
     >
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <article>
         <header className="mb-8">
           <h1 className="text-3xl font-bold mb-3">
@@ -266,6 +267,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {t("blog.back.home")}
         </Link>
       </nav>
+      </div>
     </main>
     </>
   );
