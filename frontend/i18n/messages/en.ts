@@ -513,6 +513,22 @@ export const en = {
           desc: "Updates flow in as your content changes."
         }
       }
+    },
+    attribution: {
+      title: "Credits & attributions",
+      subtitle: "The fonts, icons, and open-source libraries that power this template."
+    },
+    status: {
+      confirmed: {
+        title: "Subscription confirmed",
+        message: "Your email is verified. You're all set to receive updates.",
+        action: "Back to home"
+      },
+      unsubscribed: {
+        title: "You've been unsubscribed",
+        message: "You won't receive any more emails from this list. You can resubscribe anytime.",
+        action: "Return home"
+      }
     }
   },
 } as const;

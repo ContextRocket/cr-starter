@@ -17,17 +17,22 @@ import {
   TeamSection,
   HeroInsights,
   type HeroInsightCard,
+  AttributionSection,
+  StatusPage,
 } from "@/components/sections";
 import {
   BoltIcon,
   GlobeAltIcon,
   ArrowPathIcon,
+  CheckCircleIcon,
+  InformationCircleIcon,
 } from "@heroicons/react/24/solid";
 import { Link } from "@/i18n/navigation";
 import { setLocale, t } from "@/i18n/keys";
 import { resolveLocale } from "@/i18n/messages";
 import { en } from "@/i18n/messages/en";
 import type { BlogPost } from "@/lib/blog";
+import { loadAttributions } from "@/lib/attributions";
 
 export const metadata = {
   robots: { index: false, follow: false },
@@ -120,6 +125,11 @@ export default async function PreviewPage({
     t(`preview.team.mark.bio.${i}`),
   );
 
+  // Credit entries are read + validated from content/attributions.json at
+  // build time (fail-loud loader). A fork replaces the JSON; chrome copy stays
+  // in i18n via t().
+  const attributions = loadAttributions();
+
   return (
     <main>
       <MarketingSections />
@@ -204,6 +214,30 @@ export default async function PreviewPage({
           />
         </div>
       </div>
+
+      <AttributionSection
+        title={t("preview.attribution.title")}
+        subtitle={t("preview.attribution.subtitle")}
+        items={attributions}
+        backgroundClass="bg-muted"
+      />
+
+      <StatusPage
+        icon={<CheckCircleIcon className="h-8 w-8" />}
+        tone="success"
+        title={t("preview.status.confirmed.title")}
+        message={t("preview.status.confirmed.message")}
+        action={{ label: t("preview.status.confirmed.action"), href: "/" }}
+      />
+
+      <StatusPage
+        icon={<InformationCircleIcon className="h-8 w-8" />}
+        tone="info"
+        title={t("preview.status.unsubscribed.title")}
+        message={t("preview.status.unsubscribed.message")}
+        action={{ label: t("preview.status.unsubscribed.action"), href: "/" }}
+        backgroundClass="bg-muted"
+      />
     </main>
   );
 }
