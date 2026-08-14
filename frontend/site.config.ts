@@ -106,10 +106,37 @@ export interface ThemeConfig {
   card: string;
   /** Card text color. */
   cardForeground: string;
+  /**
+   * Layer-1 generic design tokens. These mirror the globals.css :root contract
+   * (see the DESIGN-TOKEN CONTRACT comment in app/globals.css) and are the
+   * source of truth a derived product aliases from (e.g. --cr-pink:
+   * var(--primary)). Runtime injection of siteConfig.theme into :root is a
+   * tracked follow-up; today these names define the frozen contract.
+   */
   /** Primary accent color (buttons, links, highlights). */
   primary: string;
   /** Text color on primary backgrounds. */
   primaryForeground: string;
+  /** Primary hover state color. */
+  primaryHover: string;
+  /** Soft/tinted primary surface (badges, subtle fills). */
+  primarySoft: string;
+  /** Secondary surface/background color. */
+  secondary: string;
+  /** Text color on secondary backgrounds. */
+  secondaryForeground: string;
+  /** Secondary hover state color. */
+  secondaryHover: string;
+  /** Soft/tinted secondary surface. */
+  secondarySoft: string;
+  /** Tertiary surface/background color. */
+  tertiary: string;
+  /** Text color on tertiary backgrounds. */
+  tertiaryForeground: string;
+  /** Tertiary hover state color. */
+  tertiaryHover: string;
+  /** Soft/tinted tertiary surface. */
+  tertiarySoft: string;
   /** Muted/section background. */
   muted: string;
   /** Muted text color (body, descriptions). */
@@ -277,6 +304,18 @@ export const siteConfig: SiteConfig = {
     cardForeground: "hsl(0 0% 3.9%)",
     primary: "hsl(0 0% 9%)",
     primaryForeground: "hsl(0 0% 98%)",
+    // Layer-1 generic tokens — mirror the globals.css :root light values.
+    // Runtime injection into :root is a tracked follow-up.
+    primaryHover: "hsl(0 0% 20%)",
+    primarySoft: "hsl(0 0% 9% / 0.08)",
+    secondary: "hsl(0 0% 96.1%)",
+    secondaryForeground: "hsl(0 0% 9%)",
+    secondaryHover: "hsl(0 0% 92%)",
+    secondarySoft: "hsl(0 0% 9% / 0.05)",
+    tertiary: "hsl(0 0% 92%)",
+    tertiaryForeground: "hsl(0 0% 9%)",
+    tertiaryHover: "hsl(0 0% 86%)",
+    tertiarySoft: "hsl(0 0% 9% / 0.05)",
     muted: "hsl(0 0% 96.1%)",
     mutedForeground: "hsl(0 0% 45.1%)",
     border: "hsl(0 0% 89.8%)",
