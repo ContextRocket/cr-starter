@@ -380,6 +380,16 @@ make test-e2e        # Playwright E2E (requires full stack)
 
 ---
 
+## Scratchpad (temporary files)
+
+Use the git-ignored **`scratchpad/`** folder (repo root and/or `frontend/scratchpad/`)
+for any throwaway files -- screenshots, capture scripts, scratch notes, one-off
+data. It is listed in `.gitignore` and excluded from ESLint, so nothing there is
+ever committed, published, or linted. Do not put working files anywhere else in
+the tree; keep the repo clean and use `scratchpad/` for everything temporary.
+
+---
+
 ## License
 
 MIT (c) 2026 ContextRocket. See `LICENSE.txt`.

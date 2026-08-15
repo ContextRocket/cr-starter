@@ -17,6 +17,8 @@ const eslintConfig = [
       "playwright-report/**",
       "test-results/**",
       "coverage/**",
+      "scratchpad/**",
+      "../scratchpad/**",
     ],
   },
   js.configs.recommended,
