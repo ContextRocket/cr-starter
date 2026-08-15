@@ -38,7 +38,7 @@ export function DevNoticeBar({
     <div
       role="alert"
       data-testid="siteurl-placeholder-warning"
-      className="flex items-center gap-2 border-b border-warning/30 bg-warning/10 px-4 py-2 text-xs text-warning-foreground dark:border-warning/20 dark:bg-warning/10 dark:text-warning"
+      className="flex items-center gap-2 border-b border-brand-accent/30 bg-brand-accent/10 px-4 py-2 text-xs text-brand-accent dark:border-brand-accent/20 dark:bg-brand-accent/10 dark:text-brand-accent"
     >
       <p className="min-w-0 flex-1 text-center font-medium">
         <strong className="font-bold opacity-80">{label}</strong> {message}

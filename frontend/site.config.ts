@@ -438,6 +438,8 @@ export interface SiteConfig {
     /** Header brand mark (wordmark variant) for DARK theme — light-on-dark. */
     wordmarkDark: string;
     faviconIco: string;
+    icon16: string;
+    icon32: string;
     appleTouchIcon: string;
     icon192: string;
     icon512: string;
@@ -577,6 +579,8 @@ export const siteConfig: SiteConfig = {
     wordmark: "/cr-logo.svg",
     wordmarkDark: "/brand/cr-logo-horizontal-white.png",
     faviconIco: "/favicon.ico",
+    icon16: "/favicon-16x16.png",
+    icon32: "/favicon-32x32.png",
     appleTouchIcon: "/apple-icon-180x180.png",
     icon192: "/icon-192.png",
     icon512: "/icon-512.png",

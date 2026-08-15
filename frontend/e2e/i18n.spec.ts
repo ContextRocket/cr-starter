@@ -42,7 +42,8 @@ test.describe("Locale switching", () => {
 
   test("the LocaleSwitcher is present on the home page", async ({ page }) => {
     await page.goto("/en", { waitUntil: "domcontentloaded" });
-    await expect(page.getByTestId("locale-switcher")).toHaveCount(1);
+    // May render twice (desktop vs mobile nav) depending on the viewport/chrome.
+    await expect(page.getByTestId("locale-switcher")).not.toHaveCount(0);
   });
 
   test("public home page is indexable (no noindex robots meta)", async ({

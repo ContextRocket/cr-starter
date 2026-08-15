@@ -32,6 +32,8 @@
  * If any of those props change, update the constants below in the same edit.
  */
 
+import Script from "next/script";
+
 // Keep in sync with theme-provider.tsx (next-themes defaults / our props).
 export const THEME_STORAGE_KEY = "theme";
 
@@ -44,17 +46,15 @@ const NO_FLASH_SCRIPT = `(function(){try{var k=${JSON.stringify(
 )};var d=document.documentElement;var t=null;try{t=localStorage.getItem(k)}catch(e){}if(!t||t==="system"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}d.classList.remove("light","dark");d.classList.add(t);d.style.colorScheme=t}catch(e){}})();`;
 
 /**
- * Rendered inside <head> of the [locale] layout (a Server Component). Because it
- * ships in the initial SSR HTML, the browser executes it before first paint and
- * React never re-creates it on the client — so no "script tag" warning.
+ * Rendered inside <head> of the [locale] layout (a Server Component).
+ * We use next/script to avoid React 19's warning when the layout re-renders
+ * on the client (e.g. during a language switch).
  */
 export function ThemeInitScript() {
   return (
-    <script
-      // suppressHydrationWarning: the class we set here diverges from the
-      // server-rendered <html> (which has no theme class), same contract as the
-      // <html suppressHydrationWarning> the layout already sets.
-      suppressHydrationWarning
+    <Script
+      id="theme-init"
+      strategy="beforeInteractive"
       dangerouslySetInnerHTML={{ __html: NO_FLASH_SCRIPT }}
     />
   );

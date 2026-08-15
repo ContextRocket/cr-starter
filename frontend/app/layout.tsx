@@ -62,6 +62,18 @@ export const metadata: Metadata = {
       "application/rss+xml": `${siteConfig.siteUrl}/feed.xml`,
     },
   },
+  icons: {
+    icon: [
+      { url: siteConfig.assets.faviconIco },
+      { url: siteConfig.assets.icon16, sizes: "16x16", type: "image/png" },
+      { url: siteConfig.assets.icon32, sizes: "32x32", type: "image/png" },
+      { url: siteConfig.assets.icon192, sizes: "192x192", type: "image/png" },
+      { url: siteConfig.assets.icon512, sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: siteConfig.assets.appleTouchIcon, sizes: "180x180", type: "image/png" },
+    ],
+  },
 };
 
 export default function RootLayout({
