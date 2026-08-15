@@ -89,6 +89,30 @@ export interface CtaBand {
   cta: CallToAction;
 }
 
+/** A single insight card in the HeroInsights panel (label + metric + support). */
+export interface HeroInsightConfigItem {
+  /** Small uppercase eyebrow (e.g. "Answer readiness"). */
+  label: string;
+  /** The headline metric/value (e.g. "92%"). */
+  value: string;
+  /** One supporting sentence. */
+  description?: string;
+  /** Accent color for the card icon box. Default "primary". */
+  color?: "primary" | "blue" | "yellow" | "green" | "neutral";
+}
+
+/**
+ * HeroInsights panel: a headline/subhead over a small grid of metric cards.
+ * OPTIONAL — omit the whole block and the panel does not render. The shared
+ * <HeroInsights layout="grid"> component renders these cards, token-styled and
+ * scroll-revealed, with no hero image required. A fork edits copy here alone.
+ */
+export interface HeroInsightsSection {
+  headline: string;
+  subhead?: string;
+  items: HeroInsightConfigItem[];
+}
+
 /** Features section: optional heading fields + the feature cards. */
 export interface FeaturesSection {
   label?: string;
@@ -208,6 +232,12 @@ export interface CompanyConfig {
    */
   nav?: NavigationConfig;
   hero?: HeroContent;
+  /**
+   * HeroInsights metric panel. OPTIONAL — omit to hide it. The home renders it
+   * under the hero when present; delete this block (or the whole key) to remove
+   * it from a fork.
+   */
+  heroInsights?: HeroInsightsSection;
   /** Features / offerings, with a section heading. */
   features?: FeaturesSection;
   /** FAQ, with a section heading. */
@@ -264,6 +294,33 @@ export const company: CompanyConfig = {
       "A supporting sentence that explains who it is for and why it matters.", // PLACEHOLDER
     primaryCta: { label: "Get started", href: "/" }, // PLACEHOLDER
     secondaryCta: { label: "Learn more", href: "/blog" }, // PLACEHOLDER
+  },
+  // HeroInsights metric panel — rendered under the hero on the home. GENERIC
+  // placeholder metrics; edit or delete this block to remove the panel. Also
+  // showcased standalone at /landing/1 as a full landing-page reference.
+  heroInsights: {
+    headline: "Insight at a glance", // PLACEHOLDER
+    subhead: "A few numbers that make the value concrete.", // PLACEHOLDER
+    items: [
+      {
+        label: "Answer readiness", // PLACEHOLDER
+        value: "92%",
+        description: "How much of your content is ready to be cited.", // PLACEHOLDER
+        color: "green",
+      },
+      {
+        label: "Sources indexed", // PLACEHOLDER
+        value: "1,240",
+        description: "Pages and documents in your knowledge base.", // PLACEHOLDER
+        color: "blue",
+      },
+      {
+        label: "Time to answer", // PLACEHOLDER
+        value: "0.8s",
+        description: "Median latency for a grounded response.", // PLACEHOLDER
+        color: "yellow",
+      },
+    ],
   },
   features: {
     label: "Features", // PLACEHOLDER

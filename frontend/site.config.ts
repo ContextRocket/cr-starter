@@ -492,8 +492,13 @@ export const siteConfig: SiteConfig = {
   },
 
   // ── Brand assets (files live in frontend/public/) ─────────────────────
+  // `logo` is the HEADER WORDMARK the marketing Navbar renders (a wide SVG
+  // wordmark, ~7.4:1). It is intentionally NOT one of the PWA app icons below:
+  // an app icon (square glyph) in the header reads as a placeholder. A fork
+  // drops its own wordmark at /public and points `logo` at it. The favicon +
+  // icon-192/512* entries stay as PWA/app icons and are unrelated to the header.
   assets: {
-    logo: "/icon-192.png",
+    logo: "/cr-logo.svg",
     faviconIco: "/favicon.ico",
     appleTouchIcon: "/apple-icon-180x180.png",
     icon192: "/icon-192.png",

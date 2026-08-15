@@ -57,6 +57,13 @@ export const siteEs = {
       }
     }
   },
+  landing: {
+    meta: {
+      title: "Página de destino de ejemplo",
+      description: "Una página de destino de referencia creada con la biblioteca de secciones compartida."
+    },
+    intro: "Esta es una página de destino de ejemplo que puedes adoptar o convertir en tu página de inicio. Muestra el panel HeroInsights compartido desde company.config.ts."
+  },
   blog: {
     title: "Blog",
     subtitle: "Artículos, guías y novedades del producto.",

@@ -50,6 +50,10 @@ export {
 export {
   HeroInsights,
   type HeroInsightsProps,
+  type HeroInsightsGridProps,
+  type HeroInsightsOverlayProps,
+  type HeroInsightsContent,
+  type HeroInsightItem,
   type HeroInsightCard,
 } from "./hero-insights";
 export {

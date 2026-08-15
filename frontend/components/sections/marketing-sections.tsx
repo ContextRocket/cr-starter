@@ -4,7 +4,7 @@
  * existing prop-based section library, rendering ONLY the sections present in
  * the config, in a fixed marketing order:
  *
- *   Hero → LogoCloud → FeatureGrid → StatsBar → TestimonialGrid → FaqSection → CtaSection
+ *   Hero → HeroInsights → LogoCloud → FeatureGrid → StatsBar → TestimonialGrid → FaqSection → CtaSection
  *
  * A company fork points a page at <MarketingSections /> and edits copy in
  * `company.config.ts` alone. Field-name mismatches between the content SoT and
@@ -15,6 +15,7 @@
 import Image from "next/image";
 import { company, type CompanyConfig } from "@/company.config";
 import { HeroSection, type HeroAction } from "./hero";
+import { HeroInsights } from "./hero-insights";
 import { LogoCloud } from "./logo-cloud";
 import { FeatureGrid } from "./feature-grid";
 import { StatsBar } from "./stats-bar";
@@ -27,7 +28,8 @@ export function MarketingSections({
 }: {
   config?: CompanyConfig;
 }) {
-  const { hero, logos, features, stats, testimonials, faq, cta } = config;
+  const { hero, heroInsights, logos, features, stats, testimonials, faq, cta } =
+    config;
 
   // Hero actions: primary + secondary CTAs, each only when present.
   const heroActions: HeroAction[] = [];
@@ -58,6 +60,17 @@ export function MarketingSections({
             </div>
           )}
         </HeroSection>
+      )}
+
+      {/* Optional metric panel under the hero — rendered only when the config
+          block is present (a fork removes it by deleting `heroInsights`). */}
+      {heroInsights && (
+        <HeroInsights
+          layout="grid"
+          headline={heroInsights.headline}
+          subhead={heroInsights.subhead}
+          items={heroInsights.items}
+        />
       )}
 
       {logos && <LogoCloud heading={logos.heading} items={logos.items} />}

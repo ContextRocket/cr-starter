@@ -57,6 +57,13 @@ export const siteDe = {
       }
     }
   },
+  landing: {
+    meta: {
+      title: "Beispiel-Landingpage",
+      description: "Eine Referenz-Landingpage, erstellt aus der gemeinsamen Sektions-Bibliothek."
+    },
+    intro: "Dies ist eine Beispiel-Landingpage, die du übernehmen oder zu deiner Startseite machen kannst. Sie rendert das gemeinsame HeroInsights-Panel aus company.config.ts."
+  },
   blog: {
     title: "Blog",
     subtitle: "Artikel, Anleitungen und Produkt-Neuigkeiten.",

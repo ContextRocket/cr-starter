@@ -137,8 +137,10 @@ export default async function LocaleLayout({
       ? undefined
       : {
           src: siteConfig.assets.logo,
+          // Wordmark aspect (~7.4:1); the Navbar clamps to `h-6 w-auto`, so
+          // these are intrinsic-ratio hints for next/image layout reservation.
           alt: siteConfig.companyName,
-          width: 120,
+          width: 178,
           height: 24,
         };
 
