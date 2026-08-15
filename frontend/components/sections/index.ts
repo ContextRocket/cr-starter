@@ -57,3 +57,11 @@ export {
   type StatusPageProps,
   type StatusTone,
 } from "./status-page";
+export {
+  NotificationBar,
+  NotificationBarStack,
+  type NotificationBarProps,
+  type NotificationBarStackProps,
+  type NotificationItem,
+  type NotificationTone,
+} from "./notification-bar";

@@ -181,6 +181,19 @@ export const de = {
     },
     siteConfigUrlWarning: "Das Feld siteUrl in site.config.ts verweist noch auf example.com. Ersetze es vor der Veröffentlichung durch deine Produktionsdomain."
   },
+  notifications: {
+    region: "Website-Benachrichtigungen",
+    dismiss: "Benachrichtigung schließen",
+    example: {
+      info: {
+        message: "Wir haben gerade eine neue Funktion veröffentlicht.",
+        action: "Neuigkeit lesen"
+      },
+      warning: {
+        message: "Geplante Wartung an diesem Wochenende."
+      }
+    }
+  },
   error: {
     generic: "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
     dashboard: "Beim Laden dieser Seite ist ein Fehler aufgetreten.",

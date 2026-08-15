@@ -178,6 +178,19 @@ export const es = {
     },
     siteConfigUrlWarning: "El campo siteUrl de site.config.ts todavía apunta a example.com. Sustitúyelo por tu dominio de producción antes de publicar el sitio."
   },
+  notifications: {
+    region: "Notificaciones del sitio",
+    dismiss: "Descartar notificación",
+    example: {
+      info: {
+        message: "Acabamos de lanzar una nueva función.",
+        action: "Leer la novedad"
+      },
+      warning: {
+        message: "Mantenimiento programado este fin de semana."
+      }
+    }
+  },
   error: {
     generic: "Algo ha salido mal. Por favor, inténtalo de nuevo.",
     dashboard: "Algo ha salido mal al cargar esta página.",

@@ -122,6 +122,10 @@
   --color-accent-brand-fg: var(--accent-brand-fg, var(--primary));
   --color-accent-slate-bg: var(--accent-slate-bg, #f1f5f9);
   --color-accent-slate-fg: var(--accent-slate-fg, #334155);
+  /* Lavender/indigo pair — soft info tint (notification-bar "info" tone).
+     bg #eef2ff / fg #3730a3 clears WCAG AA (7.9:1). */
+  --color-accent-indigo-bg: var(--accent-indigo-bg, #eef2ff);
+  --color-accent-indigo-fg: var(--accent-indigo-fg, #3730a3);
 }
 
 /*

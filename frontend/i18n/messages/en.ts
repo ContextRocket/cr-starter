@@ -181,6 +181,19 @@ export const en = {
     },
     siteConfigUrlWarning: "siteUrl in site.config.ts still points at example.com. Replace it with your production domain before going live."
   },
+  notifications: {
+    region: "Site notifications",
+    dismiss: "Dismiss notification",
+    example: {
+      info: {
+        message: "We just shipped a new feature.",
+        action: "Read the update"
+      },
+      warning: {
+        message: "Scheduled maintenance this weekend."
+      }
+    }
+  },
   error: {
     generic: "Something went wrong. Please try again.",
     dashboard: "Something went wrong loading this page.",

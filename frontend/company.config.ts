@@ -107,6 +107,29 @@ export interface TestimonialsSection {
   items: Testimonial[];
 }
 
+/**
+ * A top-of-page notification bar entry.
+ *
+ * Config references i18n KEYS (not literal copy) — the [locale] layout resolves
+ * `messageKey` / `action.labelKey` with t() before passing resolved strings to
+ * the NotificationBarStack, which is i18n-agnostic. `icon` is an optional lucide
+ * icon NAME resolved to a component by the layout's curated icon map.
+ */
+export interface NotificationItemConfig {
+  /** Stable id — also the localStorage dismissal key. */
+  id: string;
+  /** Visual tone: "info" | "warning" | "success" | "neutral". Default neutral. */
+  tone?: "info" | "warning" | "success" | "neutral";
+  /** Optional lucide icon name (e.g. "Info", "TriangleAlert", "CircleCheck"). */
+  icon?: string;
+  /** i18n key resolving to the bar message. */
+  messageKey: string;
+  /** Optional inline action link. `labelKey` is an i18n key; `href` a path/URL. */
+  action?: { labelKey: string; href: string };
+  /** Whether the bar shows a dismiss × button. Default true. */
+  dismissible?: boolean;
+}
+
 export interface CompanyConfig {
   hero?: HeroContent;
   /** Features / offerings, with a section heading. */
@@ -119,6 +142,13 @@ export interface CompanyConfig {
   logos?: { heading?: string; items: LogoItem[] };
   stats?: StatItem[];
   cta?: CtaBand;
+  /**
+   * Top-of-page notification bars (stacked, dismissible). EMPTY by default so
+   * nothing renders out of the box — a fork turns bars on by adding entries.
+   * The [locale] layout resolves the i18n keys and passes resolved strings to
+   * NotificationBarStack.
+   */
+  notifications?: NotificationItemConfig[];
 }
 
 /**
@@ -178,4 +208,17 @@ export const company: CompanyConfig = {
     subhead: "A short nudge toward the primary action.", // PLACEHOLDER
     cta: { label: "Get started", href: "/" }, // PLACEHOLDER
   },
+  // Top-of-page notification bars. EMPTY by default (nothing renders). Turn on
+  // by adding entries that reference i18n keys — the [locale] layout resolves
+  // them. Example (add the keys under `notifications.*` in i18n/messages/*):
+  //   notifications: [
+  //     {
+  //       id: "beta",
+  //       tone: "info",
+  //       icon: "Info",
+  //       messageKey: "notifications.example.info.message",
+  //       action: { labelKey: "notifications.example.info.action", href: "/blog" },
+  //     },
+  //   ],
+  notifications: [],
 };

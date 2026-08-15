@@ -9,8 +9,13 @@ import { AosProvider } from "@/components/ui/aos-provider";
 import { CookieConsentBanner } from "@/components/cookie-consent-banner";
 import { LocaleProvider } from "@/i18n/locale-provider";
 import { SiteChrome } from "@/components/sections/site-chrome";
+import {
+  NotificationBarStack,
+  type NotificationItem,
+} from "@/components/sections/notification-bar";
 import type { NavLink } from "@/components/sections/navbar";
 import type { FooterLink } from "@/components/sections/footer-section";
+import { company } from "@/company.config";
 // Register all locale trees server-side before any t() call.
 // MUST be imported before `t` so the registry is populated for SSR.
 import { getServerLocaleTree } from "@/i18n/messages/register-server";
@@ -115,6 +120,22 @@ export default async function LocaleLayout({
     width: 120,
     height: 24,
   };
+
+  // Top-of-page notification bars: resolve config i18n keys → already-resolved
+  // strings so the NotificationBarStack stays i18n-agnostic. Empty config →
+  // empty array → the stack renders nothing (no layout shift).
+  const resolvedNotifications: NotificationItem[] = (
+    company.notifications ?? []
+  ).map((n) => ({
+    id: n.id,
+    tone: n.tone,
+    iconName: n.icon,
+    message: t(n.messageKey),
+    action: n.action
+      ? { label: t(n.action.labelKey), href: n.action.href }
+      : undefined,
+    dismissible: n.dismissible,
+  }));
   const footerLinks: FooterLink[] = [
     { label: t("footer.impressum"), href: `/${locale}/impressum` },
     { label: t("footer.privacy"), href: `/${locale}${siteConfig.paths.privacy}` },
@@ -152,6 +173,11 @@ export default async function LocaleLayout({
                 {t("dev.siteConfigUrlWarning")}
               </div>
             )}
+            <NotificationBarStack
+              items={resolvedNotifications}
+              regionLabel={t("notifications.region")}
+              dismissLabel={t("notifications.dismiss")}
+            />
             <SiteChrome
               links={navLinks}
               logo={navLogo}
