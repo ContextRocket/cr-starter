@@ -2,6 +2,7 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import createNextIntlPlugin from 'next-intl/plugin';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { blogRewrites } from './blog.config.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -34,6 +35,19 @@ const nextConfig = {
     images: { unoptimized: true },
     trailingSlash: true,
   }),
+  // Custom blog URL segment (siteConfig.blog.basePath). When a fork sets a
+  // basePath other than "/blog", map the custom public path onto the physical
+  // /blog route (never renamed — Next routes are file-system based). Default
+  // "/blog" emits NO rewrite, so behavior is byte-for-byte unchanged.
+  //
+  // STATIC-EXPORT CAVEAT: `output: "export"` does not run rewrites, so this is
+  // an SSR / standard-build feature. We omit the rewrites() key entirely under
+  // static export to avoid the "rewrites are not supported with output: export"
+  // build error. A static-export fork needing a custom segment must physically
+  // alias app/[locale]/blog. See blog.config.mjs / lib/blog-path.ts.
+  ...(!STATIC_EXPORT && blogRewrites().length > 0
+    ? { async rewrites() { return blogRewrites(); } }
+    : {}),
   webpack: (config, { isServer, webpack }) => {
     // Static export: swap server-action modules for no-op stubs.
     // Next.js detects "use server" at the source level; the only way

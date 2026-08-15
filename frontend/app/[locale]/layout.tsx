@@ -28,6 +28,7 @@ import {
   type SupportedLocale,
 } from "@/i18n/messages";
 import { siteConfig } from "@/site.config";
+import { blogTitle } from "@/lib/blog-path";
 
 // Fonts: swap the src for a different face, or replace with
 // next/font/google for Inter/JetBrains Mono — no component changes needed.
@@ -172,7 +173,7 @@ export default async function LocaleLayout({
         <link
           rel="alternate"
           type="application/rss+xml"
-          title={`${siteConfig.companyName} — Blog`}
+          title={`${siteConfig.companyName} — ${blogTitle()}`}
           href={`${origin}/feed.xml`}
         />
       </head>

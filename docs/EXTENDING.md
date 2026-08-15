@@ -108,6 +108,38 @@ involves the agent or knowledge belongs in ContextRocket skills.
 
 No LLM keys in these routes.  The template backend has no AI dependencies.
 
+### 5. Custom blog URL segment + title
+
+By default the blog is published at `/blog` and titled "Blog". To serve it under
+a custom path/name (e.g. `/the-creator-economy-for-b2b`, titled "The Creator
+Economy for B2B") edit **one file** -- `frontend/blog.config.mjs`:
+
+```js
+export const blogConfig = {
+  basePath: "/the-creator-economy-for-b2b",
+  title: "The Creator Economy for B2B",
+};
+```
+
+The physical route stays at `app/[locale]/blog/` (Next.js routes are
+file-system based -- nothing is renamed). Everything that emits a blog URL or
+label reads this config through `lib/blog-path.ts`: the nav link, post links,
+the index `<h1>`/`<title>`, canonical + hreflang alternates, breadcrumbs, the
+sitemap, and the RSS feed. `next.config.mjs` emits a rewrite mapping the custom
+public path onto the physical `/blog` route. Config lives in `blog.config.mjs`
+(not `site.config.ts`) because `next.config.mjs` runs before the TypeScript
+build and cannot import the `.ts` config; `siteConfig.blog` re-exports the same
+values for app code.
+
+**Static-export caveat (`pnpm build:static`).** `output: "export"` produces a
+pure static bundle and does NOT run `next.config` rewrites or middleware, so the
+custom-segment rewrite is an SSR / standard-build feature (the common case,
+including a Kamal-deployed fork). Under static export the DEFAULT `/blog` works
+unchanged. A static-export fork that needs a custom segment must physically
+alias the route directory -- copy `app/[locale]/blog` to
+`app/[locale]/<your-segment>` -- since a config-only rewrite cannot run in a
+static bundle.
+
 ---
 
 ## Staying in sync with upstream

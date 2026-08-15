@@ -7,8 +7,10 @@
  * without a Next runtime.
  *
  * Blog links are locale-prefixed with the site's default locale (the starter
- * serves every public page under a `[locale]` segment). Channel identity comes
- * from site.config so forks stay consistent without editing this file.
+ * serves every public page under a `[locale]` segment) and use the configured
+ * blog segment (siteConfig.blog.basePath via lib/blog-path) so a fork's custom
+ * path flows through the self URL, item links, and feed title. Channel identity
+ * comes from site.config so forks stay consistent without editing this file.
  *
  * Adapted from context-rocket/frontend/lib/public-feed.ts.
  * Reference: https://www.rssboard.org/rss-specification
@@ -16,6 +18,7 @@
 
 import { siteConfig } from "@/site.config";
 import { fileBlogAdapter, type BlogSource } from "@/lib/blog";
+import { blogBasePath, blogTitle } from "@/lib/blog-path";
 
 const XML_REPLACEMENTS: ReadonlyArray<readonly [RegExp, string]> = [
   [/&/g, "&amp;"],
@@ -66,6 +69,7 @@ export interface FeedConfig {
 export function buildRssFeed(config: FeedConfig = {}): string {
   const origin = siteConfig.siteUrl.replace(/\/$/, "");
   const locale = siteConfig.defaultLocale;
+  const base = blogBasePath();
   const selfPath = config.selfPath ?? "/feed.xml";
   const now = config.now ?? new Date();
   const source = config.source ?? fileBlogAdapter;
@@ -77,15 +81,15 @@ export function buildRssFeed(config: FeedConfig = {}): string {
     return 0;
   });
 
-  const channelTitle = `${siteConfig.companyName} — Blog`;
-  const channelLink = `${origin}/${locale}/blog`;
+  const channelTitle = `${siteConfig.companyName} — ${blogTitle()}`;
+  const channelLink = `${origin}/${locale}${base}`;
   const channelDescription = siteConfig.description;
   const feedSelfUrl = `${origin}${selfPath}`;
   const lastBuild = now.toUTCString();
 
   const itemNodes = posts
     .map((post) => {
-      const itemUrl = `${origin}/${locale}/blog/${post.slug}`;
+      const itemUrl = `${origin}/${locale}${base}/${post.slug}`;
       const description = post.excerpt ?? post.bodyMarkdown.slice(0, 200);
       return [
         "  <item>",

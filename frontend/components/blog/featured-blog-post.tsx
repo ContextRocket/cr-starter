@@ -16,6 +16,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { t } from "@/i18n/keys";
 import { cn } from "@/lib/utils";
+import { blogPostPath } from "@/lib/blog-path";
 import type { BlogPost } from "@/lib/blog";
 
 interface FeaturedBlogPostProps {
@@ -40,7 +41,7 @@ export function FeaturedBlogPost({ post, locale }: FeaturedBlogPostProps) {
       data-testid={`blog-post-${post.slug}`}
       className="bg-warm-surface rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden"
     >
-      <Link href={`/blog/${post.slug}`} className="group block">
+      <Link href={blogPostPath(post.slug)} className="group block">
         {/* Image (16:9) with graceful fallback */}
         <div className="aspect-[16/9] relative overflow-hidden">
           {post.image ? (

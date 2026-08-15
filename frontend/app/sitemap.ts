@@ -18,6 +18,7 @@ import type { MetadataRoute } from "next";
 import { siteConfig } from "@/site.config";
 import { SUPPORTED_LOCALES } from "@/i18n/messages";
 import { fileBlogAdapter } from "@/lib/blog";
+import { blogBasePath } from "@/lib/blog-path";
 
 export const dynamic = "force-static";
 
@@ -53,15 +54,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const pages: IndexableRoute[] = [...INDEXABLE_ROUTES];
 
+  // Blog: the public segment comes from siteConfig.blog.basePath (default
+  // "/blog"). Strip the leading "/" to match the in-locale `path` convention
+  // above (localeUrl re-adds the separator). A fork's custom basePath flows
+  // through here, so the sitemap lists the custom segment for the index + posts.
+  const blogSegment = blogBasePath().replace(/^\//, "");
+
   // Blog listing
-  pages.push({ path: "blog", priority: 0.8, changeFrequency: "daily" });
+  pages.push({ path: blogSegment, priority: 0.8, changeFrequency: "daily" });
 
   // Individual blog posts
   try {
     const posts = fileBlogAdapter.list();
     for (const post of posts) {
       pages.push({
-        path: `blog/${post.slug}`,
+        path: `${blogSegment}/${post.slug}`,
         priority: 0.7,
         changeFrequency: "monthly",
       });

@@ -24,6 +24,7 @@ import {
   buildBlogPostingJsonLd,
 } from "@/lib/structured-data";
 import { StructuredDataScripts } from "@/components/seo/structured-data-scripts";
+import { blogBasePath, blogPostPath, blogTitle } from "@/lib/blog-path";
 import { siteConfig } from "@/site.config";
 
 interface BlogPostPageProps {
@@ -58,7 +59,7 @@ export async function generateMetadata({
     openGraph: post.image
       ? { images: [{ url: post.image }] }
       : undefined,
-    alternates: buildAlternates(locale, `/blog/${slug}`),
+    alternates: buildAlternates(locale, blogPostPath(slug)),
     robots: { index: true, follow: true },
   };
 }
@@ -90,10 +91,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   // Structured data: Home > Blog > <title> breadcrumb + BlogPosting anchored
   // to the site Organization. Absolute, locale-prefixed URLs.
   const origin = siteConfig.siteUrl.replace(/\/$/, "");
-  const postUrl = `${origin}/${locale}/blog/${post.slug}`;
+  const postUrl = `${origin}/${locale}${blogPostPath(post.slug)}`;
   const breadcrumb = buildBreadcrumbListJsonLd([
     { name: t("breadcrumb.home"), url: `${origin}/${locale}` },
-    { name: t("blog.title"), url: `${origin}/${locale}/blog` },
+    { name: blogTitle(), url: `${origin}/${locale}${blogBasePath()}` },
     { name: post.title, url: postUrl },
   ]);
   const blogPosting = buildBlogPostingJsonLd({
@@ -237,7 +238,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <nav className="mt-12 flex justify-between gap-4 border-y border-border py-4 text-sm">
           {prev ? (
             <Link
-              href={`/blog/${prev.slug}`}
+              href={blogPostPath(prev.slug)}
               className="text-muted-foreground hover:underline"
             >
               &larr;{" "}
@@ -249,7 +250,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           )}
           {next ? (
             <Link
-              href={`/blog/${next.slug}`}
+              href={blogPostPath(next.slug)}
               className="ml-auto text-right text-muted-foreground hover:underline"
             >
               {next.series != null ? seriesPrefix(next.series) + " " : ""}
@@ -260,7 +261,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       ) : null}
 
       <nav className="mt-8 text-sm flex justify-between">
-        <Link href="/blog" className="text-muted-foreground hover:underline">
+        <Link href={blogBasePath()} className="text-muted-foreground hover:underline">
           &larr; {t("blog.back.to.list")}
         </Link>
         <Link href="/" className="text-muted-foreground hover:underline">

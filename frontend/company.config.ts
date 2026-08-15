@@ -27,6 +27,7 @@
  */
 
 import type { FeatureFlagName } from "./site.config";
+import { blogBasePath } from "./lib/blog-path";
 
 /** A call to action (button label + destination). */
 export interface CallToAction {
@@ -244,8 +245,9 @@ export const company: CompanyConfig = {
     showAppLinks: true,
     links: [
       // Blog link is gated on the blog feature flag (default ON in cr-starter);
-      // a fork that disables the blog drops it automatically.
-      { labelKey: "nav.blog", href: "/blog", featureFlag: "blog" },
+      // a fork that disables the blog drops it automatically. The href reads
+      // siteConfig.blog.basePath so a custom blog segment is honored here too.
+      { labelKey: "nav.blog", href: blogBasePath(), featureFlag: "blog" },
       // Dashboard is an app link — auth-gated (authenticated viewers only) and
       // additionally dropped when `showAppLinks` is false.
       { labelKey: "nav.dashboard", href: "/dashboard", appOnly: true },

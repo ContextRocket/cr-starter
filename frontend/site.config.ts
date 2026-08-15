@@ -19,6 +19,13 @@
  * identity and every piece of code that uses it.
  */
 
+// The blog surface (public URL segment + title) lives in `blog.config.mjs` — a
+// dependency-free ESM module SHARED with `next.config.mjs` (which runs before
+// the TS build and cannot import this file). A fork edits basePath/title there;
+// `siteConfig.blog` re-exposes those values to app code, and `lib/blog-path.ts`
+// is the typed accessor every emission point uses.
+import { blogConfig } from "./blog.config.mjs";
+
 /**
  * Icebreaker entry: a starter question shown in the empty chat state.
  * label is the chip text shown to the user; message is the text sent when
@@ -259,6 +266,41 @@ export interface FeaturesConfig {
 /** Names of the feature flags a config-driven nav link may gate on. */
 export type FeatureFlagName = keyof FeaturesConfig;
 
+/**
+ * Blog surface configuration — the PUBLIC URL segment and display name of the
+ * blog.
+ *
+ * The physical Next.js route stays at `app/[locale]/blog/` (routes are
+ * file-system based). This config governs the public URL a fork publishes the
+ * blog under and the human-facing title, so a fork can serve its blog at, e.g.,
+ * `/the-creator-economy-for-b2b` titled "The Creator Economy for B2B" WITHOUT
+ * renaming route files. Every place that EMITS a blog URL or label (nav link,
+ * post links, index `<h1>`/`<title>`, canonical + hreflang, breadcrumbs,
+ * sitemap, RSS) reads these values through `lib/blog-path.ts`.
+ *
+ * For a custom `basePath`, `next.config.mjs` emits a rewrite mapping the custom
+ * public segment onto the physical `/blog` route (SSR / standard build only —
+ * see the static-export caveat in `lib/blog-path.ts`). When `basePath` is the
+ * default `/blog`, no rewrite is emitted and behavior is byte-for-byte
+ * unchanged.
+ */
+export interface BlogConfig {
+  /**
+   * Public URL segment for the blog, leading "/" and NO trailing slash, e.g.
+   * `/blog` (default) or `/the-creator-economy-for-b2b`. This is the segment
+   * that appears in every emitted blog URL (after the `[locale]` prefix). It is
+   * normalized by `lib/blog-path.ts` (leading slash added, trailing slash
+   * stripped) so a fork can be lenient here.
+   */
+  basePath: string;
+  /**
+   * Human-facing blog name used for the index `<h1>` + `<title>`, breadcrumb
+   * label, and RSS channel title, e.g. "Blog" (default) or "The Creator
+   * Economy for B2B".
+   */
+  title: string;
+}
+
 export interface SiteConfig {
   /** Public-facing company / product name used in headers, titles, JSON-LD. */
   companyName: string;
@@ -321,6 +363,12 @@ export interface SiteConfig {
    * a flag to false to hide that surface.
    */
   features: FeaturesConfig;
+  /**
+   * Blog surface: the public URL segment + display title. Defaults to `/blog`
+   * + "Blog"; a fork overrides these to publish its blog under a custom path
+   * and name without renaming route files. Read via `lib/blog-path.ts`.
+   */
+  blog: BlogConfig;
   /**
    * Site-chrome style. Which header/footer VARIANT SiteChrome renders. Defaults
    * preserve cr-starter's current chrome ({ header: "marketing", footer:
@@ -463,6 +511,17 @@ export const siteConfig: SiteConfig = {
     // must supply real quotes and flip this to true before they render.
     testimonials: false,
   },
+
+  // ── Blog surface (public URL segment + title) ─────────────────────────
+  // cr-starter ships the conventional `/blog` + "Blog". A fork publishing its
+  // blog under a custom path/name edits `blog.config.mjs` (the SHARED source —
+  // `next.config.mjs` needs the same values to emit the custom-path rewrite and
+  // cannot import this .ts file), e.g. basePath: "/the-creator-economy-for-b2b",
+  // title: "The Creator Economy for B2B". Every emitted blog URL/label then
+  // follows via lib/blog-path — no route files are renamed. When basePath is the
+  // default "/blog", next.config emits no rewrite and behavior is unchanged. See
+  // lib/blog-path.ts for the static-export caveat.
+  blog: blogConfig,
 
   // ── Site chrome ───────────────────────────────────────────────────────
   // Which header/footer STYLE the site renders. cr-starter is the reference

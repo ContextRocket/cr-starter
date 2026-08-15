@@ -14,6 +14,7 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { t } from "@/i18n/keys";
+import { blogPostPath } from "@/lib/blog-path";
 import type { BlogPost } from "@/lib/blog";
 
 interface BlogPostCardProps {
@@ -38,7 +39,7 @@ export function BlogPostCard({ post, locale }: BlogPostCardProps) {
       data-testid={`blog-post-${post.slug}`}
       className="bg-warm-surface rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden flex flex-col"
     >
-      <Link href={`/blog/${post.slug}`} className="group flex flex-col h-full">
+      <Link href={blogPostPath(post.slug)} className="group flex flex-col h-full">
         {/* Image (16:9) with graceful fallback */}
         <div className="aspect-[16/9] relative overflow-hidden">
           {post.image ? (

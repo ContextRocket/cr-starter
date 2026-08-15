@@ -28,6 +28,7 @@ import { buildBreadcrumbListJsonLd } from "@/lib/structured-data";
 import { StructuredDataScripts } from "@/components/seo/structured-data-scripts";
 import { BlogPostCard } from "@/components/blog/blog-post-card";
 import { FeaturedBlogPost } from "@/components/blog/featured-blog-post";
+import { blogBasePath, blogTitle } from "@/lib/blog-path";
 import { siteConfig } from "@/site.config";
 
 export const dynamic = "force-static";
@@ -42,9 +43,11 @@ export async function generateMetadata({
   const locale = resolveLocale((await params).locale);
   setLocale(locale);
   return {
-    title: t("blog.title"),
+    // Title comes from siteConfig.blog.title so a fork can rename the blog
+    // (e.g. "The Creator Economy for B2B") without touching i18n copy.
+    title: blogTitle(),
     description: t("blog.description"),
-    alternates: buildAlternates(locale, "/blog"),
+    alternates: buildAlternates(locale, blogBasePath()),
     robots: { index: true, follow: true },
   };
 }
@@ -84,7 +87,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
   const origin = siteConfig.siteUrl.replace(/\/$/, "");
   const breadcrumb = buildBreadcrumbListJsonLd([
     { name: t("breadcrumb.home"), url: `${origin}/${locale}` },
-    { name: t("blog.title"), url: `${origin}/${locale}/blog` },
+    { name: blogTitle(), url: `${origin}/${locale}${blogBasePath()}` },
   ]);
 
   return (
@@ -97,7 +100,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
         {/* Hero */}
         <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-6 text-center">
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">
-            {t("blog.title")}
+            {blogTitle()}
           </h1>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
             {t("blog.subtitle")}
