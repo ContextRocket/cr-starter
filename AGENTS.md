@@ -25,7 +25,8 @@ customize at the named seams.
    and fake/in-memory test doubles, so forks swap implementations (file
    -> API, local -> platform) without rewriting consumers.  Do not
    over-abstract thin CRUD where the database is the contract.
-2. **No LLM keys.** The template delegates all AI to ContextRocket over A2A.
+2. **Scratchpad for temporary files.** Temporary files (such as Playwright generated screenshots for UI review, temporary `.js` scripts) must *only* be written to the `frontend/scratchpad/` directory, which is git-ignored. Never write temporary files to the root directory.
+3. **No LLM keys.** The template delegates all AI to ContextRocket over A2A.
    `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, and friends must not appear in
    `.env.example`, config, or any default path.  The only external AI
    dependency is `NEXT_PUBLIC_CR_AGENT_URL` + optional `NEXT_PUBLIC_CR_ORG_KEY`.
