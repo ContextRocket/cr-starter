@@ -485,7 +485,7 @@ export const siteConfig: SiteConfig = {
   // PLACEHOLDER -- replace with your one-sentence product description (meta tags + JSON-LD)
   description:
     "A Next.js starter for building AI-powered products on ContextRocket. Auth, dashboard shell, and a streaming chat agent included out of the box.",
-  siteUrl: "https://example.com", // PLACEHOLDER -- replace with your production domain
+  siteUrl: "https://contextrocket.com", // DEFAULT -- replace with your production domain
   contactEmail: "hello@example.com", // PLACEHOLDER -- replace with your contact email
   defaultLocale: "en",
   locales: ["en", "es", "de"] as const,

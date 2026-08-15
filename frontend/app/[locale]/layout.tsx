@@ -86,12 +86,13 @@ export default async function LocaleLayout({
     isGuest = true;
   }
 
-  // Dev-visible configuration warning: an unreplaced siteUrl placeholder
-  // poisons every canonical/OG/JSON-LD signal. Same pattern as the
-  // placeholder notice on /impressum.
+  // Dev-visible configuration warning: an unreplaced siteUrl default poisons
+  // every canonical/OG/JSON-LD signal. The starter ships the ContextRocket
+  // default domain, so a fork that hasn't set its own production domain still
+  // sees this notice. Same pattern as the placeholder notice on /impressum.
   const showSiteUrlWarning =
     process.env.NODE_ENV === "development" &&
-    siteConfig.siteUrl.includes("example.com");
+    siteConfig.siteUrl.includes("contextrocket.com");
 
   // Serialise the active non-en locale's tree into the RSC payload so the
   // client receives it without a separate network request. For `en`, pass

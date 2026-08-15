@@ -1,17 +1,19 @@
 /**
- * Home page — the config-driven marketing home with the classic HeroInsights
- * image-overlay hero.
+ * Home page — the config-driven marketing home.
  *
- * The hero is the animated <HeroInsights layout="overlay"> composition: a hero
- * image with a score badge and a cascade of floating InsightCards that fade in
- * once the image loads (reduced-motion shows them immediately). Below it the
- * full section library renders from the single content SoT (`company.config.ts`)
- * via <MarketingSections renderHero={false} /> — the config hero is suppressed
- * so this page owns the single <h1> (the company hero headline). A blog teaser
- * (only when posts exist) and a newsletter CTA close the page. Identity/JSON-LD
- * come from site.config and the structured-data builder — no hardcoded brand
- * copy here. The navbar + footer are provided by the [locale] layout's
- * <SiteChrome>, so this page renders only its <main> content.
+ * The page leads with the standard config-driven hero (headline / subhead /
+ * CTAs from `company.config.ts`) rendered by <MarketingSections />, which owns
+ * the single page <h1> and is followed by the LogoCloud → FeatureGrid →
+ * StatsBar → TestimonialGrid → FAQ → CTA sections. Lower down — after the
+ * features / trusted-by row, before testimonials — the animated
+ * <HeroInsights layout="overlay"> composition renders as a mid-page showcase: a
+ * hero image with a score badge and a cascade of floating InsightCards that
+ * fade in once the image loads (reduced-motion shows them immediately). The
+ * overlay emits no heading, so the config hero keeps the single <h1>. A blog
+ * teaser (only when posts exist) and a newsletter CTA close the page.
+ * Identity/JSON-LD come from site.config and the structured-data builder — no
+ * hardcoded brand copy here. The navbar + footer are provided by the [locale]
+ * layout's <SiteChrome>, so this page renders only its <main> content.
  */
 
 import type { Metadata } from "next";
@@ -35,7 +37,6 @@ import { TestimonialsSection } from "@/components/sections/testimonials-section"
 import { fileBlogAdapter } from "@/lib/blog";
 import { getItemReviewed, getTestimonials } from "@/lib/testimonials";
 import { buildTestimonialsJsonLd } from "@/lib/testimonials-jsonld";
-import { company } from "@/company.config";
 import { siteConfig } from "@/site.config";
 
 interface HomePageProps {
@@ -106,23 +107,6 @@ export default async function Home({ params }: HomePageProps) {
     },
   ];
 
-  // Hero CTAs from company.config (each rendered only when present).
-  const heroCtas: { label: string; href: string; variant: "primary" | "outline" }[] =
-    [];
-  if (company.hero?.primaryCta) {
-    heroCtas.push({ ...company.hero.primaryCta, variant: "primary" });
-  }
-  if (company.hero?.secondaryCta) {
-    heroCtas.push({ ...company.hero.secondaryCta, variant: "outline" });
-  }
-
-  const ctaClass: Record<"primary" | "outline", string> = {
-    primary:
-      "inline-flex items-center justify-center rounded-full bg-brand-accent px-6 py-3 text-base font-semibold text-brand-accent-foreground shadow-sm transition-all hover:bg-brand-accent-hover hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none motion-reduce:hover:translate-y-0",
-    outline:
-      "inline-flex items-center justify-center rounded-full border border-border bg-card px-6 py-3 text-base font-semibold text-foreground shadow-sm transition-all hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-  };
-
   return (
     <>
       {/* Organization + WebSite JSON-LD: the primary signal ContextRocket's
@@ -136,47 +120,31 @@ export default async function Home({ params }: HomePageProps) {
       )}
 
       <main>
-        {/* ── Overlay hero (the classic HeroInsights look) ──────────────────
-            Two columns: headline/subhead/CTAs on the left, the animated
-            image-overlay panel on the right. The panel is
-            <HeroInsights layout="overlay"> — a hero image with a score badge
-            and floating InsightCards that cascade in once the image loads
-            (reduced-motion shows them immediately). This page owns the single
-            <h1>, so MarketingSections renders with renderHero={false}. */}
-        <SectionWrapper className="bg-[#f8f7f1] dark:bg-background" padding="tight">
-          <div className="flex flex-col gap-8 md:flex-row md:items-start">
-            <div className="w-full md:w-7/12">
-              <div className="mx-auto max-w-2xl">
-                <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-foreground sm:text-6xl">
-                  {company.hero?.headline}
-                </h1>
-                {company.hero?.subhead && (
-                  <p className="mt-6 text-lg leading-relaxed text-muted-foreground sm:text-xl">
-                    {company.hero.subhead}
-                  </p>
-                )}
-                {heroCtas.length > 0 && (
-                  <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-                    {heroCtas.map((cta) => (
-                      <Link
-                        key={cta.label}
-                        href={cta.href}
-                        className={ctaClass[cta.variant]}
-                      >
-                        {cta.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
+        {/* ── Config-driven marketing stack ─────────────────────────────────
+            The standard config hero leads the page (headline / subhead / CTAs
+            from company.config) and owns the single page <h1>, followed by the
+            LogoCloud → FeatureGrid → StatsBar → TestimonialGrid → FAQ → CTA
+            sections. The animated HeroInsights overlay is NOT the top hero — it
+            renders lower as a mid-page showcase (below). */}
+        <MarketingSections />
 
-            {/* Image-overlay engine: fixed aspect + min-height so the fill
-                image reserves space (no layout shift) before it loads. */}
+        {/* ── HeroInsights showcase (mid-page) ──────────────────────────────
+            The animated <HeroInsights layout="overlay"> composition — the
+            generic /preview art (a fork's hero image) with a score badge and a
+            cascade of floating InsightCards that fade in once the image loads
+            (reduced-motion shows them immediately). Positioned after the
+            features / trusted-by row as a "here's what it looks like" moment,
+            before testimonials. The overlay emits no heading, so the config
+            hero above keeps the single <h1>. */}
+        <SectionWrapper className="bg-[#f8f7f1] dark:bg-background">
+          <div className="flex justify-center">
             <HeroInsights
               layout="overlay"
-              imageSrc="/hero-girl.png"
-              className="relative order-first w-full md:order-last md:w-5/12"
+              // Neutral, unbranded placeholder — the generic HeroInsights art
+              // from the retired /preview composition. A fork supplies its own
+              // hero image; no ContextRocket-specific photo ships in the starter.
+              imageSrc="/placeholder.svg"
+              className="relative w-full max-w-md"
               imageClassName="relative mx-auto aspect-[3/4] w-full min-h-[480px] max-w-[360px] sm:min-h-[580px] sm:max-h-[580px]"
               scoreBadge={{
                 title: t("home.hero.insights.scoreTitle"),
@@ -189,8 +157,6 @@ export default async function Home({ params }: HomePageProps) {
             />
           </div>
         </SectionWrapper>
-
-        <MarketingSections renderHero={false} />
 
         {testimonials.length > 0 && (
           <TestimonialsSection

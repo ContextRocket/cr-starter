@@ -100,7 +100,7 @@ export const appDe = {
       label: "Hinweis für Entwickler:",
       dismiss: "Entwicklerhinweis ausblenden"
     },
-    siteConfigUrlWarning: "Das Feld siteUrl in site.config.ts verweist noch auf example.com. Ersetze es vor der Veröffentlichung durch deine Produktionsdomain."
+    siteConfigUrlWarning: "Das Feld siteUrl in site.config.ts verweist noch auf contextrocket.com. Ersetze es vor der Veröffentlichung durch deine Produktionsdomain."
   },
   chat: {
     placeholder: "Stelle eine beliebige Frage...",
