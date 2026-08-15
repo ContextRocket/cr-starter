@@ -18,6 +18,7 @@ import Link from "next/link";
 import { Link as LocaleLink } from "@/i18n/navigation";
 import Image from "next/image";
 import type { NavLink } from "@/components/sections/navbar";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export interface MinimalHeaderProps {
   /** Right-aligned inline links. Empty → just the brand, no link set. */
@@ -28,6 +29,8 @@ export interface MinimalHeaderProps {
   brandName: string;
   /** Accessible label for the primary nav landmark. */
   navLabel: string;
+  /** Render the light/dark theme toggle on the right. Default true. */
+  showThemeToggle?: boolean;
   className?: string;
 }
 
@@ -36,6 +39,7 @@ export function MinimalHeader({
   logo,
   brandName,
   navLabel,
+  showThemeToggle = true,
   className = "",
 }: MinimalHeaderProps) {
   return (
@@ -66,8 +70,9 @@ export function MinimalHeader({
           )}
         </LocaleLink>
 
-        {/* Optional inline link set — right-aligned, always keyboard-accessible. */}
-        {links.length > 0 && (
+        {/* Right side: optional inline link set + theme toggle. Renders when
+            there are links OR the toggle is enabled; always keyboard-accessible. */}
+        {(links.length > 0 || showThemeToggle) && (
           <div className="flex items-center gap-4 sm:gap-6">
             {links.map((link) => (
               <Link
@@ -78,6 +83,7 @@ export function MinimalHeader({
                 {link.label}
               </Link>
             ))}
+            {showThemeToggle && <ThemeToggle />}
           </div>
         )}
       </nav>

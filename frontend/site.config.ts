@@ -221,6 +221,14 @@ export interface ChromeConfig {
    * logo).
    */
   showBrandLogo?: boolean;
+  /**
+   * Whether the header renders the light/dark THEME TOGGLE (see
+   * components/ui/theme-toggle.tsx). Default true (undefined is treated as
+   * true) so cr-starter and every fork ship a working theme switch out of the
+   * box. Set to false for a fork that wants a single fixed theme and no toggle
+   * in the chrome. Honored by BOTH the marketing Navbar and the minimal header.
+   */
+  showThemeToggle?: boolean;
 }
 
 /**
@@ -452,6 +460,7 @@ export const siteConfig: SiteConfig = {
   chrome: {
     header: "marketing",
     footer: "full",
+    showThemeToggle: true,
   },
 
   // ── Crawling posture ──────────────────────────────────────────────────

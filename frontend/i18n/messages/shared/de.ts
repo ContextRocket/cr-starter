@@ -49,6 +49,12 @@ export const sharedDe = {
       primary: "Hauptnavigation"
     }
   },
+  theme: {
+    toggle: "Design wechseln",
+    light: "Hell",
+    dark: "Dunkel",
+    system: "System"
+  },
   notifications: {
     region: "Website-Benachrichtigungen",
     dismiss: "Benachrichtigung schließen",

@@ -46,7 +46,7 @@ const ts = require("typescript");
 // Maps a --domain flag to the top-level namespaces it owns.
 // ---------------------------------------------------------------------------
 const DOMAIN_NAMESPACES = {
-  shared: ["form", "nav", "error", "locale", "breadcrumb", "pagination", "cookie"],
+  shared: ["form", "nav", "theme", "error", "locale", "breadcrumb", "pagination", "cookie"],
   app: ["auth", "dashboard", "dev", "chat", "embed"],
   site: ["home", "blog", "faq", "footer", "impressum", "privacy", "preview"],
 };

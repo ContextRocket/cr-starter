@@ -12,9 +12,17 @@ import { mockPathname } from "../__mocks__/navigation";
 // both the default (marketing) and the configured (minimal) variant. Only the
 // fields SiteChrome touches are stubbed.
 const { mockChrome } = vi.hoisted(() => ({
-  mockChrome: { header: "marketing", footer: "full" } as {
+  // showThemeToggle is false here so these variant-selection tests stay focused
+  // on the header/footer STYLE (the hamburger affordance distinguishes the two
+  // headers). The theme toggle itself is covered in theme-toggle.test.tsx.
+  mockChrome: {
+    header: "marketing",
+    footer: "full",
+    showThemeToggle: false,
+  } as {
     header: "marketing" | "minimal";
     footer: "full" | "minimal";
+    showThemeToggle: boolean;
   },
 }));
 vi.mock("@/site.config", () => ({

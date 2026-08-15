@@ -56,9 +56,11 @@ export function FooterSection({
   }
 
   return (
-    <footer className={`bg-white border-t border-gray-200 mt-auto ${className}`}>
+    <footer
+      className={`bg-background text-muted-foreground border-t border-border mt-auto ${className}`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center text-sm py-6 text-gray-600">
+        <div className="text-center text-sm py-6 text-muted-foreground">
           <div className="flex flex-col sm:flex-row sm:justify-center sm:items-center gap-2 sm:gap-0">
             <span>
               &copy; {new Date().getFullYear()} {companyName}
@@ -74,7 +76,7 @@ export function FooterSection({
                     {link.label}
                   </Link>
                   {index < links.length - 1 && (
-                    <span className="mx-2 text-gray-400">|</span>
+                    <span className="mx-2 text-muted-foreground/60">|</span>
                   )}
                 </span>
               ))}

@@ -49,6 +49,12 @@ export const sharedEs = {
       primary: "Principal"
     }
   },
+  theme: {
+    toggle: "Cambiar tema",
+    light: "Claro",
+    dark: "Oscuro",
+    system: "Sistema"
+  },
   notifications: {
     region: "Notificaciones del sitio",
     dismiss: "Descartar notificación",

@@ -76,6 +76,9 @@ export function SiteChrome({
   }
 
   const { header, footer } = siteConfig.chrome;
+  // Theme toggle defaults ON (undefined → true) so every fork ships a working
+  // light/dark switch; a fork sets chrome.showThemeToggle: false to hide it.
+  const showThemeToggle = siteConfig.chrome.showThemeToggle ?? true;
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -85,6 +88,7 @@ export function SiteChrome({
           logo={logo}
           brandName={companyName}
           navLabel={navLabel}
+          showThemeToggle={showThemeToggle}
         />
       ) : (
         <Navbar
@@ -92,6 +96,7 @@ export function SiteChrome({
           logo={logo}
           brandName={companyName}
           navLabel={navLabel}
+          showThemeToggle={showThemeToggle}
         />
       )}
       <div className="flex-1">{children}</div>

@@ -6,6 +6,7 @@ import { getMessages } from "next-intl/server";
 import "../globals.css";
 import { ChatFab } from "@/components/chat/chat-fab";
 import { AosProvider } from "@/components/ui/aos-provider";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 import { CookieConsentBanner } from "@/components/cookie-consent-banner";
 import { LocaleProvider } from "@/i18n/locale-provider";
 import { SiteChrome } from "@/components/sections/site-chrome";
@@ -119,9 +120,7 @@ export default async function LocaleLayout({
   const showAppLinks = navConfig?.showAppLinks ?? true;
   const resolveChromeLink = (link: NavLinkConfig) => ({
     label: t(link.labelKey),
-    href: link.href.startsWith("/")
-      ? `/${locale}${link.href}`
-      : link.href,
+    href: link.href.startsWith("/") ? `/${locale}${link.href}` : link.href,
   });
   const linkVisible = (link: NavLinkConfig) =>
     isChromeLinkVisible(link, isGuest, showAppLinks);
@@ -181,43 +180,48 @@ export default async function LocaleLayout({
         data-surface="marketing"
         className={`${geistSans.variable} ${geistMono.variable}`}
       >
-        <AosProvider />
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <LocaleProvider initialLocale={locale} messages={localeMessages}>
-            {showSiteUrlWarning && (
-              <div
-                role="alert"
-                data-testid="siteurl-placeholder-warning"
-                className="border-b border-yellow-500 bg-yellow-50 px-4 py-2 text-center text-sm text-yellow-900"
-              >
-                <strong>{t("dev.notice.label")}</strong>{" "}
-                {t("dev.siteConfigUrlWarning")}
-              </div>
-            )}
-            <NotificationBarStack
-              items={resolvedNotifications}
-              regionLabel={t("notifications.region")}
-              dismissLabel={t("notifications.dismiss")}
-            />
-            <SiteChrome
-              links={navLinks}
-              logo={navLogo}
-              footerLinks={footerLinks}
-              companyName={siteConfig.companyName}
-              navLabel={t("nav.aria.primary")}
-            >
-              {children}
-            </SiteChrome>
-            <Toaster position="bottom-right" richColors />
-            {process.env.NEXT_PUBLIC_CHAT_FAB_ENABLED === "true" && (
-              <ChatFab
-                agentUrl={process.env.NEXT_PUBLIC_CR_AGENT_URL}
-                isGuest={isGuest}
+        {/* ThemeProvider owns the `.dark` class on <html> (attribute="class").
+            It wraps the whole rendered tree so every page — marketing, blog,
+            dashboard, terminal — reads the same light/dark tokens. */}
+        <ThemeProvider>
+          <AosProvider />
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <LocaleProvider initialLocale={locale} messages={localeMessages}>
+              {showSiteUrlWarning && (
+                <div
+                  role="alert"
+                  data-testid="siteurl-placeholder-warning"
+                  className="border-b border-yellow-500 bg-yellow-50 px-4 py-2 text-center text-sm text-yellow-900"
+                >
+                  <strong>{t("dev.notice.label")}</strong>{" "}
+                  {t("dev.siteConfigUrlWarning")}
+                </div>
+              )}
+              <NotificationBarStack
+                items={resolvedNotifications}
+                regionLabel={t("notifications.region")}
+                dismissLabel={t("notifications.dismiss")}
               />
-            )}
-            <CookieConsentBanner />
-          </LocaleProvider>
-        </NextIntlClientProvider>
+              <SiteChrome
+                links={navLinks}
+                logo={navLogo}
+                footerLinks={footerLinks}
+                companyName={siteConfig.companyName}
+                navLabel={t("nav.aria.primary")}
+              >
+                {children}
+              </SiteChrome>
+              <Toaster position="bottom-right" richColors />
+              {process.env.NEXT_PUBLIC_CHAT_FAB_ENABLED === "true" && (
+                <ChatFab
+                  agentUrl={process.env.NEXT_PUBLIC_CR_AGENT_URL}
+                  isGuest={isGuest}
+                />
+              )}
+              <CookieConsentBanner />
+            </LocaleProvider>
+          </NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

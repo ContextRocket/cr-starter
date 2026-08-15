@@ -203,15 +203,31 @@
   --font-active: var(--font-sans);
 }
 
+/*
+ * DARK THEME (complete token set)
+ * -------------------------------
+ * next-themes toggles the `.dark` class on <html> (attribute="class"). This
+ * block must override EVERY light `:root` token so no element falls back to a
+ * light-only value — including the hover/soft variants, the semantic tokens
+ * (success/warning/info/error/disabled + foregrounds), and the accent-surface
+ * BG/FG pairs whose @theme fallbacks are light hex. All pairs below are chosen
+ * for WCAG AA legibility on a dark (#0a0a0a-ish) surface.
+ *
+ * Neutrals sit slightly above pure black: card/popover are lifted one step
+ * above --background so cards read as surfaces (not invisible) in dark mode.
+ */
 .dark {
   --background: hsl(0 0% 3.9%);
   --foreground: hsl(0 0% 98%);
-  --card: hsl(0 0% 3.9%);
+  /* Card/popover lifted above the page so surfaces are visible in dark mode. */
+  --card: hsl(0 0% 7%);
   --card-foreground: hsl(0 0% 98%);
-  --popover: hsl(0 0% 3.9%);
+  --popover: hsl(0 0% 7%);
   --popover-foreground: hsl(0 0% 98%);
   --primary: hsl(0 0% 98%);
   --primary-foreground: hsl(0 0% 9%);
+  --primary-hover: hsl(0 0% 85%);
+  --primary-soft: hsl(0 0% 98% / 0.12);
   --secondary: hsl(0 0% 14.9%);
   --secondary-foreground: hsl(0 0% 98%);
   --secondary-hover: hsl(0 0% 20%);
@@ -221,19 +237,55 @@
   --tertiary-hover: hsl(0 0% 20%);
   --tertiary-soft: hsl(0 0% 98% / 0.08);
   --muted: hsl(0 0% 14.9%);
+  /* 63.9% clears AA (4.5:1) for body/caption text on the dark --muted/-card. */
   --muted-foreground: hsl(0 0% 63.9%);
+  /* Text tiers — explicit so text-secondary/-tertiary do not fall back to a
+     light value in dark mode. */
+  --text-secondary: hsl(0 0% 74%);
+  --text-tertiary: hsl(0 0% 63.9%);
   --accent: hsl(0 0% 14.9%);
   --accent-foreground: hsl(0 0% 98%);
   --destructive: hsl(0 62.8% 30.6%);
   --destructive-foreground: hsl(0 0% 98%);
-  --border: hsl(0 0% 14.9%);
-  --input: hsl(0 0% 14.9%);
+  --border: hsl(0 0% 16%);
+  --input: hsl(0 0% 16%);
   --ring: hsl(0 0% 83.1%);
   --chart-1: hsl(220 70% 50%);
   --chart-2: hsl(160 60% 45%);
   --chart-3: hsl(30 80% 55%);
   --chart-4: hsl(280 65% 60%);
   --chart-5: hsl(340 75% 55%);
+
+  /* Semantic tokens — brighter fills + light foregrounds read correctly on a
+     dark surface (the light --success etc. would be too muddy). */
+  --success: #22c55e;
+  --success-foreground: #052e16;
+  --warning: #fbbf24;
+  --warning-foreground: #1c1400;
+  --info: #60a5fa;
+  --info-foreground: #0a1a33;
+  --error: #f87171;
+  --error-foreground: #2a0606;
+  --disabled: hsl(0 0% 20%);
+  --disabled-foreground: hsl(0 0% 45%);
+
+  /* Accent-surface pairs — dark, low-saturation tints with light foregrounds
+     (mirror of the light hex defaults in @theme). Without these overrides the
+     notification bar / badges would paint a LIGHT tint on the dark page. Each
+     pair clears WCAG AA for its foreground text. */
+  --accent-green-bg: hsl(142 40% 14%);
+  --accent-green-fg: hsl(142 55% 72%);
+  --accent-mint-bg: hsl(172 40% 14%);
+  --accent-mint-fg: hsl(172 50% 70%);
+  --accent-pink-bg: hsl(330 35% 16%);
+  --accent-pink-fg: hsl(330 70% 80%);
+  --accent-yellow-bg: hsl(48 45% 14%);
+  --accent-yellow-fg: hsl(48 85% 72%);
+  --accent-slate-bg: hsl(215 20% 16%);
+  --accent-slate-fg: hsl(215 20% 78%);
+  --accent-indigo-bg: hsl(243 35% 18%);
+  --accent-indigo-fg: hsl(243 70% 82%);
+  /* Brand accent pair derives from --primary/-soft, already dark-correct. */
 }
 
 /*

@@ -6,6 +6,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { Link as LocaleLink } from "@/i18n/navigation";
 import Image from "next/image";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export interface NavLink {
   label: string;
@@ -28,6 +29,8 @@ export interface NavbarProps {
    * Falls back to "Global" only when a caller has not supplied one.
    */
   navLabel?: string;
+  /** Render the light/dark theme toggle on the right. Default true. */
+  showThemeToggle?: boolean;
   className?: string;
 }
 
@@ -36,12 +39,15 @@ export function Navbar({
   logo,
   brandName = "",
   navLabel = "Global",
+  showThemeToggle = true,
   className = "",
 }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className={`w-full bg-white shadow-sm overflow-visible relative z-50 ${className}`}>
+    <header
+      className={`w-full bg-background text-foreground shadow-sm overflow-visible relative z-50 ${className}`}
+    >
       <nav
         aria-label={navLabel}
         className="max-w-screen-xl px-4 sm:px-8 mx-auto flex items-center justify-between h-16"
@@ -59,39 +65,47 @@ export function Navbar({
               priority
             />
           ) : (
-            <span className="text-base font-semibold tracking-tight text-gray-900">
+            <span className="text-base font-semibold tracking-tight text-foreground">
               {brandName}
             </span>
           )}
         </LocaleLink>
 
-        {/* Desktop links */}
+        {/* Desktop links + right-side controls (theme toggle) */}
         <div className="hidden lg:flex items-center gap-8">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm text-gray-700 hover:text-gray-900 transition-colors"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               {link.label}
             </Link>
           ))}
+          {showThemeToggle && <ThemeToggle />}
         </div>
 
-        {/* Mobile hamburger */}
-        <button
-          type="button"
-          onClick={() => setMobileMenuOpen(true)}
-          className="lg:hidden -m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-        >
-          <Bars3Icon aria-hidden="true" className="size-6" />
-        </button>
+        {/* Mobile controls: theme toggle + hamburger */}
+        <div className="flex items-center gap-1 lg:hidden">
+          {showThemeToggle && <ThemeToggle />}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(true)}
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-muted-foreground"
+          >
+            <Bars3Icon aria-hidden="true" className="size-6" />
+          </button>
+        </div>
       </nav>
 
       {/* Mobile menu */}
-      <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
+      <Dialog
+        open={mobileMenuOpen}
+        onClose={setMobileMenuOpen}
+        className="lg:hidden"
+      >
         <div className="fixed inset-0 z-50" />
-        <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-200">
+        <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-background text-foreground px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-border">
           <div className="flex items-center justify-between">
             <LocaleLink
               href="/"
@@ -108,7 +122,7 @@ export function Navbar({
                   style={{ marginTop: "-4px", width: "auto" }}
                 />
               ) : (
-                <span className="text-base font-semibold tracking-tight text-gray-900">
+                <span className="text-base font-semibold tracking-tight text-foreground">
                   {brandName}
                 </span>
               )}
@@ -116,7 +130,7 @@ export function Navbar({
             <button
               type="button"
               onClick={() => setMobileMenuOpen(false)}
-              className="-m-2.5 rounded-md p-2.5 text-gray-700"
+              className="-m-2.5 rounded-md p-2.5 text-muted-foreground"
             >
               <XMarkIcon aria-hidden="true" className="size-6" />
             </button>
@@ -128,7 +142,7 @@ export function Navbar({
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block rounded-lg px-4 py-3 text-base font-semibold text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                  className="block rounded-lg px-4 py-3 text-base font-semibold text-muted-foreground hover:text-foreground hover:bg-muted"
                 >
                   {link.label}
                 </Link>
