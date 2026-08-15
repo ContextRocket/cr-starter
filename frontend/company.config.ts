@@ -295,32 +295,12 @@ export const company: CompanyConfig = {
     primaryCta: { label: "Get started", href: "/" }, // PLACEHOLDER
     secondaryCta: { label: "Learn more", href: "/blog" }, // PLACEHOLDER
   },
-  // HeroInsights metric panel — rendered under the hero on the home. GENERIC
-  // placeholder metrics; edit or delete this block to remove the panel.
-  heroInsights: {
-    headline: "Insight at a glance", // PLACEHOLDER
-    subhead: "A few numbers that make the value concrete.", // PLACEHOLDER
-    items: [
-      {
-        label: "Answer readiness", // PLACEHOLDER
-        value: "92%",
-        description: "How much of your content is ready to be cited.", // PLACEHOLDER
-        color: "green",
-      },
-      {
-        label: "Sources indexed", // PLACEHOLDER
-        value: "1,240",
-        description: "Pages and documents in your knowledge base.", // PLACEHOLDER
-        color: "blue",
-      },
-      {
-        label: "Time to answer", // PLACEHOLDER
-        value: "0.8s",
-        description: "Median latency for a grounded response.", // PLACEHOLDER
-        color: "yellow",
-      },
-    ],
-  },
+  // HeroInsights metric GRID panel (`<HeroInsights layout="grid">`) — an
+  // OPTIONAL reusable section a fork can turn on by populating this block. The
+  // starter home instead renders the animated image-overlay hero
+  // (`<HeroInsights layout="overlay">`, see app/[locale]/page.tsx), so this
+  // grid block is omitted by default. Add it back (headline/subhead + generic
+  // {label, value, description} metric cards) on any page that wants the grid.
   features: {
     label: "Features", // PLACEHOLDER
     title: "Everything you need", // PLACEHOLDER

@@ -13,6 +13,18 @@ export const siteDe = {
   home: {
     subtitle: "Entwickle Produkte mit ContextRocket. Authentifizierung, Dashboard-Gerüst und typsichere OpenAPI-Integration inklusive. Gesprächsverlauf und Agenten-Ausführungen werden per A2A an ContextRocket delegiert.",
     cta: "Zum Dashboard",
+    hero: {
+      insights: {
+        scoreTitle: "Antwortbereitschaft",
+        scoreValue: "92",
+        thinTitle: "Fundierte Quellenangaben",
+        thinDesc: "Jede Antwort verweist auf deine echten Inhalte.",
+        bioTitle: "Überall konsistent",
+        bioDesc: "Dieselbe Artikulation auf jeder Oberfläche.",
+        multiTitle: "Immer aktuell",
+        multiDesc: "Aktualisierungen fließen ein, sobald sich deine Inhalte ändern."
+      }
+    },
     widget: {
       section: {
         title: "Den Agenten auf jede Website einbetten",

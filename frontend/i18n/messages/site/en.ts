@@ -13,6 +13,21 @@ export const siteEn = {
   home: {
     subtitle: "Build products on ContextRocket. Auth, dashboard shell, and OpenAPI-driven type safety included. Conversation state and agent runs delegate to ContextRocket via A2A.",
     cta: "Go to Dashboard",
+    hero: {
+      // Copy for the animated image-overlay hero (`<HeroInsights layout="overlay">`)
+      // rendered on the home. GENERIC placeholder copy so a fork edits it — the
+      // score badge plus three floating insight cards that cascade in on load.
+      insights: {
+        scoreTitle: "Answer Readiness",
+        scoreValue: "92",
+        thinTitle: "Grounded citations",
+        thinDesc: "Every answer links back to your real content.",
+        bioTitle: "Consistent everywhere",
+        bioDesc: "The same articulation across every surface.",
+        multiTitle: "Always current",
+        multiDesc: "Updates flow in as your content changes."
+      }
+    },
     widget: {
       section: {
         title: "Add the agent to any website",

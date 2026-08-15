@@ -13,6 +13,18 @@ export const siteEs = {
   home: {
     subtitle: "Crea productos con ContextRocket. Autenticación, estructura de panel y seguridad de tipos basada en OpenAPI incluidas. El estado de conversación y las ejecuciones de agente se delegan a ContextRocket vía A2A.",
     cta: "Ir al panel",
+    hero: {
+      insights: {
+        scoreTitle: "Preparación de respuestas",
+        scoreValue: "92",
+        thinTitle: "Citas fundamentadas",
+        thinDesc: "Cada respuesta enlaza con tu contenido real.",
+        bioTitle: "Coherente en todas partes",
+        bioDesc: "La misma articulación en cada superficie.",
+        multiTitle: "Siempre actualizado",
+        multiDesc: "Las actualizaciones fluyen a medida que cambia tu contenido."
+      }
+    },
     widget: {
       section: {
         title: "Añade el agente a cualquier sitio web",

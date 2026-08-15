@@ -10,7 +10,14 @@ import { SectionHeader } from "./section-header";
 /**
  * HeroInsights — a reusable insight-panel with two layouts.
  *
- * layout="grid" (DEFAULT, config-driven): a headline/subhead over a responsive
+ * layout="overlay" (image-driven — the hero the starter home ships): a hero
+ * image that, once loaded, triggers a staggered entrance — a score badge scales
+ * in first, then a cascade of cards fade/slide in over the art. This is the
+ * classic HeroInsights look. It needs the fork to supply an image and per-card
+ * absolute-position classes tuned to that art. `prefers-reduced-motion` skips
+ * the entrance so the badge and cards are visible immediately.
+ *
+ * layout="grid" (config-driven, opt-in): a headline/subhead over a responsive
  * grid of metric cards. The panel sits ABOVE THE FOLD, so its cards animate in
  * ON MOUNT (staggered fade/rise right after hydration) rather than on scroll —
  * an on-scroll (AOS) reveal would leave above-the-fold content at opacity:0
@@ -18,13 +25,7 @@ import { SectionHeader } from "./section-header";
  * immediately. NO hero image required, so a fork renders it straight from
  * `company.config.heroInsights` with only text content — every card is
  * `{ label, value, description }` and the panel is fully token-styled (works
- * light + dark). This is the panel the starter home ships.
- *
- * layout="overlay" (image-driven): a hero image that, once loaded, triggers a
- * staggered entrance — a score badge scales in first, then a cascade of cards
- * fade/slide in over the art. This mode needs the fork to supply an image and
- * per-card absolute-position classes tuned to that art; use it only when a fork
- * has a bespoke hero illustration.
+ * light + dark). A valid reusable alternative when a fork has no hero art.
  *
  * CONTENT is always fork-provided (copy/value/description, and — for overlay —
  * the image path and position classes). This file hardcodes no copy, no image
@@ -216,6 +217,23 @@ function HeroInsightsOverlay({
   className,
 }: HeroInsightsOverlayProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [reduceMotion, setReduceMotion] = useState(false);
+
+  useEffect(() => {
+    // Respect prefers-reduced-motion: skip the entrance entirely so the badge
+    // and cards are visible immediately (no fade/scale/slide). matchMedia is
+    // absent in some non-browser test envs (jsdom) — guard it.
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setReduceMotion(prefersReduced);
+  }, []);
+
+  // The cascade is gated on the hero image having loaded; reduced-motion short-
+  // circuits it to "revealed" so the overlay never sits invisible for a user
+  // who has opted out of motion (or if onLoad never fires in that env).
+  const revealed = imageLoaded || reduceMotion;
 
   return (
     <div className={className}>
@@ -237,12 +255,12 @@ function HeroInsightsOverlay({
             variant="badge"
             title={scoreBadge.title}
             description={scoreBadge.value}
-            className={`absolute ${scoreBadge.positionClassName}`}
+            className={`absolute ${scoreBadge.positionClassName} motion-reduce:!transition-none`}
             style={{
-              opacity: imageLoaded ? 1 : 0,
-              transform: imageLoaded ? "scale(1)" : "scale(0.8)",
-              transition: "all 0.5s ease-out",
-              transitionDelay: scoreBadge.delay ?? "800ms",
+              opacity: revealed ? 1 : 0,
+              transform: revealed ? "scale(1)" : "scale(0.8)",
+              transition: reduceMotion ? "none" : "all 0.5s ease-out",
+              transitionDelay: reduceMotion ? "0ms" : (scoreBadge.delay ?? "800ms"),
             }}
             data-testid="score-badge"
           />
@@ -256,12 +274,12 @@ function HeroInsightsOverlay({
             icon={card.icon}
             title={card.title}
             description={card.description}
-            className={`absolute ${card.positionClassName}`}
+            className={`absolute ${card.positionClassName} motion-reduce:!transition-none`}
             style={{
-              opacity: imageLoaded ? 1 : 0,
-              transform: imageLoaded ? "translateX(0)" : "translateX(-20px)",
-              transition: "all 0.6s ease-out",
-              transitionDelay: card.delay,
+              opacity: revealed ? 1 : 0,
+              transform: revealed ? "translateX(0)" : "translateX(-20px)",
+              transition: reduceMotion ? "none" : "all 0.6s ease-out",
+              transitionDelay: reduceMotion ? "0ms" : card.delay,
             }}
           />
         ))}

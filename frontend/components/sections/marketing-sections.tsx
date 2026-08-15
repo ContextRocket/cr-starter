@@ -4,18 +4,23 @@
  * existing prop-based section library, rendering ONLY the sections present in
  * the config, in a fixed marketing order:
  *
- *   Hero → HeroInsights → LogoCloud → FeatureGrid → StatsBar → TestimonialGrid → FaqSection → CtaSection
+ *   Hero → LogoCloud → FeatureGrid → StatsBar → TestimonialGrid → FaqSection → CtaSection
  *
  * A company fork points a page at <MarketingSections /> and edits copy in
  * `company.config.ts` alone. Field-name mismatches between the content SoT and
  * the section props are resolved here (the only bridge), so the section
  * components keep their generic prop APIs.
+ *
+ * The starter home renders its own image-overlay hero (the animated
+ * <HeroInsights layout="overlay"> hero, see app/[locale]/page.tsx) ABOVE these
+ * sections, so it passes `renderHero={false}` to suppress the generic config
+ * hero here and avoid a duplicate <h1>. Other pages that want the plain
+ * config-driven hero keep the default (`renderHero` true).
  */
 
 import Image from "next/image";
 import { company, type CompanyConfig } from "@/company.config";
 import { HeroSection, type HeroAction } from "./hero";
-import { HeroInsights } from "./hero-insights";
 import { LogoCloud } from "./logo-cloud";
 import { FeatureGrid } from "./feature-grid";
 import { StatsBar } from "./stats-bar";
@@ -25,11 +30,17 @@ import { CtaSection } from "./cta-section";
 
 export function MarketingSections({
   config = company,
+  renderHero = true,
 }: {
   config?: CompanyConfig;
+  /**
+   * When false, the config-driven <HeroSection> (headline/subhead/CTAs) is not
+   * rendered — used by the starter home, which renders its own overlay hero and
+   * owns the single page <h1>. Sections below the hero render as usual.
+   */
+  renderHero?: boolean;
 }) {
-  const { hero, heroInsights, logos, features, stats, testimonials, faq, cta } =
-    config;
+  const { hero, logos, features, stats, testimonials, faq, cta } = config;
 
   // Hero actions: primary + secondary CTAs, each only when present.
   const heroActions: HeroAction[] = [];
@@ -42,7 +53,7 @@ export function MarketingSections({
 
   return (
     <>
-      {hero && (
+      {renderHero && hero && (
         <HeroSection
           title={hero.headline}
           description={hero.subhead ?? ""}
@@ -60,17 +71,6 @@ export function MarketingSections({
             </div>
           )}
         </HeroSection>
-      )}
-
-      {/* Optional metric panel under the hero — rendered only when the config
-          block is present (a fork removes it by deleting `heroInsights`). */}
-      {heroInsights && (
-        <HeroInsights
-          layout="grid"
-          headline={heroInsights.headline}
-          subhead={heroInsights.subhead}
-          items={heroInsights.items}
-        />
       )}
 
       {logos && <LogoCloud heading={logos.heading} items={logos.items} />}
