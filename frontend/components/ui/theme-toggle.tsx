@@ -1,12 +1,17 @@
 "use client";
 
 /**
- * ThemeToggle — accessible light/dark/system cycle button.
+ * ThemeToggle — accessible two-state light ↔ dark toggle button.
  *
  * The visible counterpart to the ThemeProvider (components/ui/theme-provider.tsx):
- * a single icon button in the site chrome that cycles the active theme
- * light → dark → system → light. next-themes flips the `.dark` class on <html>
+ * a single icon button in the site chrome that flips between light and dark.
+ * One click flips: Sun shows in light mode (click → dark), Moon shows in dark
+ * mode (click → light). next-themes flips the `.dark` class on <html>
  * (attribute="class"), which drives the `.dark {}` token block in globals.css.
+ *
+ * The ThemeProvider keeps `enableSystem` so a FIRST visit follows the OS
+ * preference; this toggle then resolves that to a concrete light/dark choice —
+ * there is no explicit "system" state exposed to the user (no Monitor icon).
  *
  * Token-styled only (no hardcoded hex) so it inherits the fork's theme, and the
  * aria-label / title are i18n-resolved via t() — mirroring the LocaleSwitcher
@@ -18,22 +23,18 @@
  * render a neutral placeholder of the same size until `mounted` is true.
  */
 
-import { Moon, Sun, Monitor } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { t } from "@/i18n/keys";
-
-/** Ordered cycle: light → dark → system → light. */
-const THEME_CYCLE = ["light", "dark", "system"] as const;
-type ThemeName = (typeof THEME_CYCLE)[number];
 
 interface ThemeToggleProps {
   className?: string;
 }
 
 export function ThemeToggle({ className }: ThemeToggleProps) {
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -51,12 +52,14 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
     );
   }
 
-  const current = (theme ?? "system") as ThemeName;
-  const nextTheme =
-    THEME_CYCLE[(THEME_CYCLE.indexOf(current) + 1) % THEME_CYCLE.length] ??
-    "light";
+  // resolvedTheme collapses "system" to the concrete light/dark the user is
+  // actually seeing, so the binary toggle always flips to the opposite of what
+  // is on screen.
+  const isDark = resolvedTheme === "dark";
+  const nextTheme = isDark ? "light" : "dark";
+  const current = isDark ? "dark" : "light";
 
-  const Icon = current === "dark" ? Moon : current === "system" ? Monitor : Sun;
+  const Icon = isDark ? Moon : Sun;
   const label = `${t("theme.toggle")}: ${t(`theme.${current}`)}`;
 
   return (

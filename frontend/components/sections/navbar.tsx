@@ -5,8 +5,8 @@ import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { Link as LocaleLink } from "@/i18n/navigation";
-import Image from "next/image";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { BrandLogo, type BrandLogoAsset } from "@/components/sections/brand-logo";
 
 export interface NavLink {
   label: string;
@@ -17,11 +17,11 @@ export interface NavLink {
 export interface NavbarProps {
   links: NavLink[];
   /**
-   * Brand mark. Optional: when omitted, the brand NAME (`brandName`) is shown as
-   * text instead of an image — so a fork whose `assets.logo` is only an app icon
-   * can render a wordmark-free header.
+   * Brand mark (theme-aware icon or wordmark). Optional: when omitted, the brand
+   * NAME (`brandName`) is shown as text instead of an image — so a fork whose
+   * `assets.logo` is only an app icon can render a wordmark-free header.
    */
-  logo?: { src: string; alt: string; width: number; height: number };
+  logo?: BrandLogoAsset;
   /** Brand name — shown as text when no `logo`, and as the logo alt fallback. */
   brandName?: string;
   /**
@@ -52,18 +52,10 @@ export function Navbar({
         aria-label={navLabel}
         className="max-w-screen-xl px-4 sm:px-8 mx-auto flex items-center justify-between h-16"
       >
-        {/* Logo (image) or the brand NAME as text when no logo is supplied. */}
+        {/* Logo (theme-aware image) or the brand NAME as text when no logo. */}
         <LocaleLink href="/" className="shrink-0 flex items-center">
           {logo ? (
-            <Image
-              src={logo.src}
-              alt={logo.alt}
-              width={logo.width}
-              height={logo.height}
-              className="h-6 w-auto"
-              style={{ marginTop: "-6px", width: "auto" }}
-              priority
-            />
+            <BrandLogo logo={logo} />
           ) : (
             <span className="text-base font-semibold tracking-tight text-foreground">
               {brandName}
@@ -113,14 +105,7 @@ export function Navbar({
               onClick={() => setMobileMenuOpen(false)}
             >
               {logo ? (
-                <Image
-                  src={logo.src}
-                  alt={logo.alt}
-                  width={logo.width}
-                  height={logo.height}
-                  className="h-6 w-auto"
-                  style={{ marginTop: "-4px", width: "auto" }}
-                />
+                <BrandLogo logo={logo} />
               ) : (
                 <span className="text-base font-semibold tracking-tight text-foreground">
                   {brandName}

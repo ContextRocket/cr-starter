@@ -52,8 +52,7 @@ export const sharedEs = {
   theme: {
     toggle: "Cambiar tema",
     light: "Claro",
-    dark: "Oscuro",
-    system: "Sistema"
+    dark: "Oscuro"
   },
   notifications: {
     region: "Notificaciones del sitio",

@@ -97,7 +97,8 @@ export const appEs = {
   },
   dev: {
     notice: {
-      label: "Aviso para desarrolladores:"
+      label: "Aviso para desarrolladores:",
+      dismiss: "Descartar aviso para desarrolladores"
     },
     siteConfigUrlWarning: "El campo siteUrl de site.config.ts todavía apunta a example.com. Sustitúyelo por tu dominio de producción antes de publicar el sitio."
   },

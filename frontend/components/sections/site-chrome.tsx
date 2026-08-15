@@ -30,6 +30,7 @@
 import { usePathname } from "@/i18n/navigation";
 import { Navbar, type NavLink } from "@/components/sections/navbar";
 import { MinimalHeader } from "@/components/sections/minimal-header";
+import type { BrandLogoAsset } from "@/components/sections/brand-logo";
 import {
   FooterSection,
   type FooterLink,
@@ -51,7 +52,7 @@ interface SiteChromeProps {
    * text. The marketing Navbar always renders a logo, so a marketing fork must
    * supply one.
    */
-  logo?: { src: string; alt: string; width: number; height: number };
+  logo?: BrandLogoAsset;
   footerLinks: FooterLink[];
   companyName: string;
   /** Accessible label for the header nav landmark (i18n-resolved by the layout). */

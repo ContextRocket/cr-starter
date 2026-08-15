@@ -52,8 +52,7 @@ export const sharedEn = {
   theme: {
     toggle: "Toggle theme",
     light: "Light",
-    dark: "Dark",
-    system: "System"
+    dark: "Dark"
   },
   notifications: {
     region: "Site notifications",

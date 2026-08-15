@@ -97,7 +97,8 @@ export const appEn = {
   },
   dev: {
     notice: {
-      label: "Developer notice:"
+      label: "Developer notice:",
+      dismiss: "Dismiss developer notice"
     },
     siteConfigUrlWarning: "siteUrl in site.config.ts still points at example.com. Replace it with your production domain before going live."
   },

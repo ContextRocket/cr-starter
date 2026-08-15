@@ -52,8 +52,7 @@ export const sharedDe = {
   theme: {
     toggle: "Design wechseln",
     light: "Hell",
-    dark: "Dunkel",
-    system: "System"
+    dark: "Dunkel"
   },
   notifications: {
     region: "Website-Benachrichtigungen",

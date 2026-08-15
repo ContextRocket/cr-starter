@@ -62,52 +62,47 @@ describe("ThemeToggle", () => {
     expect(button.getAttribute("aria-label")).toContain("Toggle theme");
   });
 
-  it("flips the .dark class on <html> when cycling to dark", async () => {
+  it("flips light → dark in ONE click (binary toggle)", async () => {
     const user = userEvent.setup();
     renderToggle();
     const button = await screen.findByTestId("theme-toggle");
 
-    // Force a known starting point: click until the current value is "light".
+    // matchMedia stub reports light → resolvedTheme starts "light".
     await waitFor(() =>
-      expect(button.getAttribute("data-theme-value")).toBeTruthy(),
+      expect(button.getAttribute("data-theme-value")).toBe("light"),
     );
 
-    // Cycle is light → dark → system. Click until dark is active and assert the
-    // class landed on <html>.
-    for (let i = 0; i < 3; i++) {
-      if (button.getAttribute("data-theme-value") === "dark") break;
-      await user.click(button);
-      await waitFor(() =>
-        expect(button.getAttribute("data-theme-value")).toBeTruthy(),
-      );
-    }
-
+    // A single click flips to dark and lands the `.dark` class on <html>.
+    await user.click(button);
     await waitFor(() =>
       expect(document.documentElement.classList.contains("dark")).toBe(true),
     );
+    expect(button.getAttribute("data-theme-value")).toBe("dark");
   });
 
-  it("removes the .dark class when cycling back to light", async () => {
+  it("flips dark → light in ONE click and never enters a system state", async () => {
     const user = userEvent.setup();
     renderToggle();
     const button = await screen.findByTestId("theme-toggle");
 
-    // Reach dark first.
-    for (let i = 0; i < 3; i++) {
-      if (button.getAttribute("data-theme-value") === "dark") break;
-      await user.click(button);
-    }
+    // Click once to reach dark.
+    await waitFor(() =>
+      expect(button.getAttribute("data-theme-value")).toBe("light"),
+    );
+    await user.click(button);
     await waitFor(() =>
       expect(document.documentElement.classList.contains("dark")).toBe(true),
     );
 
-    // Then cycle around back to light (dark → system → light).
-    for (let i = 0; i < 3; i++) {
-      if (button.getAttribute("data-theme-value") === "light") break;
-      await user.click(button);
-    }
+    // A single click flips straight back to light — no intermediate "system".
+    await user.click(button);
     await waitFor(() =>
       expect(document.documentElement.classList.contains("dark")).toBe(false),
+    );
+    expect(button.getAttribute("data-theme-value")).toBe("light");
+    // The toggle only ever exposes the two concrete states.
+    expect(["light", "dark"]).toContain(
+      button.getAttribute("data-theme-value"),
     );
   });
 });

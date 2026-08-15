@@ -16,15 +16,15 @@
 
 import Link from "next/link";
 import { Link as LocaleLink } from "@/i18n/navigation";
-import Image from "next/image";
 import type { NavLink } from "@/components/sections/navbar";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { BrandLogo, type BrandLogoAsset } from "@/components/sections/brand-logo";
 
 export interface MinimalHeaderProps {
   /** Right-aligned inline links. Empty → just the brand, no link set. */
   links: NavLink[];
-  /** Optional brand logo. When omitted, the brand NAME is shown instead. */
-  logo?: { src: string; alt: string; width: number; height: number };
+  /** Optional theme-aware brand logo. When omitted, the brand NAME is shown. */
+  logo?: BrandLogoAsset;
   /** Brand name — shown as text when no logo, and as the logo alt fallback. */
   brandName: string;
   /** Accessible label for the primary nav landmark. */
@@ -55,19 +55,7 @@ export function MinimalHeader({
           href="/"
           className="shrink-0 text-base font-semibold tracking-tight hover:text-primary transition-colors"
         >
-          {logo ? (
-            <Image
-              src={logo.src}
-              alt={logo.alt}
-              width={logo.width}
-              height={logo.height}
-              className="h-6 w-auto"
-              style={{ width: "auto" }}
-              priority
-            />
-          ) : (
-            brandName
-          )}
+          {logo ? <BrandLogo logo={logo} /> : brandName}
         </LocaleLink>
 
         {/* Right side: optional inline link set + theme toggle. Renders when

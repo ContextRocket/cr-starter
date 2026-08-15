@@ -36,7 +36,13 @@ vi.mock("@/site.config", () => ({
   },
 }));
 
-const LOGO = { src: "/icon-192.png", alt: "Acme", width: 120, height: 24 };
+const LOGO = {
+  src: "/icon-192.png",
+  alt: "Acme",
+  variant: "icon" as const,
+  width: 120,
+  height: 24,
+};
 
 function renderChrome(
   props: Partial<React.ComponentProps<typeof SiteChrome>> = {},

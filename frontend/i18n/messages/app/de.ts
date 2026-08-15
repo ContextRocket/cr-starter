@@ -97,7 +97,8 @@ export const appDe = {
   },
   dev: {
     notice: {
-      label: "Hinweis für Entwickler:"
+      label: "Hinweis für Entwickler:",
+      dismiss: "Entwicklerhinweis ausblenden"
     },
     siteConfigUrlWarning: "Das Feld siteUrl in site.config.ts verweist noch auf example.com. Ersetze es vor der Veröffentlichung durch deine Produktionsdomain."
   },

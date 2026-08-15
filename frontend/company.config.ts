@@ -296,8 +296,7 @@ export const company: CompanyConfig = {
     secondaryCta: { label: "Learn more", href: "/blog" }, // PLACEHOLDER
   },
   // HeroInsights metric panel — rendered under the hero on the home. GENERIC
-  // placeholder metrics; edit or delete this block to remove the panel. Also
-  // showcased standalone at /landing/1 as a full landing-page reference.
+  // placeholder metrics; edit or delete this block to remove the panel.
   heroInsights: {
     headline: "Insight at a glance", // PLACEHOLDER
     subhead: "A few numbers that make the value concrete.", // PLACEHOLDER

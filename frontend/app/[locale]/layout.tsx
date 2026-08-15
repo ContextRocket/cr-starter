@@ -10,6 +10,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { CookieConsentBanner } from "@/components/cookie-consent-banner";
 import { LocaleProvider } from "@/i18n/locale-provider";
 import { SiteChrome } from "@/components/sections/site-chrome";
+import { DevNoticeBar } from "@/components/sections/dev-notice-bar";
 import {
   NotificationBarStack,
   type NotificationItem,
@@ -132,17 +133,31 @@ export default async function LocaleLayout({
   // (chrome.showBrandLogo === false) — then the header falls back to the brand
   // NAME as text (the personal-brand look). The marketing Navbar always needs a
   // logo, so this opt-out is only honored by the minimal header.
+  // Brand-mark VARIANT (default "icon"): the icon-only rocket glyph (~square,
+  // small) or the wide wordmark. Both variants are theme-aware — a light asset
+  // plus a dark asset the BrandLogo swaps in under `.dark`. `width`/`height`
+  // are intrinsic-ratio hints for next/image layout reservation.
+  const logoVariant = siteConfig.chrome.logoVariant ?? "icon";
   const navLogo =
     siteConfig.chrome.showBrandLogo === false
       ? undefined
-      : {
-          src: siteConfig.assets.logo,
-          // Wordmark aspect (~7.4:1); the Navbar clamps to `h-6 w-auto`, so
-          // these are intrinsic-ratio hints for next/image layout reservation.
-          alt: siteConfig.companyName,
-          width: 178,
-          height: 24,
-        };
+      : logoVariant === "wordmark"
+        ? {
+            src: siteConfig.assets.wordmark,
+            srcDark: siteConfig.assets.wordmarkDark,
+            alt: siteConfig.companyName,
+            variant: "wordmark" as const,
+            width: 178,
+            height: 24,
+          }
+        : {
+            src: siteConfig.assets.logo,
+            srcDark: siteConfig.assets.logoDark,
+            alt: siteConfig.companyName,
+            variant: "icon" as const,
+            width: 32,
+            height: 32,
+          };
 
   // Top-of-page notification bars: resolve config i18n keys → already-resolved
   // strings so the NotificationBarStack stays i18n-agnostic. Empty config →
@@ -191,14 +206,11 @@ export default async function LocaleLayout({
           <NextIntlClientProvider locale={locale} messages={messages}>
             <LocaleProvider initialLocale={locale} messages={localeMessages}>
               {showSiteUrlWarning && (
-                <div
-                  role="alert"
-                  data-testid="siteurl-placeholder-warning"
-                  className="border-b border-yellow-500 bg-yellow-50 px-4 py-2 text-center text-sm text-yellow-900"
-                >
-                  <strong>{t("dev.notice.label")}</strong>{" "}
-                  {t("dev.siteConfigUrlWarning")}
-                </div>
+                <DevNoticeBar
+                  label={t("dev.notice.label")}
+                  message={t("dev.siteConfigUrlWarning")}
+                  dismissLabel={t("dev.notice.dismiss")}
+                />
               )}
               <NotificationBarStack
                 items={resolvedNotifications}

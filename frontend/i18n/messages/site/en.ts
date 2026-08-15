@@ -57,13 +57,6 @@ export const siteEn = {
       }
     }
   },
-  landing: {
-    meta: {
-      title: "Example landing page",
-      description: "A reference landing page built from the shared section library."
-    },
-    intro: "This is an example landing page you can adopt or promote to your home. It renders the shared HeroInsights panel from company.config.ts."
-  },
   blog: {
     title: "Blog",
     subtitle: "Articles, guides, and product updates.",

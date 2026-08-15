@@ -229,6 +229,16 @@ export interface ChromeConfig {
    */
   showBrandLogo?: boolean;
   /**
+   * Which brand MARK the header renders.
+   *   "icon"     — the icon-only rocket glyph (`assets.logo` / `logoDark`),
+   *                sized as a small square. DEFAULT: a fork ships a neutral
+   *                icon + brand NAME, no wordmark text baked into the mark.
+   *   "wordmark" — the wide full wordmark (`assets.wordmark` / `wordmarkDark`).
+   * Both variants are theme-aware (a light asset + a dark asset swapped under
+   * `.dark`). Honored by the marketing Navbar and the minimal header.
+   */
+  logoVariant?: "icon" | "wordmark";
+  /**
    * Whether the header renders the light/dark THEME TOGGLE (see
    * components/ui/theme-toggle.tsx). Default true (undefined is treated as
    * true) so cr-starter and every fork ship a working theme switch out of the
@@ -366,7 +376,18 @@ export interface SiteConfig {
   theme: ThemeConfig;
   /** Paths to brand assets served from /public (relative to /public). */
   assets: {
+    /** Header brand mark (icon variant) for LIGHT theme — icon-only rocket. */
     logo: string;
+    /**
+     * Header brand mark (icon variant) for DARK theme. When set, the header
+     * swaps to this image under `.dark` (a white/light-on-dark rocket); when
+     * omitted the header uses `logo` in both themes. Also used by JSON-LD.
+     */
+    logoDark: string;
+    /** Header brand mark (wordmark variant) for LIGHT theme — wide wordmark. */
+    wordmark: string;
+    /** Header brand mark (wordmark variant) for DARK theme — light-on-dark. */
+    wordmarkDark: string;
     faviconIco: string;
     appleTouchIcon: string;
     icon192: string;
@@ -449,8 +470,8 @@ export interface SiteConfig {
  */
 export const siteConfig: SiteConfig = {
   // ── Identity ─────────────────────────────────────────────────────────────
-  companyName: "ContextRocket Starter", // PLACEHOLDER -- replace with your public brand / product name
-  legalName: "ContextRocket Starter GmbH", // PLACEHOLDER -- replace with your legal entity name
+  companyName: "Your Brand", // PLACEHOLDER -- replace with your public brand / product name
+  legalName: "Your Brand GmbH", // PLACEHOLDER -- replace with your legal entity name
   tagline: "Build products on ContextRocket.", // PLACEHOLDER -- replace with your brand tagline (home page <h1>)
   // PLACEHOLDER -- replace with your one-sentence product description (meta tags + JSON-LD)
   description:
@@ -492,13 +513,20 @@ export const siteConfig: SiteConfig = {
   },
 
   // ── Brand assets (files live in frontend/public/) ─────────────────────
-  // `logo` is the HEADER WORDMARK the marketing Navbar renders (a wide SVG
-  // wordmark, ~7.4:1). It is intentionally NOT one of the PWA app icons below:
-  // an app icon (square glyph) in the header reads as a placeholder. A fork
-  // drops its own wordmark at /public and points `logo` at it. The favicon +
+  // The HEADER BRAND MARK has two theme-aware variants, selected by
+  // `chrome.logoVariant` (default "icon"):
+  //   icon     → `logo` / `logoDark` — an icon-only rocket glyph (~square),
+  //              rendered small (~28px). Red rocket on light, white on dark.
+  //   wordmark → `wordmark` / `wordmarkDark` — the wide full wordmark
+  //              (~7.4:1), clamped to the header height. Dark uses a
+  //              light-on-dark wordmark.
+  // A fork drops its own assets at /public and points these here. The favicon +
   // icon-192/512* entries stay as PWA/app icons and are unrelated to the header.
   assets: {
-    logo: "/cr-logo.svg",
+    logo: "/brand/cr-icon-red.svg",
+    logoDark: "/brand/cr-icon-white.svg",
+    wordmark: "/cr-logo.svg",
+    wordmarkDark: "/brand/cr-logo-horizontal-white.png",
     faviconIco: "/favicon.ico",
     appleTouchIcon: "/apple-icon-180x180.png",
     icon192: "/icon-192.png",
@@ -572,6 +600,9 @@ export const siteConfig: SiteConfig = {
   chrome: {
     header: "marketing",
     footer: "full",
+    // Default brand mark is the icon-only rocket (no wordmark text). Set
+    // "wordmark" to render the wide wordmark instead.
+    logoVariant: "icon",
     showThemeToggle: true,
   },
 
