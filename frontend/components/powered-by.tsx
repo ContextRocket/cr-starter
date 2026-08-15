@@ -11,16 +11,23 @@ export function PoweredBy({ className = "" }: PoweredByProps) {
       href="https://contextrocket.ai"
       target="_blank"
       rel="noopener noreferrer"
-      className={`inline-flex items-center gap-2 text-xs text-muted-foreground/50 hover:text-muted-foreground/80 transition-colors ${className}`}
+      className={`inline-flex items-center gap-1.5 text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors ${className}`}
     >
+      <span className="text-[10px] tracking-wide uppercase font-semibold">{t("footer.powered_by")}</span>
       <Image
-        src="/brand/cr-icon-red.svg"
-        alt=""
-        width={14}
-        height={14}
-        className="size-3.5 opacity-50"
+        src="/brand/cr-logo-horizontal.svg"
+        alt="ContextRocket"
+        width={96}
+        height={16}
+        className="h-3 w-auto opacity-70 transition-opacity group-hover:opacity-100 dark:hidden"
       />
-      <span>{t("footer.powered_by")} ContextRocket</span>
+      <Image
+        src="/brand/cr-logo-horizontal-white.png"
+        alt="ContextRocket"
+        width={96}
+        height={16}
+        className="h-3 w-auto opacity-70 transition-opacity group-hover:opacity-100 hidden dark:block"
+      />
     </a>
   );
 }

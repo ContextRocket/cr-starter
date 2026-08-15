@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { t } from "@/i18n/keys";
+import { PoweredBy } from "@/components/powered-by";
 
 export interface FooterLink {
   label: string;
@@ -84,17 +84,9 @@ export function FooterSection({
             </div>
           </div>
           {/* Understated attribution — the subtle ContextRocket anchor. */}
-          <p className="mt-2 text-xs text-muted-foreground/70">
-            {t("footer.powered_by")}{" "}
-            <a
-              href="https://contextrocket.ai"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-primary transition-colors"
-            >
-              ContextRocket
-            </a>
-          </p>
+          <div className="mt-6">
+            <PoweredBy className="group" />
+          </div>
         </div>
       </div>
     </footer>

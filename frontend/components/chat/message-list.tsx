@@ -9,6 +9,8 @@ import { StreamStatusStack } from "@/components/chat/stream-status-stack";
 import { CitationPills } from "@/components/chat/citation-pills";
 import { SuggestionPills } from "@/components/chat/suggestion-pills";
 import { PolicyClassCard } from "@/components/chat/policy-class-card";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import type { ChatMessage } from "@/hooks/use-a2a-stream";
 import type { FaithfulnessVerdict } from "@/lib/a2a-client";
 
@@ -409,5 +411,9 @@ function GroundedChip({
  */
 function BubbleContent({ text }: { text: string }) {
   if (!text) return null;
-  return <span className="whitespace-pre-wrap break-words">{text}</span>;
+  return (
+    <div className="prose prose-sm dark:prose-invert prose-p:leading-relaxed prose-pre:p-0 break-words w-full max-w-none prose-a:text-brand-accent prose-a:underline-offset-4 hover:prose-a:text-brand-accent-hover [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>{text}</ReactMarkdown>
+    </div>
+  );
 }

@@ -33,7 +33,7 @@ help: ## Show available commands
 .PHONY: start-next-only start-frontend test-frontend
 
 start-next-only: ## Start the Next.js frontend only (delegates AI to ContextRocket)
-	@echo "Starting Next.js on port $(FRONTEND_PORT) — AI delegated to ContextRocket via A2A"
+	@echo "Starting Next.js on port $(FRONTEND_PORT) — Powered by ContextRocket 🚀 🧠 🦞 https://contextrocket.ai"
 	-@lsof -ti :$(FRONTEND_PORT) | xargs kill 2>/dev/null || true
 	cd $(FRONTEND_DIR) && ./start.sh
 

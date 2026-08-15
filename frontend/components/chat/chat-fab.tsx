@@ -10,6 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import { t } from "@/i18n/keys";
 import { ChatPanel } from "@/components/chat/chat-panel";
+import { BrandLogo } from "@/components/sections/brand-logo";
 import { useA2AStream } from "@/hooks/use-a2a-stream";
 import { siteConfig } from "@/site.config";
 import type { A2AClientOptions } from "@/lib/a2a-client";
@@ -156,8 +157,19 @@ export function ChatFab({
         >
           {/* Fullscreen header with collapse button */}
           <div className="flex items-center justify-between border-b border-border/60 px-4 py-2.5">
-            <span className="text-sm font-semibold text-foreground">
-              {welcomeTitle ?? t("chat.open")}
+            <span className="flex items-center gap-2 text-sm font-semibold text-foreground">
+              <BrandLogo 
+                logo={{ 
+                  src: siteConfig.assets.logo, 
+                  srcDark: siteConfig.assets.logoDark, 
+                  alt: siteConfig.companyName, 
+                  variant: "icon", 
+                  width: 20, 
+                  height: 20 
+                }} 
+                brandName={siteConfig.companyName} 
+                className="size-5" 
+              />
             </span>
             <div className="flex items-center gap-1">
               <button

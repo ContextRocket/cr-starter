@@ -3,21 +3,18 @@ import type {
   A2ATaskParams,
 } from "@/lib/a2a-client";
 
-const CANNED_RESPONSE = `This is a simulated response. Because no **ContextRocket A2A endpoint** (\`NEXT_PUBLIC_CR_AGENT_URL\`) is configured, the chat operates in an offline showcase mode.
-
-You can configure the agent by:
-1. Creating a free account at [contextrocket.ai](https://contextrocket.ai).
-2. Generating an Org Key.
-3. Adding your agent URL to \`.env.local\`.
-
-Enjoy exploring the UI!`;
+// Used as a fallback when translating isn't possible outside of React context,
+// though in `use-a2a-stream` we pass the translated response to this mock.
+const DEFAULT_CANNED_RESPONSE = `This is a simulated response. The chat operates in an offline showcase mode.\n\nTo connect your own knowledge base:\n1. Create a free account at [ContextRocket](https://contextrocket.ai).\n2. Generate an Org Key.\n3. Add your key to \`.env.local\`.\n\nEnjoy exploring the UI!`;
 
 export async function* mockStreamTask(
   params: A2ATaskParams,
   signal?: AbortSignal,
+  localizedResponse?: string
 ): AsyncGenerator<A2AEvent> {
+  const responseText = localizedResponse || DEFAULT_CANNED_RESPONSE;
   const taskId = "task-" + Math.random().toString(36).slice(2);
-  const threadId = params.thread_id || "thread-" + Math.random().toString(36).slice(2);
+  const threadId = params.sessionId || params.metadata?.thread_id || "thread-" + Math.random().toString(36).slice(2);
 
   // 1. Initial working event
   yield {
@@ -30,21 +27,26 @@ export async function* mockStreamTask(
 
   await new Promise((r) => setTimeout(r, 600));
 
-  // 2. Stream the tokens
-  const words = CANNED_RESPONSE.split(" ");
+  // 2. Stream the tokens (splitting carefully to not break markdown links aggressively,
+  // but a simple space split is fine for the mock visual effect).
+  // Use a regex to split by whitespace but keep the whitespace.
+  const tokens = responseText.split(/(\s+)/);
   let index = 0;
   
-  for (let i = 0; i < words.length; i++) {
+  for (let i = 0; i < tokens.length; i++) {
     if (signal?.aborted) return;
     const isFirst = i === 0;
-    const isLast = i === words.length - 1;
-    const word = words[i] + (isLast ? "" : " ");
+    const isLast = i === tokens.length - 1;
+    const token = tokens[i];
     
+    // Skip empty tokens if any
+    if (token === "") continue;
+
     yield {
       type: "TaskArtifactUpdateEvent",
       id: taskId,
       artifact: {
-        parts: [{ type: "text", text: word }],
+        parts: [{ type: "text", text: token }],
         index,
         append: !isFirst,
         lastChunk: isLast,
@@ -54,8 +56,8 @@ export async function* mockStreamTask(
     };
     
     index++;
-    // Simulate typing delay
-    await new Promise((r) => setTimeout(r, 30 + Math.random() * 40));
+    // Simulate typing delay, slightly faster for whitespace
+    await new Promise((r) => setTimeout(r, token.trim() ? 20 + Math.random() * 30 : 5));
   }
 
   // 3. Completed event
@@ -67,7 +69,7 @@ export async function* mockStreamTask(
       timestamp: new Date().toISOString(),
       message: {
         role: "agent",
-        parts: [{ text: CANNED_RESPONSE }],
+        parts: [{ type: "text", text: responseText }],
       },
     },
     final: true,

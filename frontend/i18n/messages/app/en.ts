@@ -103,6 +103,9 @@ export const appEn = {
     siteConfigUrlWarning: "siteUrl in site.config.ts still points at contextrocket.com. Replace it with your production domain before going live."
   },
   chat: {
+    mock: {
+      response: "This is a simulated response. The chat operates in an offline showcase mode.\n\nTo connect your own knowledge base:\n1. Create a free account at [ContextRocket](https://contextrocket.ai).\n2. Generate an Org Key.\n3. Add your key to `.env.local`.\n\nEnjoy exploring the UI!"
+    },
     placeholder: "Ask anything...",
     placeholderStreaming: "Thinking...",
     thinking: "Thinking",

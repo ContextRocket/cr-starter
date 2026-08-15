@@ -379,7 +379,7 @@ export function useA2AStream(
         try {
           const stream = opts_client.baseUrl 
             ? streamTask(opts_client, params, controller.signal)
-            : mockStreamTask(params, controller.signal);
+            : mockStreamTask(params, controller.signal, t("chat.mock.response"));
 
           for await (const event of stream) {
             if (controller.signal.aborted) break;
