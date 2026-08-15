@@ -8,6 +8,14 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const STATIC_EXPORT = process.env.STATIC_EXPORT === "true";
 
+// E2E cookie-consent regression only: when E2E_COOKIE_CONSENT_AUTO=1, alias the
+// site config to a build-time override that pins `cookieConsent: "auto"` (the
+// shipped default) so the Playwright build exercises the REAL analytics-gated
+// banner path without editing the tracked site.config.ts (which may carry a
+// local review toggle). Inert for every normal build. See
+// e2e/fixtures/site-config-cookie-auto.ts.
+const E2E_COOKIE_CONSENT_AUTO = process.env.E2E_COOKIE_CONSENT_AUTO === "1";
+
 // Helper: resolves a project-relative path to an absolute filesystem path.
 const rel = (...segments) => path.resolve(__dirname, ...segments);
 
@@ -47,6 +55,18 @@ const nextConfig = {
   // alias app/[locale]/blog. See blog.config.mjs / lib/blog-path.ts.
   ...(!STATIC_EXPORT && blogRewrites().length > 0
     ? { async rewrites() { return blogRewrites(); } }
+    : {}),
+  // E2E cookie-consent build: isolate the build output (own distDir, suffixed
+  // per analytics/no-analytics mode) and alias the site config to the "auto"
+  // override. Both are gated behind E2E_COOKIE_CONSENT_AUTO so the normal build
+  // and a concurrent local review build are never touched.
+  ...(E2E_COOKIE_CONSENT_AUTO
+    ? {
+        distDir: `.next-e2e-cookie-consent${process.env.E2E_COOKIE_CONSENT_DIST_SUFFIX ? `-${process.env.E2E_COOKIE_CONSENT_DIST_SUFFIX}` : ""}`,
+        turbopack: {
+          resolveAlias: { "@/site.config": "./e2e/fixtures/site-config-cookie-auto.ts" },
+        },
+      }
     : {}),
   webpack: (config, { isServer, webpack }) => {
     // Static export: swap server-action modules for no-op stubs.

@@ -17,6 +17,9 @@
 
 # next.js
 /.next/
+# Isolated build output for the cookie-consent E2E regression (own distDir so it
+# never clobbers the main build or a concurrent local review build).
+/.next-e2e-cookie-consent*/
 /out/
 
 # production

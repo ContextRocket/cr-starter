@@ -15,6 +15,10 @@ const backendPort = parseInt(process.env.BACKEND_PORT ?? "8100", 10);
  */
 export default defineConfig({
   testDir: "./e2e",
+  // The cookie-consent regression needs a purpose-built analytics-gated server
+  // (its own port + distDir), so it runs under playwright.cookie-consent.config.ts,
+  // not this default run.
+  testIgnore: /cookie-consent(-no-analytics)?\.spec\.ts/,
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
