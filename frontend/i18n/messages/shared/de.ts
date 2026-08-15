@@ -43,10 +43,12 @@ export const sharedDe = {
   nav: {
     dashboard: "Dashboard",
     blog: "Blog",
+    login: "Anmelden",
+    signup: "Registrieren",
     logout: "Abmelden",
-    welcome: "Willkommen in deinem Dashboard",
+    welcome: "Willkommen in Ihrem Dashboard",
     aria: {
-      primary: "Hauptnavigation"
+      primary: "Hauptmenü"
     }
   },
   theme: {

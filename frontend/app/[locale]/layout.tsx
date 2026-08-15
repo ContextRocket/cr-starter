@@ -122,9 +122,10 @@ export default async function LocaleLayout({
   // there is no double header.
   const navConfig = company.nav;
   const showAppLinks = navConfig?.showAppLinks ?? true;
-  const resolveChromeLink = (link: NavLinkConfig) => ({
+  const resolveChromeLink = (link: NavLinkConfig): NavLink => ({
     label: t(link.labelKey),
     href: link.href.startsWith("/") ? `/${locale}${link.href}` : link.href,
+    variant: link.variant,
   });
   const linkVisible = (link: NavLinkConfig) =>
     isChromeLinkVisible(link, isGuest, showAppLinks);
@@ -239,12 +240,13 @@ export default async function LocaleLayout({
                 {children}
               </SiteChrome>
               <Toaster position="bottom-right" richColors />
-              {process.env.NEXT_PUBLIC_CHAT_FAB_ENABLED === "true" && (
-                <ChatFab
-                  agentUrl={process.env.NEXT_PUBLIC_CR_AGENT_URL}
-                  isGuest={isGuest}
-                />
-              )}
+              {siteConfig.features.chatFab !== false &&
+                process.env.NEXT_PUBLIC_CHAT_FAB_ENABLED !== "false" && (
+                  <ChatFab
+                    agentUrl={process.env.NEXT_PUBLIC_CR_AGENT_URL}
+                    isGuest={isGuest}
+                  />
+                )}
               <CookieConsentBanner />
             </LocaleProvider>
           </NextIntlClientProvider>

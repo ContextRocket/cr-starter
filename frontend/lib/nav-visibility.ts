@@ -19,6 +19,10 @@ import { siteConfig } from "@/site.config";
  *     everyone), but auth-gating is the PRIMARY rule: `appOnly && isGuest` ⇒
  *     hidden.
  *
+ *  3. `guestOnly` — a link shown ONLY to unauthenticated viewers (e.g. Login,
+ *     Sign Up), and hidden for authenticated users. Like `appOnly`, it is
+ *     dropped entirely if `showAppLinks` is false.
+ *
  * @param link          the config entry under test
  * @param isGuest       true when the viewer is a guest / unauthenticated (or
  *                      auth is unknown → fail closed to guest). App links are
@@ -36,6 +40,10 @@ export function isChromeLinkVisible(
     // Auth-gate first (primary rule): guests / unknown-auth never see app links.
     if (isGuest) return false;
     // Fork-level opt-out: a content/personal fork drops app links for everyone.
+    if (!showAppLinks) return false;
+  }
+  if (link.guestOnly) {
+    if (!isGuest) return false;
     if (!showAppLinks) return false;
   }
   return true;

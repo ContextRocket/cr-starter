@@ -41,10 +41,12 @@ export const sharedEs = {
     }
   },
   nav: {
-    dashboard: "Panel",
+    dashboard: "Panel de control",
     blog: "Blog",
+    login: "Iniciar sesión",
+    signup: "Registrarse",
     logout: "Cerrar sesión",
-    welcome: "Bienvenido a tu panel",
+    welcome: "Bienvenido a tu panel de control",
     aria: {
       primary: "Principal"
     }

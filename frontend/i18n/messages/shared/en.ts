@@ -43,6 +43,8 @@ export const sharedEn = {
   nav: {
     dashboard: "Dashboard",
     blog: "Blog",
+    login: "Log in",
+    signup: "Sign up",
     logout: "Logout",
     welcome: "Welcome to your Dashboard",
     aria: {

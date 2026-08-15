@@ -314,9 +314,33 @@ export interface FeaturesConfig {
    *
    * The underlying consent flow (grant/deny persisted in localStorage; no
    * analytics loads until consent is granted) is unchanged by this setting —
-   * it only governs banner VISIBILITY, not the consent contract.
+   * this only controls whether the BANNER renders.
    */
   cookieConsent: "auto" | "on" | "off";
+  /**
+   * Whether the auth features (Login/Register buttons in nav, and the pages
+   * themselves) are enabled. Even without a backend, we show the screens by
+   * default so users can see the UI layout.
+   * Default true.
+   */
+  auth: boolean;
+  /**
+   * Whether the Chat FAB (floating action button) is shown on pages. We show
+   * it by default to showcase the A2A capability.
+   * Default true.
+   */
+  chatFab: boolean;
+  /**
+   * Whether the language selector (LocaleSwitcher) is rendered in the header.
+   * We show it by default if there are multiple locales configured.
+   * Default true.
+   */
+  languageSelector: boolean;
+  /**
+   * Whether the impressum page is enabled. Legally required in some regions.
+   * Default true.
+   */
+  impressum: boolean;
 }
 
 /**
@@ -599,16 +623,23 @@ export const siteConfig: SiteConfig = {
     // its footer link render by default; a fork opts OUT (false) only after
     // replacing those assets with its own.
     attribution: true,
-    // Testimonials ship OFF by default: the base includes generic example
-    // testimonials (testimonials.config.json) to show the shape, but a fork
-    // must supply real quotes and flip this to true before they render.
-    testimonials: false,
+    // Testimonials ship ON by default to showcase the feature out-of-the-box.
+    // The base includes generic example testimonials (testimonials.config.json).
+    testimonials: true,
     // Cookie-consent banner: "auto" shows it only when analytics is actually
     // configured (a GA/PostHog key is present) and consent is not yet recorded.
     // cr-starter ships no analytics keys, so the default is NO banner; a fork
     // that adds a key gets the banner automatically. Use "on" to force it or
     // "off" to suppress it. See FeaturesConfig.cookieConsent for the contract.
     cookieConsent: "auto",
+    // Auth screens ship ON by default to showcase the UI.
+    auth: true,
+    // Chat FAB ships ON by default to showcase the AI integration capabilities.
+    chatFab: true,
+    // Language selector ships ON by default.
+    languageSelector: true,
+    // Impressum ships ON by default (legally required for DE/EU).
+    impressum: true,
   },
 
   // ── Blog surface (public URL segment + title) ─────────────────────────

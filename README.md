@@ -74,8 +74,11 @@ brand's agent immediately.
 ## What this repo is
 
 `cr-starter` is a Next.js + optional FastAPI template for building products on
-ContextRocket.  It provides:
+ContextRocket. It serves as a fully featured showcase out-of-the-box, but is designed to be easily stripped down to your needs via `frontend/site.config.ts`.
 
+It provides:
+
+- **Marketing/Legal Chrome** -- Home page, blog, FAQ, Impressum, Privacy, configurable headers/footers.
 - **Auth flows** -- login, register, password recovery, guest JWT provisioning.
 - **Dashboard shell** -- breadcrumb navigation, pagination, error toasts.
 - **Chat FAB + full-page chat** -- streaming A2A client, three-tier latency UI,
@@ -84,6 +87,21 @@ ContextRocket.  It provides:
   `client.streamTurn`, `client.agentCard`, guest credential lifecycle.
 - **OpenAPI typed client** -- auto-generated from the optional local backend.
 - **i18n keys** -- all user-facing strings in `i18n/keys.ts`; extend per locale.
+
+### Toggling Features
+The starter ships with almost everything **ON** by default to showcase capabilities (even if the backend is not running). You can disable entire surfaces by editing the `features` block in `frontend/site.config.ts`:
+```typescript
+  features: {
+    blog: true,             // Toggles the /blog route and nav links
+    attribution: true,      // Toggles the /attribution page
+    testimonials: true,     // Toggles the testimonials block on the homepage
+    cookieConsent: "auto",  // "auto" | "on" | "off"
+    auth: true,             // Toggles Login/Register buttons and routes
+    chatFab: true,          // Toggles the floating ContextRocket assistant
+    languageSelector: true, // Toggles the i18n switcher in the header
+    impressum: true,        // Toggles the /impressum page (legal req in EU)
+  }
+```
 
 Conversation state, agent runs, context packs, and knowledge all live in
 ContextRocket, reached over A2A.  This repo owns only auth + UI.

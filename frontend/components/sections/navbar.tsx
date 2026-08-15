@@ -6,6 +6,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { Link as LocaleLink } from "@/i18n/navigation";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { LocaleSwitcher } from "@/i18n/locale-switcher";
 import { BrandLogo, type BrandLogoAsset } from "@/components/sections/brand-logo";
 
 export interface NavLink {
@@ -31,6 +32,8 @@ export interface NavbarProps {
   navLabel?: string;
   /** Render the light/dark theme toggle on the right. Default true. */
   showThemeToggle?: boolean;
+  /** Render the language selector. Default true. */
+  showLanguageSelector?: boolean;
   className?: string;
 }
 
@@ -40,6 +43,7 @@ export function Navbar({
   brandName = "",
   navLabel = "Global",
   showThemeToggle = true,
+  showLanguageSelector = true,
   className = "",
 }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -63,22 +67,39 @@ export function Navbar({
           )}
         </LocaleLink>
 
-        {/* Desktop links + right-side controls (theme toggle) */}
+        {/* Desktop links + right-side controls (theme toggle + language) */}
         <div className="hidden lg:flex items-center gap-8">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
-          {showThemeToggle && <ThemeToggle />}
+          {links.map((link) => {
+            if (link.variant === "primary") {
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                >
+                  {link.label}
+                </Link>
+              );
+            }
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+          <div className="flex items-center gap-2">
+            {showLanguageSelector && <LocaleSwitcher />}
+            {showThemeToggle && <ThemeToggle />}
+          </div>
         </div>
 
-        {/* Mobile controls: theme toggle + hamburger */}
+        {/* Mobile controls: theme toggle + language + hamburger */}
         <div className="flex items-center gap-1 lg:hidden">
+          {showLanguageSelector && <LocaleSwitcher />}
           {showThemeToggle && <ThemeToggle />}
           <button
             type="button"
@@ -122,16 +143,30 @@ export function Navbar({
           </div>
           <div className="mt-8 flow-root">
             <div className="space-y-2">
-              {links.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block rounded-lg px-4 py-3 text-base font-semibold text-muted-foreground hover:text-foreground hover:bg-muted"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {links.map((link) => {
+                if (link.variant === "primary") {
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block w-full text-center rounded-lg bg-primary px-4 py-3 text-base font-semibold text-primary-foreground hover:bg-primary/90 transition-colors mt-4"
+                    >
+                      {link.label}
+                    </Link>
+                  );
+                }
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block rounded-lg px-4 py-3 text-base font-semibold text-muted-foreground hover:text-foreground hover:bg-muted"
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </DialogPanel>

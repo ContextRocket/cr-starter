@@ -31,9 +31,13 @@ vi.mock("@/site.config", () => ({
       return mockChrome;
     },
     // isChromeLinkVisible (used by the guest/auth nav-resolution tests below)
-    // reads siteConfig.features for the featureFlag gate.
-    features: { blog: true },
+    features: { blog: true, languageSelector: false },
   },
+}));
+
+// Mock LocaleSwitcher because it requires LocaleProvider context
+vi.mock("@/i18n/locale-switcher", () => ({
+  LocaleSwitcher: () => <div data-testid="locale-switcher-mock" />,
 }));
 
 const LOGO = {

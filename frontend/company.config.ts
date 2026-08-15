@@ -194,6 +194,19 @@ export interface NavLinkConfig {
    */
   appOnly?: boolean;
   /**
+   * Marks a guest-only link (e.g. Login, Sign Up). Auth-gated by the [locale] layout:
+   * shown ONLY to unauthenticated viewers, and additionally hidden for everyone
+   * when `nav.showAppLinks` is false.
+   * Default false.
+   */
+  guestOnly?: boolean;
+  /**
+   * Optional visual variant for the link.
+   *   "default" — standard nav link.
+   *   "primary" — styled as a primary CTA button.
+   */
+  variant?: "default" | "primary";
+  /**
    * Optional siteConfig.features flag name. When set and that flag is false, the
    * link is omitted. Must match a key of siteConfig.features (only "blog" today).
    */
@@ -281,9 +294,17 @@ export const company: CompanyConfig = {
       // Dashboard is an app link — auth-gated (authenticated viewers only) and
       // additionally dropped when `showAppLinks` is false.
       { labelKey: "nav.dashboard", href: "/dashboard", appOnly: true },
+      // Login/Sign Up are guest links — auth-gated (guests only). They also
+      // respect the auth feature flag.
+      { labelKey: "nav.login", href: "/auth/login", guestOnly: true, featureFlag: "auth" },
+      { labelKey: "nav.signup", href: "/auth/register", guestOnly: true, featureFlag: "auth", variant: "primary" },
     ],
     footerLinks: [
-      { labelKey: "footer.impressum", href: "/impressum" },
+      {
+        labelKey: "footer.impressum",
+        href: "/impressum",
+        featureFlag: "impressum",
+      },
       { labelKey: "footer.privacy", href: "/privacy" },
       { labelKey: "footer.faq", href: "/faq" },
       // Attribution link is gated on the attribution feature flag (default ON);

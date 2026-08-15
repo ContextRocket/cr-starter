@@ -18,6 +18,7 @@ import Link from "next/link";
 import { Link as LocaleLink } from "@/i18n/navigation";
 import type { NavLink } from "@/components/sections/navbar";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { LocaleSwitcher } from "@/i18n/locale-switcher";
 import { BrandLogo, type BrandLogoAsset } from "@/components/sections/brand-logo";
 
 export interface MinimalHeaderProps {
@@ -31,6 +32,8 @@ export interface MinimalHeaderProps {
   navLabel: string;
   /** Render the light/dark theme toggle on the right. Default true. */
   showThemeToggle?: boolean;
+  /** Render the language selector. Default true. */
+  showLanguageSelector?: boolean;
   className?: string;
 }
 
@@ -40,6 +43,7 @@ export function MinimalHeader({
   brandName,
   navLabel,
   showThemeToggle = true,
+  showLanguageSelector = true,
   className = "",
 }: MinimalHeaderProps) {
   return (
@@ -58,20 +62,35 @@ export function MinimalHeader({
           {logo ? <BrandLogo logo={logo} brandName={brandName} /> : brandName}
         </LocaleLink>
 
-        {/* Right side: optional inline link set + theme toggle. Renders when
-            there are links OR the toggle is enabled; always keyboard-accessible. */}
-        {(links.length > 0 || showThemeToggle) && (
+        {/* Right side: optional inline link set + theme toggle + language. */}
+        {(links.length > 0 || showThemeToggle || showLanguageSelector) && (
           <div className="flex items-center gap-4 sm:gap-6">
-            {links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
-            {showThemeToggle && <ThemeToggle />}
+            {links.map((link) => {
+              if (link.variant === "primary") {
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                  >
+                    {link.label}
+                  </Link>
+                );
+              }
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+            <div className="flex items-center gap-2">
+              {showLanguageSelector && <LocaleSwitcher />}
+              {showThemeToggle && <ThemeToggle />}
+            </div>
           </div>
         )}
       </nav>
