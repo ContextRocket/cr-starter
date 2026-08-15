@@ -286,6 +286,14 @@ export const company: CompanyConfig = {
       { labelKey: "footer.impressum", href: "/impressum" },
       { labelKey: "footer.privacy", href: "/privacy" },
       { labelKey: "footer.faq", href: "/faq" },
+      // Attribution link is gated on the attribution feature flag (default ON);
+      // a fork that disables the credits page drops the link automatically so
+      // there is never a dead footer link into a notFound() route.
+      {
+        labelKey: "footer.attribution",
+        href: "/attribution",
+        featureFlag: "attribution",
+      },
     ],
   },
   hero: {

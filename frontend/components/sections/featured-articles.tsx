@@ -1,8 +1,8 @@
-import Image from "next/image";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { blogBasePath, blogPostPath } from "@/lib/blog-path";
+import { BlogImage } from "@/components/blog/blog-image";
 import type { BlogPost } from "@/lib/blog";
 import { SectionWrapper } from "@/components/sections/section-wrapper";
 import { FadeIn } from "@/components/ui/motion";
@@ -85,17 +85,17 @@ export function FeaturedArticles({
               className="group block h-full overflow-hidden rounded-xl border border-card-border bg-card shadow-sm transition-shadow hover:shadow-md"
               data-testid={`featured-post-${post.slug}`}
             >
-              {post.image ? (
-                <div className="relative aspect-[16/9] w-full overflow-hidden">
-                  <Image
-                    src={post.image}
-                    alt={post.title}
-                    fill
-                    className="object-cover"
-                    sizes="(min-width: 1024px) 50vw, 100vw"
-                  />
-                </div>
-              ) : null}
+              {/* Always render a real image; BlogImage falls back to the
+                  bundled default when the post has no image or its image 404s. */}
+              <div className="relative aspect-[16/9] w-full overflow-hidden">
+                <BlogImage
+                  src={post.image}
+                  alt={post.title}
+                  fill
+                  className="object-cover"
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                />
+              </div>
               <div className="space-y-2 p-5">
                 <h3 className="text-lg font-semibold text-foreground transition-colors group-hover:text-primary">
                   {post.series != null ? (

@@ -2,6 +2,7 @@
 title: "Deploying Your Site"
 author: "The Team"
 date: "2026-07-10"
+image: "/images/blog/ai-robot-hands.jpg"
 excerpt: "A short checklist for taking your site from local development to a live, statically-generated deployment."
 ---
 

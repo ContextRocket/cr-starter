@@ -48,7 +48,7 @@ const ts = require("typescript");
 const DOMAIN_NAMESPACES = {
   shared: ["form", "nav", "theme", "error", "locale", "breadcrumb", "pagination", "cookie"],
   app: ["auth", "dashboard", "dev", "chat", "embed"],
-  site: ["home", "blog", "faq", "footer", "impressum", "privacy", "preview"],
+  site: ["home", "blog", "faq", "footer", "impressum", "privacy", "preview", "attribution"],
 };
 // Domains whose non-en locales MAY be an incomplete subset (missing -> warn).
 const SUBSET_DOMAINS = new Set(["site"]);

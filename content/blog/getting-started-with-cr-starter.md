@@ -2,6 +2,7 @@
 title: "Getting Started with ContextRocket Starter"
 author: "CR Team"
 date: "2026-07-01"
+image: "/images/blog/contextrocket-intro.jpg"
 excerpt: "A quick guide to setting up your ContextRocket-powered site, customizing the brand, and publishing your first content."
 ---
 

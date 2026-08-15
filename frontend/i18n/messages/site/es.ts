@@ -101,7 +101,8 @@ export const siteEs = {
   footer: {
     impressum: "Impressum",
     privacy: "Política de privacidad",
-    faq: "Preguntas frecuentes"
+    faq: "Preguntas frecuentes",
+    attribution: "Atribución"
   },
   impressum: {
     title: "Impressum",
@@ -270,5 +271,22 @@ export const siteEs = {
         action: "Acción principal"
       }
     }
+  },
+  attribution: {
+    title: "Créditos y atribuciones",
+    subtitle: "Las imágenes y el software de código abierto que impulsan este sitio.",
+    description:
+      "Este sitio se ha creado con software de código abierto e imágenes alojadas por nosotros. A continuación acreditamos cada fuente.",
+    images: "Imágenes",
+    photo_by: "Foto de",
+    on: "en",
+    view_original: "Ver original",
+    libraries: "Bibliotecas de código abierto",
+    license: "Licencia",
+    no_images: "No se enumeran créditos de imágenes.",
+    no_libraries: "No se enumeran créditos de bibliotecas.",
+    general_note: "Fotografía adicional proporcionada por",
+    license_note:
+      "Las imágenes se usan bajo la Licencia de Unsplash. Las bibliotecas se usan bajo sus respectivas licencias de código abierto."
   },
 } as const;

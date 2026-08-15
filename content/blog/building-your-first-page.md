@@ -2,7 +2,7 @@
 title: "Building Your First Page"
 author: "The Team"
 date: "2026-07-20"
-image: "/images/blog/starter-post.svg"
+image: "/images/blog/programming-setup.jpg"
 excerpt: "Walk through creating a new page, wiring it into navigation, and keeping every user-facing string translatable from day one."
 featured: true
 ---

@@ -24,6 +24,7 @@ import {
   buildBlogPostingJsonLd,
 } from "@/lib/structured-data";
 import { StructuredDataScripts } from "@/components/seo/structured-data-scripts";
+import { BlogImage } from "@/components/blog/blog-image";
 import { blogBasePath, blogPostPath, blogTitle } from "@/lib/blog-path";
 import { siteConfig } from "@/site.config";
 
@@ -140,15 +141,15 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           ) : null}
         </header>
 
-        {post.image ? (
-          <Image
-            src={post.image}
-            alt={post.title}
-            width={1200}
-            height={630}
-            className="w-full rounded-xl mb-8 object-cover max-h-96"
-          />
-        ) : null}
+        {/* Post hero — always renders a real image; BlogImage falls back to the
+            bundled default when the post has no image or its image 404s. */}
+        <BlogImage
+          src={post.image}
+          alt={post.title}
+          width={1200}
+          height={630}
+          className="w-full rounded-xl mb-8 object-cover max-h-96"
+        />
 
         <div className="prose prose-neutral max-w-none">
           {/* Render body as paragraphs split on blank lines. Simple render

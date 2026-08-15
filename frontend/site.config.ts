@@ -264,6 +264,15 @@ export interface FeaturesConfig {
    */
   blog: boolean;
   /**
+   * Whether the /attribution credits page is enabled. When true (default), the
+   * page renders the image + library credits and a footer "Attribution" link is
+   * shown. When false, /attribution calls notFound() (no dead route) and the
+   * footer link is omitted (no dead link). Default true — self-hosting the
+   * bundled Unsplash images requires visible attribution, so a fork opts OUT
+   * only after replacing those assets with its own.
+   */
+  attribution: boolean;
+  /**
    * Whether the marketing-home testimonials section is enabled. When true (and
    * there is at least one published testimonial in testimonials.config.json),
    * the home renders <TestimonialsSection>. Default FALSE — the base ships
@@ -569,6 +578,11 @@ export const siteConfig: SiteConfig = {
   // render an empty state).
   features: {
     blog: true,
+    // Attribution credits page ships ON: the base self-hosts bundled Unsplash
+    // blog images, which require visible attribution. The /attribution page and
+    // its footer link render by default; a fork opts OUT (false) only after
+    // replacing those assets with its own.
+    attribution: true,
     // Testimonials ship OFF by default: the base includes generic example
     // testimonials (testimonials.config.json) to show the shape, but a fork
     // must supply real quotes and flip this to true before they render.

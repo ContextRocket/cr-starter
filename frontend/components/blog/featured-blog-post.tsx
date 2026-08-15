@@ -12,11 +12,11 @@
  * frame so the grid stays visually consistent.
  */
 
-import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { t } from "@/i18n/keys";
 import { cn } from "@/lib/utils";
 import { blogPostPath } from "@/lib/blog-path";
+import { BlogImage } from "@/components/blog/blog-image";
 import type { BlogPost } from "@/lib/blog";
 
 interface FeaturedBlogPostProps {
@@ -42,19 +42,16 @@ export function FeaturedBlogPost({ post, locale }: FeaturedBlogPostProps) {
       className="bg-warm-surface rounded-xl border border-card-border shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden"
     >
       <Link href={blogPostPath(post.slug)} className="group block">
-        {/* Image (16:9) with graceful fallback */}
+        {/* Image (16:9) — always renders a real image; BlogImage falls back to
+            the bundled default when the post has no image or its image 404s. */}
         <div className="aspect-[16/9] relative overflow-hidden">
-          {post.image ? (
-            <Image
-              src={post.image}
-              alt={post.title}
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-          ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/15 to-primary/40" />
-          )}
+          <BlogImage
+            src={post.image}
+            alt={post.title}
+            fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
           <span className="absolute top-4 left-4 bg-primary text-primary-foreground text-xs font-medium px-3 py-1 rounded-full">
             {t("blog.featured")}
           </span>

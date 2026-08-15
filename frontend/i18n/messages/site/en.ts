@@ -104,7 +104,8 @@ export const siteEn = {
   footer: {
     impressum: "Impressum",
     privacy: "Privacy Policy",
-    faq: "FAQ"
+    faq: "FAQ",
+    attribution: "Attribution"
   },
   impressum: {
     title: "Impressum",
@@ -273,5 +274,22 @@ export const siteEn = {
         action: "Primary action"
       }
     }
+  },
+  attribution: {
+    title: "Credits & attributions",
+    subtitle: "The images and open-source software that power this site.",
+    description:
+      "This site is built with open-source software and self-hosted imagery. We credit every source below.",
+    images: "Images",
+    photo_by: "Photo by",
+    on: "on",
+    view_original: "View original",
+    libraries: "Open-source libraries",
+    license: "License",
+    no_images: "No image credits are listed.",
+    no_libraries: "No library credits are listed.",
+    general_note: "Additional photography is provided by",
+    license_note:
+      "Images are used under the Unsplash License. Libraries are used under their respective open-source licenses."
   },
 } as const;

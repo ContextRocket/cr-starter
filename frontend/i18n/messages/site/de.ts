@@ -101,7 +101,8 @@ export const siteDe = {
   footer: {
     impressum: "Impressum",
     privacy: "Datenschutzerklärung",
-    faq: "Häufige Fragen"
+    faq: "Häufige Fragen",
+    attribution: "Bildnachweis"
   },
   impressum: {
     title: "Impressum",
@@ -270,5 +271,22 @@ export const siteDe = {
         action: "Primäre Aktion"
       }
     }
+  },
+  attribution: {
+    title: "Credits & Bildnachweise",
+    subtitle: "Die Bilder und die Open-Source-Software, die diese Website antreiben.",
+    description:
+      "Diese Website wurde mit Open-Source-Software und selbst gehosteten Bildern erstellt. Alle Quellen werden nachfolgend genannt.",
+    images: "Bilder",
+    photo_by: "Foto von",
+    on: "auf",
+    view_original: "Original ansehen",
+    libraries: "Open-Source-Bibliotheken",
+    license: "Lizenz",
+    no_images: "Es sind keine Bildnachweise aufgeführt.",
+    no_libraries: "Es sind keine Bibliotheksnachweise aufgeführt.",
+    general_note: "Weitere Fotografie bereitgestellt von",
+    license_note:
+      "Bilder werden unter der Unsplash-Lizenz verwendet. Bibliotheken werden unter ihren jeweiligen Open-Source-Lizenzen verwendet."
   },
 } as const;

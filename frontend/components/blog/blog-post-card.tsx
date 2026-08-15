@@ -11,10 +11,10 @@
  * 16:9 frame.
  */
 
-import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { t } from "@/i18n/keys";
 import { blogPostPath } from "@/lib/blog-path";
+import { BlogImage } from "@/components/blog/blog-image";
 import type { BlogPost } from "@/lib/blog";
 
 interface BlogPostCardProps {
@@ -40,19 +40,16 @@ export function BlogPostCard({ post, locale }: BlogPostCardProps) {
       className="bg-warm-surface rounded-xl border border-card-border shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden flex flex-col"
     >
       <Link href={blogPostPath(post.slug)} className="group flex flex-col h-full">
-        {/* Image (16:9) with graceful fallback */}
+        {/* Image (16:9) — always renders a real image; BlogImage falls back to
+            the bundled default when the post has no image or its image 404s. */}
         <div className="aspect-[16/9] relative overflow-hidden">
-          {post.image ? (
-            <Image
-              src={post.image}
-              alt={post.title}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-          ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/15 to-primary/40" />
-          )}
+          <BlogImage
+            src={post.image}
+            alt={post.title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
           {post.series != null ? (
             <span className="absolute top-3 left-3 bg-secondary text-secondary-foreground text-xs font-medium px-2 py-1 rounded-full">
               {String(post.series).padStart(2, "0")}

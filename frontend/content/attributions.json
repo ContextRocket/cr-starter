@@ -1,20 +1,113 @@
-[
-  {
-    "name": "Inter",
-    "url": "https://rsms.me/inter/",
-    "license": "OFL-1.1",
-    "note": "A typeface carefully crafted and designed for computer screens."
-  },
-  {
-    "name": "Heroicons",
-    "url": "https://heroicons.com/",
-    "license": "MIT",
-    "note": "Beautiful hand-crafted SVG icons by the makers of Tailwind CSS."
-  },
-  {
-    "name": "Tailwind CSS",
-    "url": "https://tailwindcss.com/",
-    "license": "MIT",
-    "note": "A utility-first CSS framework for rapidly building custom UIs."
-  }
-]
+{
+  "images": [
+    {
+      "filename": "ai-brain-future.jpg",
+      "thumbnail": "/images/blog/ai-brain-future.jpg",
+      "author": {
+        "name": "Growtika",
+        "url": "https://unsplash.com/@growtika?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      },
+      "source": {
+        "name": "Unsplash",
+        "url": "https://unsplash.com/photos/a-computer-generated-image-of-a-human-brain-3wXVwtdaESA?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      },
+      "url": "https://unsplash.com/photos/a-computer-generated-image-of-a-human-brain-3wXVwtdaESA"
+    },
+    {
+      "filename": "ai-robot-hands.jpg",
+      "thumbnail": "/images/blog/ai-robot-hands.jpg",
+      "author": {
+        "name": "Possessed Photography",
+        "url": "https://unsplash.com/@possessedphotography?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      },
+      "source": {
+        "name": "Unsplash",
+        "url": "https://unsplash.com/photos/white-and-brown-human-robot-illustration-YKW0JjP7rlU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      },
+      "url": "https://unsplash.com/photos/white-and-brown-human-robot-illustration-YKW0JjP7rlU"
+    },
+    {
+      "filename": "programming-setup.jpg",
+      "thumbnail": "/images/blog/programming-setup.jpg",
+      "author": {
+        "name": "AltumCode",
+        "url": "https://unsplash.com/@altumcode?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      },
+      "source": {
+        "name": "Unsplash",
+        "url": "https://unsplash.com/photos/opened-black-laptop-computer-oZ61KFUQsus?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      },
+      "url": "https://unsplash.com/photos/opened-black-laptop-computer-oZ61KFUQsus"
+    },
+    {
+      "filename": "default-post.jpg",
+      "thumbnail": "/images/blog/default-post.jpg",
+      "author": {
+        "name": "Igor Omilaev",
+        "url": "https://unsplash.com/@omilaev?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      },
+      "source": {
+        "name": "Unsplash",
+        "url": "https://unsplash.com/photos/two-hands-touching-each-other-in-front-of-a-pink-background-gVQLAbGVB6Q?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      },
+      "url": "https://unsplash.com/photos/two-hands-touching-each-other-in-front-of-a-pink-background-gVQLAbGVB6Q"
+    },
+    {
+      "filename": "default-featured.jpg",
+      "thumbnail": "/images/blog/default-featured.jpg",
+      "author": {
+        "name": "Cash Macanaya",
+        "url": "https://unsplash.com/@cashmacanaya?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      },
+      "source": {
+        "name": "Unsplash",
+        "url": "https://unsplash.com/photos/two-hands-reaching-for-a-flying-object-in-the-sky-X9Cemmq4YjM?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      },
+      "url": "https://unsplash.com/photos/two-hands-reaching-for-a-flying-object-in-the-sky-X9Cemmq4YjM"
+    }
+  ],
+  "libraries": [
+    {
+      "name": "Inter",
+      "url": "https://rsms.me/inter/",
+      "license": "OFL-1.1",
+      "note": "A typeface carefully crafted and designed for computer screens."
+    },
+    {
+      "name": "Next.js",
+      "url": "https://nextjs.org/",
+      "license": "MIT",
+      "note": "React framework for production. Copyright (c) Vercel, Inc."
+    },
+    {
+      "name": "React",
+      "url": "https://reactjs.org/",
+      "license": "MIT",
+      "note": "A JavaScript library for building user interfaces. Copyright (c) Meta Platforms, Inc. and affiliates."
+    },
+    {
+      "name": "Tailwind CSS",
+      "url": "https://tailwindcss.com/",
+      "license": "MIT",
+      "note": "A utility-first CSS framework for rapidly building custom UIs. Copyright (c) Tailwind Labs, Inc."
+    },
+    {
+      "name": "Heroicons",
+      "url": "https://heroicons.com/",
+      "license": "MIT",
+      "note": "Beautiful hand-crafted SVG icons by the makers of Tailwind CSS."
+    },
+    {
+      "name": "gray-matter",
+      "url": "https://github.com/jonschlinkert/gray-matter",
+      "license": "MIT",
+      "note": "Parse front-matter from strings or files. Copyright (c) 2014-present, Jon Schlinkert."
+    },
+    {
+      "name": "remark",
+      "url": "https://remark.js.org/",
+      "license": "MIT",
+      "note": "Markdown processor powered by plugins. Copyright (c) 2014-2020 Titus Wormer."
+    }
+  ]
+}
