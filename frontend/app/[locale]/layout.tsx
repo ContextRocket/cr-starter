@@ -7,6 +7,7 @@ import "../globals.css";
 import { ChatFab } from "@/components/chat/chat-fab";
 import { AosProvider } from "@/components/ui/aos-provider";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { ThemeInitScript } from "@/components/ui/theme-init-script";
 import { CookieConsentBanner } from "@/components/cookie-consent-banner";
 import { LocaleProvider } from "@/i18n/locale-provider";
 import { SiteChrome } from "@/components/sections/site-chrome";
@@ -188,6 +189,12 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
+        {/* No-flash theme bootstrap. Rendered here in the RSC <head> (not by
+            next-themes' client script) so it ships in the initial HTML and runs
+            before first paint — sets the .dark/.light class + color-scheme with
+            zero flash, and avoids the React 19 "script tag while rendering"
+            client-render warning. See components/ui/theme-init-script.tsx. */}
+        <ThemeInitScript />
         {/* RSS feed discovery. The root layout sets `alternates.types`, but
             each locale page overrides `alternates` (canonical + hreflang), so
             we emit the discovery <link> here where it survives on every
