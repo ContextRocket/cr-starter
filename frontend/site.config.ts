@@ -246,6 +246,22 @@ export interface ChromeConfig {
    * in the chrome. Honored by BOTH the marketing Navbar and the minimal header.
    */
   showThemeToggle?: boolean;
+  /**
+   * Cookie-consent banner STYLE. Governs only the LAYOUT the banner renders in
+   * (visibility is a separate three-way control — see
+   * FeaturesConfig.cookieConsent).
+   *   "bar"  (DEFAULT) — a slim full-width bar pinned to the bottom edge: a
+   *                      single desktop row (one-line message + policy link on
+   *                      the left, Decline + Accept on the right) that stacks on
+   *                      mobile. The owner-selected new design.
+   *   "card"           — the prior bottom-left floating card (title + body +
+   *                      policy link + stacked Decline/Accept). A fork that
+   *                      prefers the compact card over the full-width bar sets
+   *                      this. Both variants share the same consent contract,
+   *                      testids, and grant/deny + localStorage flow.
+   * Undefined is treated as "bar".
+   */
+  cookieBannerStyle?: "bar" | "card";
 }
 
 /**
@@ -618,6 +634,9 @@ export const siteConfig: SiteConfig = {
     // "wordmark" to render the wide wordmark instead.
     logoVariant: "icon",
     showThemeToggle: true,
+    // Cookie-consent banner LAYOUT. "bar" is the owner-selected slim full-width
+    // bar; flip to "card" for the compact bottom-left floating card.
+    cookieBannerStyle: "bar",
   },
 
   // ── Crawling posture ──────────────────────────────────────────────────

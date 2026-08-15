@@ -106,6 +106,7 @@ export const sharedEs = {
       aria: {
         label: "Consentimiento de cookies"
       },
+      title: "Este sitio utiliza cookies",
       body: "Usamos cookies analíticas. Consulta nuestra",
       policy: {
         link: "Política de privacidad"

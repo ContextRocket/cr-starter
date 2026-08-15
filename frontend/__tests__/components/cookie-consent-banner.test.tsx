@@ -23,13 +23,16 @@ import "@testing-library/jest-dom/vitest";
 // ── Mock the single analytics source + config so we drive the two inputs ──────
 // analyticsConfigured() is mocked per-test; the consent store is backed by a
 // mutable holder so we control "prior choice" without real localStorage.
-const { mockAnalytics, mockFeatures } = vi.hoisted(() => ({
+const { mockAnalytics, mockFeatures, mockChrome } = vi.hoisted(() => ({
   mockAnalytics: {
     configured: false,
     consent: null as "granted" | "denied" | null,
   },
   mockFeatures: {
     cookieConsent: "auto" as "auto" | "on" | "off",
+  },
+  mockChrome: {
+    cookieBannerStyle: "bar" as "bar" | "card",
   },
 }));
 
@@ -49,6 +52,9 @@ vi.mock("@/site.config", () => ({
     get features() {
       return mockFeatures;
     },
+    get chrome() {
+      return mockChrome;
+    },
   },
 }));
 
@@ -61,6 +67,7 @@ beforeEach(() => {
   mockAnalytics.configured = false;
   mockAnalytics.consent = null;
   mockFeatures.cookieConsent = "auto";
+  mockChrome.cookieBannerStyle = "bar";
 });
 
 afterEach(() => {
@@ -112,9 +119,10 @@ describe("CookieConsentBanner", () => {
     expect(screen.getByTestId(BANNER)).toBeInTheDocument();
   });
 
-  it("renders the slim-bar shape: labelled dialog + policy link + both actions", () => {
+  it("renders the slim-bar shape when cookieBannerStyle is 'bar' (default)", () => {
     mockFeatures.cookieConsent = "on";
     mockAnalytics.consent = null;
+    mockChrome.cookieBannerStyle = "bar";
     render(<CookieConsentBanner />);
 
     // Labelled region for a11y (role=dialog with an aria-label).
@@ -122,10 +130,12 @@ describe("CookieConsentBanner", () => {
     expect(banner).toHaveAttribute("role", "dialog");
     expect(banner).toHaveAttribute("aria-label");
 
-    // Full-width bar pinned to the bottom edge (not the prior bottom-left card).
+    // Full-width bar pinned to the bottom edge (not the bottom-left card).
     expect(banner.className).toContain("fixed");
     expect(banner.className).toContain("inset-x-0");
     expect(banner.className).toContain("bottom-0");
+    // Distinguisher: the bar spans the width; it is NOT the max-w-md card.
+    expect(banner.className).not.toContain("max-w-md");
 
     // Policy link + both action buttons are present.
     expect(screen.getByTestId(POLICY_LINK)).toBeInTheDocument();
@@ -133,6 +143,32 @@ describe("CookieConsentBanner", () => {
     const accept = screen.getByTestId(ACCEPT);
     expect(accept).toBeInTheDocument();
     // Accept is the brand-accent primary; Decline is ghost/outline.
+    expect(accept.className).toContain("bg-brand-accent");
+    expect(screen.getByTestId(DECLINE).className).toContain("border");
+  });
+
+  it("renders the bottom-left card shape when cookieBannerStyle is 'card'", () => {
+    mockFeatures.cookieConsent = "on";
+    mockAnalytics.consent = null;
+    mockChrome.cookieBannerStyle = "card";
+    render(<CookieConsentBanner />);
+
+    // Same labelled dialog + testids as the bar (E2E contract preserved).
+    const banner = screen.getByTestId(BANNER);
+    expect(banner).toHaveAttribute("role", "dialog");
+    expect(banner).toHaveAttribute("aria-label");
+
+    // Distinguisher: a compact bottom-left floating card (max-w-md, bottom-6),
+    // NOT the full-width bar (no inset-x-0 / bottom-0 span).
+    expect(banner.className).toContain("max-w-md");
+    expect(banner.className).toContain("sm:bottom-6");
+    expect(banner.className).not.toContain("inset-x-0");
+
+    // Same policy link + both actions, same brand-accent Accept / ghost Decline.
+    expect(screen.getByTestId(POLICY_LINK)).toBeInTheDocument();
+    expect(screen.getByTestId(DECLINE)).toBeInTheDocument();
+    const accept = screen.getByTestId(ACCEPT);
+    expect(accept).toBeInTheDocument();
     expect(accept.className).toContain("bg-brand-accent");
     expect(screen.getByTestId(DECLINE).className).toContain("border");
   });
