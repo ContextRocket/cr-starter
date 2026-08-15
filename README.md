@@ -18,10 +18,14 @@ After forking, do these steps before making the site public:
 - [ ] **`frontend/site.config.ts`** -- replace every `PLACEHOLDER` value:
   `companyName`, `legalName`, `tagline`, `description`, `siteUrl`,
   `contactEmail`, `social.*`, and all `legal.*` fields.
-- [ ] **`public/` favicons and icons** -- replace `favicon.ico`,
+- [ ] **`public/` favicons and icons** -- replace
+  `public/favicon-source.png` with your own square logo PNG (>=512px, ideally
+  1024px, with a SOLID background), then run `pnpm generate-favicons` from
+  `frontend/`. That regenerates the whole set (`favicon.ico`,
   `favicon-16x16.png`, `favicon-32x32.png`, `apple-icon-180x180.png`,
-  `icon-192.png`, `icon-512.png`, `icon-192-maskable.png`,
-  `icon-512-maskable.png` with your own brand assets.
+  `icon-192.png`, `icon-512.png`, and the maskable `icon-192-maskable.png` /
+  `icon-512-maskable.png` with Android safe-zone padding) from that one file.
+  See `frontend/scripts/generate-favicons.mjs`.
 - [ ] **`/impressum`** -- legally required for DE/EU commercial sites.
   Fill in all `site.config.legal` fields (entity, address, register, vat,
   representedBy), then review the generated page with your legal advisor.
