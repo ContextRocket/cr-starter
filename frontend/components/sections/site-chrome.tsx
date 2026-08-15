@@ -45,7 +45,13 @@ const CHROME_EXEMPT_PREFIXES = ["/dashboard", "/auth", "/terminal-demo"];
 interface SiteChromeProps {
   children: React.ReactNode;
   links: NavLink[];
-  logo: { src: string; alt: string; width: number; height: number };
+  /**
+   * Header brand mark. Optional: when omitted (a fork with
+   * chrome.showBrandLogo === false), the minimal header shows the brand NAME as
+   * text. The marketing Navbar always renders a logo, so a marketing fork must
+   * supply one.
+   */
+  logo?: { src: string; alt: string; width: number; height: number };
   footerLinks: FooterLink[];
   companyName: string;
   /** Accessible label for the header nav landmark (i18n-resolved by the layout). */
@@ -81,7 +87,12 @@ export function SiteChrome({
           navLabel={navLabel}
         />
       ) : (
-        <Navbar links={links} logo={logo} navLabel={navLabel} />
+        <Navbar
+          links={links}
+          logo={logo}
+          brandName={companyName}
+          navLabel={navLabel}
+        />
       )}
       <div className="flex-1">{children}</div>
       <FooterSection

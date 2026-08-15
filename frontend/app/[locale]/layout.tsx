@@ -128,12 +128,19 @@ export default async function LocaleLayout({
   const navLinks: NavLink[] = (navConfig?.links ?? [])
     .filter(linkVisible)
     .map(resolveChromeLink);
-  const navLogo = {
-    src: siteConfig.assets.logo,
-    alt: siteConfig.companyName,
-    width: 120,
-    height: 24,
-  };
+  // Header brand mark: pass the logo image unless the fork opts out
+  // (chrome.showBrandLogo === false) — then the header falls back to the brand
+  // NAME as text (the personal-brand look). The marketing Navbar always needs a
+  // logo, so this opt-out is only honored by the minimal header.
+  const navLogo =
+    siteConfig.chrome.showBrandLogo === false
+      ? undefined
+      : {
+          src: siteConfig.assets.logo,
+          alt: siteConfig.companyName,
+          width: 120,
+          height: 24,
+        };
 
   // Top-of-page notification bars: resolve config i18n keys → already-resolved
   // strings so the NotificationBarStack stays i18n-agnostic. Empty config →

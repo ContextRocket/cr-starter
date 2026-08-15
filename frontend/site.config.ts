@@ -212,6 +212,15 @@ export interface ChromeConfig {
    *               (brand name + copyright + a few links). See footer-section.tsx.
    */
   footer: "full" | "minimal";
+  /**
+   * Whether the header renders the brand MARK (the logo image from
+   * `assets.logo`). Default true preserves cr-starter's marketing header. Set
+   * to false for a personal-brand fork whose `assets.logo` is only a PWA/app
+   * icon (not a wordmark): the header then shows the brand NAME as text. Only
+   * meaningful for the "minimal" header (the marketing Navbar always renders a
+   * logo).
+   */
+  showBrandLogo?: boolean;
 }
 
 /**
@@ -300,7 +309,9 @@ export interface SiteConfig {
    * Site-chrome style. Which header/footer VARIANT SiteChrome renders. Defaults
    * preserve cr-starter's current chrome ({ header: "marketing", footer:
    * "full" }); a personal-brand fork flips these to "minimal". Nav/footer LINKS
-   * are separate content in company.config.ts.
+   * are separate content in company.config.ts. A fork may also drop the header
+   * brand MARK (logo image) via `chrome.showBrandLogo: false` so the header
+   * shows the brand NAME as text (the personal-brand default look).
    */
   chrome: ChromeConfig;
   /**

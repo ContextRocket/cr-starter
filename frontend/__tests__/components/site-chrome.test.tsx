@@ -114,6 +114,24 @@ describe("SiteChrome", () => {
     ).toBeInTheDocument();
   });
 
+  it("marketing header falls back to the brand NAME when no logo is supplied", () => {
+    // A fork with chrome.showBrandLogo === false hands SiteChrome no logo; the
+    // marketing Navbar then renders the brand NAME (companyName) as a wordmark.
+    renderChrome({ logo: undefined });
+    const brandLink = screen.getByRole("link", { name: "Acme" });
+    expect(brandLink).toHaveAttribute("href", "/");
+    // No brand IMAGE is rendered when the logo is omitted.
+    expect(screen.queryByRole("img")).toBeNull();
+  });
+
+  it("minimal header shows the brand NAME when showBrandLogo is false (no logo)", () => {
+    mockChrome.header = "minimal";
+    renderChrome({ logo: undefined });
+    const brandLink = screen.getByRole("link", { name: "Acme" });
+    expect(brandLink).toHaveAttribute("href", "/");
+    expect(screen.queryByRole("img")).toBeNull();
+  });
+
   it("renders nothing but children on a chrome-exempt (dashboard) path", () => {
     mockPathname.value = "/dashboard";
     renderChrome();

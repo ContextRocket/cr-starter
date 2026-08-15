@@ -15,7 +15,14 @@ export interface NavLink {
 
 export interface NavbarProps {
   links: NavLink[];
-  logo: { src: string; alt: string; width: number; height: number };
+  /**
+   * Brand mark. Optional: when omitted, the brand NAME (`brandName`) is shown as
+   * text instead of an image — so a fork whose `assets.logo` is only an app icon
+   * can render a wordmark-free header.
+   */
+  logo?: { src: string; alt: string; width: number; height: number };
+  /** Brand name — shown as text when no `logo`, and as the logo alt fallback. */
+  brandName?: string;
   /**
    * Accessible label for the primary nav landmark. i18n-resolved by the caller.
    * Falls back to "Global" only when a caller has not supplied one.
@@ -27,6 +34,7 @@ export interface NavbarProps {
 export function Navbar({
   links,
   logo,
+  brandName = "",
   navLabel = "Global",
   className = "",
 }: NavbarProps) {
@@ -38,17 +46,23 @@ export function Navbar({
         aria-label={navLabel}
         className="max-w-screen-xl px-4 sm:px-8 mx-auto flex items-center justify-between h-16"
       >
-        {/* Logo */}
+        {/* Logo (image) or the brand NAME as text when no logo is supplied. */}
         <LocaleLink href="/" className="shrink-0 flex items-center">
-          <Image
-            src={logo.src}
-            alt={logo.alt}
-            width={logo.width}
-            height={logo.height}
-            className="h-6 w-auto"
-            style={{ marginTop: "-6px", width: "auto" }}
-            priority
-          />
+          {logo ? (
+            <Image
+              src={logo.src}
+              alt={logo.alt}
+              width={logo.width}
+              height={logo.height}
+              className="h-6 w-auto"
+              style={{ marginTop: "-6px", width: "auto" }}
+              priority
+            />
+          ) : (
+            <span className="text-base font-semibold tracking-tight text-gray-900">
+              {brandName}
+            </span>
+          )}
         </LocaleLink>
 
         {/* Desktop links */}
@@ -84,14 +98,20 @@ export function Navbar({
               className="-m-1.5 p-1.5"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <Image
-                src={logo.src}
-                alt={logo.alt}
-                width={logo.width}
-                height={logo.height}
-                className="h-6 w-auto"
-                style={{ marginTop: "-4px", width: "auto" }}
-              />
+              {logo ? (
+                <Image
+                  src={logo.src}
+                  alt={logo.alt}
+                  width={logo.width}
+                  height={logo.height}
+                  className="h-6 w-auto"
+                  style={{ marginTop: "-4px", width: "auto" }}
+                />
+              ) : (
+                <span className="text-base font-semibold tracking-tight text-gray-900">
+                  {brandName}
+                </span>
+              )}
             </LocaleLink>
             <button
               type="button"
