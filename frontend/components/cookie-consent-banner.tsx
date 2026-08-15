@@ -9,24 +9,70 @@
  *
  * Consent state persists in localStorage via lib/analytics.ts.
  * Declining keeps the site fully functional -- no analytics loads.
+ *
+ * VISIBILITY is a three-way control: siteConfig.features.cookieConsent.
+ *   "off"  -> never render.
+ *   "on"   -> render until consent is recorded (regardless of analytics).
+ *   "auto" -> render only when analytics is configured (analyticsConfigured()
+ *             from lib/analytics.ts -- the SAME single-source gate the privacy
+ *             page reads) AND consent is not yet recorded. This is the default,
+ *             so the shipped starter (no analytics keys) shows NO banner, while
+ *             a fork that adds a GA/PostHog key gets it automatically.
+ * This governs visibility only; the grant/deny consent contract is unchanged.
  */
 
 import { useState, useEffect } from "react";
 import { Link } from "@/i18n/navigation";
-import { readConsent, grantConsent, denyConsent } from "@/lib/analytics";
+import {
+  readConsent,
+  grantConsent,
+  denyConsent,
+  analyticsConfigured,
+  type ConsentValue,
+} from "@/lib/analytics";
+import { siteConfig } from "@/site.config";
+import type { FeaturesConfig } from "@/site.config";
 import { t } from "@/i18n/keys";
 
 // Derive privacy path from siteConfig (forks may extend siteConfig.privacyPath).
 const PRIVACY_HREF = "/privacy";
+
+/**
+ * Pure visibility decision (no React, no storage side effects) so the
+ * truth-table is unit-testable in isolation.
+ *
+ * @param mode              siteConfig.features.cookieConsent
+ * @param consent           current recorded consent (null = no choice yet)
+ * @param analyticsPresent  whether a GA/PostHog key is configured
+ */
+export function shouldShowBanner(
+  mode: FeaturesConfig["cookieConsent"],
+  consent: ConsentValue | null,
+  analyticsPresent: boolean,
+): boolean {
+  if (mode === "off") return false;
+  // A recorded choice (granted or denied) always suppresses the banner.
+  if (consent !== null) return false;
+  if (mode === "on") return true;
+  // "auto": only when analytics actually exists.
+  return analyticsPresent;
+}
 
 function useConsentState() {
   // null = not yet read from storage (SSR safe); true = should show banner
   const [shouldShow, setShouldShow] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const current = readConsent();
-    // Show banner only when no choice has been recorded yet.
-    setShouldShow(current === null);
+    // Resolve the three-way visibility control against the recorded consent
+    // and whether analytics is configured. Runs on the client only, so
+    // analyticsConfigured() and readConsent() are safe here.
+    setShouldShow(
+      shouldShowBanner(
+        siteConfig.features.cookieConsent,
+        readConsent(),
+        analyticsConfigured(),
+      ),
+    );
   }, []);
 
   return { shouldShow, setShouldShow };

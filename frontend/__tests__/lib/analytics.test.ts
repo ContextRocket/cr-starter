@@ -15,7 +15,7 @@ import {
   readConsent,
   writeConsent,
   clearConsent,
-  hasAnalyticsKeys,
+  analyticsConfigured,
   initAnalytics,
   grantConsent,
   denyConsent,
@@ -92,16 +92,16 @@ describe("consent persistence", () => {
   });
 });
 
-// ── hasAnalyticsKeys ──────────────────────────────────────────────────────────
+// ── analyticsConfigured ───────────────────────────────────────────────────────
 
-describe("hasAnalyticsKeys", () => {
+describe("analyticsConfigured", () => {
   it("returns false when no keys are set", () => {
     // Env vars are absent in test environment by default.
     const gaOrig = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
     const phOrig = process.env.NEXT_PUBLIC_POSTHOG_KEY;
     delete process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
     delete process.env.NEXT_PUBLIC_POSTHOG_KEY;
-    expect(hasAnalyticsKeys()).toBe(false);
+    expect(analyticsConfigured()).toBe(false);
     if (gaOrig !== undefined)
       process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID = gaOrig;
     if (phOrig !== undefined) process.env.NEXT_PUBLIC_POSTHOG_KEY = phOrig;
@@ -109,13 +109,13 @@ describe("hasAnalyticsKeys", () => {
 
   it("returns true when GA key is set", () => {
     withEnv("NEXT_PUBLIC_GA_MEASUREMENT_ID", "G-TESTTEST", () => {
-      expect(hasAnalyticsKeys()).toBe(true);
+      expect(analyticsConfigured()).toBe(true);
     });
   });
 
   it("returns true when PostHog key is set", () => {
     withEnv("NEXT_PUBLIC_POSTHOG_KEY", "phc_test", () => {
-      expect(hasAnalyticsKeys()).toBe(true);
+      expect(analyticsConfigured()).toBe(true);
     });
   });
 });

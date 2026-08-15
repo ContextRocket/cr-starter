@@ -261,10 +261,40 @@ export interface FeaturesConfig {
    * rendering until a fork supplies real quotes and flips this on.
    */
   testimonials: boolean;
+  /**
+   * Whether the cookie-consent banner is shown, as a three-way control:
+   *
+   *   "auto" (DEFAULT) — show the banner only when analytics is actually
+   *                      configured (a GA or PostHog key is present) AND the
+   *                      visitor has not yet recorded a consent choice. This is
+   *                      the honest default: cr-starter ships NO analytics keys,
+   *                      so "auto" ⇒ no banner. A fork that adds a key gets the
+   *                      banner automatically — no config change needed.
+   *   "on"   — always show the banner until consent is recorded, regardless of
+   *            whether analytics is configured (e.g. a fork that sets
+   *            non-essential cookies through some other mechanism and wants an
+   *            explicit consent gate).
+   *   "off"  — never show the banner (a fork that sets no non-essential cookies
+   *            at all and wants to guarantee the banner never appears).
+   *
+   * The underlying consent flow (grant/deny persisted in localStorage; no
+   * analytics loads until consent is granted) is unchanged by this setting —
+   * it only governs banner VISIBILITY, not the consent contract.
+   */
+  cookieConsent: "auto" | "on" | "off";
 }
 
-/** Names of the feature flags a config-driven nav link may gate on. */
-export type FeatureFlagName = keyof FeaturesConfig;
+/**
+ * Names of the BOOLEAN feature flags a config-driven nav link may gate on.
+ *
+ * Only boolean-valued flags are valid nav gates (a link is shown/hidden by a
+ * simple truthy check in lib/nav-visibility.ts). Non-boolean controls such as
+ * `cookieConsent` ("auto" | "on" | "off") are intentionally excluded so a fork
+ * cannot accidentally wire a three-way control into a link's on/off gate.
+ */
+export type FeatureFlagName = {
+  [K in keyof FeaturesConfig]: FeaturesConfig[K] extends boolean ? K : never;
+}[keyof FeaturesConfig];
 
 /**
  * Blog surface configuration — the PUBLIC URL segment and display name of the
@@ -510,6 +540,12 @@ export const siteConfig: SiteConfig = {
     // testimonials (testimonials.config.json) to show the shape, but a fork
     // must supply real quotes and flip this to true before they render.
     testimonials: false,
+    // Cookie-consent banner: "auto" shows it only when analytics is actually
+    // configured (a GA/PostHog key is present) and consent is not yet recorded.
+    // cr-starter ships no analytics keys, so the default is NO banner; a fork
+    // that adds a key gets the banner automatically. Use "on" to force it or
+    // "off" to suppress it. See FeaturesConfig.cookieConsent for the contract.
+    cookieConsent: "auto",
   },
 
   // ── Blog surface (public URL segment + title) ─────────────────────────

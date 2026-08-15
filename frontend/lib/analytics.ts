@@ -73,8 +73,16 @@ function posthogHost(): string {
 let _gaLoaded = false;
 let _posthogLoaded = false;
 
-/** Returns true when at least one analytics key is configured. */
-export function hasAnalyticsKeys(): boolean {
+/**
+ * The single source of truth for "is analytics configured on this fork?".
+ *
+ * Returns true iff at least one analytics provider key is present
+ * (NEXT_PUBLIC_GA_MEASUREMENT_ID or NEXT_PUBLIC_POSTHOG_KEY). Every consumer
+ * that needs to know whether analytics exists — the cookie-consent banner's
+ * "auto" gate and the privacy page's analytics section — reads THIS, so the
+ * check is defined once and never mirrored.
+ */
+export function analyticsConfigured(): boolean {
   return Boolean(gaKey() || posthogKey());
 }
 

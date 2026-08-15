@@ -10,15 +10,16 @@
  * All controller and contact values are read from site.config.legal -- edit
  * only that file to update names, addresses, and contact information.
  *
- * Analytics sections are conditionally rendered based on whether
- * NEXT_PUBLIC_GA_MEASUREMENT_ID or NEXT_PUBLIC_POSTHOG_KEY are set,
- * mirroring the gating logic in lib/analytics.ts.
+ * Analytics sections are conditionally rendered via analyticsConfigured()
+ * from lib/analytics.ts (the single source of the "is analytics configured?"
+ * check, also read by the cookie-consent banner's "auto" mode). The
+ * per-provider booleans below only pick which provider row to list.
  */
 
 import { setLocale, t } from "@/i18n/keys";
 import { siteConfig } from "@/site.config";
 import { resolveLocale } from "@/i18n/messages";
-import { CONSENT_STORAGE_KEY } from "@/lib/analytics";
+import { CONSENT_STORAGE_KEY, analyticsConfigured } from "@/lib/analytics";
 import { buildAlternates } from "@/lib/seo";
 import { buildBreadcrumbListJsonLd } from "@/lib/structured-data";
 import { StructuredDataScripts } from "@/components/seo/structured-data-scripts";
@@ -42,14 +43,16 @@ export async function generateMetadata({
   };
 }
 
-/** True when Google Analytics 4 is configured (mirrors analytics.ts gaKey()). */
+// Per-provider booleans drive the granular "which provider" list below. Whether
+// analytics exists AT ALL is NOT recomputed here — it comes from the single
+// source, analyticsConfigured() in lib/analytics.ts, the same gate the
+// cookie-consent banner's "auto" mode reads. Keep these two in lockstep by
+// never mirroring the combined check.
+/** True when Google Analytics 4 is configured (drives the GA list item). */
 const gaEnabled = Boolean(process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID);
 
-/** True when PostHog is configured (mirrors analytics.ts posthogKey()). */
+/** True when PostHog is configured (drives the PostHog list item). */
 const posthogEnabled = Boolean(process.env.NEXT_PUBLIC_POSTHOG_KEY);
-
-/** True when at least one analytics provider is configured. */
-const analyticsEnabled = gaEnabled || posthogEnabled;
 
 export default async function PrivacyPage({ params }: PrivacyPageProps) {
   const { locale: rawLocale } = await params;
@@ -157,8 +160,10 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
             </p>
           </div>
 
-          {/* Analytics -- rendered only when at least one provider key is set */}
-          {analyticsEnabled ? (
+          {/* Analytics -- rendered only when at least one provider key is set.
+              Same gate as the cookie-consent banner's "auto" mode:
+              analyticsConfigured() from lib/analytics.ts (single source). */}
+          {analyticsConfigured() ? (
             <div data-testid="privacy-analytics-section">
               <h3 className="text-base font-semibold mb-1">
                 {t("privacy.analytics.heading")}
