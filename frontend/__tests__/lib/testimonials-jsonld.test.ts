@@ -14,6 +14,10 @@
  */
 
 import { buildTestimonialsJsonLd } from "@/lib/testimonials-jsonld";
+import {
+  buildServiceJsonLd,
+  getPrimaryServiceId,
+} from "@/lib/structured-data";
 import { getItemReviewed, resolveTestimonials } from "@/lib/testimonials";
 import type {
   ItemReviewedConfig,
@@ -73,6 +77,43 @@ describe("buildTestimonialsJsonLd — schema.org shape", () => {
     }) as Node;
     expect(node["@type"]).toBe("Product");
     expect(node.name).toBe("Widget Pro");
+  });
+});
+
+describe("buildTestimonialsJsonLd — shared @id (entity collapse)", () => {
+  it("stamps the canonical PRIMARY-service @id for a Service item", () => {
+    const node = buildTestimonialsJsonLd([testimonial()], SERVICE) as Node;
+    expect(node["@id"]).toBe(getPrimaryServiceId("Service"));
+  });
+
+  it("stamps the canonical PRIMARY-product @id for a Product item", () => {
+    const node = buildTestimonialsJsonLd([testimonial()], {
+      type: "Product",
+      name: "Widget Pro",
+    }) as Node;
+    expect(node["@id"]).toBe(getPrimaryServiceId("Product"));
+  });
+
+  it("shares the EXACT @id with buildServiceJsonLd so they collapse to one entity", () => {
+    // A fork (e.g. cr-kleos) that emits BOTH a Service node and testimonials
+    // reviews for the same primary service: both nodes must carry the identical
+    // @id so answer engines see ONE entity (Service + aggregateRating/review).
+    const service = buildServiceJsonLd({ name: "Consulting" })!;
+    const reviews = buildTestimonialsJsonLd([testimonial({ rating: 5 })], {
+      type: "Service",
+      name: "Consulting",
+    }) as Node;
+    expect(reviews["@id"]).toBe(service["@id"]);
+    // The rating attaches to the same @id as the described Service.
+    expect(reviews.aggregateRating).toBeDefined();
+  });
+
+  it("leaves Organization-typed review markup unscoped (own #organization anchor)", () => {
+    const node = buildTestimonialsJsonLd([testimonial()], {
+      type: "Organization",
+      name: "Acme",
+    }) as Node;
+    expect(node["@id"]).toBeUndefined();
   });
 });
 

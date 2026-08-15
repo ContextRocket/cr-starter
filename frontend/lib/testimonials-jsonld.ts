@@ -32,6 +32,7 @@
  */
 
 import type { ItemReviewedConfig, Testimonial } from "@/lib/testimonials";
+import { getPrimaryServiceId } from "@/lib/structured-data";
 
 /** schema.org best-rating for a 1-5 star scale (string per Google examples). */
 const BEST_RATING = "5";
@@ -95,6 +96,16 @@ export function buildTestimonialsJsonLd(
     name: itemReviewed.name,
     review,
   };
+
+  // Share the canonical PRIMARY-service/product `@id` with `buildServiceJsonLd`
+  // so a page that emits BOTH a Service node AND these reviews collapses into ONE
+  // schema.org entity (Service/Product + aggregateRating/review on the same
+  // `@id`) instead of two name-matched siblings answer engines must reconcile.
+  // Organization-typed review markup keeps its own `#organization` anchor and is
+  // never a "primary service", so it is left unscoped here.
+  if (itemReviewed.type === "Service" || itemReviewed.type === "Product") {
+    node["@id"] = getPrimaryServiceId(itemReviewed.type);
+  }
 
   // aggregateRating only when at least one testimonial carries a numeric rating
   // (every counted rating is visibly rendered as stars on the page).

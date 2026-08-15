@@ -19,6 +19,26 @@ import type { FaqEntry } from "@/lib/faq";
 export type JsonLdNode = Record<string, unknown>;
 
 /**
+ * Canonical `@id` for the site's PRIMARY reviewed entity (its Service or
+ * Product). This is the single reconciliation anchor so that a page's `Service`
+ * node (`buildServiceJsonLd`) and the testimonials reviewed-item node
+ * (`buildTestimonialsJsonLd`) collapse into ONE schema.org entity instead of two
+ * name-matched siblings — the `Service`/`Product` description + provider and the
+ * `aggregateRating`/`review` then attach to the same node.
+ *
+ * The id is derived purely from `siteConfig.siteUrl` (never from the display
+ * name, so a copy edit never forks the entity) and is type-scoped so a fork that
+ * reviews a concrete `Product` and a fork that reviews a `Service` get distinct
+ * stable anchors. Both builders MUST route their `@id` through this helper.
+ */
+export function getPrimaryServiceId(
+  type: "Product" | "Service" = "Service",
+): string {
+  const origin = siteConfig.siteUrl.replace(/\/$/, "");
+  return `${origin}/#primary-${type.toLowerCase()}`;
+}
+
+/**
  * Escape `<` characters so a JSON-LD script block cannot be used to inject
  * HTML tags when embedded in a page. This is the same serializer used by
  * Google's recommended JSON-LD injection pattern.
@@ -512,7 +532,9 @@ export function buildServiceJsonLd(
   const node: JsonLdNode = {
     "@context": "https://schema.org",
     "@type": type,
-    "@id": `${origin}/#${slugify(service.name)}-${type.toLowerCase()}`,
+    // Canonical, name-independent id shared with the testimonials reviewed-item
+    // node so Service/Product + aggregateRating/review collapse into one entity.
+    "@id": getPrimaryServiceId(type),
     name: service.name,
     provider: {
       "@id": `${origin}/#organization`,

@@ -11,6 +11,7 @@ import {
   buildPodcastSeriesJsonLd,
   buildServiceJsonLd,
   buildHowToJsonLd,
+  getPrimaryServiceId,
   serializeJsonLd,
   type JsonLdNode,
 } from "@/lib/structured-data";
@@ -223,10 +224,22 @@ describe("buildServiceJsonLd", () => {
     expect(node.areaServed).toBe("Worldwide");
   });
 
+  it("uses the canonical PRIMARY-service @id (name-independent)", () => {
+    // The id is derived from siteUrl, NOT the display name, so a copy edit
+    // never forks the entity — and it matches the testimonials reviewed-item id.
+    const node = buildServiceJsonLd({ name: "Consulting" })!;
+    expect(node["@id"]).toBe(`${ORIGIN}/#primary-service`);
+    expect(node["@id"]).toBe(getPrimaryServiceId("Service"));
+    // Same canonical id regardless of the display name.
+    const renamed = buildServiceJsonLd({ name: "A Different Name" })!;
+    expect(renamed["@id"]).toBe(node["@id"]);
+  });
+
   it("honours the Product type override", () => {
     const node = buildServiceJsonLd({ name: "Widget", type: "Product" })!;
     expect(node["@type"]).toBe("Product");
-    expect(node["@id"]).toContain("-product");
+    expect(node["@id"]).toBe(`${ORIGIN}/#primary-product`);
+    expect(node["@id"]).toBe(getPrimaryServiceId("Product"));
   });
 
   it("maps offers to schema.org Offer with price + currency", () => {
