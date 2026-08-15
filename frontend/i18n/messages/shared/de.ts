@@ -44,7 +44,10 @@ export const sharedDe = {
     dashboard: "Dashboard",
     blog: "Blog",
     logout: "Abmelden",
-    welcome: "Willkommen in deinem Dashboard"
+    welcome: "Willkommen in deinem Dashboard",
+    aria: {
+      primary: "Hauptnavigation"
+    }
   },
   notifications: {
     region: "Website-Benachrichtigungen",

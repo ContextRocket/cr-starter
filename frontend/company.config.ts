@@ -26,6 +26,8 @@
  * Every section is optional — a fork renders only the sections it populates.
  */
 
+import type { FeatureFlagName } from "./site.config";
+
 /** A call to action (button label + destination). */
 export interface CallToAction {
   label: string;
@@ -130,7 +132,65 @@ export interface NotificationItemConfig {
   dismissible?: boolean;
 }
 
+/**
+ * A site-chrome navigation link (header nav OR footer).
+ *
+ * Config references an i18n KEY (not literal copy) — the [locale] layout
+ * resolves `labelKey` with t() and locale-prefixes `href` before passing
+ * already-resolved links to the Navbar / footer. This keeps the shared chrome
+ * components i18n-agnostic and, critically, means NO app/auth link (Dashboard,
+ * Login, ...) is hardcoded in a shared component — a fork controls the entire
+ * link set here, down to an empty list.
+ *
+ * `appOnly` marks a link into the app/auth surface (e.g. Dashboard). When
+ * `nav.showAppLinks` is false these are dropped, so a content/personal fork is
+ * never forced to show app chrome even if it reuses cr-starter's default links.
+ *
+ * `featureFlag` names an optional siteConfig.features flag; the link is dropped
+ * when that flag is off (e.g. the Blog link when the blog surface is disabled).
+ */
+export interface NavLinkConfig {
+  /** i18n key resolving to the link label (e.g. "nav.blog"). */
+  labelKey: string;
+  /**
+   * Same-origin path (leading "/") or absolute URL. Same-origin paths are
+   * locale-prefixed by the layout; absolute URLs are passed through.
+   */
+  href: string;
+  /** Marks an app/auth link, gated by `nav.showAppLinks`. Default false. */
+  appOnly?: boolean;
+  /**
+   * Optional siteConfig.features flag name. When set and that flag is false, the
+   * link is omitted. Must match a key of siteConfig.features (only "blog" today).
+   */
+  featureFlag?: FeatureFlagName;
+}
+
+/**
+ * Site-chrome navigation content.
+ *
+ * `links` is the header nav link set; `footerLinks` is the footer link set.
+ * Both are pure config so a fork sets an arbitrary (or empty) list without
+ * touching the shared Navbar / footer. `showAppLinks` gates every `appOnly`
+ * link at once — cr-starter (which has a dashboard) keeps it true; a
+ * content/personal fork sets it false so app chrome never appears.
+ */
+export interface NavigationConfig {
+  /** Whether app/auth links (those with `appOnly: true`) are shown. */
+  showAppLinks: boolean;
+  /** Header navigation links, in order. */
+  links: NavLinkConfig[];
+  /** Footer links, in order. */
+  footerLinks: NavLinkConfig[];
+}
+
 export interface CompanyConfig {
+  /**
+   * Site-chrome navigation (header + footer links). Pure config so a fork owns
+   * the entire link set — including app-link gating — without editing shared
+   * chrome components.
+   */
+  nav?: NavigationConfig;
   hero?: HeroContent;
   /** Features / offerings, with a section heading. */
   features?: FeaturesSection;
@@ -157,6 +217,27 @@ export interface CompanyConfig {
  * `components/sections/` render from this object.
  */
 export const company: CompanyConfig = {
+  // ── Site-chrome navigation (header + footer links) ────────────────────
+  // Pure config: the shared Navbar/footer hardcode NO links. cr-starter has a
+  // dashboard, so it ships a Dashboard link marked `appOnly` and keeps
+  // `showAppLinks: true`. A content/personal fork sets `showAppLinks: false`
+  // (or replaces `links` entirely, down to an empty list) and app chrome never
+  // appears. Labels are i18n keys resolved by the [locale] layout.
+  nav: {
+    showAppLinks: true,
+    links: [
+      // Blog link is gated on the blog feature flag (default ON in cr-starter);
+      // a fork that disables the blog drops it automatically.
+      { labelKey: "nav.blog", href: "/blog", featureFlag: "blog" },
+      // Dashboard is an app link — dropped when `showAppLinks` is false.
+      { labelKey: "nav.dashboard", href: "/dashboard", appOnly: true },
+    ],
+    footerLinks: [
+      { labelKey: "footer.impressum", href: "/impressum" },
+      { labelKey: "footer.privacy", href: "/privacy" },
+      { labelKey: "footer.faq", href: "/faq" },
+    ],
+  },
   hero: {
     headline: "Your value proposition in one line.", // PLACEHOLDER
     subhead:

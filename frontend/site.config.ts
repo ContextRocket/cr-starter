@@ -185,6 +185,36 @@ export interface PathsConfig {
 }
 
 /**
+ * Site-chrome configuration — which header/footer STYLE a fork renders.
+ *
+ * The [locale] layout wraps every marketing/content page in SiteChrome, which
+ * reads these variants and renders the matching header + footer. This lets a
+ * fork pick a whole different chrome STYLE (e.g. a minimal personal-brand
+ * header with no app links) WITHOUT editing the shared components.
+ *
+ * The actual nav/footer LINKS are content and live in company.config.ts
+ * (`nav` / `footerLinks`), so a fork controls both style (here) and links
+ * (there) purely from config.
+ */
+export interface ChromeConfig {
+  /**
+   * Header STYLE.
+   *   "marketing" — the full Navbar (logo + nav links + mobile menu). DEFAULT;
+   *                 preserves cr-starter's existing behavior.
+   *   "minimal"   — a compact personal-brand header (brand left, a small inline
+   *                 link set right, no app chrome / CTA). See minimal-header.tsx.
+   */
+  header: "marketing" | "minimal";
+  /**
+   * Footer STYLE.
+   *   "full"    — the current FooterSection (copyright + inline links). DEFAULT.
+   *   "minimal" — the same compact row rendered in a personal-brand style
+   *               (brand name + copyright + a few links). See footer-section.tsx.
+   */
+  footer: "full" | "minimal";
+}
+
+/**
  * Feature flags — toggle whole surfaces on/off for a fork.
  *
  * cr-starter is the reusable base: features default ON here so the reference
@@ -200,6 +230,9 @@ export interface FeaturesConfig {
    */
   blog: boolean;
 }
+
+/** Names of the feature flags a config-driven nav link may gate on. */
+export type FeatureFlagName = keyof FeaturesConfig;
 
 export interface SiteConfig {
   /** Public-facing company / product name used in headers, titles, JSON-LD. */
@@ -263,6 +296,13 @@ export interface SiteConfig {
    * a flag to false to hide that surface.
    */
   features: FeaturesConfig;
+  /**
+   * Site-chrome style. Which header/footer VARIANT SiteChrome renders. Defaults
+   * preserve cr-starter's current chrome ({ header: "marketing", footer:
+   * "full" }); a personal-brand fork flips these to "minimal". Nav/footer LINKS
+   * are separate content in company.config.ts.
+   */
+  chrome: ChromeConfig;
   /**
    * Whether the named AI-crawler tier (GPTBot, ClaudeBot, PerplexityBot,
    * Google-Extended, ...) may crawl the site. Default true: being readable
@@ -391,6 +431,16 @@ export const siteConfig: SiteConfig = {
   // render an empty state).
   features: {
     blog: true,
+  },
+
+  // ── Site chrome ───────────────────────────────────────────────────────
+  // Which header/footer STYLE the site renders. cr-starter is the reference
+  // company site, so it ships the full marketing chrome. A personal-brand fork
+  // flips these to "minimal" for a compact header (brand + tiny link set, no app
+  // chrome) and a compact footer. The nav/footer LINKS live in company.config.ts.
+  chrome: {
+    header: "marketing",
+    footer: "full",
   },
 
   // ── Crawling posture ──────────────────────────────────────────────────

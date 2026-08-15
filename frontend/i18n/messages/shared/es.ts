@@ -44,7 +44,10 @@ export const sharedEs = {
     dashboard: "Panel",
     blog: "Blog",
     logout: "Cerrar sesión",
-    welcome: "Bienvenido a tu panel"
+    welcome: "Bienvenido a tu panel",
+    aria: {
+      primary: "Principal"
+    }
   },
   notifications: {
     region: "Notificaciones del sitio",

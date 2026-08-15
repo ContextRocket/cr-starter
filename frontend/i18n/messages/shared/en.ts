@@ -44,7 +44,10 @@ export const sharedEn = {
     dashboard: "Dashboard",
     blog: "Blog",
     logout: "Logout",
-    welcome: "Welcome to your Dashboard"
+    welcome: "Welcome to your Dashboard",
+    aria: {
+      primary: "Primary"
+    }
   },
   notifications: {
     region: "Site notifications",

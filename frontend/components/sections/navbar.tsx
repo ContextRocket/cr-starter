@@ -16,16 +16,26 @@ export interface NavLink {
 export interface NavbarProps {
   links: NavLink[];
   logo: { src: string; alt: string; width: number; height: number };
+  /**
+   * Accessible label for the primary nav landmark. i18n-resolved by the caller.
+   * Falls back to "Global" only when a caller has not supplied one.
+   */
+  navLabel?: string;
   className?: string;
 }
 
-export function Navbar({ links, logo, className = "" }: NavbarProps) {
+export function Navbar({
+  links,
+  logo,
+  navLabel = "Global",
+  className = "",
+}: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <header className={`w-full bg-white shadow-sm overflow-visible relative z-50 ${className}`}>
       <nav
-        aria-label="Global"
+        aria-label={navLabel}
         className="max-w-screen-xl px-4 sm:px-8 mx-auto flex items-center justify-between h-16"
       >
         {/* Logo */}
