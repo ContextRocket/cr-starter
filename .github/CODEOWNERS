@@ -1,0 +1,19 @@
+# CODEOWNERS -- review ownership by i18n / content domain (cr-x3j8).
+#
+# The i18n message tree is partitioned into ownership-domain slices behind a
+# merge barrel (frontend/i18n/messages/{en,es,de}.ts). Site copy + long-form
+# site docs belong to the content team; app + shared UI strings belong to eng.
+#
+# NOTE: @content-owners and @eng are PLACEHOLDER teams. Map them to real
+# GitHub teams (e.g. @your-org/content, @your-org/eng) before enabling
+# required-review enforcement, or GitHub will treat the rules as unresolved.
+
+# Site copy (marketing / legal short strings) -- content team.
+/frontend/i18n/messages/site/   @content-owners
+# Long-form authored site documents (Markdown).
+/frontend/content/site/         @content-owners
+
+# App (authenticated / product) UI strings -- engineering.
+/frontend/i18n/messages/app/    @eng
+# Shared cross-cutting UI primitives -- engineering.
+/frontend/i18n/messages/shared/ @eng
