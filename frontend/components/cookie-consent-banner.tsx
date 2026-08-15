@@ -1,7 +1,12 @@
 "use client";
 
 /**
- * Cookie consent banner -- fixed bottom-left card.
+ * Cookie consent banner -- slim full-width bar pinned to the bottom.
+ *
+ * Layout: a single row on desktop -- one-line message + "Privacy Policy" link
+ * on the left, Decline (ghost/outline) + Accept (brand-accent primary) on the
+ * right. On mobile it stacks cleanly with >=44px touch targets. This is the
+ * owner-selected shape (full-width bar, not the prior bottom-left card).
  *
  * Adapted from context-rocket/frontend/components/cookie-consent-banner.tsx.
  * Simplified for the starter: no preferences sub-panel, no i18n provider
@@ -101,34 +106,37 @@ export function CookieConsentBanner() {
       aria-label={t("cookie.consent.aria.label")}
       data-testid="cookie-consent-banner"
       className={[
-        "fixed bottom-3 left-3 right-3 z-50",
-        "sm:right-auto sm:left-6 sm:bottom-6 sm:max-w-md",
-        "rounded-lg border border-border bg-background/95 shadow-lg backdrop-blur-sm",
-        "animate-in slide-in-from-bottom duration-300",
+        // Full-width bar pinned to the bottom edge (no side insets).
+        "fixed inset-x-0 bottom-0 z-50",
+        // Lifted border + elevation + blur so the bar reads clearly as a
+        // surface in both themes (a top border, not a floating card).
+        "border-t border-card-border bg-background/95 shadow-[0_-4px_16px_rgba(0,0,0,0.08)] backdrop-blur-sm dark:shadow-[0_-4px_16px_rgba(0,0,0,0.4)]",
+        // Respect reduced-motion: skip the slide-in entrance.
+        "animate-in slide-in-from-bottom duration-300 motion-reduce:animate-none",
       ].join(" ")}
     >
-      <div className="flex flex-col gap-2.5 px-4 py-3">
-        <p className="text-sm font-semibold leading-snug text-foreground">
-          {t("cookie.consent.title")}
-        </p>
-
-        <p className="text-sm leading-relaxed text-muted-foreground">
+      {/* Single row on desktop; stacks on mobile. Centered to the content
+          column so it lines up with the page gutter. */}
+      <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+        <p className="text-sm leading-snug text-muted-foreground">
           {t("cookie.consent.body")}{" "}
           <Link
             href={PRIVACY_HREF}
-            className="underline underline-offset-2 transition-colors duration-200 hover:text-foreground"
+            className="rounded-sm font-medium text-foreground underline underline-offset-2 transition-colors duration-200 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             data-testid="cookie-consent-policy-link"
           >
             {t("cookie.consent.policy.link")}
           </Link>
         </p>
 
-        <div className="mt-0.5 flex shrink-0 flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-end">
+        {/* >=44px touch targets on mobile (min-h-11); Accept is brand-accent
+            primary, Decline is ghost/outline. */}
+        <div className="flex shrink-0 items-center gap-2">
           <button
             type="button"
             onClick={handleDecline}
             data-testid="cookie-consent-decline"
-            className="inline-flex min-h-9 items-center justify-center rounded-md border border-border bg-background px-3 text-sm font-medium transition-colors hover:bg-muted"
+            className="inline-flex min-h-11 flex-1 items-center justify-center rounded-md border border-border bg-background px-4 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none sm:min-h-9 sm:flex-none"
           >
             {t("cookie.consent.decline")}
           </button>
@@ -136,7 +144,7 @@ export function CookieConsentBanner() {
             type="button"
             onClick={handleAccept}
             data-testid="cookie-consent-accept"
-            className="inline-flex min-h-9 items-center justify-center rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex min-h-11 flex-1 items-center justify-center rounded-md bg-brand-accent px-4 text-sm font-semibold text-brand-accent-foreground transition-colors hover:bg-brand-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none sm:min-h-9 sm:flex-none"
           >
             {t("cookie.consent.accept")}
           </button>

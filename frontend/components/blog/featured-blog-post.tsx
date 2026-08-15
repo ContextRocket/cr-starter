@@ -39,7 +39,7 @@ export function FeaturedBlogPost({ post, locale }: FeaturedBlogPostProps) {
   return (
     <article
       data-testid={`blog-post-${post.slug}`}
-      className="bg-warm-surface rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden"
+      className="bg-warm-surface rounded-xl border border-card-border shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden"
     >
       <Link href={blogPostPath(post.slug)} className="group block">
         {/* Image (16:9) with graceful fallback */}

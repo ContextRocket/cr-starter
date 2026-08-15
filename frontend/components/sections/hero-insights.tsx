@@ -1,10 +1,9 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { InsightCard } from "./insight-card";
-import { ScrollReveal } from "./scroll-reveal";
 import { SectionWrapper } from "./section-wrapper";
 import { SectionHeader } from "./section-header";
 
@@ -12,11 +11,14 @@ import { SectionHeader } from "./section-header";
  * HeroInsights — a reusable insight-panel with two layouts.
  *
  * layout="grid" (DEFAULT, config-driven): a headline/subhead over a responsive
- * grid of {@link InsightCard}s, each revealed on scroll via <ScrollReveal/>
- * (the project's AOS engine). NO hero image required, so a fork renders it
- * straight from `company.config.heroInsights` with only text content — every
- * card is `{ label, value, description }` and the panel is fully token-styled
- * (works light + dark). This is the panel the starter home ships.
+ * grid of metric cards. The panel sits ABOVE THE FOLD, so its cards animate in
+ * ON MOUNT (staggered fade/rise right after hydration) rather than on scroll —
+ * an on-scroll (AOS) reveal would leave above-the-fold content at opacity:0
+ * until the user scrolls. `prefers-reduced-motion` renders it fully visible
+ * immediately. NO hero image required, so a fork renders it straight from
+ * `company.config.heroInsights` with only text content — every card is
+ * `{ label, value, description }` and the panel is fully token-styled (works
+ * light + dark). This is the panel the starter home ships.
  *
  * layout="overlay" (image-driven): a hero image that, once loaded, triggers a
  * staggered entrance — a score badge scales in first, then a cascade of cards
@@ -99,7 +101,12 @@ export function HeroInsights(props: HeroInsightsProps) {
 
 /**
  * Config-driven grid panel. Renders a headline + subhead over a responsive card
- * grid, each card revealed on scroll. Pure text content, fully token-styled.
+ * grid. This panel sits ABOVE THE FOLD, so it must NOT depend on a scroll event
+ * to become visible (an AOS `data-aos` reveal keeps it at opacity:0 until the
+ * viewport scrolls). Instead it animates in ON MOUNT: cards start faded/offset
+ * and settle to their final state right after hydration, with a small per-card
+ * stagger. `prefers-reduced-motion` short-circuits the entrance so the panel
+ * renders in its final (visible) state immediately.
  */
 function HeroInsightsGrid({
   headline,
@@ -107,40 +114,72 @@ function HeroInsightsGrid({
   items,
   className,
 }: HeroInsightsGridProps) {
+  // Start hidden only when motion is allowed; flip to shown on mount so the
+  // entrance plays without a scroll. SSR / reduced-motion render fully visible.
+  const [mounted, setMounted] = useState(false);
+  const [reduceMotion, setReduceMotion] = useState(false);
+
+  useEffect(() => {
+    // matchMedia is absent in some non-browser test envs (jsdom); guard it so
+    // the entrance degrades to "render visible" rather than throwing.
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setReduceMotion(prefersReduced);
+    // Next frame so the initial (hidden) styles commit before the transition.
+    const id =
+      typeof requestAnimationFrame === "function"
+        ? requestAnimationFrame(() => setMounted(true))
+        : (setMounted(true), 0);
+    return () => {
+      if (typeof cancelAnimationFrame === "function") cancelAnimationFrame(id);
+    };
+  }, []);
+
+  const revealed = mounted || reduceMotion;
+
   return (
     <SectionWrapper className={className}>
-      <ScrollReveal>
-        <SectionHeader title={headline} subtitle={subhead} />
-      </ScrollReveal>
+      <SectionHeader title={headline} subtitle={subhead} />
       <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item, i) => (
-          <ScrollReveal key={item.label} animation="fade-up" delay={Math.min(i, 4) * 75}>
-            <div className="h-full rounded-xl border border-border bg-card p-6 shadow-sm">
-              <div className="flex items-center gap-3">
-                {item.icon && (
-                  <div
-                    className={
-                      "flex size-9 shrink-0 items-center justify-center rounded-lg " +
-                      accentBox(item.color)
-                    }
-                  >
-                    {item.icon}
-                  </div>
-                )}
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                  {item.label}
-                </p>
-              </div>
-              <p className="mt-3 text-3xl font-extrabold leading-none tracking-tight">
-                {item.value}
-              </p>
-              {item.description && (
-                <p className="mt-2 text-sm leading-snug text-muted-foreground">
-                  {item.description}
-                </p>
+          <div
+            key={item.label}
+            className={
+              "h-full rounded-xl border border-card-border bg-card p-6 shadow-sm transition-all duration-500 ease-out motion-reduce:transition-none " +
+              (revealed ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0")
+            }
+            style={
+              reduceMotion
+                ? undefined
+                : { transitionDelay: `${Math.min(i, 4) * 75}ms` }
+            }
+          >
+            <div className="flex items-center gap-3">
+              {item.icon && (
+                <div
+                  className={
+                    "flex size-9 shrink-0 items-center justify-center rounded-lg " +
+                    accentBox(item.color)
+                  }
+                >
+                  {item.icon}
+                </div>
               )}
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                {item.label}
+              </p>
             </div>
-          </ScrollReveal>
+            <p className="mt-3 text-3xl font-extrabold leading-none tracking-tight">
+              {item.value}
+            </p>
+            {item.description && (
+              <p className="mt-2 text-sm leading-snug text-muted-foreground">
+                {item.description}
+              </p>
+            )}
+          </div>
         ))}
       </div>
     </SectionWrapper>

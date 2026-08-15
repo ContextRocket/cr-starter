@@ -61,6 +61,19 @@
   --color-primary-hover: var(--primary-hover);
   --color-primary-soft: var(--primary-soft);
 
+  /* Brand accent — the high-intent CTA color (pink). Distinct from the
+     monochrome --primary so a fork gets a branded "Get started" / "Accept"
+     button for free without recoloring every neutral primary surface. Forks
+     re-brand via the --brand-accent pair in :root / .dark below. */
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-accent-foreground: var(--brand-accent-foreground);
+  --color-brand-accent-hover: var(--brand-accent-hover);
+
+  /* Card border — lifted above the generic --border in dark mode so metric /
+     feature / blog / cookie cards read as panels, not floating text. In light
+     mode it equals --border. */
+  --color-card-border: var(--card-border, var(--border));
+
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-secondary-hover: var(--secondary-hover);
@@ -158,6 +171,11 @@
   /* Hover/soft variants — fork owners adjust alongside --primary */
   --primary-hover: hsl(0 0% 20%);
   --primary-soft: hsl(0 0% 9% / 0.08);
+  /* Brand accent (high-intent CTAs). #FF2B67 matches the header rocket glyph;
+     white foreground clears WCAG AA for button text. */
+  --brand-accent: #ff2b67;
+  --brand-accent-foreground: #ffffff;
+  --brand-accent-hover: #e61f57;
   --secondary: hsl(0 0% 96.1%);
   --secondary-foreground: hsl(0 0% 9%);
   --secondary-hover: hsl(0 0% 92%);
@@ -228,6 +246,11 @@
   --primary-foreground: hsl(0 0% 9%);
   --primary-hover: hsl(0 0% 85%);
   --primary-soft: hsl(0 0% 98% / 0.12);
+  /* Brand accent — slightly brighter on dark so the pink stays vivid against
+     near-black; white foreground keeps AA button-text contrast. */
+  --brand-accent: #ff3d75;
+  --brand-accent-foreground: #ffffff;
+  --brand-accent-hover: #ff5c8c;
   --secondary: hsl(0 0% 14.9%);
   --secondary-foreground: hsl(0 0% 98%);
   --secondary-hover: hsl(0 0% 20%);
@@ -249,6 +272,9 @@
   --destructive-foreground: hsl(0 0% 98%);
   --border: hsl(0 0% 16%);
   --input: hsl(0 0% 16%);
+  /* Card border lifted above the generic --border (16% -> 24%) so cards read
+     as raised panels on the dark page instead of borderless floating text. */
+  --card-border: hsl(0 0% 24%);
   --ring: hsl(0 0% 83.1%);
   --chart-1: hsl(220 70% 50%);
   --chart-2: hsl(160 60% 45%);

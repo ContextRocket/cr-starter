@@ -15,10 +15,12 @@ export interface HeroProps {
 }
 
 const actionStyles = {
+  // High-intent CTA ("Get started") uses the brand-accent token (pink) so a
+  // fork gets a branded primary button for free; secondary stays ghost/outline.
   primary:
-    "inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-all hover:shadow-lg hover:-translate-y-0.5",
+    "inline-flex items-center gap-2 rounded-full bg-brand-accent px-8 py-3.5 text-base font-semibold text-brand-accent-foreground transition-all hover:bg-brand-accent-hover hover:shadow-lg hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none motion-reduce:hover:translate-y-0",
   outline:
-    "inline-flex items-center gap-2 rounded-full border border-border px-8 py-3.5 text-base font-semibold transition-all hover:border-primary/30 hover:bg-foreground/[0.04]",
+    "inline-flex items-center gap-2 rounded-full border border-border px-8 py-3.5 text-base font-semibold transition-all hover:border-primary/30 hover:bg-foreground/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
 };
 
 export function HeroSection({ title, description, actions, className = "", children }: HeroProps) {

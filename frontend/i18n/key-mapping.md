@@ -77,7 +77,6 @@ COOKIE_CONSENT_ARIA_LABEL -> cookie.consent.aria.label
 COOKIE_CONSENT_BODY -> cookie.consent.body
 COOKIE_CONSENT_DECLINE -> cookie.consent.decline
 COOKIE_CONSENT_POLICY_LINK -> cookie.consent.policy.link
-COOKIE_CONSENT_TITLE -> cookie.consent.title
 DASHBOARD_CARD_CHAT_ACTION -> dashboard.card.chat.action
 DASHBOARD_CARD_CHAT_DESCRIPTION -> dashboard.card.chat.description
 DASHBOARD_CARD_CHAT_TITLE -> dashboard.card.chat.title

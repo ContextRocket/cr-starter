@@ -106,8 +106,7 @@ export const sharedEn = {
       aria: {
         label: "Cookie consent"
       },
-      title: "This site uses cookies",
-      body: "We use analytics cookies to improve your experience. See our",
+      body: "We use analytics cookies. See our",
       policy: {
         link: "Privacy Policy"
       },

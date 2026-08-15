@@ -99,6 +99,9 @@ describe("shouldShowBanner", () => {
 // ── Rendered component ────────────────────────────────────────────────────────
 
 const BANNER = "cookie-consent-banner";
+const ACCEPT = "cookie-consent-accept";
+const DECLINE = "cookie-consent-decline";
+const POLICY_LINK = "cookie-consent-policy-link";
 
 describe("CookieConsentBanner", () => {
   it("renders when auto + analytics configured + no prior consent", () => {
@@ -107,6 +110,31 @@ describe("CookieConsentBanner", () => {
     mockAnalytics.consent = null;
     render(<CookieConsentBanner />);
     expect(screen.getByTestId(BANNER)).toBeInTheDocument();
+  });
+
+  it("renders the slim-bar shape: labelled dialog + policy link + both actions", () => {
+    mockFeatures.cookieConsent = "on";
+    mockAnalytics.consent = null;
+    render(<CookieConsentBanner />);
+
+    // Labelled region for a11y (role=dialog with an aria-label).
+    const banner = screen.getByTestId(BANNER);
+    expect(banner).toHaveAttribute("role", "dialog");
+    expect(banner).toHaveAttribute("aria-label");
+
+    // Full-width bar pinned to the bottom edge (not the prior bottom-left card).
+    expect(banner.className).toContain("fixed");
+    expect(banner.className).toContain("inset-x-0");
+    expect(banner.className).toContain("bottom-0");
+
+    // Policy link + both action buttons are present.
+    expect(screen.getByTestId(POLICY_LINK)).toBeInTheDocument();
+    expect(screen.getByTestId(DECLINE)).toBeInTheDocument();
+    const accept = screen.getByTestId(ACCEPT);
+    expect(accept).toBeInTheDocument();
+    // Accept is the brand-accent primary; Decline is ghost/outline.
+    expect(accept.className).toContain("bg-brand-accent");
+    expect(screen.getByTestId(DECLINE).className).toContain("border");
   });
 
   it("renders when mode is on (analytics not configured)", () => {

@@ -37,7 +37,7 @@ export function BlogPostCard({ post, locale }: BlogPostCardProps) {
   return (
     <article
       data-testid={`blog-post-${post.slug}`}
-      className="bg-warm-surface rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden flex flex-col"
+      className="bg-warm-surface rounded-xl border border-card-border shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden flex flex-col"
     >
       <Link href={blogPostPath(post.slug)} className="group flex flex-col h-full">
         {/* Image (16:9) with graceful fallback */}

@@ -38,19 +38,19 @@ export function DevNoticeBar({
     <div
       role="alert"
       data-testid="siteurl-placeholder-warning"
-      className="flex items-center gap-3 border-b border-amber-500/60 bg-amber-100 px-4 py-2 text-sm text-amber-950 dark:bg-amber-950/40 dark:text-amber-100"
+      className="flex items-center gap-2 border-b border-amber-500/30 bg-amber-50 px-4 py-1 text-xs text-amber-900/90 dark:border-amber-500/25 dark:bg-amber-950/30 dark:text-amber-200/90"
     >
       <p className="min-w-0 flex-1 text-center">
-        <strong>{label}</strong> {message}
+        <strong className="font-medium">{label}</strong> {message}
       </p>
       <button
         type="button"
         onClick={() => setDismissed(true)}
         aria-label={dismissLabel}
         data-testid="siteurl-placeholder-warning-dismiss"
-        className="shrink-0 rounded-sm p-0.5 opacity-70 transition-opacity duration-200 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current motion-reduce:transition-none"
+        className="shrink-0 rounded-sm p-0.5 opacity-60 transition-opacity duration-200 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current motion-reduce:transition-none"
       >
-        <X aria-hidden="true" className="size-4" />
+        <X aria-hidden="true" className="size-3.5" />
       </button>
     </div>
   );

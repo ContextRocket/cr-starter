@@ -82,7 +82,7 @@ export function FeaturedArticles({
           <FadeIn key={post.slug} delay={i * 0.1}>
             <Link
               href={blogPostPath(post.slug)}
-              className="group block h-full overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md"
+              className="group block h-full overflow-hidden rounded-xl border border-card-border bg-card shadow-sm transition-shadow hover:shadow-md"
               data-testid={`featured-post-${post.slug}`}
             >
               {post.image ? (

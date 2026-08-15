@@ -152,7 +152,11 @@ export default async function LocaleLayout({
           }
         : {
             src: siteConfig.assets.logo,
-            srcDark: siteConfig.assets.logoDark,
+            // Keep the brand-PINK rocket in dark mode too (not the white
+            // variant): the icon is the only brand-color moment in the header,
+            // and #FF2B67 reads clearly on the near-black dark background. Both
+            // themes therefore render the same pink glyph, so no dark swap.
+            srcDark: siteConfig.assets.logo,
             alt: siteConfig.companyName,
             variant: "icon" as const,
             width: 32,
