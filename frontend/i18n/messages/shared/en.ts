@@ -112,7 +112,30 @@ export const sharedEn = {
         link: "Privacy Policy"
       },
       accept: "Accept",
-      decline: "Decline"
+      decline: "Decline",
+      manage: "Manage settings",
+      prefs: {
+        description:
+          "Choose which cookies we may use. You can update your choice at any time.",
+        save: "Save preferences",
+        category: {
+          necessary: {
+            label: "Strictly necessary",
+            description:
+              "Required for the site to function. These cannot be turned off."
+          },
+          analytics: {
+            label: "Analytics",
+            description:
+              "Help us understand how the site is used so we can improve it."
+          },
+          marketing: {
+            label: "Marketing",
+            description:
+              "Used to personalise content and measure marketing campaigns."
+          }
+        }
+      }
     }
   },
 } as const;

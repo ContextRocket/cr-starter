@@ -17,24 +17,40 @@
  *   any mode + consent recorded  -> DOES NOT render
  */
 
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen, cleanup, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 
 // ── Mock the single analytics source + config so we drive the two inputs ──────
 // analyticsConfigured() is mocked per-test; the consent store is backed by a
 // mutable holder so we control "prior choice" without real localStorage.
-const { mockAnalytics, mockFeatures, mockChrome } = vi.hoisted(() => ({
-  mockAnalytics: {
-    configured: false,
-    consent: null as "granted" | "denied" | null,
-  },
-  mockFeatures: {
-    cookieConsent: "auto" as "auto" | "on" | "off",
-  },
-  mockChrome: {
-    cookieBannerStyle: "bar" as "bar" | "card",
-  },
-}));
+const { mockAnalytics, mockFeatures, mockChrome, saveConsentCategoriesMock } =
+  vi.hoisted(() => {
+    const mockAnalytics = {
+      configured: false,
+      consent: null as "granted" | "denied" | null,
+    };
+    return {
+      mockAnalytics,
+      mockFeatures: {
+        cookieConsent: "auto" as "auto" | "on" | "off",
+      },
+      mockChrome: {
+        cookieBannerStyle: "bar" as "bar" | "card",
+      },
+      // Mirrors the real store: analytics on -> granted, else denied.
+      saveConsentCategoriesMock: vi.fn(
+        (categories: Record<string, unknown>) => {
+          mockAnalytics.consent =
+            categories.analytics === true ? "granted" : "denied";
+          return {
+            necessary: true,
+            analytics: categories.analytics === true,
+            marketing: categories.marketing === true,
+          };
+        },
+      ),
+    };
+  });
 
 vi.mock("@/lib/analytics", () => ({
   analyticsConfigured: () => mockAnalytics.configured,
@@ -45,6 +61,10 @@ vi.mock("@/lib/analytics", () => ({
   denyConsent: vi.fn(() => {
     mockAnalytics.consent = "denied";
   }),
+  // Granular-category surface used by the shared preferences panel.
+  OPTIONAL_CONSENT_CATEGORIES: ["analytics", "marketing"] as const,
+  readConsentCategories: () => null,
+  saveConsentCategories: saveConsentCategoriesMock,
 }));
 
 vi.mock("@/site.config", () => ({
@@ -68,6 +88,7 @@ beforeEach(() => {
   mockAnalytics.consent = null;
   mockFeatures.cookieConsent = "auto";
   mockChrome.cookieBannerStyle = "bar";
+  saveConsentCategoriesMock.mockClear();
 });
 
 afterEach(() => {
@@ -205,3 +226,71 @@ describe("CookieConsentBanner", () => {
     expect(screen.queryByTestId(BANNER)).not.toBeInTheDocument();
   });
 });
+
+// ── Manage settings / granular preferences panel ──────────────────────────────
+//
+// Both layouts expose a "Manage settings" control that expands the SAME inline
+// preferences panel (Necessary locked-on + Analytics + Marketing toggles +
+// Save). These behaviors are asserted against BOTH cookieBannerStyle values so
+// neither layout regresses.
+
+const MANAGE = "cookie-consent-manage";
+const PREFERENCES = "cookie-consent-preferences";
+const SAVE = "cookie-consent-save";
+const NECESSARY = "cookie-consent-pref-necessary";
+const PREF_ANALYTICS = "cookie-consent-pref-analytics";
+const PREF_MARKETING = "cookie-consent-pref-marketing";
+
+describe.each(["bar", "card"] as const)(
+  "CookieConsentBanner manage settings (%s layout)",
+  (style) => {
+    function renderOpen() {
+      mockFeatures.cookieConsent = "on";
+      mockAnalytics.consent = null;
+      mockChrome.cookieBannerStyle = style;
+      render(<CookieConsentBanner />);
+    }
+
+    it("shows a Manage control but keeps the panel collapsed initially", () => {
+      renderOpen();
+      expect(screen.getByTestId(MANAGE)).toBeInTheDocument();
+      expect(screen.queryByTestId(PREFERENCES)).not.toBeInTheDocument();
+    });
+
+    it("expands the granular preferences panel on Manage", () => {
+      renderOpen();
+      fireEvent.click(screen.getByTestId(MANAGE));
+
+      expect(screen.getByTestId(PREFERENCES)).toBeInTheDocument();
+      // Necessary is present and locked on (disabled checkbox, checked).
+      const necessary = screen
+        .getByTestId(NECESSARY)
+        .querySelector("input") as HTMLInputElement;
+      expect(necessary.checked).toBe(true);
+      expect(necessary.disabled).toBe(true);
+      // Analytics + Marketing are toggleable.
+      expect(screen.getByTestId(PREF_ANALYTICS)).toBeInTheDocument();
+      expect(screen.getByTestId(PREF_MARKETING)).toBeInTheDocument();
+    });
+
+    it("Save persists the chosen categories and dismisses the banner", () => {
+      renderOpen();
+      fireEvent.click(screen.getByTestId(MANAGE));
+
+      // Turn analytics on, leave marketing off.
+      const analytics = screen
+        .getByTestId(PREF_ANALYTICS)
+        .querySelector("input") as HTMLInputElement;
+      fireEvent.click(analytics);
+
+      fireEvent.click(screen.getByTestId(SAVE));
+
+      expect(saveConsentCategoriesMock).toHaveBeenCalledTimes(1);
+      expect(saveConsentCategoriesMock).toHaveBeenCalledWith(
+        expect.objectContaining({ analytics: true, marketing: false }),
+      );
+      // Banner is dismissed after saving preferences.
+      expect(screen.queryByTestId(BANNER)).not.toBeInTheDocument();
+    });
+  },
+);

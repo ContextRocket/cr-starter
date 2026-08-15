@@ -52,6 +52,101 @@ export function writeConsent(value: ConsentValue): void {
 export function clearConsent(): void {
   if (!canUseStorage()) return;
   localStorage.removeItem(CONSENT_STORAGE_KEY);
+  localStorage.removeItem(CONSENT_CATEGORIES_STORAGE_KEY);
+}
+
+// ── Granular consent categories ───────────────────────────────────────────────
+//
+// The banner offers a "Manage settings" panel with per-category toggles. The
+// starter models three categories:
+//   - `necessary`  — always on, not user-toggleable (strictly-required cookies).
+//   - `analytics`  — governs whether the analytics providers load. This is the
+//                    ONLY category the starter actually wires to script loading,
+//                    so it stays in lockstep with the binary readConsent() gate
+//                    (analytics on -> "granted", off -> "denied"). Forks that add
+//                    a real provider get it for free.
+//   - `marketing`  — persisted so a fork can gate its own marketing scripts, but
+//                    the shipped starter loads nothing for it (no marketing
+//                    provider). It is stored, not silently dropped.
+//
+// Persisting categories keeps the binary consent value in sync so the existing
+// banner-visibility + initAnalytics() paths need no changes: a recorded category
+// choice records a binary choice too, which suppresses the banner.
+
+export const CONSENT_CATEGORIES_STORAGE_KEY = "cr_analytics_consent_categories";
+
+/** Optional (user-toggleable) categories, in display order. */
+export const OPTIONAL_CONSENT_CATEGORIES = ["analytics", "marketing"] as const;
+
+export type OptionalConsentCategory =
+  (typeof OPTIONAL_CONSENT_CATEGORIES)[number];
+
+/** Full category map. `necessary` is always true (not user-toggleable). */
+export type ConsentCategories = { necessary: true } & Record<
+  OptionalConsentCategory,
+  boolean
+>;
+
+/** Default map: necessary on, everything optional off (privacy-preserving). */
+export function defaultConsentCategories(): ConsentCategories {
+  return { necessary: true, analytics: false, marketing: false };
+}
+
+function isBoolRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+/**
+ * Read the persisted per-category consent. Returns null when the user has not
+ * yet made a granular choice. `necessary` is always forced true regardless of
+ * stored contents.
+ */
+export function readConsentCategories(): ConsentCategories | null {
+  if (!canUseStorage()) return null;
+  const raw = localStorage.getItem(CONSENT_CATEGORIES_STORAGE_KEY);
+  if (!raw) return null;
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    if (!isBoolRecord(parsed)) return null;
+    return {
+      necessary: true,
+      analytics: parsed["analytics"] === true,
+      marketing: parsed["marketing"] === true,
+    };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Persist a granular category choice, keep the binary consent value in sync
+ * (analytics on -> grant + load; off -> deny), and return the saved map.
+ * Necessary is always coerced to true.
+ */
+export function saveConsentCategories(
+  categories: Partial<ConsentCategories>,
+): ConsentCategories {
+  const resolved: ConsentCategories = {
+    necessary: true,
+    analytics: categories.analytics === true,
+    marketing: categories.marketing === true,
+  };
+
+  if (canUseStorage()) {
+    localStorage.setItem(
+      CONSENT_CATEGORIES_STORAGE_KEY,
+      JSON.stringify(resolved),
+    );
+  }
+
+  // Keep the binary analytics gate in lockstep with the analytics category.
+  if (resolved.analytics) {
+    grantConsent();
+  } else {
+    denyConsent();
+  }
+
+  return resolved;
 }
 
 // ── Key resolution ────────────────────────────────────────────────────────────

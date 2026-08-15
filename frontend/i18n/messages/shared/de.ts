@@ -112,7 +112,30 @@ export const sharedDe = {
         link: "Datenschutzerklärung"
       },
       accept: "Akzeptieren",
-      decline: "Ablehnen"
+      decline: "Ablehnen",
+      manage: "Einstellungen verwalten",
+      prefs: {
+        description:
+          "Wählen Sie aus, welche Cookies wir verwenden dürfen. Sie können Ihre Auswahl jederzeit ändern.",
+        save: "Einstellungen speichern",
+        category: {
+          necessary: {
+            label: "Unbedingt erforderlich",
+            description:
+              "Für den Betrieb der Website erforderlich. Diese können nicht deaktiviert werden."
+          },
+          analytics: {
+            label: "Analyse",
+            description:
+              "Helfen uns zu verstehen, wie die Website genutzt wird, damit wir sie verbessern können."
+          },
+          marketing: {
+            label: "Marketing",
+            description:
+              "Werden verwendet, um Inhalte zu personalisieren und Marketingkampagnen zu messen."
+          }
+        }
+      }
     }
   },
 } as const;

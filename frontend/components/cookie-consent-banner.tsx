@@ -15,12 +15,20 @@
  *                       focus-visible rings, dark-legible border).
  *
  * Both layouts share the SAME consent logic, the SAME `data-testid`s
- * (cookie-consent-banner / -accept / -decline / -policy-link), and the SAME
- * grant/deny + localStorage flow -- only the wrapper/layout differs.
+ * (cookie-consent-banner / -accept / -decline / -policy-link / -manage /
+ * -save), and the SAME grant/deny + localStorage flow -- only the
+ * wrapper/layout differs.
  *
- * Adapted from context-rocket/frontend/components/cookie-consent-banner.tsx.
- * Simplified for the starter: no preferences sub-panel, no i18n provider
- * (strings come from i18n/keys.ts t()), links to /privacy from siteConfig.
+ * MANAGE SETTINGS: alongside Accept / Decline, BOTH layouts expose a "Manage
+ * settings" control that expands the SAME inline granular preferences panel
+ * (CookiePreferencesPanel) -- Necessary (locked on) + Analytics + Marketing
+ * toggles with a "Save preferences" action. The panel and its consent logic
+ * are shared; only the wrapper positions it.
+ *
+ * Adapted from context-rocket/frontend/components/cookie-consent-banner.tsx and
+ * its cookie-consent/ preferences controls. Simplified for the starter: no
+ * next-intl provider (strings come from i18n/keys.ts t()), links to /privacy
+ * from siteConfig, starter tokens (no CR-specific terminal styling).
  *
  * Consent state persists in localStorage via lib/analytics.ts.
  * Declining keeps the site fully functional -- no analytics loads.
@@ -48,6 +56,7 @@ import {
 import { siteConfig } from "@/site.config";
 import type { FeaturesConfig } from "@/site.config";
 import { t } from "@/i18n/keys";
+import { CookiePreferencesPanel } from "@/components/cookie-consent/preferences-panel";
 
 // Derive privacy path from siteConfig (forks may extend siteConfig.privacyPath).
 const PRIVACY_HREF = "/privacy";
@@ -110,23 +119,34 @@ function PolicyLink({ className }: { className: string }) {
 }
 
 /**
- * The shared Decline (ghost) + Accept (brand-accent primary) action pair. Both
- * layouts render the SAME testids and the SAME handlers; only the container
- * class differs (a right-aligned row in the bar, a stacked footer in the card).
+ * The shared action pair: "Manage settings" (ghost, expands the preferences
+ * panel) + Decline (ghost) + Accept (brand-accent primary). Both layouts render
+ * the SAME testids and the SAME handlers; only the container class differs (a
+ * right-aligned row in the bar, a stacked footer in the card).
  */
 function ConsentActions({
   onAccept,
   onDecline,
+  onManage,
   containerClassName,
   buttonSizing,
 }: {
   onAccept: () => void;
   onDecline: () => void;
+  onManage: () => void;
   containerClassName: string;
   buttonSizing: string;
 }) {
   return (
     <div className={containerClassName}>
+      <button
+        type="button"
+        onClick={onManage}
+        data-testid="cookie-consent-manage"
+        className={`inline-flex items-center justify-center rounded-md px-4 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none ${buttonSizing}`}
+      >
+        {t("cookie.consent.manage")}
+      </button>
       <button
         type="button"
         onClick={onDecline}
@@ -154,9 +174,15 @@ function ConsentActions({
 function CookieBarLayout({
   onAccept,
   onDecline,
+  onManage,
+  onSaved,
+  prefsOpen,
 }: {
   onAccept: () => void;
   onDecline: () => void;
+  onManage: () => void;
+  onSaved: () => void;
+  prefsOpen: boolean;
 }) {
   return (
     <div
@@ -187,10 +213,17 @@ function CookieBarLayout({
         <ConsentActions
           onAccept={onAccept}
           onDecline={onDecline}
+          onManage={onManage}
           containerClassName="flex shrink-0 items-center gap-2"
           buttonSizing="min-h-11 flex-1 sm:min-h-9 sm:flex-none"
         />
       </div>
+
+      {prefsOpen ? (
+        <div className="mx-auto max-w-6xl border-t border-border px-4 py-3">
+          <CookiePreferencesPanel onSaved={onSaved} />
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -203,9 +236,15 @@ function CookieBarLayout({
 function CookieCardLayout({
   onAccept,
   onDecline,
+  onManage,
+  onSaved,
+  prefsOpen,
 }: {
   onAccept: () => void;
   onDecline: () => void;
+  onManage: () => void;
+  onSaved: () => void;
+  prefsOpen: boolean;
 }) {
   return (
     <div
@@ -234,9 +273,16 @@ function CookieCardLayout({
           <PolicyLink className="rounded-sm underline underline-offset-2 transition-colors duration-200 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background" />
         </p>
 
+        {prefsOpen ? (
+          <div className="max-h-[52vh] overflow-y-auto pr-0.5">
+            <CookiePreferencesPanel onSaved={onSaved} />
+          </div>
+        ) : null}
+
         <ConsentActions
           onAccept={onAccept}
           onDecline={onDecline}
+          onManage={onManage}
           containerClassName="mt-0.5 flex shrink-0 flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-end"
           buttonSizing="min-h-11 sm:min-h-9"
         />
@@ -247,6 +293,7 @@ function CookieCardLayout({
 
 export function CookieConsentBanner() {
   const { shouldShow, setShouldShow } = useConsentState();
+  const [prefsOpen, setPrefsOpen] = useState(false);
 
   function handleAccept() {
     grantConsent();
@@ -258,13 +305,36 @@ export function CookieConsentBanner() {
     setShouldShow(false);
   }
 
+  // "Save preferences" persisted a granular choice (which also recorded a
+  // binary consent value); dismiss the banner just like Accept/Decline.
+  function handleSaved() {
+    setShouldShow(false);
+  }
+
+  function handleManage() {
+    setPrefsOpen((open) => !open);
+  }
+
   // Do not render on SSR or when consent already recorded.
   if (shouldShow !== true) return null;
 
-  // Pick the layout from config; "bar" is the owner-selected default.
+  // Pick the layout from config; "bar" is the owner-selected default. BOTH
+  // layouts carry the same Manage -> expandable preferences panel.
   return siteConfig.chrome.cookieBannerStyle === "card" ? (
-    <CookieCardLayout onAccept={handleAccept} onDecline={handleDecline} />
+    <CookieCardLayout
+      onAccept={handleAccept}
+      onDecline={handleDecline}
+      onManage={handleManage}
+      onSaved={handleSaved}
+      prefsOpen={prefsOpen}
+    />
   ) : (
-    <CookieBarLayout onAccept={handleAccept} onDecline={handleDecline} />
+    <CookieBarLayout
+      onAccept={handleAccept}
+      onDecline={handleDecline}
+      onManage={handleManage}
+      onSaved={handleSaved}
+      prefsOpen={prefsOpen}
+    />
   );
 }

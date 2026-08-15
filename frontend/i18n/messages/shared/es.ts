@@ -112,7 +112,30 @@ export const sharedEs = {
         link: "Política de privacidad"
       },
       accept: "Aceptar",
-      decline: "Rechazar"
+      decline: "Rechazar",
+      manage: "Gestionar preferencias",
+      prefs: {
+        description:
+          "Elige qué cookies podemos usar. Puedes cambiar tu elección en cualquier momento.",
+        save: "Guardar preferencias",
+        category: {
+          necessary: {
+            label: "Estrictamente necesarias",
+            description:
+              "Necesarias para que el sitio funcione. No se pueden desactivar."
+          },
+          analytics: {
+            label: "Analíticas",
+            description:
+              "Nos ayudan a entender cómo se usa el sitio para poder mejorarlo."
+          },
+          marketing: {
+            label: "Marketing",
+            description:
+              "Se usan para personalizar contenido y medir campañas de marketing."
+          }
+        }
+      }
     }
   },
 } as const;
