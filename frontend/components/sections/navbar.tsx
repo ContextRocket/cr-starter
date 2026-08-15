@@ -55,7 +55,7 @@ export function Navbar({
         {/* Logo (theme-aware image) or the brand NAME as text when no logo. */}
         <LocaleLink href="/" className="shrink-0 flex items-center">
           {logo ? (
-            <BrandLogo logo={logo} />
+            <BrandLogo logo={logo} brandName={brandName} />
           ) : (
             <span className="text-base font-semibold tracking-tight text-foreground">
               {brandName}
@@ -105,7 +105,7 @@ export function Navbar({
               onClick={() => setMobileMenuOpen(false)}
             >
               {logo ? (
-                <BrandLogo logo={logo} />
+                <BrandLogo logo={logo} brandName={brandName} />
               ) : (
                 <span className="text-base font-semibold tracking-tight text-foreground">
                   {brandName}

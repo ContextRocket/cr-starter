@@ -55,7 +55,7 @@ export function MinimalHeader({
           href="/"
           className="shrink-0 text-base font-semibold tracking-tight hover:text-primary transition-colors"
         >
-          {logo ? <BrandLogo logo={logo} /> : brandName}
+          {logo ? <BrandLogo logo={logo} brandName={brandName} /> : brandName}
         </LocaleLink>
 
         {/* Right side: optional inline link set + theme toggle. Renders when

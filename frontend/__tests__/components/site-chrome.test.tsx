@@ -146,6 +146,52 @@ describe("SiteChrome", () => {
     expect(screen.queryByRole("img")).toBeNull();
   });
 
+  it("renders the brand NAME beside the icon logo in the marketing header", () => {
+    // logoVariant "icon" carries no wordmark, so the header pairs the icon
+    // glyph with the companyName as a text mark: `[icon]  Acme`. The brand link
+    // is still accessible by the name, and the icon IMAGE is still present.
+    renderChrome();
+    const brandLink = screen.getByRole("link", { name: /Acme/ });
+    expect(brandLink).toHaveAttribute("href", "/");
+    // Both the icon image AND the visible name text render.
+    expect(screen.getAllByRole("img", { name: "Acme" }).length).toBeGreaterThan(
+      0,
+    );
+    expect(screen.getAllByText("Acme").length).toBeGreaterThan(0);
+  });
+
+  it("renders the brand NAME beside the icon logo in the minimal header", () => {
+    mockChrome.header = "minimal";
+    renderChrome();
+    const brandLink = screen.getByRole("link", { name: /Acme/ });
+    expect(brandLink).toHaveAttribute("href", "/");
+    expect(screen.getAllByRole("img", { name: "Acme" }).length).toBeGreaterThan(
+      0,
+    );
+    expect(screen.getAllByText("Acme").length).toBeGreaterThan(0);
+  });
+
+  it("does NOT render a separate name label for the wordmark logo variant", () => {
+    // The wordmark image already contains the name, so no extra text mark is
+    // rendered beside it — only the (name-alt'd) image.
+    renderChrome({
+      logo: {
+        src: "/wordmark.svg",
+        alt: "Acme",
+        variant: "wordmark" as const,
+        width: 178,
+        height: 24,
+      },
+    });
+    const brandLink = screen.getByRole("link", { name: "Acme" });
+    expect(brandLink).toHaveAttribute("href", "/");
+    // The name is only present as the image alt, not as a separate text node.
+    expect(screen.queryByText("Acme")).toBeNull();
+    expect(screen.getAllByRole("img", { name: "Acme" }).length).toBeGreaterThan(
+      0,
+    );
+  });
+
   it("renders nothing but children on a chrome-exempt (dashboard) path", () => {
     mockPathname.value = "/dashboard";
     renderChrome();
