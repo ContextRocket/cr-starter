@@ -16,6 +16,7 @@ import {
 import type { NavLink } from "@/components/sections/navbar";
 import type { FooterLink } from "@/components/sections/footer-section";
 import { company, type NavLinkConfig } from "@/company.config";
+import { isChromeLinkVisible } from "@/lib/nav-visibility";
 // Register all locale trees server-side before any t() call.
 // MUST be imported before `t` so the registry is populated for SSR.
 import { getServerLocaleTree } from "@/i18n/messages/register-server";
@@ -105,25 +106,27 @@ export default async function LocaleLayout({
   // Site chrome links come ENTIRELY from company.config `nav` — no link is
   // hardcoded here or in the shared Navbar/footer. We resolve each config entry
   // to a rendered link: drop it if its `featureFlag` is off (e.g. Blog when the
-  // blog surface is disabled) or if it is `appOnly` and `showAppLinks` is false
-  // (so a content/personal fork never shows Dashboard/auth chrome); resolve its
+  // blog surface is disabled) or if it is `appOnly` and the viewer is a guest
+  // (auth-gating — app links like Dashboard render ONLY for authenticated
+  // users, so the default/public render everywhere shows zero app links; a
+  // fork's `showAppLinks: false` is an additional opt-out); resolve its
   // `labelKey` via t(); and locale-prefix same-origin hrefs (absolute URLs pass
-  // through). The dashboard/auth/terminal surfaces render their own chrome —
-  // SiteChrome hides this header there so there is no double header.
+  // through). Fails closed: when auth is unknown (static export) `isGuest` is
+  // already true above, so app links stay hidden. The dashboard/auth/terminal
+  // surfaces render their own chrome — SiteChrome hides this header there so
+  // there is no double header.
   const navConfig = company.nav;
+  const showAppLinks = navConfig?.showAppLinks ?? true;
   const resolveChromeLink = (link: NavLinkConfig) => ({
     label: t(link.labelKey),
     href: link.href.startsWith("/")
       ? `/${locale}${link.href}`
       : link.href,
   });
-  const isChromeLinkVisible = (link: NavLinkConfig) => {
-    if (link.featureFlag && !siteConfig.features[link.featureFlag]) return false;
-    if (link.appOnly && !(navConfig?.showAppLinks ?? true)) return false;
-    return true;
-  };
+  const linkVisible = (link: NavLinkConfig) =>
+    isChromeLinkVisible(link, isGuest, showAppLinks);
   const navLinks: NavLink[] = (navConfig?.links ?? [])
-    .filter(isChromeLinkVisible)
+    .filter(linkVisible)
     .map(resolveChromeLink);
   const navLogo = {
     src: siteConfig.assets.logo,
@@ -150,7 +153,7 @@ export default async function LocaleLayout({
   // Footer links also come entirely from company.config `nav.footerLinks`
   // (same resolve/gate contract as the header links above).
   const footerLinks: FooterLink[] = (navConfig?.footerLinks ?? [])
-    .filter(isChromeLinkVisible)
+    .filter(linkVisible)
     .map(resolveChromeLink);
 
   return (

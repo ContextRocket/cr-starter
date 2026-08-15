@@ -3,6 +3,8 @@ import { screen } from "@testing-library/dom";
 import "@testing-library/jest-dom/vitest";
 
 import { SiteChrome } from "@/components/sections/site-chrome";
+import { isChromeLinkVisible } from "@/lib/nav-visibility";
+import type { NavLinkConfig } from "@/company.config";
 import { mockPathname } from "../__mocks__/navigation";
 
 // SiteChrome reads siteConfig.chrome directly to pick the header/footer variant.
@@ -20,6 +22,9 @@ vi.mock("@/site.config", () => ({
     get chrome() {
       return mockChrome;
     },
+    // isChromeLinkVisible (used by the guest/auth nav-resolution tests below)
+    // reads siteConfig.features for the featureFlag gate.
+    features: { blog: true },
   },
 }));
 
@@ -115,5 +120,59 @@ describe("SiteChrome", () => {
     expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
     expect(screen.queryByRole("contentinfo")).not.toBeInTheDocument();
     expect(screen.getByText("page content")).toBeInTheDocument();
+  });
+});
+
+// End-to-end nav-resolution → render: the [locale] layout filters config links
+// through isChromeLinkVisible(link, isGuest, showAppLinks) before handing them
+// to SiteChrome. These tests reproduce that resolution for a guest vs an
+// authenticated viewer and assert the rendered chrome, in BOTH header variants,
+// so the Dashboard app link never leaks into the public/guest nav.
+describe("SiteChrome — appOnly (Dashboard) auth-gating end-to-end", () => {
+  const CONFIG_LINKS: NavLinkConfig[] = [
+    { labelKey: "Blog", href: "/blog", featureFlag: "blog" },
+    { labelKey: "Dashboard", href: "/dashboard", appOnly: true },
+  ];
+
+  function resolveNavLinks(isGuest: boolean, showAppLinks = true) {
+    return CONFIG_LINKS.filter((l) =>
+      isChromeLinkVisible(l, isGuest, showAppLinks),
+    ).map((l) => ({ label: l.labelKey, href: `/en${l.href}` }));
+  }
+
+  beforeEach(() => {
+    mockPathname.value = "/";
+    mockChrome.header = "marketing";
+    mockChrome.footer = "full";
+  });
+
+  it("guest sees NO Dashboard link in the marketing header", () => {
+    renderChrome({ links: resolveNavLinks(/* isGuest */ true) });
+    expect(screen.queryByRole("link", { name: "Dashboard" })).toBeNull();
+    expect(screen.getByRole("link", { name: "Blog" })).toBeInTheDocument();
+  });
+
+  it("guest sees NO Dashboard link in the minimal header", () => {
+    mockChrome.header = "minimal";
+    renderChrome({ links: resolveNavLinks(/* isGuest */ true) });
+    expect(screen.queryByRole("link", { name: "Dashboard" })).toBeNull();
+    expect(screen.getByRole("link", { name: "Blog" })).toBeInTheDocument();
+  });
+
+  it("authenticated viewer sees the Dashboard link in the marketing header", () => {
+    renderChrome({ links: resolveNavLinks(/* isGuest */ false) });
+    expect(screen.getByRole("link", { name: "Dashboard" })).toHaveAttribute(
+      "href",
+      "/en/dashboard",
+    );
+  });
+
+  it("authenticated viewer sees the Dashboard link in the minimal header", () => {
+    mockChrome.header = "minimal";
+    renderChrome({ links: resolveNavLinks(/* isGuest */ false) });
+    expect(screen.getByRole("link", { name: "Dashboard" })).toHaveAttribute(
+      "href",
+      "/en/dashboard",
+    );
   });
 });

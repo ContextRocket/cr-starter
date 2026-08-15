@@ -142,9 +142,13 @@ export interface NotificationItemConfig {
  * Login, ...) is hardcoded in a shared component — a fork controls the entire
  * link set here, down to an empty list.
  *
- * `appOnly` marks a link into the app/auth surface (e.g. Dashboard). When
- * `nav.showAppLinks` is false these are dropped, so a content/personal fork is
- * never forced to show app chrome even if it reuses cr-starter's default links.
+ * `appOnly` marks a link into the app/auth surface (e.g. Dashboard). App links
+ * are AUTH-GATED by the [locale] layout: they render ONLY for an authenticated
+ * viewer, so the default/public render everywhere shows zero app links (no fork
+ * ever shows "Dashboard" in its public nav). This fails closed — when auth
+ * cannot be determined (static export) the viewer is treated as a guest and app
+ * links stay hidden. `nav.showAppLinks: false` is an ADDITIONAL fork-level
+ * opt-out that drops app links even for authenticated users.
  *
  * `featureFlag` names an optional siteConfig.features flag; the link is dropped
  * when that flag is off (e.g. the Blog link when the blog surface is disabled).
@@ -157,7 +161,12 @@ export interface NavLinkConfig {
    * locale-prefixed by the layout; absolute URLs are passed through.
    */
   href: string;
-  /** Marks an app/auth link, gated by `nav.showAppLinks`. Default false. */
+  /**
+   * Marks an app/auth link (e.g. Dashboard). Auth-gated by the [locale] layout:
+   * shown ONLY to authenticated viewers (never guests / public / static), and
+   * additionally hidden for everyone when `nav.showAppLinks` is false.
+   * Default false.
+   */
   appOnly?: boolean;
   /**
    * Optional siteConfig.features flag name. When set and that flag is false, the
@@ -171,12 +180,18 @@ export interface NavLinkConfig {
  *
  * `links` is the header nav link set; `footerLinks` is the footer link set.
  * Both are pure config so a fork sets an arbitrary (or empty) list without
- * touching the shared Navbar / footer. `showAppLinks` gates every `appOnly`
- * link at once — cr-starter (which has a dashboard) keeps it true; a
- * content/personal fork sets it false so app chrome never appears.
+ * touching the shared Navbar / footer. `appOnly` links are auth-gated (shown
+ * only to authenticated viewers); `showAppLinks` is an additional fork-level
+ * opt-out that drops every `appOnly` link at once even for authenticated users
+ * — cr-starter (which has a dashboard) keeps it true; a content/personal fork
+ * sets it false so app chrome never appears.
  */
 export interface NavigationConfig {
-  /** Whether app/auth links (those with `appOnly: true`) are shown. */
+  /**
+   * Fork-level opt-out for app/auth links (those with `appOnly: true`). When
+   * false, they are hidden even for authenticated users. Auth-gating (guests
+   * never see app links) applies regardless of this flag.
+   */
   showAppLinks: boolean;
   /** Header navigation links, in order. */
   links: NavLinkConfig[];
@@ -220,16 +235,19 @@ export const company: CompanyConfig = {
   // ── Site-chrome navigation (header + footer links) ────────────────────
   // Pure config: the shared Navbar/footer hardcode NO links. cr-starter has a
   // dashboard, so it ships a Dashboard link marked `appOnly` and keeps
-  // `showAppLinks: true`. A content/personal fork sets `showAppLinks: false`
-  // (or replaces `links` entirely, down to an empty list) and app chrome never
-  // appears. Labels are i18n keys resolved by the [locale] layout.
+  // `showAppLinks: true`. That Dashboard link is auth-gated by the layout: it
+  // appears only for authenticated users, and is absent from the guest/public
+  // nav everywhere. A content/personal fork sets `showAppLinks: false` (or
+  // replaces `links` entirely, down to an empty list) and app chrome never
+  // appears at all. Labels are i18n keys resolved by the [locale] layout.
   nav: {
     showAppLinks: true,
     links: [
       // Blog link is gated on the blog feature flag (default ON in cr-starter);
       // a fork that disables the blog drops it automatically.
       { labelKey: "nav.blog", href: "/blog", featureFlag: "blog" },
-      // Dashboard is an app link — dropped when `showAppLinks` is false.
+      // Dashboard is an app link — auth-gated (authenticated viewers only) and
+      // additionally dropped when `showAppLinks` is false.
       { labelKey: "nav.dashboard", href: "/dashboard", appOnly: true },
     ],
     footerLinks: [
