@@ -1,4 +1,8 @@
 fail_fast: true
+# Verification tiers (cr-sdag): the fast COMMIT tier runs lint-staged + hygiene
+# only; the thorough checks (whole-project tsc, i18n parity) run on PRE-PUSH.
+# `default_install_hook_types` makes `pre-commit install` wire up both stages.
+default_install_hook_types: [pre-commit, pre-push]
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -24,26 +28,21 @@ repos:
 
   - repo: local
     hooks:
-      - id: frontend-lint
-        name: run frontend lint
-        # zsh -l loads ~/.zshrc (nvm); `nvm use --silent || true` is safe when
-        # pre-commit's env already has the right node on PATH.
-        entry: zsh -lc 'cd frontend && nvm use --silent 2>/dev/null || true && pnpm run lint'
+      # (commit, fast) lint-staged: eslint --fix + prettier --write on STAGED
+      # files only — no whole-project lint/prettier on commit. Keeps commits
+      # fast; the thorough checks run on pre-push (below) and in CI.
+      - id: frontend-lint-staged
+        name: lint-staged (eslint + prettier on staged frontend files)
+        entry: zsh -lc 'cd frontend && nvm use --silent 2>/dev/null || true && pnpm exec lint-staged'
         language: system
-        types: [ file ]
-        files: ^frontend/.*\.(js|jsx|ts|tsx)$
+        files: ^frontend/.*\.(js|jsx|ts|tsx|json|css)$
         pass_filenames: false
-      - id: frontend-prettier
-        name: Run Prettier on frontend files
-        entry: zsh -lc 'cd frontend && nvm use --silent 2>/dev/null || true && pnpm run prettier'
-        language: system
-        types: [ file ]
-        files: ^frontend/.*\.(js|jsx|ts|tsx)$
-        pass_filenames: false
+      # (pre-push, thorough) whole-project typecheck — off the commit path.
       - id: frontend-tsc
-        name: run frontend tsc
+        name: run frontend tsc (pre-push)
         entry: zsh -lc 'cd frontend && nvm use --silent 2>/dev/null || true && pnpm run tsc'
         language: system
+        stages: [pre-push]
         types: [ file ]
         files: ^frontend/.*\.(ts|tsx)$
         pass_filenames: false
@@ -61,10 +60,12 @@ repos:
         # Only run frontend client generation if the OpenAPI schema has changed:
         files: openapi\.json$
         pass_filenames: false
+      # (pre-push, thorough) parity across en/es/de — off the commit path.
       - id: i18n-parity
-        name: check i18n parity (en/es/de)
+        name: check i18n parity (en/es/de) (pre-push)
         entry: zsh -lc 'cd frontend && nvm use --silent 2>/dev/null || true && node scripts/check-i18n-parity.js'
         language: system
+        stages: [pre-push]
         # Always run so parity is checked even when unrelated files change
         # (a locale file edited in a parallel branch could drift silently otherwise).
         always_run: true
