@@ -27,6 +27,13 @@ export const siteEn = {
       subtitle: "Guides, research, and product updates.",
       viewAll: "View all posts"
     },
+    testimonials: {
+      eyebrow: "Testimonials",
+      title: "What our customers say",
+      subtitle: "Real results from teams building on the platform.",
+      regionLabel: "Customer testimonials",
+      ratingLabel: "Rated {rating} out of 5"
+    },
     integrations: {
       label: "Integrations",
       title: "Connected to the tools that matter",

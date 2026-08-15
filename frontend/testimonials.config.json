@@ -1,0 +1,54 @@
+{
+  "$schema": "See lib/testimonials.ts for the typed contract (RawTestimonial).",
+  "testimonials": [
+    {
+      "id": "jane-doe",
+      "author": "Jane Doe",
+      "company": "Acme Inc",
+      "avatar": "/placeholder.svg",
+      "role": {
+        "en": "Head of Growth",
+        "es": "Directora de Crecimiento",
+        "de": "Leiterin Wachstum"
+      },
+      "quote": {
+        "en": "This is a placeholder testimonial. Swap it for a real customer quote once the feature flag is turned on.",
+        "es": "Este es un testimonio de ejemplo. Reemplázalo por una cita real de cliente cuando actives la función.",
+        "de": "Dies ist ein Platzhalter-Testimonial. Ersetze es durch ein echtes Kundenzitat, sobald die Funktion aktiviert ist."
+      },
+      "rating": 5,
+      "featured": true,
+      "order": 1,
+      "published": true,
+      "source": {
+        "type": "linkedin",
+        "url": "",
+        "capturedAt": "2024-01-01"
+      }
+    },
+    {
+      "id": "john-sample",
+      "author": "John Sample",
+      "company": "Example Co",
+      "role": {
+        "en": "Product Lead",
+        "es": "Líder de Producto",
+        "de": "Produktleiter"
+      },
+      "quote": {
+        "en": "Another placeholder testimonial showing the card layout with no avatar (initials are used instead).",
+        "es": "Otro testimonio de ejemplo que muestra el diseño de la tarjeta sin avatar (se usan las iniciales).",
+        "de": "Ein weiteres Platzhalter-Testimonial, das das Kartenlayout ohne Avatar zeigt (stattdessen werden Initialen verwendet)."
+      },
+      "rating": 4,
+      "featured": false,
+      "order": 2,
+      "published": true,
+      "source": {
+        "type": "manual",
+        "url": "",
+        "capturedAt": "2024-01-01"
+      }
+    }
+  ]
+}

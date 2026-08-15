@@ -246,6 +246,14 @@ export interface FeaturesConfig {
    * link is shown and /blog renders the index + posts. Default true.
    */
   blog: boolean;
+  /**
+   * Whether the marketing-home testimonials section is enabled. When true (and
+   * there is at least one published testimonial in testimonials.config.json),
+   * the home renders <TestimonialsSection>. Default FALSE — the base ships
+   * example testimonials to show the shape, but the flag keeps them from
+   * rendering until a fork supplies real quotes and flips this on.
+   */
+  testimonials: boolean;
 }
 
 /** Names of the feature flags a config-driven nav link may gate on. */
@@ -450,6 +458,10 @@ export const siteConfig: SiteConfig = {
   // render an empty state).
   features: {
     blog: true,
+    // Testimonials ship OFF by default: the base includes generic example
+    // testimonials (testimonials.config.json) to show the shape, but a fork
+    // must supply real quotes and flip this to true before they render.
+    testimonials: false,
   },
 
   // ── Site chrome ───────────────────────────────────────────────────────

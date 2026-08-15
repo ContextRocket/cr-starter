@@ -9,6 +9,10 @@
 export { HeroSection, type HeroProps } from "./hero";
 export { FeatureGrid, type FeatureGridProps } from "./feature-grid";
 export { TestimonialGrid, type TestimonialGridProps } from "./testimonial-grid";
+export {
+  TestimonialsSection,
+  type TestimonialsSectionProps,
+} from "./testimonials-section";
 export { StatsBar, type StatsBarProps } from "./stats-bar";
 export { CtaSection, type CtaSectionProps } from "./cta-section";
 export {

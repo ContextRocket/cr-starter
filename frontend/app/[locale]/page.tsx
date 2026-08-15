@@ -22,7 +22,10 @@ import { StructuredDataScripts } from "@/components/seo/structured-data-scripts"
 import { MarketingSections } from "@/components/sections/marketing-sections";
 import { FeaturedArticles } from "@/components/sections/featured-articles";
 import { CtaSubscribeSection } from "@/components/sections/cta-subscribe-section";
+import { TestimonialsSection } from "@/components/sections/testimonials-section";
 import { fileBlogAdapter } from "@/lib/blog";
+import { getTestimonials } from "@/lib/testimonials";
+import { siteConfig } from "@/site.config";
 
 interface HomePageProps {
   params: Promise<{ locale: string }>;
@@ -45,6 +48,12 @@ export default async function Home({ params }: HomePageProps) {
   // Blog teaser: the newest few posts, only rendered when the blog has content.
   const featuredPosts = fileBlogAdapter.list().slice(0, 3);
 
+  // Testimonials: only when the feature flag is on AND there are published
+  // items. Flag off (the shipped default) or no items -> render nothing.
+  const testimonials = siteConfig.features.testimonials
+    ? getTestimonials(locale)
+    : [];
+
   return (
     <>
       {/* Organization + WebSite JSON-LD: the primary signal ContextRocket's
@@ -53,6 +62,22 @@ export default async function Home({ params }: HomePageProps) {
 
       <main>
         <MarketingSections />
+
+        {testimonials.length > 0 && (
+          <TestimonialsSection
+            eyebrow={t("home.testimonials.eyebrow")}
+            title={t("home.testimonials.title")}
+            subtitle={t("home.testimonials.subtitle")}
+            items={testimonials}
+            regionLabel={t("home.testimonials.regionLabel")}
+            ratingLabel={(rating) =>
+              t("home.testimonials.ratingLabel").replace(
+                "{rating}",
+                String(rating),
+              )
+            }
+          />
+        )}
 
         {featuredPosts.length > 0 && (
           <FeaturedArticles

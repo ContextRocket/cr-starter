@@ -27,6 +27,13 @@ export const siteDe = {
       subtitle: "Anleitungen, Recherche und Produkt-Updates.",
       viewAll: "Alle Beiträge ansehen"
     },
+    testimonials: {
+      eyebrow: "Kundenstimmen",
+      title: "Was unsere Kunden sagen",
+      subtitle: "Echte Ergebnisse von Teams, die auf der Plattform aufbauen.",
+      regionLabel: "Kundenstimmen",
+      ratingLabel: "Mit {rating} von 5 bewertet"
+    },
     integrations: {
       label: "Integrationen",
       title: "Verbunden mit den Tools, die zählen",

@@ -27,6 +27,13 @@ export const siteEs = {
       subtitle: "Guías, investigación y novedades del producto.",
       viewAll: "Ver todas las publicaciones"
     },
+    testimonials: {
+      eyebrow: "Testimonios",
+      title: "Lo que dicen nuestros clientes",
+      subtitle: "Resultados reales de equipos que construyen sobre la plataforma.",
+      regionLabel: "Testimonios de clientes",
+      ratingLabel: "Valorado con {rating} de 5"
+    },
     integrations: {
       label: "Integraciones",
       title: "Conectado con las herramientas que importan",
