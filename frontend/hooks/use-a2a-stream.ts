@@ -11,6 +11,7 @@ import {
   type PendingReview,
   type FaithfulnessVerdict,
 } from "@/lib/a2a-client";
+import { mockStreamTask } from "@/lib/cr-sdk/adapters/a2a-mock";
 import { t } from "@/i18n/keys";
 
 // ── Timing thresholds for the three-tier latency UI ──────────────────────────
@@ -376,7 +377,9 @@ export function useA2AStream(
 
       async function run() {
         try {
-          const stream = streamTask(opts_client, params, controller.signal);
+          const stream = opts_client.baseUrl 
+            ? streamTask(opts_client, params, controller.signal)
+            : mockStreamTask(params, controller.signal);
 
           for await (const event of stream) {
             if (controller.signal.aborted) break;

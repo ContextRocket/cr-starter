@@ -80,7 +80,8 @@ export function ChatPanel({
     chat.phase === "thinking" ||
     chat.phase === "working";
   const hasMessages = chat.messages.length > 0;
-  const backendConnected = Boolean(agentUrl ?? clientOpts?.baseUrl);
+  // Let the offline mock work even without a real backend URL (useful for showcase/demo)
+  const backendConnected = true;
 
   // Effective link mode: fall back to site config default.
   const effectiveLinkMode = linkMode ?? siteConfig.chat.linkMode;

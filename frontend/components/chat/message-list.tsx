@@ -265,7 +265,7 @@ function MessageBubble({
       {isUser ? (
         // User bubble: right-aligned, brand tint, tail on bottom-right
         <div className="flex max-w-[75%] flex-col items-end gap-1">
-          <div className="rounded-[12px_12px_0_12px] bg-[#e7f2ff] px-3 py-2 text-sm leading-[1.35] whitespace-pre-wrap text-foreground">
+          <div className="rounded-[12px_12px_0_12px] bg-secondary px-3 py-2 text-sm leading-[1.35] whitespace-pre-wrap text-secondary-foreground dark:bg-primary-soft dark:text-foreground">
             {displayText}
           </div>
           <span className="pr-0.5 text-[12px] font-semibold text-[#666666]">

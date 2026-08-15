@@ -57,6 +57,7 @@ export {
 } from "@/lib/a2a-client";
 
 import { streamTask, fetchAgentCard } from "@/lib/a2a-client";
+import { mockStreamTask } from "./adapters/a2a-mock";
 import type {
   A2AClientOptions,
   A2ATaskParams,
@@ -121,6 +122,12 @@ export function createCRClient(config: CRConfig): CRClient {
     },
 
     async *streamTurn(params: A2ATaskParams, signal?: AbortSignal) {
+      if (!agentUrl) {
+        // Fall back to the showcase mock stream if no agent URL is configured.
+        yield* mockStreamTask(params, signal);
+        return;
+      }
+      
       const token = await ensureToken(backendEnabled, backendUrl);
       const opts: A2AClientOptions = {
         baseUrl: agentUrl,
@@ -130,6 +137,7 @@ export function createCRClient(config: CRConfig): CRClient {
     },
 
     async agentCard() {
+      if (!agentUrl) return null;
       return fetchAgentCard(agentUrl);
     },
   };

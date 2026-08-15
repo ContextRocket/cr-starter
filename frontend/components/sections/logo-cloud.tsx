@@ -33,7 +33,8 @@ export function LogoCloud({ heading, items, className = "" }: LogoCloudProps) {
                 alt={item.alt}
                 width={140}
                 height={28}
-                className="h-6 w-auto opacity-60 grayscale transition duration-200 group-hover:opacity-100 group-hover:grayscale-0 sm:h-7 dark:opacity-70"
+                style={{ width: "auto" }}
+                className="h-6 opacity-60 grayscale transition duration-200 group-hover:opacity-100 group-hover:grayscale-0 sm:h-7 dark:opacity-70"
               />
             </span>
           );
