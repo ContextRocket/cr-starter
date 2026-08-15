@@ -1,5 +1,9 @@
 {
-  "$schema": "See lib/testimonials.ts for the typed contract (RawTestimonial).",
+  "$schema": "See lib/testimonials.ts for the typed contract (RawTestimonial / ItemReviewedConfig).",
+  "itemReviewed": {
+    "type": "Service",
+    "name": ""
+  },
   "testimonials": [
     {
       "id": "jane-doe",

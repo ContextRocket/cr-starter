@@ -8,8 +8,27 @@
  * inline plus non-localized identity (author, company, avatar) and metadata
  * (rating, featured, order, published, source provenance).
  *
+ * SCHEMA.ORG MAPPING (see lib/testimonials-jsonld.ts):
+ *   The stored fields map 1:1 onto schema.org Review / AggregateRating so the
+ *   SAME resolved data drives both the visible section AND the JSON-LD markup:
+ *     quote            -> Review.reviewBody
+ *     author           -> Review.author.name (schema.org Person)
+ *     rating           -> Review.reviewRating.ratingValue (and AggregateRating)
+ *     source.capturedAt-> Review.datePublished
+ *   The reviewed item (what the reviews are ABOUT) is configured via the
+ *   optional top-level `itemReviewed` key (see ItemReviewedConfig). It defaults
+ *   to { type: "Service", name: siteConfig.companyName }.
+ *
+ *   WHY "Service" (not Organization/LocalBusiness) BY DEFAULT: Google's
+ *   structured-data policy IGNORES (and can penalize) self-serving review /
+ *   aggregateRating markup placed on an Organization or LocalBusiness node.
+ *   Product and Service are the compliant item types for review markup, so the
+ *   base defaults to "Service" — a fork selling a concrete product flips it to
+ *   "Product". Do NOT default this to Organization to chase rich results.
+ *
  * JSON SHAPE (frontend/testimonials.config.json):
  *   {
+ *     "itemReviewed": { "type": "Service", "name": "" }, // optional; see below
  *     "testimonials": [
  *       {
  *         "id": "jane-doe",                     // stable key (required)
@@ -54,10 +73,27 @@
  */
 
 import rawConfig from "@/testimonials.config.json";
+import { siteConfig } from "@/site.config";
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
+
+/**
+ * The thing the testimonials are reviews OF, for schema.org Review markup.
+ *
+ * `type` MUST be a review-eligible schema.org type. Per Google's structured-data
+ * policy, review / aggregateRating markup on Organization or LocalBusiness is
+ * self-serving and ignored, so this is deliberately restricted to Product /
+ * Service / Organization only for callers that knowingly opt in — the DEFAULT
+ * (see `getItemReviewed`) is "Service".
+ */
+export interface ItemReviewedConfig {
+  /** schema.org @type of the reviewed item. Default "Service". */
+  type: "Product" | "Service" | "Organization";
+  /** Display name of the reviewed item. Empty -> siteConfig.companyName. */
+  name: string;
+}
 
 /** Per-locale localized text map. `en` is the canonical fallback key. */
 export interface LocalizedText {
@@ -190,6 +226,7 @@ export function resolveTestimonials(
 
 interface TestimonialsConfigFile {
   testimonials: RawTestimonial[];
+  itemReviewed?: Partial<ItemReviewedConfig>;
 }
 
 /**
@@ -221,4 +258,25 @@ export const fileTestimonialsAdapter: TestimonialsPort =
  */
 export function getTestimonials(locale: string): Testimonial[] {
   return fileTestimonialsAdapter.getTestimonials(locale);
+}
+
+/**
+ * Resolve the reviewed-item config for JSON-LD Review markup.
+ *
+ * Reads the optional top-level `itemReviewed` key from testimonials.config.json
+ * (a fork may also pass an explicit config for tests). Applies the compliant
+ * defaults: `type: "Service"` (NOT Organization — see ItemReviewedConfig) and
+ * `name: siteConfig.companyName` when name is blank/absent. The returned object
+ * is what `buildTestimonialsJsonLd` uses as the reviewed item.
+ */
+export function getItemReviewed(
+  override?: Partial<ItemReviewedConfig>,
+): ItemReviewedConfig {
+  const configured =
+    override ?? (rawConfig as TestimonialsConfigFile).itemReviewed ?? {};
+  const name = configured.name?.trim() ? configured.name : siteConfig.companyName;
+  return {
+    type: configured.type ?? "Service",
+    name,
+  };
 }

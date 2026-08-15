@@ -24,7 +24,8 @@ import { FeaturedArticles } from "@/components/sections/featured-articles";
 import { CtaSubscribeSection } from "@/components/sections/cta-subscribe-section";
 import { TestimonialsSection } from "@/components/sections/testimonials-section";
 import { fileBlogAdapter } from "@/lib/blog";
-import { getTestimonials } from "@/lib/testimonials";
+import { getItemReviewed, getTestimonials } from "@/lib/testimonials";
+import { buildTestimonialsJsonLd } from "@/lib/testimonials-jsonld";
 import { siteConfig } from "@/site.config";
 
 interface HomePageProps {
@@ -54,11 +55,25 @@ export default async function Home({ params }: HomePageProps) {
     ? getTestimonials(locale)
     : [];
 
+  // Review / AggregateRating JSON-LD, built from the SAME resolved testimonials
+  // the section renders (same locale) so reviewBody/author byte-match the visible
+  // text and every emitted rating is shown as stars. null -> emit no script.
+  const testimonialsJsonLd =
+    testimonials.length > 0
+      ? buildTestimonialsJsonLd(testimonials, getItemReviewed())
+      : null;
+
   return (
     <>
       {/* Organization + WebSite JSON-LD: the primary signal ContextRocket's
           taxonomy reads to assess AI-readiness for this site. */}
       <StructuredDataScripts items={buildHomeJsonLd()} />
+
+      {/* Review + AggregateRating JSON-LD: verbatim from the rendered
+          testimonials (text-match invariant, see lib/testimonials-jsonld.ts). */}
+      {testimonialsJsonLd && (
+        <StructuredDataScripts items={[testimonialsJsonLd]} />
+      )}
 
       <main>
         <MarketingSections />
