@@ -13,9 +13,9 @@ import { Label } from "@/components/ui/label";
 
 import { register } from "@/components/actions/register-action";
 import { useActionState } from "react";
-import { SubmitButton } from "@/components/ui/submitButton";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { Link } from "@/i18n/navigation";
-import { FieldError, FormError } from "@/components/ui/FormError";
+import { FieldError, FormError } from "@/components/ui/form-error";
 import { t } from "@/i18n/keys";
 
 type RegisterState = {

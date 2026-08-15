@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { notFound, useSearchParams } from "next/navigation";
 import { passwordResetConfirm } from "@/components/actions/password-reset-action";
-import { SubmitButton } from "@/components/ui/submitButton";
+import { SubmitButton } from "@/components/ui/submit-button";
 import {
   Card,
   CardContent,
@@ -14,7 +14,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Suspense } from "react";
-import { FieldError, FormError } from "@/components/ui/FormError";
+import { FieldError, FormError } from "@/components/ui/form-error";
 import { t } from "@/i18n/keys";
 
 function ResetPasswordForm() {

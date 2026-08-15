@@ -106,6 +106,7 @@ describe("SiteChrome", () => {
 
   it("renders an empty minimal header when config supplies no links", () => {
     mockChrome.header = "minimal";
+    mockChrome.footer = "minimal";
     renderChrome({ links: [], footerLinks: [] });
     const nav = screen.getByRole("navigation", { name: "Primary" });
     expect(nav).toBeInTheDocument();

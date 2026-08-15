@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { t } from "@/i18n/keys";
 
 export interface FooterLink {
   label: string;
@@ -84,7 +85,7 @@ export function FooterSection({
           </div>
           {/* Understated attribution — the subtle ContextRocket anchor. */}
           <p className="mt-2 text-xs text-muted-foreground/70">
-            Powered by{" "}
+            {t("footer.powered_by")}{" "}
             <a
               href="https://contextrocket.ai"
               target="_blank"

@@ -12,9 +12,9 @@ import { Label } from "@/components/ui/label";
 
 import { passwordReset } from "@/components/actions/password-reset-action";
 import { useActionState } from "react";
-import { SubmitButton } from "@/components/ui/submitButton";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { Link } from "@/i18n/navigation";
-import { FormError } from "@/components/ui/FormError";
+import { FormError } from "@/components/ui/form-error";
 import { t } from "@/i18n/keys";
 
 export default function Page() {

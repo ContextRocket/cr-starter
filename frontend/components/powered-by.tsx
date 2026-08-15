@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { t } from "@/i18n/keys";
 
 interface PoweredByProps {
   className?: string;
@@ -19,7 +20,7 @@ export function PoweredBy({ className = "" }: PoweredByProps) {
         height={14}
         className="size-3.5 opacity-50"
       />
-      <span>Powered by ContextRocket</span>
+      <span>{t("footer.powered_by")} ContextRocket</span>
     </a>
   );
 }

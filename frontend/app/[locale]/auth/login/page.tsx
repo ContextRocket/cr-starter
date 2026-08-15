@@ -13,8 +13,8 @@ import { Label } from "@/components/ui/label";
 
 import { login } from "@/components/actions/login-action";
 import { useActionState } from "react";
-import { SubmitButton } from "@/components/ui/submitButton";
-import { FieldError, FormError } from "@/components/ui/FormError";
+import { SubmitButton } from "@/components/ui/submit-button";
+import { FieldError, FormError } from "@/components/ui/form-error";
 import { t } from "@/i18n/keys";
 
 export default function Page() {

@@ -99,6 +99,7 @@ export const siteEs = {
     }
   },
   footer: {
+    powered_by: "Desarrollado por",
     impressum: "Impressum",
     privacy: "Política de privacidad",
     faq: "Preguntas frecuentes",
