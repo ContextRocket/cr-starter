@@ -351,10 +351,36 @@ export const company: CompanyConfig = {
     ],
   },
   logos: {
-    heading: "Trusted by", // PLACEHOLDER
+    // Answer-engine logo row. Framed as "answer-ready across the engines that
+    // matter" — the honest promise of an articulation-first brand. Each logo
+    // links to contextrocket.ai (opened in a new tab by the LogoCloud section).
+    heading: "Answer-ready across the engines that matter",
     items: [
-      // PLACEHOLDER: add logo files to /public and list them here.
-      { src: "/logos/example.svg", alt: "Example" },
+      {
+        src: "/logos/ChatGPT_logo.png",
+        alt: "ChatGPT",
+        href: "https://contextrocket.ai",
+      },
+      {
+        src: "/logos/Claude_AI_logo.png",
+        alt: "Claude",
+        href: "https://contextrocket.ai",
+      },
+      {
+        src: "/logos/Google_Gemini_logo.png",
+        alt: "Google Gemini",
+        href: "https://contextrocket.ai",
+      },
+      {
+        src: "/logos/Perplexity_AI_logo.png",
+        alt: "Perplexity",
+        href: "https://contextrocket.ai",
+      },
+      {
+        src: "/logos/DeepSeek_logo.png",
+        alt: "DeepSeek",
+        href: "https://contextrocket.ai",
+      },
     ],
   },
   stats: [
