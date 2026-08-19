@@ -1,0 +1,55 @@
+fail_fast: true
+
+repos:
+  # File hygiene
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+        args: ["--maxkb=500"]
+      - id: fix-byte-order-marker
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: detect-private-key
+
+  # Local hooks
+  - repo: local
+    hooks:
+      # Em dash replacement — keeps content clean. Uses a Python script that
+      # only writes files that actually contain an em dash (the old `sed -i ""`
+      # unconditionally rewrote files and flaked on macOS).
+      - id: replace-em-dashes
+        name: replace em dashes with regular dashes
+        entry: python3 scripts/replace-em-dashes.py
+        language: system
+        types: [text]
+        files: \.(md|mdx|txt|json|ts|tsx|js|jsx)$
+        exclude: ^frontend/public/embed/
+
+      # Frontend lint-staged (commit time)
+      - id: frontend-lint-staged
+        name: lint-staged (eslint + prettier)
+        entry: zsh -lc 'cd frontend && nvm use --silent 2>/dev/null || true && pnpm exec lint-staged'
+        language: system
+        files: ^frontend/.*\.(js|jsx|ts|tsx|json|css)$
+        pass_filenames: false
+
+      # Frontend typecheck (pre-push)
+      - id: frontend-tsc
+        name: frontend typecheck (pre-push)
+        entry: zsh -lc 'cd frontend && nvm use --silent 2>/dev/null || true && pnpm run tsc'
+        language: system
+        stages: [pre-push]
+        types: [file]
+        files: ^frontend/.*\.(ts|tsx)$
+        pass_filenames: false
+
+      # i18n parity (pre-push)
+      - id: i18n-parity
+        name: check i18n parity (pre-push)
+        entry: zsh -lc 'cd frontend && nvm use --silent 2>/dev/null || true && node scripts/check-i18n-parity.js'
+        language: system
+        stages: [pre-push]
+        always_run: true
+        pass_filenames: false

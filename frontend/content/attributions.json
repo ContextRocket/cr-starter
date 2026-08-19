@@ -1,0 +1,70 @@
+{
+  "images": [
+    {
+      "filename": "ai-brain-future.jpg",
+      "thumbnail": "/images/blog/ai-brain-future.jpg",
+      "author": {
+        "name": "Growtika",
+        "url": "https://unsplash.com/@growtika?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      },
+      "source": {
+        "name": "Unsplash",
+        "url": "https://unsplash.com/photos/a-computer-generated-image-of-a-human-brain-3wXVwtdaESA?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      },
+      "url": "https://unsplash.com/photos/a-computer-generated-image-of-a-human-brain-3wXVwtdaESA"
+    },
+    {
+      "filename": "ai-robot-hands.jpg",
+      "thumbnail": "/images/blog/ai-robot-hands.jpg",
+      "author": {
+        "name": "Possessed Photography",
+        "url": "https://unsplash.com/@possessedphotography?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      },
+      "source": {
+        "name": "Unsplash",
+        "url": "https://unsplash.com/photos/white-and-brown-human-robot-illustration-YKW0JjP7rlU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      },
+      "url": "https://unsplash.com/photos/white-and-brown-human-robot-illustration-YKW0JjP7rlU"
+    },
+    {
+      "filename": "programming-setup.jpg",
+      "thumbnail": "/images/blog/programming-setup.jpg",
+      "author": {
+        "name": "AltumCode",
+        "url": "https://unsplash.com/@altumcode?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      },
+      "source": {
+        "name": "Unsplash",
+        "url": "https://unsplash.com/photos/opened-black-laptop-computer-oZ61KFUQsus?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      },
+      "url": "https://unsplash.com/photos/opened-black-laptop-computer-oZ61KFUQsus"
+    },
+    {
+      "filename": "default-post.jpg",
+      "thumbnail": "/images/blog/default-post.jpg",
+      "author": {
+        "name": "Igor Omilaev",
+        "url": "https://unsplash.com/@omilaev?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      },
+      "source": {
+        "name": "Unsplash",
+        "url": "https://unsplash.com/photos/two-hands-touching-each-other-in-front-of-a-pink-background-gVQLAbGVB6Q?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      },
+      "url": "https://unsplash.com/photos/two-hands-touching-each-other-in-front-of-a-pink-background-gVQLAbGVB6Q"
+    },
+    {
+      "filename": "default-featured.jpg",
+      "thumbnail": "/images/blog/default-featured.jpg",
+      "author": {
+        "name": "Cash Macanaya",
+        "url": "https://unsplash.com/@cashmacanaya?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      },
+      "source": {
+        "name": "Unsplash",
+        "url": "https://unsplash.com/photos/two-hands-reaching-for-a-flying-object-in-the-sky-X9Cemmq4YjM?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      },
+      "url": "https://unsplash.com/photos/two-hands-reaching-for-a-flying-object-in-the-sky-X9Cemmq4YjM"
+    }
+  ],
+  "libraries": []
+}

@@ -1,0 +1,376 @@
+/**
+ * Design tokens for the cr-starter.
+ *
+ * FORK OWNERS: edit site.config.ts > theme {} to change colors, borders, and
+ * radius. The CSS variables below reference those values. The single design
+ * touchpoint is site.config.ts — you should rarely need to edit this file.
+ *
+ * Add a .dark {} block below :root to support dark mode. Set the body class
+ * in app/[locale]/layout.tsx if you want dark mode by default.
+ *
+ * To use a custom font, swap the next/font/local import in
+ * app/[locale]/layout.tsx with next/font/google for Google Fonts.
+ */
+
+@import "tailwindcss";
+
+@plugin "tailwindcss-animate";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark, .dark *));
+
+/*
+ * DESIGN-TOKEN CONTRACT (Layer 1 — generic, source of truth)
+ * ----------------------------------------------------------
+ * These generic semantic tokens (--primary / --secondary / --tertiary, each with
+ * -hover / -soft / -foreground; plus --muted, --accent, semantic --success/
+ * --warning/--info/--error, and --text-secondary/-tertiary) are the SINGLE source
+ * of truth. A derived product (e.g. ContextRocket) keeps its brand vocabulary as
+ * thin ALIASES in its own globals — e.g. `--cr-pink: var(--primary)`,
+ * `--cr-cyan: var(--tertiary)`, `--cr-blue: var(--info)` — never a parallel value
+ * system. This starter never hardcodes brand color names; forks re-brand via
+ * `siteConfig.theme` in site.config.ts.
+ *
+ * NOTE: siteConfig.theme (config/site.config.ts) is the runtime source of truth
+ * for these tokens -- the <ThemeStyle /> component (components/shared/layout/)
+ * injects its light/dark maps into :root / .dark. The :root/.dark blocks below
+ * are the shipped FALLBACK for any token a fork omits.
+ */
+
+@theme {
+  /* Fonts — set in the [locale] layout via next/font. Swap the font files
+     (or switch to next/font/google) without touching component classes. */
+  --font-sans: var(--font-sans, "Geist", system-ui, sans-serif);
+  --font-mono: var(--font-mono, "Geist Mono", "Space Mono", monospace);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  /* Brand hover/soft variants (context-rocket pattern). Forks set these in
+     the :root block alongside --primary. */
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
+
+  /* Brand accent — the high-intent CTA color (pink). Distinct from the
+     monochrome --primary so a fork gets a branded "Get started" / "Accept"
+     button for free without recoloring every neutral primary surface. Forks
+     re-brand via the --brand-accent pair in :root / .dark below. */
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-accent-foreground: var(--brand-accent-foreground);
+  --color-brand-accent-hover: var(--brand-accent-hover);
+
+  /* Card border — lifted above the generic --border in dark mode so metric /
+     feature / blog / cookie cards read as panels, not floating text. In light
+     mode it equals --border. */
+  --color-card-border: var(--card-border, var(--border));
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-secondary-soft: var(--secondary-soft);
+
+  --color-tertiary: var(--tertiary);
+  --color-tertiary-foreground: var(--tertiary-foreground);
+  --color-tertiary-hover: var(--tertiary-hover);
+  --color-tertiary-soft: var(--tertiary-soft);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  /* Text tiers (context-rocket LDS pattern): secondary = de-emphasized
+     body text, tertiary = captions/metadata. */
+  --color-text-secondary: var(--text-secondary, var(--muted-foreground));
+  --color-text-tertiary: var(--text-tertiary, var(--muted-foreground));
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Semantic tokens (context-rocket pattern) */
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-error: var(--error);
+  --color-error-foreground: var(--error-foreground);
+  --color-disabled: var(--disabled);
+  --color-disabled-foreground: var(--disabled-foreground);
+
+  /* Accent surface pairs (context-rocket pattern) — soft tinted backgrounds
+     with matching foregrounds for badges, tags, status pills. Fork owners
+     override the fg/bg pairs per brand. */
+  --color-accent-green-bg: var(--accent-green-bg, #dcfce7);
+  --color-accent-green-fg: var(--accent-green-fg, #166534);
+  --color-accent-mint-bg: var(--accent-mint-bg, #ccfbf1);
+  --color-accent-mint-fg: var(--accent-mint-fg, #115e59);
+  --color-accent-pink-bg: var(--accent-pink-bg, #fce7f3);
+  --color-accent-pink-fg: var(--accent-pink-fg, #9d174d);
+  --color-accent-yellow-bg: var(--accent-yellow-bg, #fef9c3);
+  --color-accent-yellow-fg: var(--accent-yellow-fg, #854d0e);
+  --color-accent-brand-bg: var(--accent-brand-bg, var(--primary-soft));
+  --color-accent-brand-fg: var(--accent-brand-fg, var(--primary));
+  --color-accent-slate-bg: var(--accent-slate-bg, #f1f5f9);
+  --color-accent-slate-fg: var(--accent-slate-fg, #334155);
+  /* Lavender/indigo pair — soft info tint (notification-bar "info" tone).
+     bg #eef2ff / fg #3730a3 clears WCAG AA (7.9:1). */
+  --color-accent-indigo-bg: var(--accent-indigo-bg, #eef2ff);
+  --color-accent-indigo-fg: var(--accent-indigo-fg, #3730a3);
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+:root {
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(0 0% 3.9%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(0 0% 3.9%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(0 0% 3.9%);
+  --primary: hsl(340 76% 43%);
+  --primary-foreground: hsl(0 0% 98%);
+  /* Hover/soft variants — fork owners adjust alongside --primary */
+  --primary-hover: hsl(340 81% 30%);
+  --primary-soft: hsl(340 76% 43% / 0.08);
+  /* Brand accent (high-intent CTAs). #FF2B67 matches the header rocket glyph;
+     white foreground clears WCAG AA for button text. */
+  --brand-accent: #c2185b;
+  --brand-accent-foreground: #ffffff;
+  --brand-accent-hover: #880e4f;
+  --secondary: hsl(0 0% 96.1%);
+  --secondary-foreground: hsl(0 0% 9%);
+  --secondary-hover: hsl(0 0% 92%);
+  --secondary-soft: hsl(0 0% 9% / 0.05);
+  --tertiary: hsl(0 0% 92%);
+  --tertiary-foreground: hsl(0 0% 9%);
+  --tertiary-hover: hsl(0 0% 86%);
+  --tertiary-soft: hsl(0 0% 9% / 0.05);
+  --muted: hsl(0 0% 96.1%);
+  /* 43% (not 45.1%) so muted-foreground text clears WCAG 2 AA 4.5:1 contrast
+     on the --muted (#f5f5f5) background used across cards/secondary copy. */
+  --muted-foreground: hsl(0 0% 43%);
+  --accent: hsl(0 0% 96.1%);
+  --accent-foreground: hsl(0 0% 9%);
+  --destructive: hsl(0 84.2% 60.2%);
+  --destructive-foreground: hsl(0 0% 98%);
+  --border: hsl(0 0% 89.8%);
+  --input: hsl(0 0% 89.8%);
+  --ring: hsl(0 0% 3.9%);
+  --chart-1: hsl(12 76% 61%);
+  --chart-2: hsl(173 58% 39%);
+  --chart-3: hsl(197 37% 24%);
+  --chart-4: hsl(43 74% 66%);
+  --chart-5: hsl(27 87% 67%);
+  --radius: 0.5rem;
+
+  /* Semantic tokens (override per fork in site.config.ts theme) */
+  --success: #10b981;
+  --success-foreground: #ffffff;
+  --warning: #fbbf24;
+  --warning-foreground: #0a0a0a;
+  --info: #3b82f6;
+  --info-foreground: #ffffff;
+  --error: #ef4444;
+  --error-foreground: #ffffff;
+  --disabled: #e5e7eb;
+  --disabled-foreground: #9ca3af;
+
+  /* Active font family — indirection so a route-group can flip the whole
+     surface between the sans (marketing) and mono (terminal) face without
+     touching component classes. Default = marketing. See the surface blocks
+     below. */
+  --font-active: var(--font-sans);
+}
+
+/*
+ * DARK THEME (complete token set)
+ * -------------------------------
+ * next-themes toggles the `.dark` class on <html> (attribute="class"). This
+ * block must override EVERY light `:root` token so no element falls back to a
+ * light-only value — including the hover/soft variants, the semantic tokens
+ * (success/warning/info/error/disabled + foregrounds), and the accent-surface
+ * BG/FG pairs whose @theme fallbacks are light hex. All pairs below are chosen
+ * for WCAG AA legibility on a dark (#0a0a0a-ish) surface.
+ *
+ * Neutrals sit slightly above pure black: card/popover are lifted one step
+ * above --background so cards read as surfaces (not invisible) in dark mode.
+ */
+.dark {
+  --background: hsl(0 0% 3.9%);
+  --foreground: hsl(0 0% 98%);
+  /* Card/popover lifted above the page so surfaces are visible in dark mode. */
+  --card: hsl(0 0% 7%);
+  --card-foreground: hsl(0 0% 98%);
+  --popover: hsl(0 0% 7%);
+  --popover-foreground: hsl(0 0% 98%);
+  --primary: hsl(0 0% 98%);
+  --primary-foreground: hsl(0 0% 9%);
+  --primary-hover: hsl(0 0% 85%);
+  --primary-soft: hsl(0 0% 98% / 0.12);
+  /* Brand accent — slightly brighter on dark so the pink stays vivid against
+     near-black; white foreground keeps AA button-text contrast. */
+  --brand-accent: #ff3d75;
+  --brand-accent-foreground: #ffffff;
+  --brand-accent-hover: #ff5c8c;
+  --secondary: hsl(0 0% 14.9%);
+  --secondary-foreground: hsl(0 0% 98%);
+  --secondary-hover: hsl(0 0% 20%);
+  --secondary-soft: hsl(0 0% 98% / 0.08);
+  --tertiary: hsl(0 0% 14.9%);
+  --tertiary-foreground: hsl(0 0% 98%);
+  --tertiary-hover: hsl(0 0% 20%);
+  --tertiary-soft: hsl(0 0% 98% / 0.08);
+  --muted: hsl(0 0% 14.9%);
+  /* 63.9% clears AA (4.5:1) for body/caption text on the dark --muted/-card. */
+  --muted-foreground: hsl(0 0% 63.9%);
+  /* Text tiers — explicit so text-secondary/-tertiary do not fall back to a
+     light value in dark mode. */
+  --text-secondary: hsl(0 0% 74%);
+  --text-tertiary: hsl(0 0% 63.9%);
+  --accent: hsl(0 0% 14.9%);
+  --accent-foreground: hsl(0 0% 98%);
+  --destructive: hsl(0 62.8% 30.6%);
+  --destructive-foreground: hsl(0 0% 98%);
+  --border: hsl(0 0% 16%);
+  --input: hsl(0 0% 16%);
+  /* Card border lifted above the generic --border (16% -> 24%) so cards read
+     as raised panels on the dark page instead of borderless floating text. */
+  --card-border: hsl(0 0% 24%);
+  --ring: hsl(0 0% 83.1%);
+  --chart-1: hsl(220 70% 50%);
+  --chart-2: hsl(160 60% 45%);
+  --chart-3: hsl(30 80% 55%);
+  --chart-4: hsl(280 65% 60%);
+  --chart-5: hsl(340 75% 55%);
+
+  /* Semantic tokens — brighter fills + light foregrounds read correctly on a
+     dark surface (the light --success etc. would be too muddy). */
+  --success: #22c55e;
+  --success-foreground: #052e16;
+  --warning: #fbbf24;
+  --warning-foreground: #1c1400;
+  --info: #60a5fa;
+  --info-foreground: #0a1a33;
+  --error: #f87171;
+  --error-foreground: #2a0606;
+  --disabled: hsl(0 0% 20%);
+  --disabled-foreground: hsl(0 0% 45%);
+
+  /* Accent-surface pairs — dark, low-saturation tints with light foregrounds
+     (mirror of the light hex defaults in @theme). Without these overrides the
+     notification bar / badges would paint a LIGHT tint on the dark page. Each
+     pair clears WCAG AA for its foreground text. */
+  --accent-green-bg: hsl(142 40% 14%);
+  --accent-green-fg: hsl(142 55% 72%);
+  --accent-mint-bg: hsl(172 40% 14%);
+  --accent-mint-fg: hsl(172 50% 70%);
+  --accent-pink-bg: hsl(330 35% 16%);
+  --accent-pink-fg: hsl(330 70% 80%);
+  --accent-yellow-bg: hsl(48 45% 14%);
+  --accent-yellow-fg: hsl(48 85% 72%);
+  --accent-slate-bg: hsl(215 20% 16%);
+  --accent-slate-fg: hsl(215 20% 78%);
+  --accent-indigo-bg: hsl(243 35% 18%);
+  --accent-indigo-fg: hsl(243 70% 82%);
+  /* Brand accent pair derives from --primary/-soft, already dark-correct. */
+}
+
+/*
+ * SURFACE SPLIT (Layer 2 — one token foundation, two surfaces)
+ * -----------------------------------------------------------
+ * A single site renders two surfaces from the SAME Layer-1 tokens above:
+ *   • outer/marketing (the DEFAULT) — sans face, rounded corners.
+ *   • inner/terminal  — mono face, square corners.
+ * The surface is switched per route-group by setting `data-surface` on that
+ * group's layout wrapper; these blocks override only a couple of tokens
+ * (`--font-active`, `--radius`) — never the color values. The site default is
+ * set on <body> in app/[locale]/layout.tsx (data-surface="marketing").
+ *
+ * Intended ContextRocket map (a derived product wires it this way):
+ *   terminal  = home (Probe) / terminal-demo
+ *   marketing = pricing / about / features / blog / legal / contact
+ */
+[data-surface="marketing"] {
+  --font-active: var(--font-sans);
+  --radius: 0.5rem;
+  font-family: var(--font-active);
+}
+[data-surface="terminal"] {
+  --font-active: var(--font-mono);
+  --radius: 0px;
+  font-family: var(--font-active);
+
+  /* Tailwind v4 bakes the default radius SCALE (--radius-lg/-md/-sm and the
+     literal -xl/-xs) from @theme; re-derive the scale from this surface's
+     --radius so shadcn's rounded-lg/-md/-xl utilities go square here too. */
+  --radius-lg: var(--radius);
+  --radius-md: var(--radius);
+  --radius-sm: var(--radius);
+  --radius-xl: var(--radius);
+  --radius-xs: var(--radius);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-active);
+  }
+}
+
+.brand-name {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+}
+
+
+/* Utility classes for common section backgrounds (edit colors in site.config.ts) */
+.bg-warm { background-color: var(--warm-background, var(--muted)); }
+.bg-warm-surface { background-color: var(--warm-surface, var(--card)); }
+.text-darken { color: var(--darken, var(--foreground)); }

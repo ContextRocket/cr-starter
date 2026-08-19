@@ -1,0 +1,199 @@
+{
+  "company": {
+    "name": "Your Brand",
+    "legalName": "Your Brand GmbH",
+    "tagline": "A clear place to start.",
+    "description": "A simple, flexible starting point for a clear and maintainable website.",
+    "siteUrl": "https://contextrocket.com",
+    "contactEmail": "hello@example.com"
+  },
+  "locales": ["en", "es", "de"],
+  "assets": {
+    "logo": "/brand/cr-icon-red.svg",
+    "logoDark": "/brand/cr-icon-white.svg",
+    "wordmark": "/cr-logo.svg",
+    "wordmarkDark": "/brand/cr-logo-horizontal-white.png",
+    "faviconIco": "/favicon.ico",
+    "icon16": "/favicon-16x16.png",
+    "icon32": "/favicon-32x32.png",
+    "appleTouchIcon": "/apple-icon-180x180.png",
+    "icon192": "/icon-192.png",
+    "icon512": "/icon-512.png",
+    "icon192Maskable": "/icon-192-maskable.png",
+    "icon512Maskable": "/icon-512-maskable.png"
+  },
+  "nav": {
+    "showAppLinks": false,
+    "links": [
+      {
+        "labelKey": "nav.blog",
+        "href": "/blog"
+      }
+    ],
+    "footerLinks": [
+      {
+        "labelKey": "footer.impressum",
+        "href": "/impressum"
+      },
+      {
+        "labelKey": "footer.privacy",
+        "href": "/privacy"
+      },
+      {
+        "labelKey": "footer.faq",
+        "href": "/faq"
+      },
+      {
+        "labelKey": "footer.attribution",
+        "href": "/attribution"
+      }
+    ]
+  },
+  "stats": [
+    {
+      "value": "01",
+      "labelKey": "home.stats.output"
+    },
+    {
+      "value": "02",
+      "labelKey": "home.stats.integrations"
+    },
+    {
+      "value": "03",
+      "labelKey": "home.stats.uptime"
+    }
+  ],
+  "chrome": {
+    "header": "marketing",
+    "footer": "full",
+    "logoVariant": "icon",
+    "showBrandLogo": true,
+    "showThemeToggle": true,
+    "cookieBannerStyle": "bar"
+  },
+  "features": {
+    "blog": true,
+    "chatFab": true,
+    "gallery": false,
+    "languageSelector": true,
+    "impressum": true,
+    "attribution": true,
+    "testimonials": false,
+    "poweredByBadge": true,
+    "cookieConsent": "auto"
+  },
+  "chat": {
+    "fullscreenOnLoad": false
+  },
+  "gallery": {
+    "manifestPath": "content/gallery.json",
+    "assetBaseUrl": "",
+    "profileImageId": ""
+  },
+  "theme": {
+    "radius": "0.5rem",
+    "light": {
+      "--background": "#ffffff",
+      "--foreground": "#0a0a0a",
+      "--card": "#ffffff",
+      "--card-foreground": "#0a0a0a",
+      "--popover": "#ffffff",
+      "--popover-foreground": "#0a0a0a",
+      "--primary": "#c2185b",
+      "--primary-foreground": "#ffffff",
+      "--primary-hover": "#880e4f",
+      "--primary-soft": "#c2185b14",
+      "--brand-accent": "#c2185b",
+      "--brand-accent-foreground": "#ffffff",
+      "--brand-accent-hover": "#880e4f",
+      "--secondary": "#f5f5f5",
+      "--secondary-foreground": "#171717",
+      "--secondary-hover": "#e5e5e5",
+      "--secondary-soft": "rgba(0,0,0,0.05)",
+      "--tertiary": "#e5e5e5",
+      "--tertiary-foreground": "#171717",
+      "--tertiary-hover": "#d4d4d4",
+      "--tertiary-soft": "rgba(0,0,0,0.05)",
+      "--muted": "#f5f5f5",
+      "--muted-foreground": "#6e6e6e",
+      "--accent": "#f5f5f5",
+      "--accent-foreground": "#171717",
+      "--destructive": "#ef4444",
+      "--destructive-foreground": "#fafafa",
+      "--border": "#e5e5e5",
+      "--input": "#e5e5e5",
+      "--ring": "#0a0a0a",
+      "--text-secondary": "#6b7280",
+      "--text-tertiary": "#9ca3af",
+      "--card-border": "#e5e5e5",
+      "--success": "#10b981",
+      "--success-foreground": "#ffffff",
+      "--warning": "#fbbf24",
+      "--warning-foreground": "#0a0a0a",
+      "--info": "#3b82f6",
+      "--info-foreground": "#ffffff",
+      "--error": "#ef4444",
+      "--error-foreground": "#ffffff",
+      "--disabled": "#e5e7eb",
+      "--disabled-foreground": "#9ca3af"
+    },
+    "dark": {
+      "--background": "#0a0a0a",
+      "--foreground": "#fafafa",
+      "--card": "#121212",
+      "--card-foreground": "#fafafa",
+      "--popover": "#121212",
+      "--popover-foreground": "#fafafa",
+      "--primary": "#fafafa",
+      "--primary-foreground": "#171717",
+      "--primary-hover": "#d9d9d9",
+      "--primary-soft": "rgba(250,250,250,0.12)",
+      "--brand-accent": "#ff3d75",
+      "--brand-accent-foreground": "#ffffff",
+      "--brand-accent-hover": "#ff5c8c",
+      "--secondary": "#262626",
+      "--secondary-foreground": "#fafafa",
+      "--secondary-hover": "#404040",
+      "--secondary-soft": "rgba(255,255,255,0.08)",
+      "--tertiary": "#262626",
+      "--tertiary-foreground": "#fafafa",
+      "--tertiary-hover": "#404040",
+      "--tertiary-soft": "rgba(255,255,255,0.08)",
+      "--muted": "#262626",
+      "--muted-foreground": "#a3a3a3",
+      "--accent": "#262626",
+      "--accent-foreground": "#fafafa",
+      "--destructive": "#7f1d1d",
+      "--destructive-foreground": "#fafafa",
+      "--border": "#292929",
+      "--input": "#292929",
+      "--card-border": "#3d3d3d",
+      "--ring": "#d4d4d4",
+      "--text-secondary": "#bdbdbd",
+      "--text-tertiary": "#a3a3a3",
+      "--success": "#22c55e",
+      "--success-foreground": "#052e16",
+      "--warning": "#fbbf24",
+      "--warning-foreground": "#1c1400",
+      "--info": "#60a5fa",
+      "--info-foreground": "#0a1a33",
+      "--error": "#f87171",
+      "--error-foreground": "#2a0606",
+      "--disabled": "#333333",
+      "--disabled-foreground": "#737373"
+    }
+  },
+  "social": {
+    "twitter": "",
+    "linkedin": "",
+    "github": ""
+  },
+  "legal": {
+    "entity": "ContextRocket Starter GmbH",
+    "address": "Musterstraße 1, 10115 Berlin, Germany",
+    "register": "HRB 000000, Amtsgericht Berlin Charlottenburg",
+    "vat": "DE000000000",
+    "representedBy": "Jane Doe",
+    "privacyContact": "privacy@example.com"
+  }
+}

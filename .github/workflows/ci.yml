@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  public-starter:
+    name: Public starter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+          cache-dependency-path: |
+            frontend/pnpm-lock.yaml
+            cli/pnpm-lock.yaml
+            clients/embed-widget/pnpm-lock.yaml
+      - name: Install frontend
+        working-directory: frontend
+        run: pnpm install --frozen-lockfile
+      - name: Install CLI
+        working-directory: cli
+        run: pnpm install --frozen-lockfile
+      - name: Install widget
+        working-directory: clients/embed-widget
+        run: pnpm install --frozen-lockfile
+      - name: Verify frontend
+        working-directory: frontend
+        run: pnpm verify
+      - name: Verify CLI
+        working-directory: cli
+        run: pnpm test && pnpm typecheck && pnpm build
+      - name: Verify widget
+        working-directory: clients/embed-widget
+        run: pnpm verify

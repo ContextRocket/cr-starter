@@ -1,0 +1,39 @@
+{
+  "name": "@contextrocket/cli",
+  "version": "0.0.1",
+  "description": "The portable `contextrocket` operator CLI -- a thin HTTP + OAuth (RFC 8252 loopback + PKCE) client for the ContextRocket API.",
+  "type": "module",
+  "license": "MIT",
+  "homepage": "https://contextrocket.ai",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ContextRocket/cr-starter.git",
+    "directory": "cli"
+  },
+  "bin": {
+    "contextrocket": "./dist/bin.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/bin.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^25.2.3",
+    "eslint": "^10.0.0",
+    "globals": "^17.3.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.55.0",
+    "vitest": "^4.1.10"
+  },
+  "packageManager": "pnpm@10.7.1"
+}

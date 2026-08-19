@@ -1,0 +1,14 @@
+{
+  "name": "@contextrocket/embed-widget",
+  "version": "0.1.0",
+  "description": "ContextRocket embeddable chat widget -- standalone IIFE bundle. Built once, reused; served locally from frontend/public/embed/ and (later) from cdn.contextrocket.com (cr-80n.151).",
+  "private": false,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "verify": "node build.mjs && node -e \"const{statSync}=require('node:fs');const p='dist/widget.js';const s=statSync(p);if(s.size<1000){console.error('widget.js too small: '+s.size+' bytes');process.exit(1)}console.log('OK '+p+' ('+s.size+' bytes)')\""
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.10"
+  }
+}

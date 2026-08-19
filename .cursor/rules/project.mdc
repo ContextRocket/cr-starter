@@ -1,0 +1,13 @@
+---
+description: Project-wide AI agent instructions
+alwaysApply: true
+---
+
+Read and follow all instructions in @AGENTS.md in this repository root.
+
+When working in a subdirectory, also read the local AGENTS.md if one exists (e.g., @backend/AGENTS.md, @frontend/AGENTS.md).
+
+Key rules for in-editor work:
+1. Self-contained code -- never import from outside this repository.
+2. i18n keys for strings -- all user-facing text goes through `t("KEY")` in `i18n/keys.ts`; no hardcoded English in JSX.
+3. cr-sdk is the only CR integration surface -- import from `@/lib/cr-sdk`, not from `@/lib/a2a-client` directly.

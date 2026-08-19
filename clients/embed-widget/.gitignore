@@ -1,0 +1,5 @@
+# Built widget bundle is produced by `node build.mjs` (make build-clients),
+# not committed. Build once, reuse the artifact — served locally from
+# frontend/public/embed/ and (later) from cdn.contextrocket.com (cr-80n.151).
+dist/
+node_modules/
