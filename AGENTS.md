@@ -88,3 +88,26 @@ Fork-owned files:
 Starter-owned files should be pulled from `cr-starter`: `components/shared/`, `lib/`, `config/site.config.ts`, `i18n/messages/shared/`, `i18n/messages/app/`, `clients/embed-widget/`, and `cli/`.
 
 When rebuilding an existing fork, inventory and preserve its content, assets, custom page composition, and theme before replacing starter-owned infrastructure. Never overwrite a ported site with the starter placeholder site.
+
+## Mandatory fork-evolution contract
+
+Read [docs/fork-evolution.md](docs/fork-evolution.md) before changing a fork.
+The short version is mandatory:
+
+- Forks may change `site.json`, documented environment values, `site/` messages,
+  Markdown content, public assets, site routes, and `components/custom/`.
+- Forks must not edit `components/shared/`, `lib/`, `site.config.ts`, shared/app
+  messages, generated i18n wiring, the ChatFab, gallery, widget, or CLI.
+- Use theme tokens, chrome settings, exposed variants, or custom wrappers for
+  visual changes. Do not override shared internals with fragile CSS selectors.
+- If a fork prototype is reusable, move only the generic behavior here, add a
+  typed configuration/variant seam and tests, synchronize the fork, then delete
+  the fork duplicate in a separate cleanup commit.
+- After every parent change, synchronize from a clean fork, let the parent win
+  parent-owned files, keep fork-owned content/config/assets, run all checks, and
+  commit the synchronization merge.
+
+Auth, passwordless, and dashboard copy overrides belong to `cr-auth-starter`,
+not this public repository. Auth forks must use its typed partial
+`frontend/i18n/messages/overrides/<locale>.ts` layer rather than editing auth
+message modules directly.
