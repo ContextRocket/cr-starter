@@ -137,6 +137,11 @@ export const siteConfig = {
     logoVariant: siteData.chrome.logoVariant as "icon" | "wordmark",
     showBrandLogo: siteData.chrome.showBrandLogo,
     showThemeToggle: siteData.chrome.showThemeToggle,
+    defaultTheme: envEnum<"system" | "light" | "dark">(
+      "NEXT_PUBLIC_DEFAULT_THEME",
+      (siteData.chrome.defaultTheme ?? "system") as "system" | "light" | "dark",
+      ["system", "light", "dark"],
+    ),
     cookieBannerStyle: envEnum<"bar" | "card" | "terminal">(
       "NEXT_PUBLIC_COOKIE_BANNER_STYLE",
       siteData.chrome.cookieBannerStyle as "bar" | "card" | "terminal",

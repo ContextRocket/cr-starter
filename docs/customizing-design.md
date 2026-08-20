@@ -5,7 +5,7 @@ Fork design is data-first. Start with `frontend/config/site.json`:
 - `theme.light` and `theme.dark` contain CSS variable values;
 - `theme.radius` controls the component radius system;
 - `assets` points at fork-owned logos and images;
-- `chrome` controls the header/footer presentation; and
+- `chrome` controls the header/footer presentation and first-visit theme; and
 - `nav` controls links and public feature flags.
 
 Site copy belongs in frontend/i18n/messages/site/<locale>.ts for the locales

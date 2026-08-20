@@ -101,7 +101,7 @@ export default async function LocaleLayout({
       {/* ThemeProvider owns the `.dark` class on <html> (attribute="class").
           It wraps the whole rendered tree so every page -- marketing, blog,
           dashboard, terminal -- reads the same light/dark tokens. */}
-      <ThemeProvider>
+      <ThemeProvider defaultTheme={siteConfig.chrome.defaultTheme}>
         <AosProvider />
         <LocaleProvider initialLocale={locale} messages={localeMessages}>
           {showSiteUrlWarning && (

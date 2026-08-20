@@ -19,6 +19,7 @@ import "@testing-library/jest-dom/vitest";
 
 import { ThemeToggle } from "@/components/shared/ui/theme-toggle";
 import { ThemeProvider } from "@/components/shared/ui/theme-provider";
+import { createNoFlashScript } from "@/components/shared/ui/theme-init-script";
 
 // next-themes reads matchMedia to resolve the "system" preference; jsdom lacks
 // it. Provide a stub that reports "light" so system resolves deterministically.
@@ -115,5 +116,24 @@ describe("ThemeProvider", () => {
       </ThemeProvider>,
     );
     expect(screen.getByTestId("child")).toHaveTextContent("content");
+  });
+
+  it("respects a configured dark first-visit theme", async () => {
+    render(
+      <ThemeProvider defaultTheme="dark">
+        <ThemeToggle />
+      </ThemeProvider>,
+    );
+    const button = await screen.findByTestId("theme-toggle");
+
+    await waitFor(() =>
+      expect(button.getAttribute("data-theme-value")).toBe("dark"),
+    );
+    expect(document.documentElement.classList.contains("dark")).toBe(true);
+  });
+
+  it("generates a no-flash script for the configured first-visit theme", () => {
+    expect(createNoFlashScript("dark")).toContain('if(!t){t="dark"}');
+    expect(createNoFlashScript("system")).toContain("prefers-color-scheme");
   });
 });

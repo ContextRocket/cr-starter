@@ -16,7 +16,7 @@ import Script from "next/script";
 import { headers } from "next/headers";
 
 import { WebVitals } from "@/components/shared/analytics/web-vitals";
-import { NO_FLASH_SCRIPT } from "@/components/shared/ui/theme-init-script";
+import { createNoFlashScript } from "@/components/shared/ui/theme-init-script";
 import { siteConfig } from "@/config/site.config";
 import { SUPPORTED_LOCALES } from "@/i18n/messages";
 import { blogTitle } from "@/lib/blog-path";
@@ -134,7 +134,9 @@ export default async function RootLayout({
         <Script
           id="theme-init"
           strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: NO_FLASH_SCRIPT }}
+          dangerouslySetInnerHTML={{
+            __html: createNoFlashScript(siteConfig.chrome.defaultTheme),
+          }}
         />
         {/* RSS feed discovery. */}
         <link

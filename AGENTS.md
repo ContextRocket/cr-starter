@@ -6,7 +6,7 @@ This is the public, Next.js/static-first starter. The frontend is the product. I
 
 The starter separates data, language, and behavior:
 
-1. `frontend/config/site.json` -- fork-owned identity, navigation, theme, assets, legal data, and feature switches.
+1. `frontend/config/site.json` -- fork-owned identity, navigation, theme, assets, legal data, chrome settings, and feature switches.
 2. `frontend/i18n/messages/site/*.ts` -- fork-owned copy for the locales the site actually serves.
 3. `frontend/config/site.config.ts` -- starter-owned typed configuration seam and sensible defaults.
 4. `frontend/config/.env.example` -- optional environment overrides for site toggles and ContextRocket connection settings.
@@ -94,7 +94,7 @@ When rebuilding an existing fork, inventory and preserve its content, assets, cu
 Read [docs/fork-evolution.md](docs/fork-evolution.md) before changing a fork.
 The short version is mandatory:
 
-- Forks may change `site.json`, documented environment values, `site/` messages,
+- Forks may change `site.json` (including `chrome.defaultTheme`), documented environment values, `site/` messages,
   Markdown content, public assets, site routes, and `components/custom/`.
 - Forks must not edit `components/shared/`, `lib/`, `site.config.ts`, shared/app
   messages, generated i18n wiring, the ChatFab, gallery, widget, or CLI.

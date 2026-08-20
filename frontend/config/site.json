@@ -69,6 +69,7 @@
     "logoVariant": "icon",
     "showBrandLogo": true,
     "showThemeToggle": true,
+    "defaultTheme": "system",
     "cookieBannerStyle": "bar"
   },
   "features": {

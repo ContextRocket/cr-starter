@@ -8,8 +8,8 @@
  *   - attribute="class"        → toggles the `.dark` class on <html>, matching
  *                                the `@custom-variant dark (&:is(.dark, .dark *))`
  *                                and the `.dark {}` token block in globals.css.
- *   - defaultTheme="system"    → first-visit users follow their OS preference.
- *   - enableSystem             → keep tracking the OS "system" choice.
+ *   - defaultTheme              → first-visit behavior comes from site config.
+ *   - enableSystem              → enabled only when defaultTheme is "system".
  *   - disableTransitionOnChange→ no color-transition flash when the class flips.
  *
  * The [locale] layout already sets `<html suppressHydrationWarning>`, which is
@@ -32,12 +32,20 @@
 
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
+type ThemeDefault = "system" | "light" | "dark";
+
+export function ThemeProvider({
+  children,
+  defaultTheme = "system",
+}: {
+  children: React.ReactNode;
+  defaultTheme?: ThemeDefault;
+}) {
   return (
     <NextThemesProvider
       attribute="class"
-      defaultTheme="system"
-      enableSystem
+      defaultTheme={defaultTheme}
+      enableSystem={defaultTheme === "system"}
       disableTransitionOnChange
       scriptProps={{ type: "text/x-theme-noop" }}
     >
