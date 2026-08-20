@@ -1,7 +1,6 @@
 "use client";
 
-import { t } from "@/i18n/keys";
-import { useLocale } from "@/i18n/locale-provider";
+import { useLocale, useTranslations } from "@/i18n/locale-provider";
 import Image from "next/image";
 import { siteConfig } from "@/config/site.config";
 
@@ -32,6 +31,7 @@ export function ChatEmptyState({
   onIcebreakerSelect,
 }: ChatEmptyStateProps) {
   const { locale } = useLocale();
+  const t = useTranslations();
 
   if (showConnectPrompt) {
     return (

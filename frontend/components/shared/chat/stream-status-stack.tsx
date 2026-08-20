@@ -1,6 +1,6 @@
 "use client";
 
-import { t } from "@/i18n/keys";
+import { useTranslations } from "@/i18n/locale-provider";
 
 import { TypingIndicator } from "@/components/shared/chat/typing-indicator";
 import { ThinkingPill } from "@/components/shared/chat/thinking-pill";
@@ -32,7 +32,7 @@ export function StreamStatusStack({
   isVerySlowResponse,
   hasStreamingText,
 }: StreamStatusStackProps) {
-
+  const t = useTranslations();
   const waitingForFirstToken = isWaitingForResponse && !hasStreamingText;
 
   return (

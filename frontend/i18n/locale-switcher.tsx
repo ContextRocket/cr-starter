@@ -17,8 +17,7 @@
 import { Globe } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import { t } from "./keys";
-import { useLocaleOptional } from "./locale-provider";
+import { useLocaleOptional, useTranslations } from "./locale-provider";
 import {
   SUPPORTED_LOCALES,
   ACTIVE_LOCALES,
@@ -36,6 +35,7 @@ export function LocaleSwitcher({
   className,
   onDropdownToggle,
 }: LocaleSwitcherProps) {
+  const translate = useTranslations();
   // Isolated component tests can render outside the locale layout. In that
   // case the switcher is intentionally absent.
   const localeContext = useLocaleOptional();
@@ -104,8 +104,8 @@ export function LocaleSwitcher({
         onClick={() => setOpen(!dropdownOpen)}
         aria-expanded={dropdownOpen}
         aria-haspopup="menu"
-        aria-label={t("locale.changeLanguage")}
-        title={t("locale.changeLanguage")}
+        aria-label={translate("locale.changeLanguage")}
+        title={translate("locale.changeLanguage")}
         data-testid="locale-switcher"
         className="flex h-9 min-w-[3rem] items-center gap-1 rounded px-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
@@ -137,7 +137,7 @@ export function LocaleSwitcher({
                   : "text-foreground",
               )}
             >
-              {t(LOCALE_LABEL_PATHS[code])}
+              {translate(LOCALE_LABEL_PATHS[code])}
             </button>
           ))}
         </div>

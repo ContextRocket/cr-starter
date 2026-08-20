@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { t } from "@/i18n/keys";
+import { useTranslations } from "@/i18n/locale-provider";
 
 import type { PolicyClass } from "@/hooks/use-a2a-stream";
 
@@ -34,7 +34,7 @@ export function PolicyClassCard({
   policyClass,
   animate = true,
 }: PolicyClassCardProps) {
-
+  const t = useTranslations();
   const severityClass =
     {
       danger: cn(

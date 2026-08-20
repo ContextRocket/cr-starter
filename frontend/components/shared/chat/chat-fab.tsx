@@ -8,7 +8,7 @@ import {
   Minimize2Icon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { t } from "@/i18n/keys";
+import { useTranslations } from "@/i18n/locale-provider";
 
 import { ChatPanel } from "@/components/shared/chat/chat-panel";
 import { BrandLogo } from "@/components/shared/sections/brand-logo";
@@ -65,6 +65,7 @@ export function ChatFab({
   welcomeSubtitle,
   fullscreenOnLoad,
 }: ChatFabProps) {
+  const t = useTranslations();
   const initialFullscreen =
     fullscreenOnLoad ?? siteConfig.chat.fullscreenOnLoad;
   const [open, setOpen] = useState(initialFullscreen);

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { t } from "@/i18n/keys";
+import { useTranslations } from "@/i18n/locale-provider";
 
 import type { SourceRef } from "@/lib/a2a-client";
 import {
@@ -29,7 +29,7 @@ export function CitationPills({
   sourceRefs,
   linkMode = "new-tab",
 }: CitationPillsProps) {
-
+  const t = useTranslations();
   const [sheetOpen, setSheetOpen] = useState(false);
 
   if (!sourceRefs.length) return null;

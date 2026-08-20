@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ExternalLinkIcon, XIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { t } from "@/i18n/keys";
+import { useTranslations } from "@/i18n/locale-provider";
 
 import { safeHref } from "@/lib/safe-href";
 import {
@@ -106,6 +106,7 @@ export function SourceSheet({
   open,
   onClose,
 }: SourceSheetProps) {
+  const t = useTranslations();
   return (
     <Dialog
       open={open}
@@ -164,6 +165,7 @@ interface SourceItemProps {
 }
 
 function SourceItem({ source, index, linkMode }: SourceItemProps) {
+  const t = useTranslations();
   const [previewOpen, setPreviewOpen] = useState(false);
 
   // Scheme guard: metadata URLs are external input. Only http/https may be

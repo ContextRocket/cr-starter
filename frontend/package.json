@@ -23,6 +23,7 @@
     "generate-og-fallback": "node scripts/generate-og-fallback.js",
     "test": "VITE_CONFIG_NATIVE_IGNORE_WARNING=true vitest run",
     "test:e2e:frontend": "NEXT_PUBLIC_THEME_PLAYGROUND_ENABLED=true pnpm run build && playwright test -c playwright.frontend.config.ts",
+    "test:e2e:i18n-hydration": "playwright test -c playwright.i18n-dev.config.ts",
     "test:e2e": "NEXT_PUBLIC_THEME_PLAYGROUND_ENABLED=true pnpm run build && playwright test -c playwright.frontend.config.ts",
     "test:e2e:ui": "NEXT_PUBLIC_THEME_PLAYGROUND_ENABLED=true pnpm run build && playwright test -c playwright.frontend.config.ts --ui",
     "test:e2e:headed": "NEXT_PUBLIC_THEME_PLAYGROUND_ENABLED=true pnpm run build && playwright test -c playwright.frontend.config.ts --headed",

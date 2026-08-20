@@ -15,8 +15,9 @@
  */
 
 import { test, expect } from "@playwright/test";
+import { siteConfig } from "../config/site.config";
 
-const LOCALES = ["en", "es", "de"] as const;
+const LOCALES = siteConfig.locales;
 
 test.describe("Language switching", () => {
   for (const locale of LOCALES) {
@@ -41,7 +42,8 @@ test.describe("Language switching", () => {
       headings.push(((await page.locator("h1").textContent()) ?? "").trim());
     }
 
-    // All three locales render a heading...
+    test.skip(LOCALES.length < 2, "only one locale is configured");
+    // All configured locales render a heading...
     for (const h of headings) expect(h.length).toBeGreaterThan(0);
     // ...and each locale's copy differs from the others (translation is wired).
     expect(headings[0]).not.toEqual(headings[1]);

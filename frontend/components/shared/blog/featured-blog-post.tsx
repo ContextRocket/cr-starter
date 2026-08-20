@@ -13,7 +13,7 @@
  */
 
 import { Link } from "@/i18n/navigation";
-import { t } from "@/i18n/keys";
+import { useTranslations } from "@/i18n/locale-provider";
 
 import { cn } from "@/lib/utils";
 import { blogPostPath } from "@/lib/blog-path";
@@ -30,7 +30,7 @@ function readMinutes(body: string): number {
 }
 
 export function FeaturedBlogPost({ post, locale }: FeaturedBlogPostProps) {
-
+  const t = useTranslations();
   const formattedDate = new Date(post.date).toLocaleDateString(locale, {
     year: "numeric",
     month: "long",

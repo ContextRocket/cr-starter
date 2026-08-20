@@ -13,7 +13,7 @@
  */
 
 import { useEffect } from "react";
-import { t } from "@/i18n/keys";
+import { useTranslations } from "@/i18n/locale-provider";
 
 import { CookiePreferencesPanel } from "./preferences-panel";
 
@@ -26,6 +26,7 @@ export function CookiePreferencesDialog({
   /** Closed without saving (backdrop / Escape / X) -- banner stays visible. */
   onClose: () => void;
 }) {
+  const t = useTranslations();
 
   // Escape closes the dialog without saving.
   useEffect(() => {

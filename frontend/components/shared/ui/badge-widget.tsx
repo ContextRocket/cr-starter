@@ -14,7 +14,7 @@
 
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { t } from "@/i18n/keys";
+import { useTranslations } from "@/i18n/locale-provider";
 
 
 interface ContextRocketBadgeProps {
@@ -28,6 +28,7 @@ export function ContextRocketBadge({
   variant = "default",
   className,
 }: ContextRocketBadgeProps) {
+  const translate = useTranslations();
 
   const baseClasses = "inline-flex items-center gap-1.5 transition-colors";
   const variantClasses = {
@@ -47,7 +48,7 @@ export function ContextRocketBadge({
     >
       {variant !== "icon-only" && (
         <span className="text-[10px] tracking-wide uppercase font-semibold">
-          {t("footer.powered_by")}
+          {translate("footer.powered_by")}
         </span>
       )}
       {/* Light mode logo */}

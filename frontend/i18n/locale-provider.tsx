@@ -19,10 +19,17 @@ import {
   useContext,
   useState,
   useCallback,
+  useMemo,
   type ReactNode,
 } from "react";
 import { usePathname, useRouter } from "@/i18n/navigation";
-import { setLocale, registerLocaleMessages } from "./keys";
+import {
+  setLocale,
+  registerLocaleMessages,
+  t,
+  translateForLocale,
+} from "./keys";
+import type { Path, Translator } from "./keys";
 import type { SupportedLocale } from "./messages";
 import { CLIENT_LOCALE_LOADERS } from "./locale-loaders";
 
@@ -146,4 +153,22 @@ export function useLocale(): LocaleContextValue {
 /** Optional form for shared shells that can also render in isolation. */
 export function useLocaleOptional(): LocaleContextValue | null {
   return useContext(LocaleContext);
+}
+
+/**
+ * Locale-bound translator for client components.
+ *
+ * This is especially important during SSR: a client component is rendered on
+ * the server before LocaleProvider hydrates, so reading the global `t()` state
+ * can pick up another request's locale. The provider's explicit locale is
+ * stable for that render and also handles forks that add locales such as zh.
+ */
+export function useTranslations(): Translator {
+  const context = useLocaleOptional();
+  return useMemo(() => {
+    if (!context) return t;
+    const translate = translateForLocale(context.locale);
+    return ((key: Path | (string & {}), params?: Record<string, string>) =>
+      translate(key, params)) as Translator;
+  }, [context?.locale]);
 }

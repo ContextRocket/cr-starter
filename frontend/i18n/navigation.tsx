@@ -66,7 +66,7 @@ type LinkProps = ComponentProps<typeof NextLink> & { locale?: string };
 /** next/link that prefixes the href with the active (or given) locale. */
 export function Link({ href, locale, ...props }: LinkProps) {
   const pathname = useNextPathname();
-  const target = locale ?? localeFromPathname(pathname) ?? "en";
+  const target = locale ?? localeFromPathname(pathname) ?? resolveLocale(null);
   return <NextLink href={prefixLocale(String(href), target)} {...props} />;
 }
 

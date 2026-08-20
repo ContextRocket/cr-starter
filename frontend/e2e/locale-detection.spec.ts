@@ -10,9 +10,20 @@
  */
 
 import { test, expect } from "@playwright/test";
+import { siteConfig } from "../config/site.config";
+
+const DEFAULT_LOCALE = siteConfig.defaultLocale;
+const ALTERNATE_LOCALE = siteConfig.locales.find(
+  (locale) => locale !== DEFAULT_LOCALE,
+);
+
+function browserLanguageTag(locale: string): string {
+  const region = locale === "zh" ? "CN" : locale.toUpperCase();
+  return `${locale}-${region}`;
+}
 
 test.describe("Locale detection", () => {
-  test("redirects to default locale (en) without cookie or header", async ({
+  test("redirects to the configured default locale without cookie or header", async ({
     page,
   }) => {
     // Clear any existing cookies
@@ -21,16 +32,16 @@ test.describe("Locale detection", () => {
     // Navigate to root
     await page.goto("/");
 
-    // Should redirect to /en
-    await expect(page).toHaveURL(/\/en/);
+    await expect(page).toHaveURL(new RegExp(`/${DEFAULT_LOCALE}`));
   });
 
   test("redirects to locale from NEXT_LOCALE cookie", async ({ page }) => {
+    test.skip(!ALTERNATE_LOCALE, "only one locale is configured");
     // Set NEXT_LOCALE cookie to "es"
     await page.context().addCookies([
       {
         name: "NEXT_LOCALE",
-        value: "es",
+        value: ALTERNATE_LOCALE!,
         domain: "localhost",
         path: "/",
       },
@@ -39,36 +50,43 @@ test.describe("Locale detection", () => {
     // Navigate to root
     await page.goto("/");
 
-    // Should redirect to /es
-    await expect(page).toHaveURL(/\/es/);
+    await expect(page).toHaveURL(new RegExp(`/${ALTERNATE_LOCALE}`));
   });
 
   test("redirects to locale from Accept-Language header", async ({
     browser,
   }) => {
+    test.skip(!ALTERNATE_LOCALE, "only one locale is configured");
     // Playwright's setExtraHTTPHeaders does not reliably override the
     // browser-managed Accept-Language header, so drive it via a context
     // created with the desired locale instead.
-    const context = await browser.newContext({ locale: "de-DE" });
+    const context = await browser.newContext({
+      locale: browserLanguageTag(ALTERNATE_LOCALE!),
+    });
     const page = await context.newPage();
 
     // Navigate to root
     await page.goto("/");
 
-    // Should redirect to /de
-    await expect(page).toHaveURL(/\/de/);
+    await expect(page).toHaveURL(new RegExp(`/${ALTERNATE_LOCALE}`));
     await context.close();
   });
 
   test("cookie takes precedence over Accept-Language", async ({ browser }) => {
-    const context = await browser.newContext({ locale: "de-DE" });
+    test.skip(!ALTERNATE_LOCALE, "only one locale is configured");
+    const browserPreferredLocale =
+      siteConfig.locales.find((locale) => locale !== ALTERNATE_LOCALE) ??
+      DEFAULT_LOCALE;
+    const context = await browser.newContext({
+      locale: browserLanguageTag(browserPreferredLocale),
+    });
     const page = await context.newPage();
 
-    // Set cookie to "es" but locale to "de"
+    // Set the alternate cookie while the browser prefers another locale.
     await context.addCookies([
       {
         name: "NEXT_LOCALE",
-        value: "es",
+        value: ALTERNATE_LOCALE!,
         domain: "localhost",
         path: "/",
       },
@@ -77,16 +95,15 @@ test.describe("Locale detection", () => {
     // Navigate to root
     await page.goto("/");
 
-    // Should redirect to /es (cookie wins)
-    await expect(page).toHaveURL(/\/es/);
+    await expect(page).toHaveURL(new RegExp(`/${ALTERNATE_LOCALE}`));
     await context.close();
   });
 });
 
 test.describe("Language switching", () => {
-  test("switching language navigates to /es", async ({ page }) => {
-    // Start at /en
-    await page.goto("/en");
+  test("switching language navigates to the configured alternate locale", async ({ page }) => {
+    test.skip(!ALTERNATE_LOCALE, "only one locale is configured");
+    await page.goto(`/${DEFAULT_LOCALE}`);
     await page.waitForLoadState("networkidle");
 
     // Find and click the locale switcher (desktop header; there is also a
@@ -97,36 +114,19 @@ test.describe("Language switching", () => {
     // Click to open dropdown
     await localeSwitcher.click();
 
-    // Click Spanish option
-    const spanishOption = page.locator('[data-testid="locale-switcher-option-es"]').first();
-    await expect(spanishOption).toBeVisible();
-    await spanishOption.click();
+    const alternateOption = page.locator(
+      `[data-testid="locale-switcher-option-${ALTERNATE_LOCALE}"]`,
+    ).first();
+    await expect(alternateOption).toBeVisible();
+    await alternateOption.click();
 
-    // Should navigate to /es (URL-segment locale; no cookie required)
-    await expect(page).toHaveURL(/\/es/);
-  });
-
-  test("switching to German navigates to /de", async ({ page }) => {
-    // Start at /en
-    await page.goto("/en");
-    await page.waitForLoadState("networkidle");
-
-    // Find and click the locale switcher (desktop header; there is also a
-    // mobile-menu copy, hence .first())
-    const localeSwitcher = page.locator('[data-testid="locale-switcher"]').first();
-    await localeSwitcher.click();
-
-    // Click German option
-    const germanOption = page.locator('[data-testid="locale-switcher-option-de"]').first();
-    await germanOption.click();
-
-    // Should navigate to /de (URL-segment locale; no cookie required)
-    await expect(page).toHaveURL(/\/de/);
+    await expect(page).toHaveURL(new RegExp(`/${ALTERNATE_LOCALE}`));
   });
 });
 
 test.describe("Hydration consistency", () => {
-  test("no hydration error on /en", async ({ page }) => {
+  for (const locale of siteConfig.locales) {
+    test(`no hydration error on /${locale}`, async ({ page }) => {
     // Listen for console errors
     const errors: string[] = [];
     page.on("console", (msg) => {
@@ -135,8 +135,7 @@ test.describe("Hydration consistency", () => {
       }
     });
 
-    // Navigate to /en
-    await page.goto("/en");
+    await page.goto(`/${locale}`);
     await page.waitForLoadState("networkidle");
     await page.waitForTimeout(2000);
 
@@ -145,69 +144,8 @@ test.describe("Hydration consistency", () => {
       (e) => e.includes("Hydration") || e.includes("hydrat")
     );
     expect(hydrationErrors).toHaveLength(0);
-  });
-
-  test("no hydration error on /es", async ({ page }) => {
-    // Set cookie to es
-    await page.context().addCookies([
-      {
-        name: "NEXT_LOCALE",
-        value: "es",
-        domain: "localhost",
-        path: "/",
-      },
-    ]);
-
-    // Listen for console errors
-    const errors: string[] = [];
-    page.on("console", (msg) => {
-      if (msg.type() === "error") {
-        errors.push(msg.text());
-      }
     });
-
-    // Navigate to /es
-    await page.goto("/es");
-    await page.waitForLoadState("networkidle");
-    await page.waitForTimeout(2000);
-
-    // Check for hydration errors
-    const hydrationErrors = errors.filter(
-      (e) => e.includes("Hydration") || e.includes("hydrat")
-    );
-    expect(hydrationErrors).toHaveLength(0);
-  });
-
-  test("no hydration error on /de", async ({ page }) => {
-    // Set cookie to de
-    await page.context().addCookies([
-      {
-        name: "NEXT_LOCALE",
-        value: "de",
-        domain: "localhost",
-        path: "/",
-      },
-    ]);
-
-    // Listen for console errors
-    const errors: string[] = [];
-    page.on("console", (msg) => {
-      if (msg.type() === "error") {
-        errors.push(msg.text());
-      }
-    });
-
-    // Navigate to /de
-    await page.goto("/de");
-    await page.waitForLoadState("networkidle");
-    await page.waitForTimeout(2000);
-
-    // Check for hydration errors
-    const hydrationErrors = errors.filter(
-      (e) => e.includes("Hydration") || e.includes("hydrat")
-    );
-    expect(hydrationErrors).toHaveLength(0);
-  });
+  }
 });
 
 test.describe("Locale content", () => {
@@ -215,7 +153,7 @@ test.describe("Locale content", () => {
   // heading, without pinning any literal string a fork might rewrite.
   test("each locale renders a distinct primary heading", async ({ page }) => {
     const headings: string[] = [];
-    for (const locale of ["en", "es", "de"]) {
+    for (const locale of siteConfig.locales) {
       await page.goto(`/${locale}`);
       await page.waitForLoadState("networkidle");
       headings.push(((await page.locator("h1").textContent()) ?? "").trim());

@@ -54,6 +54,21 @@ export function registerLocaleMessages(
   _registry[locale] = tree;
 }
 
+/**
+ * Resolve a translator for an explicit locale.
+ *
+ * Client components are server-rendered before the client LocaleProvider is
+ * hydrated. They must use the locale carried by that provider rather than the
+ * mutable server-side `t()` state, which can belong to a different concurrent
+ * route render during development navigation.
+ */
+export function translateForLocale(
+  locale: SupportedLocale,
+): Translator {
+  const messages = _registry[locale] ?? _registry.en!;
+  return createTranslator(locale, messages);
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Locale state
 // ─────────────────────────────────────────────────────────────────────────────
@@ -97,8 +112,7 @@ export function t(
   params?: Record<string, string>,
 ): string {
   const locale = getCurrentLocale();
-  const messages = _registry[locale] ?? _registry.en!;
-  return createTranslator(locale, messages)(key, params);
+  return translateForLocale(locale)(key, params);
 }
 
 /**

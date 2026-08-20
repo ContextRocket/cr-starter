@@ -9,7 +9,7 @@
  */
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { t } from "@/i18n/keys";
+import { useTranslations } from "@/i18n/locale-provider";
 import type { GalleryImage } from "@/lib/gallery";
 
 export type LightboxImage = Pick<
@@ -32,6 +32,7 @@ export function ImageLightbox({
   children,
   className,
 }: ImageLightboxProps) {
+  const t = useTranslations();
   const [open, setOpen] = useState(false);
   const safeInitialIndex = Math.min(
     Math.max(initialIndex, 0),

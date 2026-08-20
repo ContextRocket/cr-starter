@@ -12,7 +12,7 @@
  */
 
 import { Link } from "@/i18n/navigation";
-import { t } from "@/i18n/keys";
+import { useTranslations } from "@/i18n/locale-provider";
 
 import { blogPostPath } from "@/lib/blog-path";
 import { BlogImage } from "@/components/shared/blog/blog-image";
@@ -28,7 +28,7 @@ function readMinutes(body: string): number {
 }
 
 export function BlogPostCard({ post, locale }: BlogPostCardProps) {
-
+  const t = useTranslations();
   const formattedDate = new Date(post.date).toLocaleDateString(locale, {
     year: "numeric",
     month: "long",

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import { t } from "@/i18n/keys";
+import { useTranslations } from "@/i18n/locale-provider";
 
 import { ArrowDownIcon } from "lucide-react";
 import { CheckCircle2Icon, CircleDashedIcon } from "lucide-react";
@@ -129,6 +129,7 @@ export function MessageList({
   onSuggestionSelect,
   linkMode = "new-tab",
 }: MessageListProps) {
+  const t = useTranslations();
   const containerRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
@@ -238,6 +239,7 @@ function MessageBubble({
   onSuggestionSelect,
   linkMode = "new-tab",
 }: MessageBubbleProps) {
+  const t = useTranslations();
   const [expanded, setExpanded] = useState(false);
   const isUser = message.role === "user";
   const isStreaming = message.pending && !isUser;
@@ -359,6 +361,7 @@ function GroundedChip({
 }: {
   verdict: FaithfulnessVerdict;
 }): React.ReactElement | null {
+  const t = useTranslations();
   const { state, checked_claims } = verdict;
 
   const claimsTitle =

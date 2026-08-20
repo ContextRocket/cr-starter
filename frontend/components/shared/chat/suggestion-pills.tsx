@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { t } from "@/i18n/keys";
+import { useTranslations } from "@/i18n/locale-provider";
 
 
 interface SuggestionPillsProps {
@@ -33,7 +33,7 @@ export function SuggestionPills({
   onSelect,
   animate = true,
 }: SuggestionPillsProps) {
-
+  const t = useTranslations();
   if (!suggestions.length) return null;
 
   return (

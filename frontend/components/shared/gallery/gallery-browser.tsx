@@ -8,7 +8,7 @@
  */
 
 import { useMemo, useState } from "react";
-import { t } from "@/i18n/keys";
+import { useTranslations } from "@/i18n/locale-provider";
 import type { GalleryCollection, GalleryImage } from "@/lib/gallery";
 import { ImageLightbox } from "@/components/shared/gallery/image-lightbox";
 
@@ -23,6 +23,7 @@ export function GalleryBrowser({
   collections = [],
   className,
 }: GalleryBrowserProps) {
+  const t = useTranslations();
   const [selectedCollection, setSelectedCollection] = useState("all");
 
   const availableCollections = useMemo(

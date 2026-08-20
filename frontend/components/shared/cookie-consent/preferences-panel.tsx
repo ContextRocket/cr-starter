@@ -28,7 +28,7 @@ import {
   type ConsentCategories,
   type OptionalConsentCategory,
 } from "@/lib/analytics";
-import { t } from "@/i18n/keys";
+import { useTranslations } from "@/i18n/locale-provider";
 
 
 const OPTIONAL_META: Record<
@@ -96,6 +96,7 @@ export function CookiePreferencesPanel({
 }: {
   onSaved?: () => void;
 }) {
+  const t = useTranslations();
 
   // Seed from any prior granular choice; default is privacy-preserving (off).
   const [categories, setCategories] = useState<ConsentCategories>(

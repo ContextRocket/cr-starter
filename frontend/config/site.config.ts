@@ -40,6 +40,7 @@ const siteFeatures = siteData.features as typeof siteData.features & {
   gallery?: boolean;
 };
 const siteGallery = siteData as typeof siteData & {
+  defaultLocale?: string;
   gallery?: {
     manifestPath?: string;
     assetBaseUrl?: string;
@@ -64,7 +65,10 @@ export const siteConfig = {
   },
 
   // Locale
-  defaultLocale: "en",
+  defaultLocale: env(
+    "NEXT_PUBLIC_DEFAULT_LOCALE",
+    siteGallery.defaultLocale ?? siteData.locales[0] ?? "en",
+  ),
   locales: siteData.locales as readonly string[],
 
   // ── Theme ──────────────────────────────────────────────────────────────────

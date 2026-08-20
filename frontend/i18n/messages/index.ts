@@ -27,13 +27,19 @@ export { SUPPORTED_LOCALES, LOCALE_LABEL_PATHS, type SupportedLocale };
 /** All locales the site actively serves (from siteConfig.locales). */
 export const ACTIVE_LOCALES: readonly string[] = siteConfig.locales;
 
+/** Site default, validated against the generated message registry. */
+export const DEFAULT_LOCALE: SupportedLocale =
+  (SUPPORTED_LOCALES as readonly string[]).includes(siteConfig.defaultLocale)
+    ? (siteConfig.defaultLocale as SupportedLocale)
+    : "en";
+
 /**
  * Resolve a raw locale string (e.g. from a cookie or Accept-Language header)
- * into a SupportedLocale, falling back to "en" for any unknown value.
+ * into a SupportedLocale, falling back to the configured site default.
  */
 export function resolveLocale(raw: string | undefined | null): SupportedLocale {
   if (raw && (SUPPORTED_LOCALES as readonly string[]).includes(raw)) {
     return raw as SupportedLocale;
   }
-  return "en";
+  return DEFAULT_LOCALE;
 }

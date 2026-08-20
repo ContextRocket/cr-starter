@@ -9,7 +9,7 @@ import {
 } from "react";
 import { ArrowUpIcon, SquareIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { t } from "@/i18n/keys";
+import { useTranslations } from "@/i18n/locale-provider";
 
 
 interface ChatComposerProps {
@@ -33,7 +33,7 @@ export function ChatComposer({
   isStreaming,
   placeholder,
 }: ChatComposerProps) {
-
+  const t = useTranslations();
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 

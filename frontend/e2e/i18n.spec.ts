@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { siteConfig } from "../config/site.config";
 
 /**
  * E2E: locale switching (en -> es -> de) -- copy-independent.
@@ -13,10 +14,10 @@ import { test, expect } from "@playwright/test";
  * Vitest component tests), not here.
  */
 
-const LOCALES: Array<"en" | "es" | "de"> = ["en", "es", "de"];
+const LOCALES = siteConfig.locales;
 
 test.describe("Locale switching", () => {
-  test("en -> es -> de updates <html lang> and renders the FAQ page", async ({
+  test("configured locales update <html lang> and render the FAQ page", async ({
     page,
   }) => {
     for (const locale of LOCALES) {

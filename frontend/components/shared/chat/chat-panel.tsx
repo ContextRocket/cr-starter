@@ -2,7 +2,7 @@
 
 import { useCallback } from "react";
 import { cn } from "@/lib/utils";
-import { t } from "@/i18n/keys";
+import { useTranslations } from "@/i18n/locale-provider";
 
 import { MessageList } from "@/components/shared/chat/message-list";
 import { ChatComposer } from "@/components/shared/chat/chat-composer";
@@ -51,7 +51,7 @@ export function ChatPanel({
   className,
   "data-testid": testId = "chat-panel",
 }: ChatPanelProps) {
-
+  const t = useTranslations();
   const internalChat = useA2AStream({
     ...clientOpts,
     baseUrl: agentUrl ?? clientOpts?.baseUrl ?? "",

@@ -54,7 +54,7 @@ import {
 } from "@/lib/analytics";
 import { siteConfig } from "@/config/site.config";
 import type { FeaturesConfig } from "@/config/site.config";
-import { t } from "@/i18n/keys";
+import { useTranslations } from "@/i18n/locale-provider";
 
 import { CookiePreferencesDialog } from "@/components/shared/cookie-consent/preferences-dialog";
 
@@ -134,6 +134,7 @@ function useConsentState(forceShow: boolean) {
  * passed in so each variant can tune its inline vs standalone appearance.
  */
 function PolicyLink({ className }: { className: string }) {
+  const t = useTranslations();
   return (
     <Link
       href={PRIVACY_HREF}
@@ -163,6 +164,7 @@ function ConsentActions({
   containerClassName: string;
   buttonSizing: string;
 }) {
+  const t = useTranslations();
   return (
     <div className={containerClassName}>
       <button
@@ -248,6 +250,7 @@ function CookieBarLayout({
   onDecline: () => void;
   onManage: () => void;
 }) {
+  const t = useTranslations();
   return (
     <div
       role="dialog"
@@ -299,6 +302,7 @@ function CookieCardLayout({
   onDecline: () => void;
   onManage: () => void;
 }) {
+  const t = useTranslations();
   return (
     <div
       role="dialog"
@@ -352,6 +356,7 @@ function CookieTerminalLayout({
   onDecline: () => void;
   onManage: () => void;
 }) {
+  const t = useTranslations();
   return (
     <div
       role="dialog"

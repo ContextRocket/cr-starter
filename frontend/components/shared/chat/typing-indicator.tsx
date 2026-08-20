@@ -1,10 +1,10 @@
 "use client";
 
-import { t } from "@/i18n/keys";
+import { useTranslations } from "@/i18n/locale-provider";
 
 
 export function TypingIndicator() {
-
+  const t = useTranslations();
   return (
     <div
       data-testid="typing-indicator"
