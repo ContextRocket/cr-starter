@@ -95,3 +95,7 @@ The policy is the source of truth for what may flow between repositories. If a
 fork needs a new kind of variation, add a typed configuration or component seam
 to the parent first, then update the policy and synchronize. Do not bypass the
 policy with a broad `git merge` or by copying an entire repository.
+
+Each policy carries the canonical parent URL, so a fresh clone can add its
+fetch-only parent remote automatically; existing local sibling remotes remain
+usable.
