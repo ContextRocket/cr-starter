@@ -84,7 +84,7 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
 
 export const config = {
   matcher: [
-    "/((?!api|_next|healthz|sitemap\\.xml|robots\\.txt|feed\\.xml|rss\\.xml|manifest\\.webmanifest|llms\\.txt|llms-full\\.txt|opengraph-image|twitter-image|favicon\\.ico|.*\\..*).*)",
+    "/((?!api|_next|healthz|sitemap\\.xml|robots\\.txt|feed\\.xml|rss\\.xml|manifest\\.webmanifest|llms\\.txt|opengraph-image|twitter-image|favicon\\.ico|.*\\..*).*)",
     "/",
   ],
 };

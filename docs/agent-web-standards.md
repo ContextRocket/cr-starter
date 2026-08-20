@@ -14,6 +14,12 @@ surfaces.
 - /.well-known/mcp.json describes the hosted ContextRocket MCP surface when
   an API base is configured.
 
+The canonical AI-readable file is `/llms.txt`. The project does not publish
+`/llms-full.txt`: that filename is an optional convention used by some
+documentation platforms, not part of the `llmstxt.org` proposal. Keep the
+single file concise and link to the detailed Markdown pages that agents may
+fetch when needed.
+
 These are generated from site configuration and the public route tree. Keep
 titles, descriptions, canonical URLs, and page content accurate in the fork's
 site data and site message files.
