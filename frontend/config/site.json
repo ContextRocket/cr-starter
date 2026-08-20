@@ -71,7 +71,8 @@
     "showBrandLogo": true,
     "showThemeToggle": true,
     "defaultTheme": "system",
-    "cookieBannerStyle": "bar"
+    "cookieBannerStyle": "bar",
+    "exemptPrefixes": ["/terminal-demo"]
   },
   "features": {
     "blog": true,

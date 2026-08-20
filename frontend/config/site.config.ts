@@ -151,6 +151,7 @@ export const siteConfig = {
       siteData.chrome.cookieBannerStyle as "bar" | "card" | "terminal",
       ["bar", "card", "terminal"],
     ),
+    exemptPrefixes: siteData.chrome.exemptPrefixes ?? ["/terminal-demo"],
   },
 
   // ── Data (from site.json) ──────────────────────────────────────────────────

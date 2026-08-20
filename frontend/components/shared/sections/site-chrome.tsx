@@ -18,8 +18,9 @@
  * and passed in -- no link is hardcoded in a shared chrome component.
  *
  * WHY A PATHNAME GUARD (not a route group):
- *   The terminal demo owns its own frame. Rendering the marketing navbar there
- *   would double up a header, so this component leaves that surface alone.
+ *   Some product surfaces own their own frame. Rendering the marketing navbar
+ *   there would double up a header, so each product lists those prefixes in
+ *   site.json under chrome.exemptPrefixes.
  *
  * The locale prefix is stripped before matching (paths here are locale-agnostic
  * because @/i18n/navigation's usePathname returns the path without the [locale]
@@ -40,8 +41,6 @@ import { siteConfig } from "@/config/site.config";
  * Path prefixes that own their own chrome. Pages under these render WITHOUT the
  * marketing navbar/footer to avoid a double header.
  */
-const CHROME_EXEMPT_PREFIXES = ["/terminal-demo"];
-
 interface SiteChromeProps {
   children: React.ReactNode;
   links: NavLink[];
@@ -70,7 +69,7 @@ export function SiteChrome({
   containerClassName,
 }: SiteChromeProps) {
   const pathname = usePathname() || "/";
-  const isExempt = CHROME_EXEMPT_PREFIXES.some(
+  const isExempt = siteConfig.chrome.exemptPrefixes.some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
   );
 
