@@ -62,11 +62,10 @@ export function blogBasePath() {
  *   2. deep paths: /:locale${basePath}/:rest*→ /:locale/blog/:rest*
  *
  * STATIC-EXPORT CAVEAT: `output: "export"` produces a pure static bundle and
- * does NOT run `next.config` rewrites (or middleware). A custom basePath is
- * therefore an SSR / standard-build feature (the common case, incl. cr-kleos).
- * A static-export fork that needs a custom segment must physically alias the
- * route directory (copy `app/[locale]/blog` to `app/[locale]/<segment>`), which
- * this config-only approach intentionally does not do. See lib/blog-path.ts.
+ * does NOT run `next.config` rewrites (or middleware). The post-build
+ * patch-static-lang script adds the required unprefixed and custom-blog
+ * directory aliases for single-language exports; multi-language exports keep
+ * their locale-prefixed paths. See lib/blog-path.ts.
  *
  * @returns {Array<{ source: string, destination: string }>}
  */

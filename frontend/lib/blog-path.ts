@@ -13,12 +13,12 @@
  * must be no other hardcoded "/blog" or "Blog" for the blog surface.
  *
  * STATIC-EXPORT CAVEAT: a custom `basePath` is served by a `next.config`
- * rewrite (see `blog.config.mjs` → `blogRewrites`). Static export
- * (`output: "export"`) does NOT run rewrites, so a custom segment is an SSR /
- * standard-build feature. Under static export the default "/blog" works
- * unchanged; a fork that needs a custom segment in a static bundle must
- * physically alias the route directory. The DEFAULT "/blog" configuration is
- * identical across both build modes.
+ * rewrite during a standard build (see `blog.config.mjs` → `blogRewrites`).
+ * Static export (`output: "export"`) does not run rewrites, so
+ * `patch-static-lang.mjs` creates the equivalent unprefixed/custom-blog
+ * directory aliases for single-language exports. Multi-language exports keep
+ * their locale-prefixed paths. The public URL is therefore identical across
+ * both build modes.
  */
 
 import { siteConfig } from "@/config/site.config";

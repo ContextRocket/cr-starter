@@ -32,8 +32,8 @@ const nextConfig = {
   // STATIC-EXPORT CAVEAT: `output: "export"` does not run rewrites, so this is
   // an SSR / standard-build feature. We omit the rewrites() key entirely under
   // static export to avoid the "rewrites are not supported with output: export"
-  // build error. A static-export fork needing a custom segment must physically
-  // alias app/[locale]/blog. See blog.config.mjs / lib/blog-path.ts.
+  // build error. patch-static-lang.mjs creates the equivalent aliases for
+  // single-language static forks. See blog.config.mjs / lib/blog-path.ts.
   ...(!STATIC_EXPORT && blogRewrites().length > 0
     ? { async rewrites() { return blogRewrites(); } }
     : {}),

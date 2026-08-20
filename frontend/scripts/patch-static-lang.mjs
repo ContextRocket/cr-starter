@@ -13,9 +13,17 @@
  * link attributes or any other "lang=" occurrence.
  */
 
-import { readdirSync, readFileSync, writeFileSync, statSync } from "node:fs";
+import {
+  cpSync,
+  existsSync,
+  readdirSync,
+  readFileSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { blogConfig, normalizeBlogBasePath } from "../blog.config.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const messagesDir = path.resolve(here, "../i18n/messages");
@@ -32,6 +40,9 @@ const locales = readdirSync(messagesDir)
 // siteConfig.defaultLocale (site.config.ts) -- the value the root layout emits
 // when it has no request context (static export).
 const DEFAULT_LANG = "en";
+const siteData = JSON.parse(
+  readFileSync(path.resolve(here, "../config/site.json"), "utf8"),
+);
 
 function collectHtml(dir, acc = []) {
   for (const entry of readdirSync(dir)) {
@@ -65,3 +76,55 @@ for (const locale of locales) {
 }
 
 console.log(`patch-static-lang: fixed <html lang> in ${patched} file(s)`);
+
+// Middleware is not included in a static export. For a single-language fork,
+// the runtime navigation intentionally emits unprefixed links (`/podcast/`,
+// `/privacy/`, ...), while Next still writes the route files under
+// `/en/<route>/`. Copy those route directories to their public unprefixed
+// aliases so a plain static host behaves like the dynamic deployment.
+//
+// The same aliasing also makes a configured custom blog segment work in a
+// static bundle. Standard Next rewrites are unavailable under `output:
+// "export"`, so the physical `/en/blog/` output needs a copy at the public
+// blog path (for example `/the-creator-economy-for-b2b/`).
+function copyStaticDirectory(source, target) {
+  if (!existsSync(source) || existsSync(target)) return false;
+  cpSync(source, target, { recursive: true });
+  return true;
+}
+
+const activeLocales = Array.isArray(siteData.locales) ? siteData.locales : [];
+if (activeLocales.length === 1) {
+  const localeDir = path.join(outDir, activeLocales[0]);
+  let aliases = 0;
+
+  if (statSync(localeDir, { throwIfNoEntry: false })?.isDirectory()) {
+    for (const entry of readdirSync(localeDir, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      if (
+        copyStaticDirectory(
+          path.join(localeDir, entry.name),
+          path.join(outDir, entry.name),
+        )
+      ) {
+        aliases += 1;
+      }
+    }
+
+    const configuredBlogPath = normalizeBlogBasePath(
+      process.env.BLOG_BASE_PATH ?? blogConfig.basePath,
+    );
+    const blogSegment = configuredBlogPath.replace(/^\/+/, "");
+    if (
+      blogSegment !== "blog" &&
+      copyStaticDirectory(
+        path.join(localeDir, "blog"),
+        path.join(outDir, blogSegment),
+      )
+    ) {
+      aliases += 1;
+    }
+  }
+
+  console.log(`patch-static-lang: added ${aliases} unprefixed route alias(es)`);
+}
