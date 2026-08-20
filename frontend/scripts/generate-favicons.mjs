@@ -76,8 +76,10 @@ const ICO_SIZES = [16, 32, 48];
  * automatically — no per-brand constant to maintain.
  */
 async function sampleBackgroundColor(sourceBuffer) {
+  // Read the actual top-left pixel. Resizing to 1x1 averages the whole image,
+  // which turns a branded background into a muddy colour when the foreground
+  // artwork covers a substantial part of the source.
   const { data } = await sharp(sourceBuffer)
-    .resize(1, 1, { fit: "cover" })
     .ensureAlpha()
     .raw()
     .toBuffer({ resolveWithObject: true });
