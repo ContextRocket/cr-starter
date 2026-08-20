@@ -55,20 +55,43 @@ When functionality may be reusable:
 Do not copy a complete product component, content bundle, or route into the
 parent. Preserve product content and composition in the fork.
 
-## Synchronizing a fork
+## Synchronizing the family
 
-After a parent change, the fork must be clean before synchronization:
+Synchronization is policy-driven rather than a repository-wide Git merge. This
+keeps project-type configuration and product content out of the shared update
+path, which is what makes the public Next.js starter safe to promote through
+the server-side auth starter and its product forks.
 
-```bash
-git fetch starter
-git merge starter/main
+The chain is deliberately linear:
+
+```text
+cr-starter -> cr-auth-starter -> cr-luna
+                         └----> cr-landing
 ```
 
-Resolve conflicts by taking the parent version for parent-owned files, keeping
-the fork version for site content/config/assets, and manually merging page
-composition. Then run the fork's typecheck, i18n check, tests, and build before
-committing the synchronization merge.
+When `cr-starter` changes, update and commit `cr-auth-starter` first, then
+update and commit each auth fork from `cr-auth-starter`:
 
-Do not leave temporary edits to parent-owned files in a fork. The history reset
-makes the parent relationship simple, but ownership discipline is what prevents
-future file-level drift.
+```bash
+# in cr-auth-starter
+make sync-parent-check
+make sync-parent
+# review, test, and commit the staged parent update
+
+# in cr-luna and cr-landing
+make sync-parent-check
+make sync-parent
+# review, test, and commit the staged parent update
+```
+
+Each repository has a `.fork-sync.json` policy. `sync-parent-check` fetches the
+configured parent and reports drift without changing files. `sync-parent`
+copies only the policy's parent-owned paths and stages them for one ordinary
+commit. It requires a clean worktree and never deletes fork-only files, so
+project-type configuration, site content, assets, and custom composition stay
+with the product. It also avoids conflict markers and merge-resolution state.
+
+The policy is the source of truth for what may flow between repositories. If a
+fork needs a new kind of variation, add a typed configuration or component seam
+to the parent first, then update the policy and synchronize. Do not bypass the
+policy with a broad `git merge` or by copying an entire repository.

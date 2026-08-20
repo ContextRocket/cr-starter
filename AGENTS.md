@@ -103,9 +103,12 @@ The short version is mandatory:
 - If a fork prototype is reusable, move only the generic behavior here, add a
   typed configuration/variant seam and tests, synchronize the fork, then delete
   the fork duplicate in a separate cleanup commit.
-- After every parent change, synchronize from a clean fork, let the parent win
-  parent-owned files, keep fork-owned content/config/assets, run all checks, and
-  commit the synchronization merge.
+- After every parent change, use the fork's `.fork-sync.json` policy from a
+  clean worktree: run `make sync-parent-check`, then `make sync-parent`, review
+  the staged parent-owned update, run the checks, and commit it. Never use a
+  repository-wide merge to synchronize a project-type fork. Preserve the
+  fork-owned content/config/assets and update the policy when a new typed seam
+  is introduced.
 
 Auth, passwordless, and dashboard copy overrides belong to `cr-auth-starter`,
 not this public repository. Auth forks must use its typed partial
