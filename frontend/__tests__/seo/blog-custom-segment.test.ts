@@ -40,8 +40,10 @@ beforeEach(() => {
     siteConfig: {
       siteUrl: ORIGIN,
       defaultLocale: LOCALE,
+      locales: [LOCALE],
       companyName: "Kleos",
       description: "A description.",
+      features: { blog: true },
       blog: { basePath: SEGMENT, title: TITLE },
     },
   }));
@@ -56,9 +58,7 @@ describe("buildRssFeed with a custom blog segment", () => {
     });
     // Channel self-link + item links carry the custom segment.
     expect(xml).toContain(`<link>${ORIGIN}/${LOCALE}${SEGMENT}</link>`);
-    expect(xml).toContain(
-      `<link>${ORIGIN}/${LOCALE}${SEGMENT}/launch</link>`,
-    );
+    expect(xml).toContain(`<link>${ORIGIN}/${LOCALE}${SEGMENT}/launch</link>`);
     expect(xml).toContain(
       `<guid isPermaLink="true">${ORIGIN}/${LOCALE}${SEGMENT}/launch</guid>`,
     );
