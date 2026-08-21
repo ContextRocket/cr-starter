@@ -54,7 +54,13 @@ describe("siteConfig shape", () => {
     expect(siteConfig.features.gallery).toBe(false);
   });
 
-  it("has all required legal fields defined", () => {
+  it("has all required legal fields defined when Impressum is enabled", () => {
+    // Existing-site forks may intentionally disable the generic Impressum
+    // route while retaining their own legal/privacy pages. They should not
+    // have to invent placeholder register or VAT data just to satisfy the
+    // starter smoke test.
+    if (!siteConfig.features.impressum) return;
+
     expect(siteConfig.legal.entity.length).toBeGreaterThan(0);
     expect(siteConfig.legal.address.length).toBeGreaterThan(0);
     expect(siteConfig.legal.register.length).toBeGreaterThan(0);
