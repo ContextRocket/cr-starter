@@ -53,6 +53,7 @@ const { mockAnalytics, mockFeatures, mockChrome, saveConsentCategoriesMock } =
   });
 
 vi.mock("@/lib/analytics", () => ({
+  CONSENT_CHANGED_EVENT: "cr:consent-changed",
   analyticsConfigured: () => mockAnalytics.configured,
   readConsent: () => mockAnalytics.consent,
   grantConsent: vi.fn(() => {
@@ -101,7 +102,10 @@ afterEach(() => {
 describe("parseShowBannerParam", () => {
   it("returns no override when the param is absent", () => {
     expect(parseShowBannerParam("")).toEqual({ force: false, style: null });
-    expect(parseShowBannerParam("?foo=1")).toEqual({ force: false, style: null });
+    expect(parseShowBannerParam("?foo=1")).toEqual({
+      force: false,
+      style: null,
+    });
   });
 
   it("forces the banner with no style when ?showbanner has no value", () => {
@@ -132,7 +136,8 @@ describe("parseShowBannerParam", () => {
 
 // ── Pure decision truth-table ─────────────────────────────────────────────────
 
-describe("shouldShowBanner", () => {  it("auto + analytics configured + no consent -> true", () => {
+describe("shouldShowBanner", () => {
+  it("auto + analytics configured + no consent -> true", () => {
     expect(shouldShowBanner("auto", null, true)).toBe(true);
   });
 
