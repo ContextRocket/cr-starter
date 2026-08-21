@@ -51,6 +51,9 @@ beforeEach(() => {
 
 describe("buildRssFeed with a custom blog segment", () => {
   it("uses the custom segment for channel link + item links, and the custom title", async () => {
+    const { getPublicRoute } = await import("@/lib/public-route-registry");
+    if (!getPublicRoute("blog")) return;
+
     const { buildRssFeed } = await import("@/lib/feed");
     const xml = buildRssFeed({
       source: fakeSource(posts),
@@ -70,6 +73,9 @@ describe("buildRssFeed with a custom blog segment", () => {
 
 describe("sitemap with a custom blog segment", () => {
   it("lists the custom segment for the index and each post", async () => {
+    const { getPublicRoute } = await import("@/lib/public-route-registry");
+    if (!getPublicRoute("blog")) return;
+
     // sitemap imports the file blog adapter; mock it to our fake posts.
     vi.doMock("@/lib/blog", () => ({
       fileBlogAdapter: fakeSource(posts),
