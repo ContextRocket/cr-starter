@@ -4,6 +4,10 @@ This is the contract for keeping a fork close to `cr-starter`. A fork should
 normally change data, copy, theme, assets, and page composition. General
 behavior belongs in the parent.
 
+For the required content, voice, visual, and recovery checkpoint that goes
+alongside this ownership contract, read
+[`style-and-structure-guide.md`](style-and-structure-guide.md).
+
 ## Ownership
 
 Fork-owned:
@@ -101,6 +105,12 @@ copies only the policy's parent-owned paths and stages them for one ordinary
 commit. It requires a clean worktree and never deletes fork-only files, so
 project-type configuration, site content, assets, and custom composition stay
 with the product. It also avoids conflict markers and merge-resolution state.
+
+The sync script cannot recognize a design decision by itself. Before changing a
+policy or adding a path to `policy.sync`, compare it against the fork-owned
+inventory and the style checkpoint. A path that contains a parent copy is not
+automatically parent-owned. Review the staged diff and capture the affected
+surfaces before committing.
 
 The policy is the source of truth for what may flow between repositories. If a
 fork needs a new kind of variation, add a typed configuration or component seam

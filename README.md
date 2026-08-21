@@ -143,6 +143,8 @@ make serve-static
 ```
 
 See [`AGENTS.md`](AGENTS.md) for the ownership rules and [`docs/`](docs/) for configuration, design, AEO/SEO, and deployment guidance.
+For the required style, structure, voice, and fork-preservation checkpoint,
+see [`docs/style-and-structure-guide.md`](docs/style-and-structure-guide.md).
 
 ## License
 

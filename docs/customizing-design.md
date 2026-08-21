@@ -1,5 +1,9 @@
 # Customizing the design
 
+Use [`style-and-structure-guide.md`](style-and-structure-guide.md) as the
+required checkpoint for preserving a fork's visual language, content, voice,
+and baseline during synchronization.
+
 Fork design is data-first. Start with `frontend/config/site.json`:
 
 - `theme.light` and `theme.dark` contain CSS variable values;

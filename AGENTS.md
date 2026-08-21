@@ -102,6 +102,14 @@ shared public-site contract test.
 
 When rebuilding an existing fork, inventory and preserve its content, assets, custom page composition, and theme before replacing starter-owned infrastructure. Never overwrite a ported site with the starter placeholder site. Blog/article Markdown lives in the collection named by `blog.config.mjs` (`content/posts/` by default); a fork may retain `content/blog/` or choose another collection without changing its public URL.
 
+Before any visual, content, route, or synchronization change, read
+[`docs/style-and-structure-guide.md`](docs/style-and-structure-guide.md). It is
+the implementation checkpoint for the voice and visual canon in
+`cr-company-docs`. A passing build is not enough: compare the fork-owned
+inventory and design-review screenshots before and after the change. If a
+design or content surface disappears, stop and recover the fork baseline before
+continuing.
+
 ## Mandatory fork-evolution contract
 
 Read [docs/fork-evolution.md](docs/fork-evolution.md) before changing a fork.
@@ -123,6 +131,12 @@ The short version is mandatory:
   repository-wide merge to synchronize a project-type fork. Preserve the
   fork-owned content/config/assets and update the policy when a new typed seam
   is introduced.
+
+Do not classify a design or content path as parent-owned merely because the
+parent currently contains a copy of it. Ownership is determined by the fork
+contract and `.fork-sync.json`; content, theme, assets, stable product routes,
+and custom composition remain with the fork unless the ownership change is
+explicitly reviewed and migrated.
 
 Auth, passwordless, and dashboard copy overrides belong to `cr-auth-starter`,
 not this public repository. Auth forks must use its typed partial
