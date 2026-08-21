@@ -1,5 +1,8 @@
 import {
   PUBLIC_ROUTE_REGISTRY,
+  buildLocalizedPublicPath,
+  getDefaultPublicLocale,
+  getPublicRoute,
   getPublicRoutes,
 } from "@/lib/public-route-registry";
 import {
@@ -7,6 +10,7 @@ import {
   buildPublicRobotsConfig,
   buildPublicSitemapEntries,
 } from "@/lib/public-site";
+import { siteConfig } from "@/config/site.config";
 
 describe("public-site contract", () => {
   it("uses the fork-owned route registry for discoverable pages", () => {
@@ -28,21 +32,25 @@ describe("public-site contract", () => {
       lastModified: new Date("2026-01-01T00:00:00.000Z"),
     });
     const home = entries.find((entry) => entry.url.endsWith("/en"));
-    const faq = entries.find((entry) => entry.url.endsWith("/en/faq"));
+    const defaultLocale = getDefaultPublicLocale(siteConfig.locales);
+    const blogRoute = getPublicRoute("blog");
     const post = entries.find((entry) =>
-      entry.url.endsWith("/en/blog/welcome"),
+      entry.url.endsWith(`/${blogRoute?.path}/welcome`),
     );
 
-    expect(home?.alternates.languages).toMatchObject({
-      en: "https://example.test/en",
-      es: "https://example.test/es",
-      de: "https://example.test/de",
-      "x-default": "https://example.test/en",
-    });
-    expect(faq).toBeDefined();
+    for (const locale of siteConfig.locales) {
+      expect(home?.alternates.languages[locale]).toBe(
+        `https://example.test${buildLocalizedPublicPath(locale, "")}`,
+      );
+    }
+    expect(home?.alternates.languages["x-default"]).toBe(
+      `https://example.test${buildLocalizedPublicPath(defaultLocale, "")}`,
+    );
     expect(post).toBeDefined();
     expect(
-      entries.some((entry) => entry.url === "https://example.test/faq"),
+      entries.some(
+        (entry) => entry.url === `https://example.test${blogRoute?.path}`,
+      ),
     ).toBe(false);
   });
 
@@ -51,10 +59,19 @@ describe("public-site contract", () => {
     const aiRule = robots.rules.find((rule) => rule.userAgent === "GPTBot");
     const llms = buildLlmsTxt("https://example.test");
 
-    expect(aiRule?.allow).toContain("/en/faq");
+    const blogRoute = getPublicRoute("blog");
+    const defaultLocale = getDefaultPublicLocale(siteConfig.locales);
+    const localizedBlogPath = buildLocalizedPublicPath(
+      defaultLocale,
+      blogRoute?.path ?? "blog",
+    );
+
+    expect(aiRule?.allow).toContain(localizedBlogPath);
     expect(aiRule?.disallow).toContain("/dashboard/");
-    expect(llms).toContain("https://example.test/en/faq");
-    expect(llms).not.toContain("https://example.test/faq");
+    expect(llms).toContain(`https://example.test${localizedBlogPath}`);
+    expect(llms).not.toContain(
+      `https://example.test${blogRoute?.path ?? "/blog"}`,
+    );
     expect(llms).not.toContain("llms-full");
   });
 });
