@@ -6,7 +6,7 @@ WIDGET_DIR = clients/embed-widget
 FRONTEND_PORT ?= 3100
 
 .PHONY: help install start-next-only start-frontend test-frontend build-static \
-        test-cli build-cli build-widget verify serve-static design-review
+        test-cli build-cli package-cli build-widget verify serve-static design-review
 
 help: ## Show available commands
 	@awk '/^[a-zA-Z_-]+:/{split($$1, target, ":"); print "  " target[1] "\t" substr($$0, index($$0,$$2))}' $(MAKEFILE_LIST)
@@ -34,6 +34,9 @@ test-cli: ## Test the customer npm CLI
 
 build-cli: ## Typecheck and build the customer npm CLI
 	cd $(CLI_DIR) && pnpm typecheck && pnpm build
+
+package-cli: build-cli ## Create the installable CLI npm tarball
+	cd $(CLI_DIR) && pnpm pack:tarball
 
 build-widget: ## Build the standalone widget and copy it into frontend/public/embed
 	cd $(WIDGET_DIR) && pnpm build
