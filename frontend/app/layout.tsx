@@ -80,9 +80,13 @@ export const metadata: Metadata = {
   verification: siteConfig.verification,
   alternates: {
     canonical: siteConfig.siteUrl,
-    types: {
-      "application/rss+xml": `${siteConfig.siteUrl}/feed.xml`,
-    },
+    ...(siteConfig.features.blog
+      ? {
+          types: {
+            "application/rss+xml": `${siteConfig.siteUrl}/feed.xml`,
+          },
+        }
+      : {}),
   },
   icons: {
     icon: [
@@ -138,13 +142,14 @@ export default async function RootLayout({
             __html: createNoFlashScript(siteConfig.chrome.defaultTheme),
           }}
         />
-        {/* RSS feed discovery. */}
-        <link
-          rel="alternate"
-          type="application/rss+xml"
-          title={`${siteConfig.companyName} -- ${blogTitle()}`}
-          href={`${origin}/feed.xml`}
-        />
+        {siteConfig.features.blog ? (
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            title={`${siteConfig.companyName} -- ${blogTitle()}`}
+            href={`${origin}/feed.xml`}
+          />
+        ) : null}
       </head>
       <body
         data-surface="marketing"

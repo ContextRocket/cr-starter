@@ -11,10 +11,15 @@
  */
 
 import { buildRssFeed } from "@/lib/feed";
+import { siteConfig } from "@/config/site.config";
 
 export const dynamic = "force-static";
 
 export function GET() {
+  if (!siteConfig.features.blog) {
+    return new Response("Not Found", { status: 404 });
+  }
+
   return new Response(buildRssFeed({ selfPath: "/feed.xml" }), {
     headers: {
       "cache-control": "public, max-age=3600",

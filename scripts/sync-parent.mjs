@@ -8,7 +8,7 @@
  */
 
 import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -87,6 +87,53 @@ const preserveMatchers = (config.policy.preserve ?? []).map(globRegExp);
 const matchesPolicy = (path) =>
   matchers.some((matcher) => matcher.test(path)) &&
   !preserveMatchers.some((matcher) => matcher.test(path));
+
+/**
+ * Content is intentionally fork-owned, so Git synchronization cannot restore
+ * it from the parent. Validate the configured Markdown collection before a
+ * sync starts; otherwise a parent path migration can leave a fork with a
+ * healthy-looking config and a build that cannot discover its posts.
+ */
+function validateBlogContentDirectory() {
+  const siteConfigPath = resolve(root, "frontend/config/site.json");
+  let siteData;
+  try {
+    siteData = JSON.parse(readFileSync(siteConfigPath, "utf8"));
+  } catch {
+    return;
+  }
+
+  if (siteData.features?.blog === false) return;
+
+  const blogConfigPath = resolve(root, "frontend/blog.config.mjs");
+  if (!existsSync(blogConfigPath)) return;
+
+  const source = readFileSync(blogConfigPath, "utf8");
+  const configured =
+    /^\s*contentDir\s*:\s*["']([^"']+)["']\s*,?\s*$/m.exec(source)?.[1] ??
+    "content/posts";
+  const relativeDir = configured
+    .trim()
+    .replace(/\\/g, "/")
+    .replace(/^\/+|\/+$/g, "") || "content/posts";
+  const candidates = [
+    resolve(root, "frontend", relativeDir),
+    resolve(root, relativeDir),
+    resolve(root, "..", relativeDir),
+  ];
+
+  if (!candidates.some((candidate) => existsSync(candidate))) {
+    const legacyDir = resolve(root, "content/blog");
+    const hint = existsSync(legacyDir)
+      ? ` Legacy content exists at ${legacyDir}; move it to the configured directory.`
+      : " Add at least one Markdown post or disable the blog feature.";
+    fail(
+      `blog is enabled but its configured Markdown directory ${relativeDir} is missing.${hint}`,
+    );
+  }
+}
+
+validateBlogContentDirectory();
 
 if (git("status", "--porcelain")) {
   fail("the worktree must be clean before synchronization; commit or stash local changes first");
