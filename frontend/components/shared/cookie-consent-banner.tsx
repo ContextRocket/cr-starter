@@ -46,6 +46,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "@/i18n/navigation";
 import {
+  CONSENT_CHANGED_EVENT,
   readConsent,
   grantConsent,
   denyConsent,
@@ -98,9 +99,7 @@ export function parseShowBannerParam(search: string): {
   if (!params.has("showbanner")) return { force: false, style: null };
   const value = params.get("showbanner");
   const style =
-    value === "bar" || value === "card" || value === "terminal"
-      ? value
-      : null;
+    value === "bar" || value === "card" || value === "terminal" ? value : null;
   return { force: true, style };
 }
 
@@ -117,13 +116,18 @@ function useConsentState(forceShow: boolean) {
     // Resolve the three-way visibility control against the recorded consent
     // and whether analytics is configured. Runs on the client only, so
     // analyticsConfigured() and readConsent() are safe here.
-    setShouldShow(
-      shouldShowBanner(
-        siteConfig.features.cookieConsent,
-        readConsent(),
-        analyticsConfigured(),
-      ),
-    );
+    const refresh = () =>
+      setShouldShow(
+        shouldShowBanner(
+          siteConfig.features.cookieConsent,
+          readConsent(),
+          analyticsConfigured(),
+        ),
+      );
+
+    refresh();
+    window.addEventListener(CONSENT_CHANGED_EVENT, refresh);
+    return () => window.removeEventListener(CONSENT_CHANGED_EVENT, refresh);
   }, [forceShow]);
 
   return { shouldShow, setShouldShow };

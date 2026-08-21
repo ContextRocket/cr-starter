@@ -20,39 +20,200 @@
 
 // ── Consent persistence ───────────────────────────────────────────────────────
 
+import {
+  CONSENT_CHANGED_EVENT,
+  CONSENT_COOKIE_NAME,
+  CONSENT_MAX_AGE_SECONDS,
+  createConsentRecord,
+  normalizeConsentCategories,
+  parseStoredConsent,
+  serializeConsent,
+  type ConsentCategories,
+  type StoredConsent,
+} from "@/lib/consent";
+
+export {
+  CONSENT_CHANGED_EVENT,
+  CONSENT_COOKIE_NAME,
+  CONSENT_MAX_AGE_SECONDS,
+  CONSENT_STORE_VERSION,
+  OPTIONAL_CONSENT_CATEGORIES,
+  defaultConsentCategories,
+  type ConsentCategories,
+  type OptionalConsentCategory,
+  type StoredConsent,
+} from "@/lib/consent";
+
 export const CONSENT_STORAGE_KEY = "cr_analytics_consent";
 export const CONSENT_GRANTED = "granted";
 export const CONSENT_DENIED = "denied";
+export const CONSENT_RECORD_STORAGE_KEY = "cr_cookie_consent";
 
 export type ConsentValue = typeof CONSENT_GRANTED | typeof CONSENT_DENIED;
 
-function canUseStorage(): boolean {
+function getStorage(): Storage | null {
   try {
-    return typeof window !== "undefined" && typeof localStorage !== "undefined";
+    return typeof window === "undefined" ? null : window.localStorage;
   } catch {
-    return false;
+    return null;
   }
+}
+
+function readCookie(): string | null {
+  if (typeof document === "undefined") return null;
+  const prefix = `${CONSENT_COOKIE_NAME}=`;
+  const row = document.cookie
+    .split("; ")
+    .find((candidate) => candidate.startsWith(prefix));
+  return row ? row.slice(prefix.length) : null;
+}
+
+function writeCookie(record: StoredConsent): void {
+  if (typeof document === "undefined") return;
+  const secure =
+    typeof window !== "undefined" && window.location.protocol === "https:"
+      ? "; Secure"
+      : "";
+  document.cookie = `${CONSENT_COOKIE_NAME}=${encodeURIComponent(serializeConsent(record))}; Path=/; Max-Age=${CONSENT_MAX_AGE_SECONDS}; SameSite=Lax${secure}`;
+}
+
+function clearCookie(): void {
+  if (typeof document === "undefined") return;
+  document.cookie = `${CONSENT_COOKIE_NAME}=; Path=/; Max-Age=0; SameSite=Lax`;
+}
+
+function dispatchConsentChanged(record: StoredConsent | null): void {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(
+    new CustomEvent(CONSENT_CHANGED_EVENT, { detail: record }),
+  );
+}
+
+function writeLegacyKeys(
+  record: StoredConsent,
+  storage: Storage | null = getStorage(),
+): void {
+  if (!storage) return;
+  storage.setItem(
+    CONSENT_STORAGE_KEY,
+    record.categories.analytics ? CONSENT_GRANTED : CONSENT_DENIED,
+  );
+  storage.setItem(
+    CONSENT_CATEGORIES_STORAGE_KEY,
+    JSON.stringify(record.categories),
+  );
+}
+
+function readLegacyRecord(storage: Storage | null): StoredConsent | null {
+  if (!storage) return null;
+  const rawBinary = storage.getItem(CONSENT_STORAGE_KEY);
+  const rawCategories = storage.getItem(CONSENT_CATEGORIES_STORAGE_KEY);
+  let categories: ConsentCategories | null = null;
+  if (rawCategories) {
+    try {
+      categories = normalizeConsentCategories(JSON.parse(rawCategories));
+    } catch {
+      categories = null;
+    }
+  }
+
+  if (rawBinary !== CONSENT_GRANTED && rawBinary !== CONSENT_DENIED) {
+    return categories ? createConsentRecord(categories) : null;
+  }
+
+  return createConsentRecord({
+    necessary: true,
+    analytics: rawBinary === CONSENT_GRANTED,
+    marketing: categories?.marketing === true,
+  });
+}
+
+/**
+ * Read the versioned browser record. localStorage is primary; the small
+ * JavaScript-readable cookie is a fallback/mirror for auth-enabled SSR flows.
+ * Legacy binary/category keys are migrated automatically.
+ */
+export function readStoredConsent(): StoredConsent | null {
+  const storage = getStorage();
+  const stored = storage
+    ? parseStoredConsent(storage.getItem(CONSENT_RECORD_STORAGE_KEY))
+    : null;
+  if (stored) return stored;
+
+  const cookie = parseStoredConsent(readCookie());
+  if (cookie) {
+    try {
+      storage?.setItem(CONSENT_RECORD_STORAGE_KEY, serializeConsent(cookie));
+      writeLegacyKeys(cookie, storage);
+    } catch {
+      // Storage can be blocked even when cookies are available.
+    }
+    return cookie;
+  }
+
+  const legacy = readLegacyRecord(storage);
+  if (legacy) {
+    try {
+      storage?.setItem(CONSENT_RECORD_STORAGE_KEY, serializeConsent(legacy));
+      writeCookie(legacy);
+      writeLegacyKeys(legacy, storage);
+    } catch {
+      // Ignore unavailable storage/cookie writes during migration.
+    }
+  }
+  return legacy;
+}
+
+function persistStoredConsent(record: StoredConsent): void {
+  const storage = getStorage();
+  try {
+    storage?.setItem(CONSENT_RECORD_STORAGE_KEY, serializeConsent(record));
+    writeLegacyKeys(record, storage);
+    writeCookie(record);
+  } catch {
+    // A blocked storage area must not break the website or consent controls.
+  }
+  dispatchConsentChanged(record);
+}
+
+/** Persist a validated record received from an authenticated profile. */
+export function writeStoredConsent(record: StoredConsent): void {
+  persistStoredConsent(
+    createConsentRecord(record.categories, record.recordedAt),
+  );
 }
 
 /** Read the persisted consent value. Returns null when no choice has been made. */
 export function readConsent(): ConsentValue | null {
-  if (!canUseStorage()) return null;
-  const raw = localStorage.getItem(CONSENT_STORAGE_KEY);
-  if (raw === CONSENT_GRANTED || raw === CONSENT_DENIED) return raw;
-  return null;
+  const record = readStoredConsent();
+  if (!record) return null;
+  return record.categories.analytics ? CONSENT_GRANTED : CONSENT_DENIED;
 }
 
-/** Persist a consent choice. */
+/** Persist a binary consent choice while retaining the other categories. */
 export function writeConsent(value: ConsentValue): void {
-  if (!canUseStorage()) return;
-  localStorage.setItem(CONSENT_STORAGE_KEY, value);
+  const current = readStoredConsent();
+  persistStoredConsent(
+    createConsentRecord({
+      necessary: true,
+      analytics: value === CONSENT_GRANTED,
+      marketing: current?.categories.marketing === true,
+    }),
+  );
 }
 
 /** Clear the stored consent (e.g. for testing or re-prompting). */
 export function clearConsent(): void {
-  if (!canUseStorage()) return;
-  localStorage.removeItem(CONSENT_STORAGE_KEY);
-  localStorage.removeItem(CONSENT_CATEGORIES_STORAGE_KEY);
+  const storage = getStorage();
+  try {
+    storage?.removeItem(CONSENT_RECORD_STORAGE_KEY);
+    storage?.removeItem(CONSENT_STORAGE_KEY);
+    storage?.removeItem(CONSENT_CATEGORIES_STORAGE_KEY);
+    clearCookie();
+  } catch {
+    // Ignore unavailable storage/cookie writes during reset.
+  }
+  dispatchConsentChanged(null);
 }
 
 // ── Granular consent categories ───────────────────────────────────────────────
@@ -75,47 +236,13 @@ export function clearConsent(): void {
 
 export const CONSENT_CATEGORIES_STORAGE_KEY = "cr_analytics_consent_categories";
 
-/** Optional (user-toggleable) categories, in display order. */
-export const OPTIONAL_CONSENT_CATEGORIES = ["analytics", "marketing"] as const;
-
-export type OptionalConsentCategory =
-  (typeof OPTIONAL_CONSENT_CATEGORIES)[number];
-
-/** Full category map. `necessary` is always true (not user-toggleable). */
-export type ConsentCategories = { necessary: true } & Record<
-  OptionalConsentCategory,
-  boolean
->;
-
-/** Default map: necessary on, everything optional off (privacy-preserving). */
-export function defaultConsentCategories(): ConsentCategories {
-  return { necessary: true, analytics: false, marketing: false };
-}
-
-function isBoolRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
-}
-
 /**
  * Read the persisted per-category consent. Returns null when the user has not
  * yet made a granular choice. `necessary` is always forced true regardless of
  * stored contents.
  */
 export function readConsentCategories(): ConsentCategories | null {
-  if (!canUseStorage()) return null;
-  const raw = localStorage.getItem(CONSENT_CATEGORIES_STORAGE_KEY);
-  if (!raw) return null;
-  try {
-    const parsed: unknown = JSON.parse(raw);
-    if (!isBoolRecord(parsed)) return null;
-    return {
-      necessary: true,
-      analytics: parsed["analytics"] === true,
-      marketing: parsed["marketing"] === true,
-    };
-  } catch {
-    return null;
-  }
+  return readStoredConsent()?.categories ?? null;
 }
 
 /**
@@ -132,19 +259,8 @@ export function saveConsentCategories(
     marketing: categories.marketing === true,
   };
 
-  if (canUseStorage()) {
-    localStorage.setItem(
-      CONSENT_CATEGORIES_STORAGE_KEY,
-      JSON.stringify(resolved),
-    );
-  }
-
-  // Keep the binary analytics gate in lockstep with the analytics category.
-  if (resolved.analytics) {
-    grantConsent();
-  } else {
-    denyConsent();
-  }
+  persistStoredConsent(createConsentRecord(resolved));
+  if (resolved.analytics) initAnalytics();
 
   return resolved;
 }

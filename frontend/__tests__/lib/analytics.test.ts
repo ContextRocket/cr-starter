@@ -52,6 +52,7 @@ function withEnv(key: string, value: string, fn: () => void) {
 
 beforeEach(() => {
   localStorage.clear();
+  document.cookie = "cr_cookie_consent=; Max-Age=0; Path=/";
   resetScripts();
   // Reset the idempotency flags by re-importing is not possible in Vitest without
   // vi.resetModules(), so we rely on clearing localStorage and removing scripts
