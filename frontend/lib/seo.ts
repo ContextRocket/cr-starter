@@ -36,8 +36,19 @@ export function buildAlternates(
   locale: string,
   path = "",
 ): { canonical: string; languages: Record<string, string> } {
+  const normalizedPath = path
+    ? path.startsWith("/")
+      ? path
+      : `/${path}`
+    : "";
+  const servedLocales = siteConfig.locales.length
+    ? siteConfig.locales
+    : SUPPORTED_LOCALES;
   const languages: Record<string, string> = {};
-  for (const l of SUPPORTED_LOCALES) languages[l] = `/${l}${path}`;
-  languages["x-default"] = `/${siteConfig.defaultLocale}${path}`;
-  return { canonical: `/${locale}${path}`, languages };
+  for (const l of servedLocales) languages[l] = `/${l}${normalizedPath}`;
+  const defaultLocale = servedLocales.includes(siteConfig.defaultLocale)
+    ? siteConfig.defaultLocale
+    : servedLocales[0] ?? siteConfig.defaultLocale;
+  languages["x-default"] = `/${defaultLocale}${normalizedPath}`;
+  return { canonical: `/${locale}${normalizedPath}`, languages };
 }
