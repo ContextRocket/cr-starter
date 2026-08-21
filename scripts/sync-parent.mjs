@@ -198,6 +198,11 @@ if (changes.length > 0) {
 if (localOnly.length > 0) {
   console.log("fork-only files under a parent pattern (preserved):");
   for (const path of localOnly) console.log(`  ${path}`);
+  fail(
+    "fork-only files match policy.sync but are not listed in policy.preserve; " +
+      "declare them explicitly before synchronizing so a future parent path " +
+      "cannot overwrite fork-owned code",
+  );
 }
 
 if (check) process.exit(changes.length > 0 ? 1 : 0);

@@ -1,8 +1,10 @@
-# Style, structure, and voice checkpoint
+# CR Starter style, structure, and voice checkpoint
 
-This document is the engineering checkpoint for the public starter and its
-forks. It translates the company-level brand and voice canon into rules that
-can be checked when a starter change or fork synchronization touches a site.
+This document is the engineering checkpoint for **`cr-starter` itself**. It
+translates the company-level brand and voice canon into rules for this public,
+Next.js/static-first starter. Each downstream repository has its own file with
+the same name and its own baseline. This file is not a parent-owned file that
+should be copied over a fork during synchronization.
 
 It is deliberately not a second copy of the company brand canon. The source of
 truth for the *why* is [`cr-company-docs`](https://github.com/ContextRocket/cr-company-docs):
@@ -23,7 +25,27 @@ canon and update this implementation checkpoint. If a fork's real customer or
 personal-brand content differs, preserve the fork's content and record the
 decision in that fork; do not replace it with starter copy.
 
-## The stability rule
+## This project's baseline
+
+- This is the public Next.js-only starter. It has no local backend, database,
+  auth, passwordless account flow, or dashboard.
+- It is static-first and must remain usable in canned/demo mode without a
+  network connection. Live AI connects directly from the browser to
+  ContextRocket A2A.
+- The reference configuration serves English, Spanish, and German, with
+  English as the default locale. Locale files are optional in downstream
+  projects; unused bundles must not be carried into a fork.
+- The reference site enables the Markdown blog and ChatFab, disables gallery
+  and testimonials, and uses system theme selection. These are demonstration
+  defaults, not requirements for every fork.
+- Shared UI, transport, i18n shared/app messages, the widget, gallery, and CLI
+  are the reusable surfaces being demonstrated here. Forks customize config,
+  site copy, Markdown, assets, theme, and narrow page composition.
+- The default home page is a small marketing/demo surface. Auth, dashboard,
+  healthcare, partner-port, and product-specific application pages do not
+  belong in this public starter.
+
+## The stability rule for downstream forks
 
 Every fork has two things that must survive a parent update:
 
