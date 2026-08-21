@@ -69,7 +69,11 @@ export function SiteChrome({
   containerClassName,
 }: SiteChromeProps) {
   const pathname = usePathname() || "/";
-  const exemptPrefixes = siteConfig.chrome.exemptPrefixes ?? ["/terminal-demo"];
+  const exemptPrefixes = siteConfig.chrome.exemptPrefixes ?? [
+    "/dashboard",
+    "/auth",
+    "/terminal-demo",
+  ];
   const isExempt = exemptPrefixes.some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
   );
