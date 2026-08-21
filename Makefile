@@ -6,7 +6,8 @@ WIDGET_DIR = clients/embed-widget
 FRONTEND_PORT ?= 3100
 
 .PHONY: help install start-next-only start-frontend test-frontend build-static \
-        test-cli build-cli package-cli build-widget verify serve-static design-review
+        test-cli build-cli package-cli build-widget verify serve-static design-review \
+        sync-parent sync-parent-check
 
 help: ## Show available commands
 	@awk '/^[a-zA-Z_-]+:/{split($$1, target, ":"); print "  " target[1] "\t" substr($$0, index($$0,$$2))}' $(MAKEFILE_LIST)
@@ -22,6 +23,12 @@ start-next-only: ## Start the Next.js site (chat is canned unless live mode is c
 	cd $(FRONTEND_DIR) && PORT=$(FRONTEND_PORT) ./start.sh
 
 start-frontend: start-next-only
+
+sync-parent-check: ## Check parent-owned paths (used from a configured fork)
+	node scripts/sync-parent.mjs --check
+
+sync-parent: ## Restore parent-owned paths and stage the sync (used from a fork)
+	node scripts/sync-parent.mjs --apply
 
 test-frontend: ## Run the frontend unit tests
 	cd $(FRONTEND_DIR) && pnpm test
