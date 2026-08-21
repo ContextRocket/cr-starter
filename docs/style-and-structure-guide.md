@@ -45,6 +45,25 @@ decision in that fork; do not replace it with starter copy.
   healthcare, partner-port, and product-specific application pages do not
   belong in this public starter.
 
+## Actual visual profile
+
+The checked-in starter reference is intentionally neutral with a restrained
+pink action color:
+
+- light mode uses `#ffffff` background, `#0a0a0a` foreground, `#c2185b`
+  primary, `#880e4f` hover, and `#f5f5f5` muted surfaces;
+- dark mode uses `#0a0a0a` background, `#fafafa` foreground, white primary
+  controls, and `#ff3d75` as the brand accent with `#ff5c8c` hover;
+- status colors are semantic green `#10b981`, amber `#fbbf24`, and red
+  `#ef4444`; and
+- the reference radius is `0.5rem`, with a marketing header, full footer, icon
+  logo, system theme default, and theme toggle.
+
+This is a starter baseline, not a requirement that every fork use pink. A fork
+must record its own palette below in its own checkpoint and must not inherit the
+starter palette accidentally. Every palette change needs light/dark contrast,
+focus-ring, hover, disabled, and screenshot checks.
+
 ## The stability rule for downstream forks
 
 Every fork has two things that must survive a parent update:
