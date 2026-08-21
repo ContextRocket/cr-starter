@@ -13,6 +13,7 @@ import { useTranslations } from "@/i18n/locale-provider";
 import { ChatPanel } from "@/components/shared/chat/chat-panel";
 import { BrandLogo } from "@/components/shared/sections/brand-logo";
 import { useA2AStream } from "@/hooks/use-a2a-stream";
+import { getChatFabLogoAssets } from "@/lib/brand-assets";
 import { siteConfig } from "@/config/site.config";
 import type { A2AClientOptions } from "@/lib/a2a-client";
 
@@ -71,6 +72,7 @@ export function ChatFab({
   const [open, setOpen] = useState(initialFullscreen);
   const [fullscreen, setFullscreen] = useState(initialFullscreen);
   const fabButtonRef = useRef<HTMLButtonElement>(null);
+  const chatFabLogo = getChatFabLogoAssets(siteConfig.assets);
 
   const isDemoMode = siteConfig.chat.mode === "demo";
   const effectiveClientOpts = clientOpts;
@@ -141,8 +143,7 @@ export function ChatFab({
             <span data-testid="chat-fab-fullscreen-brand">
               <BrandLogo
                 logo={{
-                  src: siteConfig.assets.logo,
-                  srcDark: siteConfig.assets.logoDark,
+                  ...chatFabLogo,
                   alt: siteConfig.companyName,
                   variant: "icon",
                   width: 20,
@@ -217,8 +218,7 @@ export function ChatFab({
                 <div className="flex min-w-0 items-center gap-2">
                   <BrandLogo
                     logo={{
-                      src: siteConfig.assets.logo,
-                      srcDark: siteConfig.assets.logoDark,
+                      ...chatFabLogo,
                       alt: siteConfig.companyName,
                       variant: "icon",
                       width: 20,

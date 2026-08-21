@@ -8,6 +8,7 @@
  */
 
 import { siteConfig } from "@/config/site.config";
+import { getChatFabLogoAssets } from "@/lib/brand-assets";
 
 describe("siteConfig shape", () => {
   it("has a non-empty companyName", () => {
@@ -46,6 +47,24 @@ describe("siteConfig shape", () => {
     expect(siteConfig.assets.icon192Maskable).toBeTruthy();
     expect(siteConfig.assets.icon512Maskable).toBeTruthy();
     expect(siteConfig.assets.appleTouchIcon).toBeTruthy();
+  });
+
+  it("resolves a dedicated ChatFab icon without requiring one", () => {
+    expect(getChatFabLogoAssets(siteConfig.assets)).toEqual({
+      src: siteConfig.assets.logo,
+      srcDark: siteConfig.assets.logoDark,
+    });
+
+    expect(
+      getChatFabLogoAssets({
+        logo: "/brand/wordmark.svg",
+        logoDark: "/brand/wordmark-dark.svg",
+        chatFabIcon: "/brand/icon.png",
+      }),
+    ).toEqual({
+      src: "/brand/icon.png",
+      srcDark: "/brand/icon.png",
+    });
   });
 
   it("has the gallery content seam available", () => {

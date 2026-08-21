@@ -47,6 +47,12 @@ the component. Do not depend on fragile selectors against shared-component
 internals. A one-off component belongs under `components/custom/`; a recurring
 variation should become a parent-owned variant or slot.
 
+For ChatFab branding, keep the main logo and the small chat mark separate when
+the main logo is a wordmark. Set `assets.chatFabIcon` (and optionally
+`assets.chatFabIconDark`) to a square, legible asset. The shared ChatFab falls
+back to `assets.logo`/`assets.logoDark` when those fields are absent, so the
+starter and ContextRocket landing site need no extra configuration.
+
 The public starter has no auth surface. Auth message customization belongs to
 `cr-auth-starter`, where a fork may override individual parent-owned shared/app
 messages in `frontend/i18n/messages/overrides/<locale>.ts`. Never edit the auth
