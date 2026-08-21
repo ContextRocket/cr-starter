@@ -6,12 +6,19 @@ This is the public, Next.js/static-first starter. The frontend is the product. I
 
 The starter separates data, language, and behavior:
 
-1. `frontend/config/site.json` -- fork-owned identity, navigation, theme, assets, legal data, chrome settings, and feature switches.
+1. `frontend/config/site.json` -- fork-owned identity, navigation, theme, assets, legal data, chrome settings, feature switches, and the explicit `publicRoutes` discovery list.
 2. `frontend/i18n/messages/site/*.ts` -- fork-owned copy for the locales the site actually serves.
 3. `frontend/config/site.config.ts` -- starter-owned typed configuration seam and sensible defaults.
 4. `frontend/config/.env.example` -- optional environment overrides for site toggles and ContextRocket connection settings.
 
 Basic forks edit `site.json` and the `site/` message files. Advanced forks may add components under `frontend/components/custom/` and compose their own home page.
+
+`publicRoutes` is the fork-owned list of pages intended for public discovery.
+The starter-owned route registry and builders use it for `sitemap.xml`,
+`robots.txt`, `llms.txt`, and shared URL metadata. Keep it explicit: do not
+publish demo, dashboard, preview, or product-only routes just because a route
+file exists. A custom blog path or product route is declared here while its
+page and content remain fork-owned.
 
 ## Hard rules
 
@@ -28,11 +35,11 @@ Basic forks edit `site.json` and the `site/` message files. Advanced forks may a
 
 Messages are split into ownership slices:
 
-| Slice | Path | Purpose | Owner |
-|---|---|---|---|
+| Slice  | Path                             | Purpose                                                               | Owner   |
+| ------ | -------------------------------- | --------------------------------------------------------------------- | ------- |
 | shared | `frontend/i18n/messages/shared/` | Cross-cutting UI such as forms, nav, errors, cookies, and breadcrumbs | Starter |
-| app | `frontend/i18n/messages/app/` | Chat, embed, and development/demo UI | Starter |
-| site | `frontend/i18n/messages/site/` | Home, blog, FAQ, footer, legal pages, and testimonials | Fork |
+| app    | `frontend/i18n/messages/app/`    | Chat, embed, and development/demo UI                                  | Starter |
+| site   | `frontend/i18n/messages/site/`   | Home, blog, FAQ, footer, legal pages, and testimonials                | Fork    |
 
 Each locale barrel merges the three slices. Keep only the locale files the fork
 serves; an English-only fork needs only en.ts in each slice. Run
@@ -78,14 +85,19 @@ The public starter is the base for sites that need only Next/static functionalit
 
 Fork-owned files:
 
-| Category | Files | Rule |
-|---|---|---|
-| Content/data | `frontend/config/site.json`, `frontend/i18n/messages/site/*.ts` | Customize freely |
-| Site composition | `frontend/app/[locale]/page.tsx`, optional site pages | Preserve the starter seams; keep brand content/design |
-| Assets | `frontend/public/` | Keep only fork-owned assets |
-| Custom design | `frontend/components/custom/` | Use for genuinely fork-specific components |
+| Category         | Files                                                           | Rule                                                  |
+| ---------------- | --------------------------------------------------------------- | ----------------------------------------------------- |
+| Content/data     | `frontend/config/site.json`, `frontend/i18n/messages/site/*.ts` | Customize freely                                      |
+| Site composition | `frontend/app/[locale]/page.tsx`, optional site pages           | Preserve the starter seams; keep brand content/design |
+| Assets           | `frontend/public/`                                              | Keep only fork-owned assets                           |
+| Custom design    | `frontend/components/custom/`                                   | Use for genuinely fork-specific components            |
 
-Starter-owned files should be pulled from `cr-starter`: `components/shared/`, `lib/`, `config/site.config.ts`, `i18n/messages/shared/`, `i18n/messages/app/`, `clients/embed-widget/`, and `cli/`.
+Starter-owned files should be pulled from `cr-starter`: `components/shared/`,
+`lib/` (including `public-route-registry.ts` and `public-site.ts`),
+`config/site.config.ts`, `i18n/messages/shared/`, `i18n/messages/app/`,
+`clients/embed-widget/`, `cli/`, the public discovery route wrappers
+(`app/sitemap.ts`, `app/robots.ts`, and `app/llms.txt/route.ts`), and the
+shared public-site contract test.
 
 When rebuilding an existing fork, inventory and preserve its content, assets, custom page composition, and theme before replacing starter-owned infrastructure. Never overwrite a ported site with the starter placeholder site.
 
@@ -97,7 +109,8 @@ The short version is mandatory:
 - Forks may change `site.json` (including `chrome.defaultTheme`), documented environment values, `site/` messages,
   Markdown content, public assets, site routes, and `components/custom/`.
 - Forks must not edit `components/shared/`, `lib/`, `site.config.ts`, shared/app
-  messages, generated i18n wiring, the ChatFab, gallery, widget, or CLI.
+  messages, generated i18n wiring, the ChatFab, gallery, widget, CLI, or the
+  public discovery route wrappers.
 - Use theme tokens, chrome settings, exposed variants, or custom wrappers for
   visual changes. Do not override shared internals with fragile CSS selectors.
 - If a fork prototype is reusable, move only the generic behavior here, add a

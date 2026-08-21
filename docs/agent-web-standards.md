@@ -24,6 +24,12 @@ These are generated from site configuration and the public route tree. Keep
 titles, descriptions, canonical URLs, and page content accurate in the fork's
 site data and site message files.
 
+The fork-owned `frontend/config/site.json.publicRoutes` list is the allowlist
+for those public surfaces. `frontend/lib/public-route-registry.ts` is the
+shared route contract and `frontend/lib/public-site.ts` supplies the sitemap,
+robots, and llms builders. Forks should configure that list rather than copy
+these builders or hand-maintain the route files.
+
 ## Structured identity
 
 frontend/lib/structured-data.ts builds Organization and WebSite JSON-LD.
@@ -56,15 +62,16 @@ Never place a server-side machine key in a public page.
 
 ## Implementation map
 
-| Surface | Implementation |
-|---|---|
-| robots.txt | frontend/app/robots.ts |
-| sitemap.xml | frontend/app/sitemap.ts |
-| llms.txt | frontend/app/llms.txt/route.ts |
-| Agent card | frontend/app/.well-known/agent.json/route.ts |
-| MCP manifest | frontend/app/.well-known/mcp.json/route.ts |
-| JSON-LD | frontend/lib/structured-data.ts |
-| A2A client | frontend/lib/a2a-client.ts |
-| React stream hook | frontend/hooks/use-a2a-stream.ts |
-| Standalone widget | clients/embed-widget/ |
-| Customer CLI | cli/ |
+| Surface                 | Implementation                                                        |
+| ----------------------- | --------------------------------------------------------------------- |
+| robots.txt              | frontend/app/robots.ts                                                |
+| sitemap.xml             | frontend/app/sitemap.ts                                               |
+| llms.txt                | frontend/app/llms.txt/route.ts                                        |
+| Route registry/builders | frontend/lib/public-route-registry.ts and frontend/lib/public-site.ts |
+| Agent card              | frontend/app/.well-known/agent.json/route.ts                          |
+| MCP manifest            | frontend/app/.well-known/mcp.json/route.ts                            |
+| JSON-LD                 | frontend/lib/structured-data.ts                                       |
+| A2A client              | frontend/lib/a2a-client.ts                                            |
+| React stream hook       | frontend/hooks/use-a2a-stream.ts                                      |
+| Standalone widget       | clients/embed-widget/                                                 |
+| Customer CLI            | cli/                                                                  |

@@ -8,7 +8,9 @@ behavior belongs in the parent.
 
 Fork-owned:
 
-- `frontend/config/site.json` and documented environment values;
+- `frontend/config/site.json` and documented environment values. Its
+  `publicRoutes` array is the explicit allowlist for sitemap, robots, llms.txt,
+  and shared metadata discovery;
 - `frontend/i18n/messages/site/<locale>.ts`;
 - Markdown content, including blog, privacy, and Impressum pages;
 - `frontend/app/[locale]/page.tsx` and genuinely product-specific routes;
@@ -19,7 +21,10 @@ Parent-owned:
 
 - `frontend/components/shared/`;
 - `frontend/lib/` and integration transport;
+- `frontend/lib/public-route-registry.ts` and `frontend/lib/public-site.ts`;
 - `frontend/config/site.config.ts`;
+- `frontend/app/sitemap.ts`, `frontend/app/robots.ts`, and
+  `frontend/app/llms.txt/route.ts`;
 - `frontend/i18n/messages/shared/` and `frontend/i18n/messages/app/`;
 - generated i18n wiring;
 - the ChatFab, gallery, widget, and CLI.
@@ -65,6 +70,10 @@ the server-side auth starter and its product forks.
 The chain is deliberately linear:
 
 ```text
+                 ┌----> cr-kleos
+cr-starter ------┼----> cr-gba
+                 └----> cr-markmacmahon
+
 cr-starter -> cr-auth-starter -> cr-luna
                          └----> cr-landing
 ```
@@ -99,3 +108,18 @@ policy with a broad `git merge` or by copying an entire repository.
 Each policy carries the canonical parent URL, so a fresh clone can add its
 fetch-only parent remote automatically; existing local sibling remotes remain
 usable.
+
+## Public discovery contract
+
+The public discovery implementation is parent-owned and route selection is
+configuration-owned. A fork should add a route to `site.json.publicRoutes` only
+when that page is intended to be public and indexable. Use `includeInLlms` for
+the small set of pages that belong in the concise `llms.txt` summary. Blog
+entries are discovered from the Markdown adapter and inherit the configured
+blog path, including custom paths such as `/posts` or a partner-specific
+segment.
+
+The route wrappers are synchronized explicitly by every policy because they
+live beside the App Router rather than under `lib/`. No fork should copy or
+hand-maintain its own sitemap, robots, or llms builder. The canonical
+AI-readable surface is `/llms.txt`; do not add `/llms-full.txt`.
