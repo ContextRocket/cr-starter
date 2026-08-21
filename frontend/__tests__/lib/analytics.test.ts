@@ -91,6 +91,12 @@ describe("consent persistence", () => {
     writeConsent(CONSENT_GRANTED);
     expect(localStorage.getItem(CONSENT_STORAGE_KEY)).toBe(CONSENT_GRANTED);
   });
+
+  it("recovers the choice from the cookie mirror when localStorage is empty", () => {
+    writeConsent(CONSENT_GRANTED);
+    localStorage.clear();
+    expect(readConsent()).toBe(CONSENT_GRANTED);
+  });
 });
 
 // ── analyticsConfigured ───────────────────────────────────────────────────────
