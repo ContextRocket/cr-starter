@@ -9,7 +9,19 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { normalizeBlogBasePath, blogRewrites } from "@/blog.config.mjs";
+import {
+  normalizeBlogBasePath,
+  normalizeBlogContentDir,
+  blogRewrites,
+} from "@/blog.config.mjs";
+
+describe("normalizeBlogContentDir", () => {
+  it("keeps the default posts collection and normalizes fork folders", () => {
+    expect(normalizeBlogContentDir("content/posts")).toBe("content/posts");
+    expect(normalizeBlogContentDir("/content/blog/")).toBe("content/blog");
+    expect(normalizeBlogContentDir("   ")).toBe("content/posts");
+  });
+});
 
 describe("normalizeBlogBasePath", () => {
   it("returns a normalized default for the conventional blog", () => {

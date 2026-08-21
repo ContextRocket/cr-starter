@@ -54,6 +54,10 @@ describe("siteConfig shape", () => {
     expect(typeof siteConfig.features.gallery).toBe("boolean");
   });
 
+  it("has a configurable Markdown post directory", () => {
+    expect(siteConfig.blog.contentDir).toBeTruthy();
+  });
+
   it("has all required legal fields defined when Impressum is enabled", () => {
     // Existing-site forks may intentionally disable the generic Impressum
     // route while retaining their own legal/privacy pages. They should not

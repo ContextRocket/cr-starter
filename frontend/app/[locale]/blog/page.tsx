@@ -2,8 +2,9 @@
  * Blog listing page -- /blog
  *
  * A conventional, statically-generated blog index: a hero (title + subtitle),
- * a Featured section, and an All-posts grid. Posts come from content/blog/ via
- * the blog seam (frontend/lib/blog.ts), which reads markdown at build time;
+ * a Featured section, and an All-posts grid. Posts come from the configured
+ * Markdown collection via the blog seam (frontend/lib/blog.ts), which reads
+ * Markdown at build time;
  * parse errors fail the build loudly.
  *
  * FEATURED DETERMINATION:

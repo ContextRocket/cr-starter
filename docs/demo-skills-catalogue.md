@@ -36,8 +36,8 @@ Scrape blog posts into markdown with YAML frontmatter.
 - **Proven:** cr-kleos (3 real posts from Webflow blog),
   cr-gba (3 placeholder posts)
 - **Input:** Blog listing page URL + per-post URLs
-- **Output:** `content/blog/{slug}.md` files with title, author, date, excerpt
-- **Files:** `content/blog/`, `lib/blog.ts`
+- **Output:** `content/posts/{slug}.md` files with title, author, date, excerpt
+- **Files:** `content/posts/` (or the fork's configured collection), `lib/blog.ts`
 
 ### 5. Hero Recreation
 Rebuild the hero section matching the original's headings, CTAs, and

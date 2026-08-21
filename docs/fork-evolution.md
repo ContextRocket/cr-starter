@@ -11,8 +11,10 @@ Fork-owned:
 - `frontend/config/site.json` and documented environment values. Its
   `publicRoutes` array is the explicit allowlist for sitemap, robots, llms.txt,
   and shared metadata discovery;
+- `frontend/blog.config.mjs`, which controls the public post title/path and the
+  frontend-relative Markdown collection directory (`content/posts/` by default);
 - `frontend/i18n/messages/site/<locale>.ts`;
-- Markdown content, including blog, privacy, and Impressum pages;
+- Markdown content, including posts, privacy, and Impressum pages;
 - `frontend/app/[locale]/page.tsx` and genuinely product-specific routes;
 - `frontend/components/custom/`; and
 - `frontend/public/` assets.

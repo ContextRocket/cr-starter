@@ -8,10 +8,11 @@ The starter separates data, language, and behavior:
 
 1. `frontend/config/site.json` -- fork-owned identity, navigation, theme, assets, legal data, chrome settings, feature switches, and the explicit `publicRoutes` discovery list.
 2. `frontend/i18n/messages/site/*.ts` -- fork-owned copy for the locales the site actually serves.
-3. `frontend/config/site.config.ts` -- starter-owned typed configuration seam and sensible defaults.
+3. `frontend/blog.config.mjs` -- fork-owned public post title/path and Markdown collection directory.
+4. `frontend/config/site.config.ts` -- starter-owned typed configuration seam and sensible defaults.
 4. `frontend/config/.env.example` -- optional environment overrides for site toggles and ContextRocket connection settings.
 
-Basic forks edit `site.json` and the `site/` message files. Advanced forks may add components under `frontend/components/custom/` and compose their own home page.
+Basic forks edit `site.json`, `blog.config.mjs`, and the `site/` message files. Advanced forks may add components under `frontend/components/custom/` and compose their own home page.
 
 `publicRoutes` is the fork-owned list of pages intended for public discovery.
 The starter-owned route registry and builders use it for `sitemap.xml`,
@@ -99,7 +100,7 @@ Starter-owned files should be pulled from `cr-starter`: `components/shared/`,
 (`app/sitemap.ts`, `app/robots.ts`, and `app/llms.txt/route.ts`), and the
 shared public-site contract test.
 
-When rebuilding an existing fork, inventory and preserve its content, assets, custom page composition, and theme before replacing starter-owned infrastructure. Never overwrite a ported site with the starter placeholder site.
+When rebuilding an existing fork, inventory and preserve its content, assets, custom page composition, and theme before replacing starter-owned infrastructure. Never overwrite a ported site with the starter placeholder site. Blog/article Markdown lives in the collection named by `blog.config.mjs` (`content/posts/` by default); a fork may retain `content/blog/` or choose another collection without changing its public URL.
 
 ## Mandatory fork-evolution contract
 

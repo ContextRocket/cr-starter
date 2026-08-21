@@ -1,11 +1,12 @@
 /**
  * Blog post page -- /blog/[slug]
  *
- * Renders a single blog post from content/blog/{slug}[.{locale}].md.
+ * Renders a single post from the configured Markdown collection
+ * ({contentDir}/{slug}[.{locale}].md).
  * The public slug is the filename without the .md extension or locale suffix.
  *
  * SEAM CONTRACT:
- *   One file -- content/blog/{slug}.md -- powers:
+ *   One file -- {contentDir}/{slug}.md -- powers:
  *     1. This page (title + body in Markdown).
  *     2. BlogPosting JSON-LD (via buildBlogPostJsonLd in lib/structured-data.ts).
  */

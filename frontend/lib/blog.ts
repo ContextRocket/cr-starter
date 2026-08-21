@@ -1,12 +1,13 @@
 /**
  * lib/blog.ts -- Blog seam: interface + file adapter.
  *
- * One Markdown file per blog post and language in content/blog/ powers three consumers:
+ * One Markdown file per post and language in the configured content directory
+ * (content/posts/ by default) powers three consumers:
  *   1. The /blog page (listing all posts, sorted by date desc).
  *   2. The /blog/[slug] page (individual post with full metadata).
  *   3. BlogPosting JSON-LD (schema.org structured data for AI/search crawlers).
  *
- * FILE FORMAT (content/blog/{slug}[.{locale}].md):
+ * FILE FORMAT ({contentDir}/{slug}[.{locale}].md):
  *   YAML frontmatter (REQUIRED):
  *     ---
  *     title: "Post title"
@@ -21,7 +22,7 @@
  *     songYear: "2026"                       (optional; media/playlist footer)
  *     songUrl: "https://..."                 (optional; media/playlist link)
  *   A language-specific post uses a locale suffix, for example
- *   content/blog/getting-started.en.md and content/blog/getting-started.es.md.
+ *   content/posts/getting-started.en.md and content/posts/getting-started.es.md.
  *   The locale is part of the filename, not an i18n message bundle. A post
  *   without a locale suffix is shared by every language as a fallback.
  *     ---
@@ -44,6 +45,7 @@
 
 import * as fs from "fs";
 import * as path from "path";
+import { blogContentDir } from "@/blog.config.mjs";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -238,38 +240,42 @@ export function parseBlogPost(
 // ---------------------------------------------------------------------------
 
 /**
- * Resolve the content/blog/ directory path, probing both repo-root
- * (Jest cwd) and frontend/ (Next.js build cwd).
+ * Resolve the configured Markdown directory, probing both repository-root and
+ * frontend working directories. The configured value is frontend-relative,
+ * so a fork can choose content/posts, content/blog, or another collection.
  */
-function resolveContentBlogDir(): string {
-  const fromRoot = path.resolve(process.cwd(), "content/blog");
-  if (fs.existsSync(fromRoot)) return fromRoot;
-
-  const fromFrontend = path.resolve(process.cwd(), "../content/blog");
-  if (fs.existsSync(fromFrontend)) return fromFrontend;
-
-  return fromRoot; // error messages reference this candidate
+function resolveContentDir(): string {
+  const configured = blogContentDir();
+  const candidates = [
+    path.resolve(process.cwd(), configured),
+    path.resolve(process.cwd(), "frontend", configured),
+    path.resolve(process.cwd(), "..", configured),
+  ];
+  return (
+    candidates.find((candidate) => fs.existsSync(candidate)) ?? candidates[0]
+  );
 }
 
-const CONTENT_BLOG_DIR = resolveContentBlogDir();
+const CONTENT_DIR = resolveContentDir();
 
 /**
- * Production BlogSource: reads from content/blog/{slug}[.{locale}].md at build time.
+ * Production BlogSource: reads from the configured
+ * `{contentDir}/{slug}[.{locale}].md` directory at build time.
  *
  * Uses Node.js `fs` -- server-side only.
  */
 export class FileBlogAdapter implements BlogSource {
   private readonly contentDir: string;
 
-  constructor(contentDir: string = CONTENT_BLOG_DIR) {
+  constructor(contentDir: string = CONTENT_DIR) {
     this.contentDir = contentDir;
   }
 
   list(locale?: string): BlogPost[] {
     if (!fs.existsSync(this.contentDir)) {
       throw new Error(
-        `[blog] Blog content directory not found at ${this.contentDir}. ` +
-          `Create content/blog/ and add .md files for each post.`,
+        `[blog] Configured post content directory not found at ${this.contentDir}. ` +
+          `Create the configured Markdown directory (${blogContentDir()}/) and add .md files for each post.`,
       );
     }
 

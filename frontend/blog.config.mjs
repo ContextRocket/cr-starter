@@ -5,20 +5,25 @@
  * BEFORE the TypeScript build and cannot import `site.config.ts` (path aliases,
  * `as const`, TS-only syntax). Both `next.config.mjs` (to emit the custom-path
  * rewrite) and `site.config.ts` (to expose `siteConfig.blog` to app code) need
- * the SAME basePath/title, so the raw values + normalization live here as
+ * the SAME basePath/title/contentDir, so the raw values + normalization live here as
  * dependency-free ESM that either side can import.
  *
- * A fork edits `basePath` / `title` HERE (a single place); `site.config.ts`
- * re-exports these under `siteConfig.blog`, and `lib/blog-path.ts` is the typed
- * accessor the app uses. Do NOT hardcode "/blog" or "Blog" elsewhere.
+ * A fork edits `basePath` / `title` / `contentDir` HERE (a single place);
+ * `site.config.ts` re-exports these under `siteConfig.blog`, and
+ * `lib/blog-path.ts` is the typed accessor the app uses. Do NOT hardcode
+ * "/blog", "Blog", or `content/posts` elsewhere.
  *
  *   basePath — public URL segment, leading "/" and NO trailing slash. Default
  *              "/blog". A fork sets e.g. "/the-creator-economy-for-b2b".
  *   title    — display name for the index <h1>/<title>, breadcrumb label, and
  *              RSS channel title. Default "Blog".
+ *   contentDir — Markdown content directory, relative to the frontend project.
+ *                Default "content/posts". A fork can retain "content/blog"
+ *                or use another descriptive collection name without changing
+ *                the public URL.
  */
 
-/** @typedef {{ basePath: string, title: string }} BlogConfig */
+/** @typedef {{ basePath: string, title: string, contentDir: string }} BlogConfig */
 
 /**
  * Raw blog settings. EDIT HERE to publish the blog under a custom path/name.
@@ -27,7 +32,25 @@
 export const blogConfig = {
   basePath: "/blog",
   title: "Blog",
+  contentDir: "content/posts",
 };
+
+/**
+ * Normalize a configured content directory while keeping it frontend-relative.
+ *
+ * @param {string} raw
+ * @returns {string}
+ */
+export function normalizeBlogContentDir(raw) {
+  const trimmed = (raw ?? "").trim().replace(/\\/g, "/");
+  const normalized = trimmed.replace(/^\/+|\/+$/g, "");
+  return normalized || "content/posts";
+}
+
+/** The normalized frontend-relative Markdown content directory. */
+export function blogContentDir() {
+  return normalizeBlogContentDir(blogConfig.contentDir);
+}
 
 /**
  * Normalize a basePath: ensure a single leading "/", strip any trailing "/",

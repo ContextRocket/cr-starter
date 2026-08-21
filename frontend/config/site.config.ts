@@ -14,7 +14,7 @@
  */
 
 import siteData from "./site.json";
-import { blogConfig } from "../blog.config.mjs";
+import { blogConfig, blogContentDir } from "../blog.config.mjs";
 
 // Helper to read env vars with defaults
 function env(key: string, fallback: string = ""): string {
@@ -197,6 +197,7 @@ export const siteConfig = {
   blog: {
     basePath: env("BLOG_BASE_PATH", blogConfig.basePath),
     title: env("BLOG_TITLE", blogConfig.title),
+    contentDir: blogContentDir(),
   },
 
   // ── Forms ──────────────────────────────────────────────────────────────────
