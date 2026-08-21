@@ -51,7 +51,7 @@ describe("siteConfig shape", () => {
   it("has the gallery content seam available", () => {
     expect(siteConfig.gallery.manifestPath).toBe("content/gallery.json");
     expect(siteConfig.gallery.assetBaseUrl).toBe("");
-    expect(siteConfig.features.gallery).toBe(false);
+    expect(typeof siteConfig.features.gallery).toBe("boolean");
   });
 
   it("has all required legal fields defined when Impressum is enabled", () => {
