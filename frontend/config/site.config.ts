@@ -48,6 +48,9 @@ const siteGallery = siteData as typeof siteData & {
   };
   chat?: { fullscreenOnLoad?: boolean };
 };
+const siteChrome = siteData.chrome as typeof siteData.chrome & {
+  exemptPrefixes?: readonly string[];
+};
 
 // ── Identity (from site.json + .env) ─────────────────────────────────────────
 
@@ -151,7 +154,7 @@ export const siteConfig = {
       siteData.chrome.cookieBannerStyle as "bar" | "card" | "terminal",
       ["bar", "card", "terminal"],
     ),
-    exemptPrefixes: siteData.chrome.exemptPrefixes ?? ["/terminal-demo"],
+    exemptPrefixes: siteChrome.exemptPrefixes ?? ["/terminal-demo"],
   },
 
   // ── Data (from site.json) ──────────────────────────────────────────────────
