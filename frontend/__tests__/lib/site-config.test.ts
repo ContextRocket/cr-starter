@@ -50,9 +50,15 @@ describe("siteConfig shape", () => {
   });
 
   it("resolves a dedicated ChatFab icon without requiring one", () => {
+    const configuredChatFabIcon = (
+      siteConfig.assets as typeof siteConfig.assets & {
+        chatFabIcon?: string;
+      }
+    ).chatFabIcon;
+
     expect(getChatFabLogoAssets(siteConfig.assets)).toEqual({
-      src: siteConfig.assets.logo,
-      srcDark: siteConfig.assets.logoDark,
+      src: configuredChatFabIcon ?? siteConfig.assets.logo,
+      srcDark: configuredChatFabIcon ?? siteConfig.assets.logoDark,
     });
 
     expect(
