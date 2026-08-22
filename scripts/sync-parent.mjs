@@ -84,9 +84,11 @@ function globRegExp(pattern) {
 
 const matchers = syncPatterns.map(globRegExp);
 const preserveMatchers = (config.policy.preserve ?? []).map(globRegExp);
+const forceSyncMatchers = (config.policy.forceSync ?? []).map(globRegExp);
 const matchesPolicy = (path) =>
   matchers.some((matcher) => matcher.test(path)) &&
-  !preserveMatchers.some((matcher) => matcher.test(path));
+  (!preserveMatchers.some((matcher) => matcher.test(path)) ||
+    forceSyncMatchers.some((matcher) => matcher.test(path)));
 
 /**
  * Content is intentionally fork-owned, so Git synchronization cannot restore
