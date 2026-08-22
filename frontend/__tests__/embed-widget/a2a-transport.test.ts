@@ -129,7 +129,105 @@ describe("embed-widget a2a-transport", () => {
 
     expect(events).toEqual([
       { type: "delta", text: "Hello from agent." },
+      { type: "meta", state: "working", terminal: false },
+      { type: "meta", state: "completed", terminal: true },
       { type: "done", taskId: "task-1" },
+    ]);
+  });
+
+  it("preserves bounded citations and suggestions from terminal metadata", async () => {
+    const completed = statusEvent("completed");
+    completed.result.metadata = {
+      source_refs: [
+        {
+          sourceRefId: "source-1",
+          title: "Docs",
+          url: "https://example.com/docs",
+          excerpt: "A useful excerpt",
+        },
+      ],
+      suggestions: ["Tell me more", 42, "Show an example"],
+    };
+    const events = await collectEmbedA2aSubscribe(
+      {
+        apiBaseUrl: "https://api.example.com",
+        mode: "live",
+      },
+      { message: "Hi" },
+      createInMemoryEmbedWidgetA2aPort(
+        vi.fn().mockResolvedValue(
+          new Response(sseStream(completed), {
+            status: 200,
+            headers: { "content-type": "text/event-stream" },
+          }),
+        ),
+      ),
+    );
+
+    expect(events).toContainEqual({
+      type: "meta",
+      state: "completed",
+      terminal: true,
+      sourceRefs: [
+        {
+          sourceRefId: "source-1",
+          title: "Docs",
+          url: "https://example.com/docs",
+          excerpt: "A useful excerpt",
+        },
+      ],
+      suggestions: ["Tell me more", "Show an example"],
+    });
+  });
+
+  it("marks an abruptly closed stream as interrupted instead of completed", async () => {
+    const events = await collectEmbedA2aSubscribe(
+      {
+        apiBaseUrl: "https://api.example.com",
+        mode: "live",
+      },
+      { message: "Hi" },
+      createInMemoryEmbedWidgetA2aPort(
+        vi.fn().mockResolvedValue(
+          new Response(sseStream(artifactEvent("Partial answer")), {
+            status: 200,
+            headers: { "content-type": "text/event-stream" },
+          }),
+        ),
+      ),
+    );
+
+    expect(events.at(-1)).toEqual({
+      type: "error",
+      message:
+        "The connection ended before the answer was complete. Please try again.",
+    });
+    expect(events.some((event) => event.type === "done")).toBe(false);
+  });
+
+  it("fails closed on an unknown event type", async () => {
+    const events = await collectEmbedA2aSubscribe(
+      {
+        apiBaseUrl: "https://api.example.com",
+        mode: "live",
+      },
+      { message: "Hi" },
+      createInMemoryEmbedWidgetA2aPort(
+        vi.fn().mockResolvedValue(
+          new Response(sseStream({ result: { type: "UnknownEvent" } }), {
+            status: 200,
+            headers: { "content-type": "text/event-stream" },
+          }),
+        ),
+      ),
+    );
+
+    expect(events).toEqual([
+      {
+        type: "unsupported",
+        message:
+          "This content is not available in this chat. Please try again.",
+      },
     ]);
   });
 

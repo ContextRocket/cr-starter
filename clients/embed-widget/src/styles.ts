@@ -11,7 +11,31 @@ export function widgetStyles(accentColor = "#ff2b67"): string {
   --cr-border: #e5e7eb;
   --cr-muted: #6b7280;
   --cr-bg: #ffffff;
+  --cr-card: #f9fafb;
+  --cr-text: #111827;
   --cr-panel-shadow: 0 12px 40px rgba(17, 24, 39, 0.18);
+}
+
+:host([data-theme="dark"]) {
+  color: #f9fafb;
+  --cr-border: #374151;
+  --cr-muted: #9ca3af;
+  --cr-bg: #111827;
+  --cr-card: #1f2937;
+  --cr-text: #f9fafb;
+  --cr-accent-soft: color-mix(in srgb, var(--cr-accent) 22%, #111827);
+}
+
+@media (prefers-color-scheme: dark) {
+  :host([data-theme="system"]) {
+    color: #f9fafb;
+    --cr-border: #374151;
+    --cr-muted: #9ca3af;
+    --cr-bg: #111827;
+    --cr-card: #1f2937;
+    --cr-text: #f9fafb;
+    --cr-accent-soft: color-mix(in srgb, var(--cr-accent) 22%, #111827);
+  }
 }
 
 *, *::before, *::after {
@@ -29,9 +53,15 @@ export function widgetStyles(accentColor = "#ff2b67"): string {
   gap: 12px;
 }
 
+.cr-root[data-position="bottom-left"] {
+  right: auto;
+  left: 20px;
+  align-items: flex-start;
+}
+
 .cr-launcher {
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
   border: 1px solid var(--cr-border);
   border-radius: 0;
   background: var(--cr-accent);
@@ -56,6 +86,7 @@ export function widgetStyles(accentColor = "#ff2b67"): string {
   flex-direction: column;
   border: 1px solid var(--cr-border);
   background: var(--cr-bg);
+  color: var(--cr-text);
   box-shadow: var(--cr-panel-shadow);
 }
 
@@ -70,7 +101,7 @@ export function widgetStyles(accentColor = "#ff2b67"): string {
   gap: 8px;
   padding: 12px 14px;
   border-bottom: 1px solid var(--cr-border);
-  background: #fafafa;
+  background: var(--cr-card);
 }
 
 .cr-title {
@@ -88,6 +119,8 @@ export function widgetStyles(accentColor = "#ff2b67"): string {
   cursor: pointer;
   font-size: 18px;
   line-height: 1;
+  min-width: 44px;
+  min-height: 44px;
   padding: 2px 6px;
 }
 
@@ -116,7 +149,44 @@ export function widgetStyles(accentColor = "#ff2b67"): string {
 
 .cr-message[data-role="assistant"] {
   align-self: flex-start;
-  background: #f9fafb;
+  background: var(--cr-card);
+}
+
+.cr-message p,
+.cr-message ul,
+.cr-message ol,
+.cr-message pre {
+  margin: 0 0 8px;
+}
+
+.cr-message p:last-child,
+.cr-message ul:last-child,
+.cr-message ol:last-child,
+.cr-message pre:last-child {
+  margin-bottom: 0;
+}
+
+.cr-message ul,
+.cr-message ol {
+  padding-left: 20px;
+}
+
+.cr-message a,
+.cr-source {
+  color: var(--cr-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.cr-message pre {
+  overflow-x: auto;
+  padding: 8px;
+  background: color-mix(in srgb, var(--cr-card) 72%, #000 28%);
+  font-size: 12px;
+}
+
+.cr-markdown-heading {
+  font-weight: 700;
 }
 
 .cr-message[data-streaming="true"]::after {
@@ -138,6 +208,48 @@ export function widgetStyles(accentColor = "#ff2b67"): string {
   background: #fef2f2;
   color: #991b1b;
   font-size: 12px;
+}
+
+.cr-status {
+  margin: 0 14px 8px;
+  color: var(--cr-muted);
+  font-size: 12px;
+}
+
+.cr-retry {
+  align-self: flex-start;
+  margin: 0 14px 8px;
+  min-height: 44px;
+  border: 1px solid var(--cr-border);
+  background: var(--cr-card);
+  color: var(--cr-accent);
+  padding: 8px 12px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+}
+
+.cr-sources,
+.cr-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.cr-source,
+.cr-suggestion {
+  min-height: 32px;
+  border: 1px solid var(--cr-border);
+  background: var(--cr-bg);
+  padding: 5px 8px;
+  font-size: 11px;
+}
+
+.cr-suggestion {
+  color: var(--cr-accent);
+  cursor: pointer;
+  font: inherit;
 }
 
 .cr-composer {
@@ -166,6 +278,7 @@ export function widgetStyles(accentColor = "#ff2b67"): string {
   background: var(--cr-accent);
   color: #fff;
   padding: 8px 12px;
+  min-height: 44px;
   cursor: pointer;
   font: inherit;
   font-size: 12px;

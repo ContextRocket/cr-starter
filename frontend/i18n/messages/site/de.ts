@@ -17,8 +17,8 @@ export const siteDe: LocaleMessages<typeof siteEn> = {
       "Ein flexibler Ausgangspunkt für eine klare und leicht zu pflegende Website.",
     hero: {
       insights: {
-        scoreTitle: "Antwortbereitschaft",
-        scoreValue: "92",
+        scoreTitle: "Beispiel-Insight",
+        scoreValue: "Beispiel",
         thinTitle: "Fundierte Quellenangaben",
         thinDesc: "Jede Antwort verweist auf deine echten Inhalte.",
         bioTitle: "Überall konsistent",
@@ -351,8 +351,8 @@ export const siteDe: LocaleMessages<typeof siteEn> = {
       },
     },
     heroInsights: {
-      scoreTitle: "Antwortbereitschaft",
-      scoreValue: "92",
+      scoreTitle: "Beispiel-Insight",
+      scoreValue: "Beispiel",
       cards: {
         "0": {
           title: "Fundierte Quellenangaben",

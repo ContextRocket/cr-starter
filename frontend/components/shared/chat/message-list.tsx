@@ -14,10 +14,12 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { ChatMessage } from "@/hooks/use-a2a-stream";
 import type { FaithfulnessVerdict } from "@/lib/a2a-client";
+import { safeHref } from "@/lib/safe-href";
 
 // Approximate line threshold before showing the "More detail" expander.
 // ~6 lines at ~80 chars each.
 const LEAD_MAX_CHARS = 480;
+const MAX_MARKDOWN_CHARS = 20_000;
 
 interface MessageListProps {
   messages: ChatMessage[];
@@ -415,9 +417,65 @@ function GroundedChip({
  */
 function BubbleContent({ text }: { text: string }) {
   if (!text) return null;
+
+  // Keep an unexpectedly large model response from creating an unbounded DOM
+  // tree. This is a presentation limit, not a transport limit; the user can
+  // still retry or ask for a shorter answer.
+  const boundedText = text.slice(0, MAX_MARKDOWN_CHARS);
   return (
     <div className="prose prose-sm dark:prose-invert prose-p:leading-relaxed prose-pre:p-0 break-words w-full max-w-none prose-a:text-primary prose-a:underline-offset-4 hover:prose-a:text-primary-hover [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{text}</ReactMarkdown>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        skipHtml
+        components={{
+          // Markdown links are external input. Only http(s) is allowed, and
+          // unsafe links remain visible as text without becoming an action.
+          a: ({ href, children }) => {
+            const safe = safeHref(href);
+            if (!safe) {
+              return <span className="text-foreground">{children}</span>;
+            }
+            return (
+              <a href={safe} target="_blank" rel="noopener noreferrer">
+                {children}
+              </a>
+            );
+          },
+          // Keep an answer heading from visually taking over the chat surface.
+          h1: ({ children }) => (
+            <p>
+              <strong>{children}</strong>
+            </p>
+          ),
+          h2: ({ children }) => (
+            <p>
+              <strong>{children}</strong>
+            </p>
+          ),
+          h3: ({ children }) => (
+            <p>
+              <strong>{children}</strong>
+            </p>
+          ),
+          h4: ({ children }) => (
+            <p>
+              <strong>{children}</strong>
+            </p>
+          ),
+          h5: ({ children }) => (
+            <p>
+              <strong>{children}</strong>
+            </p>
+          ),
+          h6: ({ children }) => (
+            <p>
+              <strong>{children}</strong>
+            </p>
+          ),
+        }}
+      >
+        {boundedText}
+      </ReactMarkdown>
     </div>
   );
 }

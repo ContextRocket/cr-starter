@@ -2,6 +2,7 @@ import type {
   WidgetChatMessage,
   WidgetChatStatus,
   WidgetTransportEvent,
+  WidgetTransportState,
 } from "./types";
 
 export interface WidgetChatState {
@@ -9,6 +10,7 @@ export interface WidgetChatState {
   messages: WidgetChatMessage[];
   errorMessage: string | null;
   threadId: string | null;
+  transportState: WidgetTransportState | null;
 }
 
 export function createInitialChatState(greeting?: string): WidgetChatState {
@@ -27,6 +29,7 @@ export function createInitialChatState(greeting?: string): WidgetChatState {
     messages,
     errorMessage: null,
     threadId: null,
+    transportState: null,
   };
 }
 
@@ -96,14 +99,48 @@ export function applyTransportEvent(
         errorMessage: event.message,
       };
 
+    case "unsupported":
+      return {
+        ...state,
+        status: "error",
+        errorMessage: event.message,
+      };
+
     case "done":
       return {
         ...state,
         status: "complete",
       };
 
-    case "meta":
-      return state;
+    case "meta": {
+      const messages =
+        event.sourceRefs || event.suggestions
+          ? state.messages.map((message) =>
+              message.id === assistantMessageId && message.role === "assistant"
+                ? {
+                    ...message,
+                    ...(event.sourceRefs
+                      ? { sourceRefs: event.sourceRefs }
+                      : {}),
+                    ...(event.suggestions
+                      ? { suggestions: event.suggestions }
+                      : {}),
+                  }
+                : message,
+            )
+          : state.messages;
+      return {
+        ...state,
+        messages,
+        transportState: event.state,
+        status:
+          event.terminal && event.state === "input-required"
+            ? "input-required"
+            : event.terminal && event.state === "canceled"
+              ? "canceled"
+              : state.status,
+      };
+    }
 
     default:
       return state;

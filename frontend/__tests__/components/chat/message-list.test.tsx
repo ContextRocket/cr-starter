@@ -67,6 +67,23 @@ describe("MessageList", () => {
     expect(screen.getByText("I can help with that.")).toBeInTheDocument();
   });
 
+  it("renders safe Markdown but never turns unsafe links or raw HTML into actions", () => {
+    const messages = [
+      makeAssistantMessage(
+        "## Answer\n\n**Bold** and [safe](https://example.com) and [unsafe](javascript:alert(1))\n\n<img src=x onerror=alert(1)>",
+      ),
+    ];
+    render(<MessageList messages={messages} />);
+
+    expect(screen.getByText("Answer")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "safe" })).toHaveAttribute(
+      "href",
+      "https://example.com",
+    );
+    expect(screen.queryByRole("link", { name: "unsafe" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("img")).not.toBeInTheDocument();
+  });
+
   it("shows the streaming cursor while pending", () => {
     const messages = [makeAssistantMessage("Partial response...", true)];
     render(

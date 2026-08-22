@@ -55,4 +55,33 @@ describe("embed-widget config", () => {
       }),
     ).toBe("https://www.contextrocket.ai?ref=example-brand");
   });
+
+  it("accepts only bounded, typed appearance values", () => {
+    const el = document.createElement("script");
+    el.setAttribute("data-contextrocket-theme", "dark");
+    el.setAttribute("data-contextrocket-position", "bottom-left");
+    el.setAttribute("data-contextrocket-locale", "es");
+    el.setAttribute("data-contextrocket-accent", "#123456");
+    el.setAttribute("data-contextrocket-title", "Ask <ContextRocket>");
+    el.setAttribute("data-contextrocket-ref", "campaign-1");
+
+    expect(parseWidgetConfig(el)).toMatchObject({
+      mode: "demo",
+      theme: "dark",
+      position: "bottom-left",
+      locale: "es",
+      accentColor: "#123456",
+      title: "Ask <ContextRocket>",
+      ref: "campaign-1",
+    });
+  });
+
+  it("drops unsafe appearance values instead of treating them as CSS", () => {
+    const el = document.createElement("script");
+    el.setAttribute("data-contextrocket-accent", "red; background: url(evil)");
+    el.setAttribute("data-contextrocket-theme", "custom");
+    el.setAttribute("data-contextrocket-position", "right");
+
+    expect(parseWidgetConfig(el)).toEqual({ mode: "demo" });
+  });
 });

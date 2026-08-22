@@ -2,6 +2,7 @@ import { parseSSE } from "./sse-parser";
 import type {
   WidgetConfig,
   WidgetSendRequest,
+  WidgetSourceRef,
   WidgetTransportEvent,
   WidgetTransportState,
 } from "./types";
@@ -42,6 +43,10 @@ const UUID_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 const GENERIC_ERROR = "Something went wrong. Please try again.";
+const INTERRUPTED_ERROR =
+  "The connection ended before the answer was complete. Please try again.";
+const UNSUPPORTED_CONTENT =
+  "This content is not available in this chat. Please try again.";
 const DEMO_RESPONSE =
   "This is a canned ContextRocket demo response. Configure live mode with an organization handle when you are ready to connect your own knowledge base.";
 
@@ -71,6 +76,68 @@ function extractTextParts(container: unknown): string[] {
   });
 }
 
+function extractMetadata(container: unknown): Record<string, unknown> {
+  if (!isRecord(container)) return {};
+  return isRecord(container.metadata) ? container.metadata : {};
+}
+
+function extractSourceRefs(
+  ...containers: unknown[]
+): WidgetSourceRef[] | undefined {
+  for (const container of containers) {
+    const raw = extractMetadata(container).source_refs;
+    if (!Array.isArray(raw)) continue;
+    const refs = raw.flatMap((value): WidgetSourceRef[] => {
+      if (!isRecord(value) || typeof value.sourceRefId !== "string") return [];
+      return [
+        {
+          sourceRefId: value.sourceRefId.slice(0, 200),
+          ...(typeof value.title === "string"
+            ? { title: value.title.slice(0, 160) }
+            : {}),
+          ...(typeof value.excerpt === "string"
+            ? { excerpt: value.excerpt.slice(0, 600) }
+            : {}),
+          ...(typeof value.url === "string"
+            ? { url: value.url.slice(0, 2_000) }
+            : {}),
+        },
+      ];
+    });
+    return refs.slice(0, 8);
+  }
+  return undefined;
+}
+
+function extractSuggestions(...containers: unknown[]): string[] | undefined {
+  for (const container of containers) {
+    const raw = extractMetadata(container).suggestions;
+    if (!Array.isArray(raw)) continue;
+    return raw
+      .filter((value): value is string => typeof value === "string")
+      .map((value) => value.trim().slice(0, 200))
+      .filter(Boolean)
+      .slice(0, 5);
+  }
+  return undefined;
+}
+
+function metadataEvent(
+  state: WidgetTransportState,
+  terminal: boolean,
+  ...containers: unknown[]
+): WidgetTransportEvent {
+  const sourceRefs = extractSourceRefs(...containers);
+  const suggestions = extractSuggestions(...containers);
+  return {
+    type: "meta",
+    state,
+    terminal,
+    ...(sourceRefs ? { sourceRefs } : {}),
+    ...(suggestions ? { suggestions } : {}),
+  };
+}
+
 function mapEnvelopeToEvents(envelope: unknown): WidgetTransportEvent[] {
   if (!isRecord(envelope)) {
     return [{ type: "error", message: GENERIC_ERROR }];
@@ -88,14 +155,18 @@ function mapEnvelopeToEvents(envelope: unknown): WidgetTransportEvent[] {
   const eventType = result.type;
 
   if (eventType === "TaskArtifactUpdateEvent") {
-    return extractTextParts(result.artifact).map((text) => ({
+    const events: WidgetTransportEvent[] = extractTextParts(
+      result.artifact,
+    ).map((text) => ({
       type: "delta",
       text,
     }));
+    events.push(metadataEvent("working", false, result, result.artifact));
+    return events;
   }
 
   if (eventType !== "TaskStatusUpdateEvent") {
-    return [];
+    return [{ type: "unsupported", message: UNSUPPORTED_CONTENT }];
   }
 
   const taskId = typeof result.id === "string" ? result.id : undefined;
@@ -107,16 +178,27 @@ function mapEnvelopeToEvents(envelope: unknown): WidgetTransportEvent[] {
   }
 
   if (state === "failed" || state === "canceled") {
-    return [{ type: "error", message: GENERIC_ERROR }];
+    return [
+      metadataEvent(state, true, status, result),
+      { type: "error", message: GENERIC_ERROR },
+    ];
   }
 
   const sessionEvents = extractSessionEvents(status, result);
 
-  if (state === "completed" || result.final === true) {
-    return [{ type: "done", taskId }, ...sessionEvents];
+  if (
+    state === "completed" ||
+    state === "input-required" ||
+    result.final === true
+  ) {
+    return [
+      metadataEvent(state, true, status, result),
+      ...sessionEvents,
+      { type: "done", taskId },
+    ];
   }
 
-  return [{ type: "meta", state }, ...sessionEvents];
+  return [metadataEvent(state, false, status, result), ...sessionEvents];
 }
 
 function extractSessionEvents(
@@ -263,7 +345,24 @@ export async function* streamEmbedA2aSubscribe(
     return;
   }
 
-  yield* streamTransportEvents(response.body, signal);
+  let sawTerminalEvent = false;
+  for await (const event of streamTransportEvents(response.body, signal)) {
+    if (
+      event.type === "done" ||
+      event.type === "error" ||
+      event.type === "unsupported" ||
+      (event.type === "meta" && event.terminal)
+    ) {
+      sawTerminalEvent = true;
+    }
+    yield event;
+  }
+
+  // A cleanly closed HTTP stream is not proof that the task completed. Keep
+  // partial text visible, but make the interruption explicit and retryable.
+  if (!signal?.aborted && !sawTerminalEvent) {
+    yield { type: "error", message: INTERRUPTED_ERROR };
+  }
 }
 
 export async function collectEmbedA2aSubscribe(

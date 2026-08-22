@@ -16,8 +16,8 @@ export const siteEn = {
       // rendered on the home. GENERIC placeholder copy so a fork edits it -- the
       // score badge plus three floating insight cards that cascade in on load.
       insights: {
-        scoreTitle: "Answer Readiness",
-        scoreValue: "92",
+        scoreTitle: "Example insight",
+        scoreValue: "Example",
         thinTitle: "Grounded citations",
         thinDesc: "Every answer links back to your real content.",
         bioTitle: "Consistent everywhere",
@@ -345,8 +345,8 @@ export const siteEn = {
       },
     },
     heroInsights: {
-      scoreTitle: "Answer Readiness",
-      scoreValue: "92",
+      scoreTitle: "Example insight",
+      scoreValue: "Example",
       cards: {
         "0": {
           title: "Grounded citations",

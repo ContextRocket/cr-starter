@@ -3,7 +3,7 @@
  * expand/collapse continuity, Escape handling, and closed-drawer a11y.
  */
 
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import type { UseA2AStreamResult } from "@/hooks/use-a2a-stream";
 
 // Hoisted-state fixture: the mock hook returns ONE stable chat object so the
@@ -113,6 +113,10 @@ describe("ChatFab", () => {
     expect(drawer).toHaveAttribute("aria-hidden", "false");
     expect(drawer).not.toHaveAttribute("inert");
     expect(screen.getByTestId("chat-fab-panel")).toBeInTheDocument();
+    expect(screen.getByTestId("chat-fab-drawer")).toHaveAttribute(
+      "role",
+      "dialog",
+    );
   });
 
   it("can start fullscreen", () => {
@@ -120,6 +124,33 @@ describe("ChatFab", () => {
 
     expect(screen.getByTestId("chat-fab-fullscreen")).toBeInTheDocument();
     expect(screen.getByTestId("chat-fab-fullscreen-panel")).toBeInTheDocument();
+  });
+
+  it("moves focus into fullscreen and returns it to the expand control", async () => {
+    render(<ChatFab fullscreenOnLoad={false} />);
+    openDrawer();
+    const expand = screen.getByTestId("chat-fab-expand");
+    fireEvent.click(expand);
+
+    await waitFor(() =>
+      expect(screen.getByTestId("chat-fab-collapse")).toHaveFocus(),
+    );
+
+    fireEvent.click(screen.getByTestId("chat-fab-collapse"));
+    await waitFor(() =>
+      expect(screen.getByTestId("chat-fab-expand")).toHaveFocus(),
+    );
+  });
+
+  it("keeps Tab focus inside the fullscreen dialog", async () => {
+    render(<ChatFab fullscreenOnLoad />);
+    const dialog = screen.getByTestId("chat-fab-fullscreen");
+    const close = screen.getByTestId("chat-fab-fullscreen-close");
+    close.focus();
+
+    fireEvent.keyDown(dialog, { key: "Tab" });
+    expect(document.activeElement).not.toBeNull();
+    expect(dialog).toContainElement(document.activeElement);
   });
 
   it("closes the drawer on second FAB click", () => {

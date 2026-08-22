@@ -1,4 +1,10 @@
-export type WidgetChatStatus = "idle" | "streaming" | "complete" | "error";
+export type WidgetChatStatus =
+  | "idle"
+  | "streaming"
+  | "complete"
+  | "input-required"
+  | "canceled"
+  | "error";
 
 export type WidgetChatRole = "user" | "assistant";
 
@@ -6,6 +12,15 @@ export interface WidgetChatMessage {
   id: string;
   role: WidgetChatRole;
   content: string;
+  sourceRefs?: WidgetSourceRef[];
+  suggestions?: string[];
+}
+
+export interface WidgetSourceRef {
+  sourceRefId: string;
+  title?: string;
+  excerpt?: string;
+  url?: string;
 }
 
 export type WidgetTransportState =
@@ -22,7 +37,14 @@ export type WidgetTransportEvent =
   | { type: "delta"; text: string }
   | { type: "done"; taskId?: string }
   | { type: "error"; message: string }
-  | { type: "meta"; state: WidgetTransportState }
+  | {
+      type: "meta";
+      state: WidgetTransportState;
+      terminal?: boolean;
+      sourceRefs?: WidgetSourceRef[];
+      suggestions?: string[];
+    }
+  | { type: "unsupported"; message: string }
   | { type: "session"; threadId: string };
 
 export interface WidgetConfig {
@@ -38,6 +60,9 @@ export interface WidgetConfig {
   greeting?: string;
   title?: string;
   ref?: string;
+  theme?: "system" | "light" | "dark";
+  position?: "bottom-right" | "bottom-left";
+  locale?: "auto" | "en" | "es" | "de";
 }
 
 export interface WidgetSendRequest {

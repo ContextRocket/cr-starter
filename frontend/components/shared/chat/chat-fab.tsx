@@ -72,6 +72,10 @@ export function ChatFab({
   const [open, setOpen] = useState(initialFullscreen);
   const [fullscreen, setFullscreen] = useState(initialFullscreen);
   const fabButtonRef = useRef<HTMLButtonElement>(null);
+  const fullscreenRef = useRef<HTMLDivElement>(null);
+  const fullscreenCollapseRef = useRef<HTMLButtonElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const fullscreenReturnFocusRef = useRef<HTMLElement | null>(null);
   const chatFabLogo = getChatFabLogoAssets(siteConfig.assets);
 
   const isDemoMode = siteConfig.chat.mode === "demo";
@@ -90,18 +94,124 @@ export function ChatFab({
     if (!open) return;
 
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key !== "Escape" || event.defaultPrevented) return;
-      if (fullscreen) {
-        setFullscreen(false);
-      } else {
-        setOpen(false);
-        fabButtonRef.current?.focus();
+      if (event.key === "Escape" && !event.defaultPrevented) {
+        if (fullscreen) {
+          setFullscreen(false);
+          const returnTarget = fullscreenReturnFocusRef.current;
+          window.setTimeout(() => {
+            (
+              (returnTarget?.isConnected ? returnTarget : null) ??
+              drawerRef.current?.querySelector<HTMLElement>(
+                '[data-testid="chat-fab-expand"]',
+              )
+            )?.focus();
+          }, 0);
+        } else {
+          setOpen(false);
+          fabButtonRef.current?.focus();
+        }
+        return;
+      }
+
+      // Keep keyboard focus inside the fullscreen dialog. Nested dialogs such
+      // as the citation source sheet live in a portal, so they deliberately do
+      // not participate in this outer trap.
+      if (
+        event.key !== "Tab" ||
+        !fullscreen ||
+        !fullscreenRef.current?.contains(event.target as Node)
+      ) {
+        return;
+      }
+
+      const focusable = Array.from(
+        fullscreenRef.current.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((element) => element.getAttribute("aria-hidden") !== "true");
+
+      if (focusable.length === 0) {
+        event.preventDefault();
+        fullscreenRef.current.focus();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
       }
     }
 
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [open, fullscreen]);
+
+  // Entering fullscreen establishes a focus boundary; leaving it restores
+  // focus to the control that opened it. The initial fullscreen state has no
+  // meaningful opener, so the collapse control receives focus instead.
+  useEffect(() => {
+    if (fullscreen && open) {
+      if (!fullscreenReturnFocusRef.current) {
+        fullscreenReturnFocusRef.current =
+          document.activeElement instanceof HTMLElement
+            ? document.activeElement
+            : null;
+      }
+      const focusTimer = window.setTimeout(() => {
+        fullscreenCollapseRef.current?.focus();
+      }, 0);
+      return () => window.clearTimeout(focusTimer);
+    }
+
+    if (open && !fullscreen) {
+      const focusTimer = window.setTimeout(() => {
+        const returnTarget = fullscreenReturnFocusRef.current;
+        if (returnTarget?.isConnected) {
+          returnTarget.focus();
+          fullscreenReturnFocusRef.current = null;
+          return;
+        }
+        drawerRef.current
+          ?.querySelector<HTMLElement>('[data-testid="chat-composer-input"]')
+          ?.focus();
+      }, 0);
+      return () => window.clearTimeout(focusTimer);
+    }
+
+    if (!open) {
+      fullscreenReturnFocusRef.current = null;
+    }
+  }, [fullscreen, open]);
+
+  function closeDrawer() {
+    setFullscreen(false);
+    setOpen(false);
+    fabButtonRef.current?.focus();
+  }
+
+  function collapseFullscreen() {
+    const returnTarget =
+      (fullscreenReturnFocusRef.current?.isConnected
+        ? fullscreenReturnFocusRef.current
+        : null) ??
+      drawerRef.current?.querySelector<HTMLElement>(
+        '[data-testid="chat-fab-expand"]',
+      );
+    setFullscreen(false);
+    window.setTimeout(() => {
+      (
+        (returnTarget?.isConnected ? returnTarget : null) ??
+        drawerRef.current?.querySelector<HTMLElement>(
+          '[data-testid="chat-fab-expand"]',
+        )
+      )?.focus();
+    }, 0);
+  }
 
   return (
     <>
@@ -132,10 +242,12 @@ export function ChatFab({
       {/* Fullscreen overlay */}
       {fullscreen && open && (
         <div
+          ref={fullscreenRef}
           data-testid="chat-fab-fullscreen"
           role="dialog"
           aria-modal="true"
           aria-label={siteConfig.companyName}
+          tabIndex={-1}
           className="fixed inset-0 z-[60] flex flex-col bg-background"
         >
           {/* Fullscreen header with collapse button */}
@@ -155,7 +267,8 @@ export function ChatFab({
             </span>
             <div className="flex items-center gap-1">
               <button
-                onClick={() => setFullscreen(false)}
+                ref={fullscreenCollapseRef}
+                onClick={collapseFullscreen}
                 aria-label={t("chat.collapse")}
                 data-testid="chat-fab-collapse"
                 className="flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
@@ -163,11 +276,7 @@ export function ChatFab({
                 <Minimize2Icon className="size-4" aria-hidden />
               </button>
               <button
-                onClick={() => {
-                  setFullscreen(false);
-                  setOpen(false);
-                  fabButtonRef.current?.focus();
-                }}
+                onClick={closeDrawer}
                 aria-label={t("chat.close")}
                 className="flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                 data-testid="chat-fab-fullscreen-close"
@@ -192,7 +301,11 @@ export function ChatFab({
       {/* Slide-over drawer (non-fullscreen) */}
       {!fullscreen && (
         <div
+          ref={drawerRef}
           data-testid="chat-fab-drawer"
+          role="dialog"
+          aria-modal={open ? "true" : undefined}
+          aria-label={siteConfig.companyName}
           aria-hidden={!open}
           inert={!open}
           className={cn(
@@ -237,7 +350,10 @@ export function ChatFab({
                   )}
                 </div>
                 <button
-                  onClick={() => setFullscreen(true)}
+                  onClick={(event) => {
+                    fullscreenReturnFocusRef.current = event.currentTarget;
+                    setFullscreen(true);
+                  }}
                   aria-label={t("chat.expand")}
                   data-testid="chat-fab-expand"
                   className="flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
@@ -264,7 +380,7 @@ export function ChatFab({
       {open && !fullscreen && (
         <div
           className="fixed inset-0 z-30 bg-black/20 backdrop-blur-sm sm:hidden"
-          onClick={() => setOpen(false)}
+          onClick={closeDrawer}
           aria-hidden
           data-testid="chat-fab-backdrop"
         />

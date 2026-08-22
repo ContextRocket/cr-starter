@@ -25,9 +25,11 @@ export type {
   WidgetChatStatus,
   WidgetConfig,
   WidgetSendRequest,
+  WidgetSourceRef,
   WidgetTransportEvent,
   WidgetTransportState,
 } from "./types";
+export { renderMarkdown } from "./markdown";
 
 registerContextRocketChatElement();
 
