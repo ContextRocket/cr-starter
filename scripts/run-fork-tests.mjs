@@ -18,6 +18,20 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const scope = process.argv.includes("--backend") ? "backend" : "frontend";
 const configPath = resolve(root, ".fork-sync.json");
 
+function runAllTests() {
+  if (scope === "frontend") {
+    execFileSync("pnpm", ["exec", "vitest", "run"], {
+      cwd: resolve(root, "frontend"),
+      stdio: "inherit",
+    });
+  } else {
+    execFileSync("uv", ["run", "python", "-m", "pytest"], {
+      cwd: resolve(root, "backend"),
+      stdio: "inherit",
+    });
+  }
+}
+
 function fail(message) {
   console.error(`fork-tests: ${message}`);
   process.exit(1);
@@ -36,7 +50,8 @@ function git(...args) {
 }
 
 if (!existsSync(configPath)) {
-  console.log("fork-tests: this is the parent repository; use the full parent suite");
+  console.log("fork-tests: parent repository; running the full parent suite");
+  runAllTests();
   process.exit(0);
 }
 

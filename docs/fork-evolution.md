@@ -138,12 +138,13 @@ make verify-static  # the fast gate plus the actual static export
 ```
 
 The fork test runner derives ownership from the parent Git tree and the fork's
-sync policy. It excludes tests already present in the parent by default, while
-new or explicitly preserved fork tests still run. Run `make verify` in
-`cr-starter` after shared implementation changes. To opt a fork into the full
-parent test set for a shared-infrastructure change, run
-`CR_RUN_PARENT_TESTS=1 pnpm run test:fork`. This keeps the normal release check
-proportional to the change without weakening the parent-owned contract tests.
+sync policy. `pnpm test` and `make verify-fork` exclude tests already present
+in the parent by default, while new or explicitly preserved fork tests still
+run. Run `make verify` in `cr-starter` after shared implementation changes.
+To opt a fork into the full parent test set for a shared-infrastructure change,
+run `pnpm run test:parent` or `CR_RUN_PARENT_TESTS=1 pnpm test`. This keeps the
+normal release check proportional to the change without weakening the
+parent-owned contract tests.
 
 ## Public discovery contract
 

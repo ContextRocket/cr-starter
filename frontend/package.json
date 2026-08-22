@@ -24,7 +24,7 @@
     "test:contract": "VITE_CONFIG_NATIVE_IGNORE_WARNING=true vitest run __tests__/components/chat __tests__/embed-widget --maxWorkers=2",
     "test:parent": "VITE_CONFIG_NATIVE_IGNORE_WARNING=true vitest run",
     "test:fork": "node ../scripts/run-fork-tests.mjs --frontend",
-    "test": "pnpm run test:parent",
+    "test": "VITE_CONFIG_NATIVE_IGNORE_WARNING=true node ../scripts/run-fork-tests.mjs --frontend",
     "test:e2e:frontend": "NEXT_PUBLIC_THEME_PLAYGROUND_ENABLED=true pnpm run build && playwright test -c playwright.frontend.config.ts",
     "test:e2e:i18n-hydration": "playwright test -c playwright.i18n-dev.config.ts",
     "test:e2e": "NEXT_PUBLIC_THEME_PLAYGROUND_ENABLED=true pnpm run build && playwright test -c playwright.frontend.config.ts",
