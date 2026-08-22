@@ -127,6 +127,21 @@ Each policy carries the canonical parent URL, so a fresh clone can add its
 fetch-only parent remote automatically; existing local sibling remotes remain
 usable.
 
+## Verification tiers
+
+The starter carries the complete shared test suite; the forks do not need to
+repeat that expensive suite for every copy or theme edit. From a public fork:
+
+```bash
+make verify-fork    # sync check, typecheck, lint, i18n, ChatFab/widget contracts
+make verify-static  # the fast gate plus the actual static export
+```
+
+Run `make verify` in `cr-starter` after shared implementation changes. Run the
+full suite in a fork when promoting a fork prototype into the parent or when a
+focused gate fails. This keeps the release check proportional to the change
+without weakening the parent-owned contract tests.
+
 ## Public discovery contract
 
 The public discovery implementation is parent-owned and route selection is

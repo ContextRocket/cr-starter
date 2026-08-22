@@ -69,8 +69,18 @@ make test-frontend
 make test-cli
 make build-static
 make build-widget
+make verify-fork       # fast fork contract gate
+make verify-static     # fork gate plus static export
 make verify
 ```
+
+Verification is tiered deliberately. `make verify` is the complete parent
+gate and runs the full shared unit suite. Public forks should use
+`make verify-fork` for normal content/theme/configuration changes; it checks
+the parent sync contract, typecheck, lint, i18n parity, and the focused
+ChatFab/widget contract suite. Use `make verify-static` before publishing a
+static fork. Run the full suite in a fork only when shared infrastructure is
+being promoted or when the parent gate identifies a fork-specific regression.
 
 ## ContextRocket integration
 

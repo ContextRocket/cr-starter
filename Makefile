@@ -7,7 +7,7 @@ FRONTEND_PORT ?= 3100
 
 .PHONY: help install start-next-only start-frontend test-frontend build-static \
         test-cli build-cli package-cli build-widget verify serve-static design-review \
-        sync-parent sync-parent-check
+        verify-fork verify-static sync-parent sync-parent-check
 
 help: ## Show available commands
 	@awk '/^[a-zA-Z_-]+:/{split($$1, target, ":"); print "  " target[1] "\t" substr($$0, index($$0,$$2))}' $(MAKEFILE_LIST)
@@ -32,6 +32,15 @@ sync-parent: ## Restore parent-owned paths and stage the sync (used from a fork)
 
 test-frontend: ## Run the frontend unit tests
 	cd $(FRONTEND_DIR) && pnpm test
+
+verify-fork: ## Run the fast contract gate for a public fork
+	$(MAKE) sync-parent-check
+	cd $(FRONTEND_DIR) && pnpm run verify:fork
+	$(MAKE) build-widget
+
+verify-static: ## Run the public-fork gate and generate the static site
+	$(MAKE) verify-fork
+	$(MAKE) build-static
 
 build-static: ## Build a self-contained static export
 	cd $(FRONTEND_DIR) && pnpm build:static
