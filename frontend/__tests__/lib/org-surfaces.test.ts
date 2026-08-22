@@ -15,7 +15,9 @@ describe("resolveOrgSurfaces", () => {
 
   it("derives FIXED endpoints from the API base (handle never in the path)", () => {
     const s = resolveOrgSurfaces(HANDLE, API);
-    expect(s.a2a.endpoint).toBe("https://app-api.contextrocket.com/api/agent/a2a");
+    expect(s.a2a.endpoint).toBe(
+      "https://app-api.contextrocket.com/api/agent/a2a",
+    );
     expect(s.mcp.endpoint).toBe("https://app-api.contextrocket.com/mcp");
     // The ID travels in the body, never the URL path (the domain may itself
     // legitimately contain the brand name, so assert on the pathname).
@@ -25,16 +27,19 @@ describe("resolveOrgSurfaces", () => {
 
   it("trims a trailing slash on the API base", () => {
     const s = resolveOrgSurfaces(HANDLE, "https://app-api.contextrocket.com/");
-    expect(s.a2a.endpoint).toBe("https://app-api.contextrocket.com/api/agent/a2a");
+    expect(s.a2a.endpoint).toBe(
+      "https://app-api.contextrocket.com/api/agent/a2a",
+    );
   });
 
   it("returns a same-origin agent-card path by default, absolute with an appOrigin", () => {
     expect(resolveOrgSurfaces(HANDLE, API).agentCardUrl).toBe(
-      "/.well-known/agent.json",
+      "/.well-known/agent-card.json",
     );
     expect(
-      resolveOrgSurfaces(HANDLE, API, "https://www.contextrocket.ai/").agentCardUrl,
-    ).toBe("https://www.contextrocket.ai/.well-known/agent.json");
+      resolveOrgSurfaces(HANDLE, API, "https://www.contextrocket.ai/")
+        .agentCardUrl,
+    ).toBe("https://www.contextrocket.ai/.well-known/agent-card.json");
   });
 
   it("tags form ingress payloads with the organization handle", () => {

@@ -10,12 +10,64 @@
   "defaultLocale": "en",
   "locales": ["en", "es", "de"],
   "publicRoutes": [
-    { "key": "home", "path": "", "indexable": true, "priority": 1, "changeFrequency": "daily" },
-    { "key": "blog", "path": "blog", "feature": "blog", "indexable": true, "includeInLlms": true, "priority": 0.8, "changeFrequency": "daily" },
-    { "key": "faq", "path": "faq", "indexable": true, "includeInLlms": true, "priority": 0.7, "changeFrequency": "monthly" },
-    { "key": "privacy", "path": "privacy", "indexable": true, "includeInLlms": true, "priority": 0.3, "changeFrequency": "monthly" },
-    { "key": "impressum", "path": "impressum", "feature": "impressum", "indexable": true, "includeInLlms": true, "priority": 0.3, "changeFrequency": "monthly" },
-    { "key": "attribution", "path": "attribution", "feature": "attribution", "indexable": true, "includeInLlms": true, "priority": 0.3, "changeFrequency": "monthly" }
+    {
+      "key": "home",
+      "path": "",
+      "indexable": true,
+      "priority": 1,
+      "changeFrequency": "daily"
+    },
+    {
+      "key": "features",
+      "path": "features",
+      "indexable": true,
+      "includeInLlms": true,
+      "priority": 0.7,
+      "changeFrequency": "monthly"
+    },
+    {
+      "key": "blog",
+      "path": "blog",
+      "feature": "blog",
+      "indexable": true,
+      "includeInLlms": true,
+      "priority": 0.8,
+      "changeFrequency": "daily"
+    },
+    {
+      "key": "faq",
+      "path": "faq",
+      "indexable": true,
+      "includeInLlms": true,
+      "priority": 0.7,
+      "changeFrequency": "monthly"
+    },
+    {
+      "key": "privacy",
+      "path": "privacy",
+      "indexable": true,
+      "includeInLlms": true,
+      "priority": 0.3,
+      "changeFrequency": "monthly"
+    },
+    {
+      "key": "impressum",
+      "path": "impressum",
+      "feature": "impressum",
+      "indexable": true,
+      "includeInLlms": true,
+      "priority": 0.3,
+      "changeFrequency": "monthly"
+    },
+    {
+      "key": "attribution",
+      "path": "attribution",
+      "feature": "attribution",
+      "indexable": true,
+      "includeInLlms": true,
+      "priority": 0.3,
+      "changeFrequency": "monthly"
+    }
   ],
   "assets": {
     "logo": "/brand/cr-icon-red.svg",

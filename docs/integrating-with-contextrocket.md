@@ -10,9 +10,13 @@ The starter has two chat modes:
 ```dotenv
 NEXT_PUBLIC_CR_CHAT_MODE=live
 NEXT_PUBLIC_CR_AGENT_URL=https://app-api.contextrocket.com
-NEXT_PUBLIC_CONTEXTROCKET_HANDLE=your-organization-handle
+NEXT_PUBLIC_CONTEXTROCKET_HANDLE=contextrocket
 NEXT_PUBLIC_CONTEXTROCKET_API_KEY=your-publishable-api-key
 ```
+
+The starter showcase uses ContextRocket's `contextrocket` organization handle.
+Forks should replace it with their own published handle. The default site mode
+is still `demo`, so no API request occurs until live mode is enabled.
 
 The organization handle is the public identity of the published agent and is sent as `metadata.handle`. The website API key is sent as `X-Api-Key`; it is named `apiKey` in TypeScript and `api-key` in the iframe query contract.
 

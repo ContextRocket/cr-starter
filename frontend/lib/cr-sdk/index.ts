@@ -65,7 +65,7 @@ export function createCRClient(config: CRConfig): CRClient {
 
     async agentCard() {
       if (!config.agentUrl) return null;
-      return fetchAgentCard(config.agentUrl);
+      return fetchAgentCard(config.agentUrl, config.handle);
     },
   };
 }

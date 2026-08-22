@@ -17,9 +17,13 @@ The site runs with canned chat by default. Copy `frontend/config/.env.example` t
 ```dotenv
 NEXT_PUBLIC_CR_CHAT_MODE=live
 NEXT_PUBLIC_CR_AGENT_URL=https://app-api.contextrocket.com
-NEXT_PUBLIC_CONTEXTROCKET_HANDLE=your-organization-handle
+NEXT_PUBLIC_CONTEXTROCKET_HANDLE=contextrocket
 NEXT_PUBLIC_CONTEXTROCKET_API_KEY=your-publishable-api-key
 ```
+
+`contextrocket` is the starter showcase handle. A fork should replace it with
+the handle of its own published ContextRocket organization. Demo mode remains
+the default and does not call the API.
 
 The organization handle selects the published agent. The API key is public and
 must be origin-bound and scoped by ContextRocket. Never use a server-side

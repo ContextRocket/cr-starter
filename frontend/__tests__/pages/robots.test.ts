@@ -5,7 +5,7 @@
  *   - Sitemap URL and host are derived from siteConfig.siteUrl.
  *   - Global wildcard rule is first with required allow/disallow.
  *   - AI crawlers (GPTBot, ClaudeBot) get explicit Allow list with llms.txt
- *     and /.well-known/agent.json.
+ *     and /.well-known/agent-card.json.
  *   - AI crawlers have a crawlDelay.
  *   - Traditional search crawlers are present.
  *   - allowAiCrawlers switch: when siteConfig.allowAiCrawlers=false, the
@@ -59,13 +59,13 @@ describe("robots() -- CRAWLER_CONFIG structure", () => {
     expect(allow).toContain("/llms.txt");
   });
 
-  it("AI crawler rule (ClaudeBot) includes /.well-known/agent.json in allow list", () => {
+  it("AI crawler rule (ClaudeBot) includes /.well-known/agent-card.json in allow list", () => {
     const result = robots();
     const rules = Array.isArray(result.rules) ? result.rules : [result.rules];
     const claudeRule = rules.find((r) => r.userAgent === "ClaudeBot");
     expect(claudeRule).toBeDefined();
     const allow = claudeRule!.allow as string[];
-    expect(allow).toContain("/.well-known/agent.json");
+    expect(allow).toContain("/.well-known/agent-card.json");
   });
 
   it("AI crawler rule includes crawlDelay of 1", () => {

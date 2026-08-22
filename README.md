@@ -29,9 +29,14 @@ The site runs in canned demo mode by default. To connect a published agent, copy
 ```bash
 NEXT_PUBLIC_CR_CHAT_MODE=live
 NEXT_PUBLIC_CR_AGENT_URL=https://app-api.contextrocket.com
-NEXT_PUBLIC_CONTEXTROCKET_HANDLE=your-organization-handle
+NEXT_PUBLIC_CONTEXTROCKET_HANDLE=contextrocket
 NEXT_PUBLIC_CONTEXTROCKET_API_KEY=your-publishable-api-key
 ```
+
+The starter uses ContextRocket's `contextrocket` handle as its showcase
+default. Forks should replace it with their own published organization handle.
+The site still starts in canned demo mode until live mode is explicitly
+enabled.
 
 The API key is a browser credential: it must be scoped, rate-limited, revocable, and restricted by allowed origins in ContextRocket. Never put a server-side `crk_` machine credential in a public build.
 

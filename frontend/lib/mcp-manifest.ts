@@ -5,7 +5,7 @@
  * Kept in lib/ so tests can import it without pulling in the Next.js
  * server runtime.
  *
- * EMERGING CONVENTION: as of 2026-08, /.well-known/mcp.json is an emerging
+ * CONVENIENCE MANIFEST: as of 2026-08, /.well-known/mcp.json is a project
  * convention for MCP server discovery. The field shape may evolve.
  *
  * References:
@@ -19,15 +19,15 @@ import { siteConfig } from "@/config/site.config";
 /** Build the MCP manifest payload from siteConfig + env. */
 export function buildMcpManifest(): Record<string, unknown> {
   const origin = siteConfig.siteUrl.replace(/\/$/, "");
-  const crAgentUrl = process.env.NEXT_PUBLIC_CR_AGENT_URL || null;
+  const crAgentUrl =
+    process.env.NEXT_PUBLIC_CR_AGENT_URL || siteConfig.chat.agentUrl || null;
 
-  // ContextRocket serves the MCP endpoint under /api/mcp relative to the
-  // CR agent base URL. Forks using a different MCP provider should update
-  // this URL convention.
-  const mcpUrl = crAgentUrl ? `${crAgentUrl.replace(/\/$/, "")}/api/mcp` : null;
+  // ContextRocket serves Streamable HTTP MCP at /mcp relative to its API base.
+  // This manifest is a convenience pointer, not an MCP standards claim.
+  const mcpUrl = crAgentUrl ? `${crAgentUrl.replace(/\/$/, "")}/mcp` : null;
 
   return {
-    // Schema identifier for this manifest format (emerging convention).
+    // Schema identifier for this project convenience manifest.
     schema: "mcp-manifest/0.1",
     name: `${siteConfig.companyName} MCP server`,
     description:
@@ -49,10 +49,12 @@ export function buildMcpManifest(): Record<string, unknown> {
     },
     // Site origin for discovery / CORS.
     siteOrigin: origin,
-    // Spec status note for discovery tooling.
+    // Keep the status explicit so consumers do not mistake this for a
+    // standardized MCP discovery document.
     note:
-      "This manifest follows an emerging convention; the field shape may " +
-      "evolve as the MCP well-known standard matures. " +
+      "This is a ContextRocket convenience manifest, not a standardized MCP " +
+      "well-known document. Use the hosted /mcp endpoint and its protected " +
+      "resource metadata for protocol discovery. " +
       "Ref: https://github.com/modelcontextprotocol/specification/discussions/129",
   };
 }

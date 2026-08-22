@@ -22,7 +22,7 @@ const SEO_ROUTES: SeoRoute[] = [
   { path: "/sitemap.xml", contentType: /(application|text)\/xml/ },
   { path: "/llms.txt", contentType: /text\/markdown/ },
   { path: "/.well-known/security.txt", contentType: /text\/plain/ },
-  { path: "/.well-known/agent.json", contentType: /application\/json/ },
+  { path: "/.well-known/agent-card.json", contentType: /application\/json/ },
   { path: "/feed.xml", contentType: /application\/rss\+xml/ },
 ];
 
@@ -61,13 +61,10 @@ test.describe("Per-page head alternates", () => {
     await expect(canonical).toHaveAttribute("href", /\/es\/faq$/);
 
     for (const hreflang of ["en", "es", "de", "x-default"]) {
-      const alt = page.locator(
-        `link[rel="alternate"][hreflang="${hreflang}"]`,
+      const alt = page.locator(`link[rel="alternate"][hreflang="${hreflang}"]`);
+      await expect(alt, `hreflang=${hreflang} alternate missing`).toHaveCount(
+        1,
       );
-      await expect(
-        alt,
-        `hreflang=${hreflang} alternate missing`,
-      ).toHaveCount(1);
     }
   });
 });

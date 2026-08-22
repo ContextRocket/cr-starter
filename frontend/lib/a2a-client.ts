@@ -3,7 +3,7 @@
  *
  * Implements the A2A JSON-RPC 2.0 protocol exposed by ContextRocket:
  * - POST /api/agent/a2a with method tasks/send (sync) or tasks/sendSubscribe (SSE)
- * - GET /.well-known/agent.json for discovery
+ * - GET /.well-known/agent-card.json for discovery
  *
  * No server-generated codegen is used because this client calls the hosted
  * ContextRocket service directly from a static-capable site.
@@ -306,7 +306,7 @@ export interface A2AClientOptions {
 }
 
 const A2A_ENDPOINT = "/api/agent/a2a";
-const AGENT_CARD_ENDPOINT = "/.well-known/agent.json";
+const AGENT_CARD_ENDPOINT = "/.well-known/agent-card.json";
 
 function buildHeaders(
   opts: A2AClientOptions,
@@ -324,18 +324,22 @@ function buildHeaders(
 }
 
 /**
- * Fetch the agent card from /.well-known/agent.json.
+ * Fetch the generic agent card from /.well-known/agent-card.json.
+ * Pass a handle to use ContextRocket's handle-bound card instead.
  * Agent-card discovery is public; live turns are authorized by the API key
  * when the configured ContextRocket deployment requires one.
  */
-export async function fetchAgentCard(baseUrl: string): Promise<unknown> {
-  const resp = await fetch(
-    `${baseUrl.replace(/\/$/, "")}${AGENT_CARD_ENDPOINT}`,
-    {
-      method: "GET",
-      headers: { Accept: "application/json" },
-    },
-  );
+export async function fetchAgentCard(
+  baseUrl: string,
+  handle?: string,
+): Promise<unknown> {
+  const endpoint = handle
+    ? `/.well-known/agent-card/${encodeURIComponent(handle)}.json`
+    : AGENT_CARD_ENDPOINT;
+  const resp = await fetch(`${baseUrl.replace(/\/$/, "")}${endpoint}`, {
+    method: "GET",
+    headers: { Accept: "application/json" },
+  });
   if (!resp.ok) {
     throw new Error(`Agent card fetch failed: ${resp.status}`);
   }

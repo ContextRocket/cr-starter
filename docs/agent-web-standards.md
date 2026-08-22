@@ -10,9 +10,9 @@ surfaces.
 - robots.txt defines ordinary and AI-crawler policies.
 - sitemap.xml lists the generated public routes.
 - llms.txt provides a concise AI-readable site map.
-- /.well-known/agent.json exposes the local A2A agent card.
-- /.well-known/mcp.json describes the hosted ContextRocket MCP surface when
-  an API base is configured.
+- /.well-known/agent-card.json exposes the current A2A agent card contract.
+- /.well-known/mcp.json is a convenience manifest describing the hosted
+  ContextRocket MCP surface when an API base is configured.
 
 The canonical AI-readable file is `/llms.txt`. The project does not publish
 `/llms-full.txt`: that filename is an optional convention used by some
@@ -68,7 +68,7 @@ Never place a server-side machine key in a public page.
 | sitemap.xml             | frontend/app/sitemap.ts                                               |
 | llms.txt                | frontend/app/llms.txt/route.ts                                        |
 | Route registry/builders | frontend/lib/public-route-registry.ts and frontend/lib/public-site.ts |
-| Agent card              | frontend/app/.well-known/agent.json/route.ts                          |
+| Agent card              | frontend/app/.well-known/agent-card.json/route.ts                     |
 | MCP manifest            | frontend/app/.well-known/mcp.json/route.ts                            |
 | JSON-LD                 | frontend/lib/structured-data.ts                                       |
 | A2A client              | frontend/lib/a2a-client.ts                                            |

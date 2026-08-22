@@ -294,8 +294,14 @@ export const siteConfig = {
       "demo",
       "live",
     ]),
-    agentUrl: env("NEXT_PUBLIC_CR_AGENT_URL", ""),
-    handle: env("NEXT_PUBLIC_CONTEXTROCKET_HANDLE", ""),
+    // The starter showcase is associated with ContextRocket's own public
+    // organization. Demo mode remains the default, so these values do not
+    // cause network traffic until a fork explicitly enables live mode.
+    agentUrl: env(
+      "NEXT_PUBLIC_CR_AGENT_URL",
+      "https://app-api.contextrocket.com",
+    ),
+    handle: env("NEXT_PUBLIC_CONTEXTROCKET_HANDLE", "contextrocket"),
     /** Website API key; never put a server-side secret here. */
     apiKey: env("NEXT_PUBLIC_CONTEXTROCKET_API_KEY", ""),
   },

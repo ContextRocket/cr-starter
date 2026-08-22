@@ -35,6 +35,12 @@ describe("siteConfig shape", () => {
     expect(siteConfig.defaultLocale.length).toBeGreaterThan(0);
   });
 
+  it("uses the ContextRocket showcase identity by default", () => {
+    expect(siteConfig.chat.handle).toBe("contextrocket");
+    expect(siteConfig.chat.agentUrl).toBe("https://app-api.contextrocket.com");
+    expect(siteConfig.chat.mode).toBe("demo");
+  });
+
   it("has a locales array containing en", () => {
     expect(siteConfig.locales).toContain("en");
     expect(siteConfig.locales.length).toBeGreaterThanOrEqual(1);

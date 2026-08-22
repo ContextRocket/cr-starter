@@ -20,14 +20,16 @@ export interface CRConfig {
 }
 
 function readEnv(name: string): string {
-  return typeof process !== "undefined" ? process.env[name] ?? "" : "";
+  return typeof process !== "undefined" ? (process.env[name] ?? "") : "";
 }
 
 export function resolveCRConfig(): CRConfig {
   const mode = readEnv("NEXT_PUBLIC_CR_CHAT_MODE");
-  const handle = readEnv("NEXT_PUBLIC_CONTEXTROCKET_HANDLE");
+  const handle = readEnv("NEXT_PUBLIC_CONTEXTROCKET_HANDLE") || "contextrocket";
   return {
-    agentUrl: readEnv("NEXT_PUBLIC_CR_AGENT_URL").replace(/\/$/, ""),
+    agentUrl: (
+      readEnv("NEXT_PUBLIC_CR_AGENT_URL") || "https://app-api.contextrocket.com"
+    ).replace(/\/$/, ""),
     handle: handle || undefined,
     apiKey: readEnv("NEXT_PUBLIC_CONTEXTROCKET_API_KEY") || undefined,
     mode: mode === "live" ? "live" : "demo",

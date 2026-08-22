@@ -4,7 +4,7 @@
  * The organization handle is the SINGLE public identity key for a
  * fork/tenant's public surfaces. Endpoints are FIXED single URLs; the handle is a
  * request-BODY param (metadata.handle), NEVER a path segment. This helper
- * makes forms.config, siteConfig.chat, and .well-known/agent.json projections of
+ * makes forms.config, siteConfig.chat, and .well-known/agent-card.json projections of
  * ONE identity instead of independently-hardcoded config. Per-fork override
  * stays the exception, not the rule.
  *
@@ -13,7 +13,7 @@
  *            (lib/a2a-client.ts A2A_ENDPOINT + the handle body param).
  *   - MCP:   fixed {apiBase}/mcp -- org resolved by the handle/API key,
  *            no per-ID path.
- *   - Card:  {appOrigin}/.well-known/agent.json (lib/agent-card.ts / the route).
+ *   - Card:  {appOrigin}/.well-known/agent-card.json (lib/agent-card.ts / the route).
  *   - Forms: forms.config endpoints, with the handle tagged into payload metadata.
  */
 import { forms, type FormEndpoint, type FormKey } from "@/config/site.config";
@@ -21,7 +21,7 @@ import { forms, type FormEndpoint, type FormKey } from "@/config/site.config";
 /** Fixed API paths -- the handle never appears here (it travels in the body). */
 const A2A_PATH = "/api/agent/a2a";
 const MCP_PATH = "/mcp";
-const AGENT_CARD_PATH = "/.well-known/agent.json";
+const AGENT_CARD_PATH = "/.well-known/agent-card.json";
 
 export interface OrgSurfaces {
   /** The single public organization handle. */

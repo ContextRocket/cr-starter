@@ -1,70 +1,91 @@
 /**
- * A2A AgentCard builder -- pure utility, no Next.js server imports.
+ * Current A2A Agent Card builder -- pure utility, no Next.js server imports.
  *
- * Exports buildAgentCard() for use by the /.well-known/agent.json route.
- * Kept in lib/ so tests can import it without pulling in the Next.js
- * server runtime (which requires Request/Response globals not in jsdom).
+ * ContextRocket owns the hosted agent and its policy. The starter publishes a
+ * small, static discovery card at the customer origin so a crawler can find
+ * the configured hosted interface. The card deliberately does not invent a
+ * second protocol contract or advertise private capabilities; the hosted
+ * ContextRocket card is authoritative for policy-projected skills.
  *
- * Field names mirror ContextRocket's public A2A agent-card contract.
- *
- * A2A spec: https://google.github.io/A2A/
+ * Current contract: A2A 1.0 JSON-RPC at
+ * https://a2a-protocol.org/latest/topics/agent-discovery/
  */
 
 import { siteConfig } from "@/config/site.config";
 
+const A2A_PROTOCOL_VERSION = "1.0";
+const A2A_PROTOCOL_BINDING = "JSONRPC";
+
+function trimTrailingSlash(value: string): string {
+  return value.replace(/\/$/, "");
+}
+
 /**
- * Build the A2A AgentCard payload from siteConfig + env.
+ * Build the current A2A Agent Card payload from starter configuration.
  *
- * When NEXT_PUBLIC_CR_AGENT_URL is unset, url is null and streaming=false.
- * The card is still valid JSON and parseable by discovery tooling.
+ * The default ContextRocket API base and `contextrocket` handle are safe
+ * configuration values. The site remains in canned demo mode by default, so
+ * publishing this card does not make a browser request to the API.
  */
 export function buildAgentCard(): Record<string, unknown> {
-  const origin = siteConfig.siteUrl.replace(/\/$/, "");
-
-  const crAgentUrl = process.env.NEXT_PUBLIC_CR_AGENT_URL || null;
-  const a2aUrl = crAgentUrl
-    ? `${crAgentUrl.replace(/\/$/, "")}/api/agent/a2a`
-    : null;
+  const crAgentUrl = trimTrailingSlash(
+    process.env.NEXT_PUBLIC_CR_AGENT_URL || siteConfig.chat.agentUrl,
+  );
+  const handle =
+    process.env.NEXT_PUBLIC_CONTEXTROCKET_HANDLE ||
+    siteConfig.chat.handle ||
+    "contextrocket";
+  const interfaceUrl = `${crAgentUrl}/api/agent/a2a`;
 
   return {
     name: `${siteConfig.companyName} Agent`,
     description: siteConfig.description,
-    // url is null when the CR endpoint is not yet configured.
-    url: a2aUrl,
-    version: "1.0",
+    supportedInterfaces: [
+      {
+        url: interfaceUrl,
+        protocolBinding: A2A_PROTOCOL_BINDING,
+        protocolVersion: A2A_PROTOCOL_VERSION,
+        tenant: handle,
+      },
+    ],
+    version: A2A_PROTOCOL_VERSION,
     documentationUrl: "https://docs.contextrocket.com/api/agent",
     provider: {
-      // Provider is ContextRocket (the platform serving the agent).
-      name: "ContextRocket",
+      organization: "ContextRocket",
       url: "https://contextrocket.com",
     },
     capabilities: {
-      streaming: a2aUrl !== null,
+      streaming: true,
       pushNotifications: false,
-      stateTransitionHistory: false,
+      extendedAgentCard: false,
     },
-    authentication: {
-      // Browser integrations use a publishable, origin-bound API key.
-      schemes: ["Bearer"],
-      description:
-        "Website API keys are scoped to the organization handle and allowed origins. " +
-        "Server-side machine credentials must never be exposed in browser integrations.",
-    },
-    defaultInputModes: ["text"],
-    defaultOutputModes: ["text"],
-    skills: [
-      {
-        id: "chat",
-        name: "Context Graph chat",
-        description:
-        "Conversational assistant scoped to the configured organization's Context Graph. " +
-          "Answers with citations from verified brand knowledge.",
-        tags: ["chat", "context-graph"],
-        inputModes: ["text"],
-        outputModes: ["text"],
+    securitySchemes: {
+      bearer: {
+        httpAuthSecurityScheme: {
+          scheme: "Bearer",
+          bearerFormat: "JWT or OAuth 2.1 access token",
+          description:
+            "OAuth access for authenticated ContextRocket users and agents.",
+        },
       },
+      apiKey: {
+        apiKeySecurityScheme: {
+          location: "header",
+          name: "X-Api-Key",
+          description:
+            "Origin-bound ContextRocket API key for an organization-scoped turn.",
+        },
+      },
+    },
+    securityRequirements: [
+      { schemes: { bearer: { list: [] } } },
+      { schemes: { apiKey: { list: [] } } },
     ],
-    // Site origin for CORS / origin-binding checks.
-    siteOrigin: origin,
+    defaultInputModes: ["text/plain"],
+    defaultOutputModes: ["text/plain"],
+    // ContextRocket projects callable skills from the organization's
+    // published policy. Keeping this empty prevents a static starter card
+    // from claiming capabilities that the hosted organization has not enabled.
+    skills: [],
   };
 }

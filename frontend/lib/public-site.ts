@@ -162,7 +162,7 @@ function buildAiAllowList(): string[] {
   return [
     "/",
     "/llms.txt",
-    "/.well-known/agent.json",
+    "/.well-known/agent-card.json",
     "/sitemap.xml",
     ...routePaths,
   ];
@@ -235,8 +235,8 @@ export function buildLlmsTxt(baseUrl: string = siteConfig.siteUrl): string {
     "## Machine-readable resources",
     `- [Sitemap](${origin}/sitemap.xml): Full public page index.`,
     `- [Robots policy](${origin}/robots.txt): Crawler access rules.`,
-    `- [Agent card](${origin}/.well-known/agent.json): A2A discovery endpoint.`,
-    `- [MCP manifest](${origin}/.well-known/mcp.json): MCP discovery endpoint.`,
+    `- [Agent card](${origin}/.well-known/agent-card.json): A2A discovery endpoint.`,
+    `- [MCP manifest](${origin}/.well-known/mcp.json): ContextRocket MCP convenience manifest.`,
     "",
     "## Scope",
     "This is the only root public-site LLM context file. Product/API discovery remains separate.",
