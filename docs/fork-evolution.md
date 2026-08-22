@@ -133,14 +133,17 @@ The starter carries the complete shared test suite; the forks do not need to
 repeat that expensive suite for every copy or theme edit. From a public fork:
 
 ```bash
-make verify-fork    # sync check, typecheck, lint, i18n, ChatFab/widget contracts
+make verify-fork    # sync check, typecheck, lint, i18n, fork-owned tests
 make verify-static  # the fast gate plus the actual static export
 ```
 
-Run `make verify` in `cr-starter` after shared implementation changes. Run the
-full suite in a fork when promoting a fork prototype into the parent or when a
-focused gate fails. This keeps the release check proportional to the change
-without weakening the parent-owned contract tests.
+The fork test runner derives ownership from the parent Git tree and the fork's
+sync policy. It excludes tests already present in the parent by default, while
+new or explicitly preserved fork tests still run. Run `make verify` in
+`cr-starter` after shared implementation changes. To opt a fork into the full
+parent test set for a shared-infrastructure change, run
+`CR_RUN_PARENT_TESTS=1 pnpm run test:fork`. This keeps the normal release check
+proportional to the change without weakening the parent-owned contract tests.
 
 ## Public discovery contract
 

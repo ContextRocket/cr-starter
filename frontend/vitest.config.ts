@@ -17,13 +17,14 @@ const maxWorkers = Number.isFinite(configuredWorkers)
 const pool = process.env.VITEST_POOL === "forks" ? "forks" : "threads";
 
 // Test organization:
-// - Base tests: __tests__/**/*.test.{ts,tsx} (inherited from cr-starter, common to all forks)
-// - Fork tests: __tests__/**/*.fork.test.{ts,tsx} (fork-specific, each fork adds its own)
+// - Parent tests: __tests__/**/*.test.{ts,tsx} (the complete starter suite)
+// - Fork tests: discovered by scripts/run-fork-tests.mjs from the parent Git
+//   tree and sync policy, so a fork does not need filename conventions.
 //
 // Run commands:
 //   npx vitest run                      - All tests
-//   npx vitest run --grep "\.fork\."    - Only fork tests
-//   npx vitest run --grep-invert "\.fork\." - Only base tests
+//   pnpm run test:parent                - All parent tests
+//   pnpm run test:fork                  - Only fork-owned tests
 
 export default defineConfig({
   test: {

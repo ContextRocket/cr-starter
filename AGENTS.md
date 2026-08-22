@@ -77,10 +77,12 @@ make verify
 Verification is tiered deliberately. `make verify` is the complete parent
 gate and runs the full shared unit suite. Public forks should use
 `make verify-fork` for normal content/theme/configuration changes; it checks
-the parent sync contract, typecheck, lint, i18n parity, and the focused
-ChatFab/widget contract suite. Use `make verify-static` before publishing a
-static fork. Run the full suite in a fork only when shared infrastructure is
-being promoted or when the parent gate identifies a fork-specific regression.
+the parent sync contract, typecheck, lint, i18n parity, and only fork-owned
+tests. Use `make verify-static` before publishing a static fork. The full
+parent test set is opt-in in a fork with
+`CR_RUN_PARENT_TESTS=1 pnpm run test:fork`; use that when shared
+infrastructure is being promoted or when the parent gate identifies a
+fork-specific regression.
 
 ## ContextRocket integration
 

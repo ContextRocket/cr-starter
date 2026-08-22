@@ -33,7 +33,7 @@ sync-parent: ## Restore parent-owned paths and stage the sync (used from a fork)
 test-frontend: ## Run the frontend unit tests
 	cd $(FRONTEND_DIR) && pnpm test
 
-verify-fork: ## Run the fast contract gate for a public fork
+verify-fork: ## Run the fast fork-owned verification gate
 	$(MAKE) sync-parent-check
 	cd $(FRONTEND_DIR) && pnpm run verify:fork
 	$(MAKE) build-widget
