@@ -1,6 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const frontendPort = parseInt(process.env.FRONTEND_PORT ?? "3100", 10);
+const frontendPort = parseInt(process.env.FRONTEND_PORT ?? "3003", 10);
 
 /**
  * Frontend-only Playwright config. All E2E specs exercise the public site

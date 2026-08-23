@@ -171,7 +171,9 @@ const targetNames = screenshotNames
     ? filterScreenshots(allNames, filterPattern)
     : allNames;
 
-const BASE_URL = process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3000";
+const BASE_URL =
+  process.env.PLAYWRIGHT_BASE_URL ??
+  `http://localhost:${process.env.FRONTEND_PORT ?? "3003"}`;
 
 async function captureScreenshots() {
   console.log(`[design-review] Capturing screenshots to: ${outputDir}`);

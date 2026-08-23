@@ -18,7 +18,7 @@ USER node
 # Copy the rest of your application code
 COPY . .
 
-EXPOSE 3000
+EXPOSE 3003
 
 # Start the application
 CMD ["./start.sh"]

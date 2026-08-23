@@ -3,7 +3,7 @@
 FRONTEND_DIR = frontend
 CLI_DIR = cli
 WIDGET_DIR = clients/embed-widget
-FRONTEND_PORT ?= 3100
+FRONTEND_PORT ?= 3003
 
 .PHONY: help install start-next-only start-frontend test-frontend build-static \
         test-cli build-cli package-cli build-widget verify serve-static design-review \
@@ -21,7 +21,7 @@ install: ## Install frontend, CLI, and widget dependencies
 start-next-only: ## Start the Next.js site (chat is canned unless live mode is configured)
 	@echo "Starting Next.js on port $(FRONTEND_PORT) — Powered by ContextRocket 🚀"
 	-@lsof -ti :$(FRONTEND_PORT) | xargs kill 2>/dev/null || true
-	cd $(FRONTEND_DIR) && PORT=$(FRONTEND_PORT) ./start.sh
+	cd $(FRONTEND_DIR) && FRONTEND_PORT=$(FRONTEND_PORT) PORT=$(FRONTEND_PORT) ./start.sh
 
 start-frontend: start-next-only
 

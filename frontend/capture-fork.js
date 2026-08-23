@@ -6,7 +6,8 @@ const forkDir = process.argv[2];
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
   
-  await page.goto('http://localhost:3002');
+  const port = process.env.FRONTEND_PORT ?? '3003';
+  await page.goto(`http://localhost:${port}`);
   await page.waitForTimeout(2000);
   
   await page.screenshot({ path: `scratchpad/${forkDir}-home-light.png`, fullPage: true });

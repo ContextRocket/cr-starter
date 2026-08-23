@@ -8,12 +8,12 @@ import { defineConfig, devices } from "@playwright/test";
  * The cookie-consent banner is a config-gated component. Reproducing the real
  * bug ("auto" + analytics configured must SHOW the banner) requires a build with
  * a genuine analytics key AND the shipped `cookieConsent: "auto"` default. The
- * main playwright.config.ts serves a plain build (no analytics key) on :3100,
+ * main playwright.config.ts serves a plain build (no analytics key) on :3003,
  * which cannot exercise the analytics-gated path.
  *
  * This config launches TWO of its own frontend webServers, each on its own port
  * + its own distDir (so they never collide with the main E2E run or a local
- * review server such as :3002):
+ * review server such as :3003):
  *   - :3210 "analytics"    -> GA key baked in  -> auto gate SHOWS the banner
  *   - :3211 "no-analytics" -> no GA key        -> auto gate HIDES the banner
  * Two projects route each spec to the matching server via baseURL. The banner is

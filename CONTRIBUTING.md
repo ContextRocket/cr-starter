@@ -19,7 +19,7 @@ git clone https://github.com/ContextRocket/cr-starter.git
 cd cr-starter
 
 # Frontend only (no Python/Docker required) -- works out of the box
-make start-next-only   # -> http://localhost:3100
+make start-next-only   # -> http://localhost:3003
 
 # Full stack (optional backend for local user accounts)
 cp backend/.env.example backend/.env

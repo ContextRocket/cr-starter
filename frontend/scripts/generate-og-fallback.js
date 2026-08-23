@@ -2,7 +2,7 @@ const { chromium } = require('@playwright/test');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = process.env.FRONTEND_PORT || 3100;
+const PORT = process.env.FRONTEND_PORT || 3003;
 
 (async () => {
   console.log('Generating fallback OpenGraph image via Playwright...');
