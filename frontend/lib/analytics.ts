@@ -123,6 +123,7 @@ function readLegacyRecord(storage: Storage | null): StoredConsent | null {
 
   return createConsentRecord({
     necessary: true,
+    functional: categories?.functional === true,
     analytics: rawBinary === CONSENT_GRANTED,
     marketing: categories?.marketing === true,
   });
@@ -190,14 +191,22 @@ export function readConsent(): ConsentValue | null {
   return record.categories.analytics ? CONSENT_GRANTED : CONSENT_DENIED;
 }
 
-/** Persist a binary consent choice while retaining the other categories. */
+/**
+ * Persist a binary consent choice while retaining the other categories.
+ *
+ * "Accept" / "Reject" from the banner's FIRST layer is a whole-choice signal:
+ * Accept opts in to every optional category, Reject opts out of all of them.
+ * (Granular per-category selection is the "Manage settings" path via
+ * saveConsentCategories.)
+ */
 export function writeConsent(value: ConsentValue): void {
-  const current = readStoredConsent();
+  const granted = value === CONSENT_GRANTED;
   persistStoredConsent(
     createConsentRecord({
       necessary: true,
-      analytics: value === CONSENT_GRANTED,
-      marketing: current?.categories.marketing === true,
+      functional: granted,
+      analytics: granted,
+      marketing: granted,
     }),
   );
 }
@@ -219,16 +228,31 @@ export function clearConsent(): void {
 // ── Granular consent categories ───────────────────────────────────────────────
 //
 // The banner offers a "Manage settings" panel with per-category toggles. The
-// starter models three categories:
-//   - `necessary`  -- always on, not user-toggleable (strictly-required cookies).
-//   - `analytics`  -- governs whether the analytics providers load. This is the
-//                    ONLY category the starter actually wires to script loading,
-//                    so it stays in lockstep with the binary readConsent() gate
-//                    (analytics on -> "granted", off -> "denied"). Forks that add
-//                    a real provider get it for free.
+// starter models four categories (the canonical best-general cookie model):
+//   - `necessary`  -- always on, not user-toggleable (strictly-required cookies:
+//                    session/auth/security + the consent choice itself).
+//   - `functional` -- opt-in. Remembers non-essential UI/language preferences
+//                    (e.g. a chosen locale or layout). Persisted so a fork can
+//                    gate its own preference storage on it; the shipped starter
+//                    stores the flag but wires no functional cookie yet. Stored,
+//                    not silently dropped.
+//   - `analytics`  -- governs whether the analytics providers (GA gtag AND
+//                    PostHog) load. This is the ONLY category the starter
+//                    actually wires to script loading, so it stays in lockstep
+//                    with the binary readConsent() gate (analytics on ->
+//                    "granted", off -> "denied"). GA is NEVER treated as
+//                    necessary/essential -- it is strictly analytics-gated.
+//                    Forks that add a real provider get it for free.
 //   - `marketing`  -- persisted so a fork can gate its own marketing scripts, but
 //                    the shipped starter loads nothing for it (no marketing
 //                    provider). It is stored, not silently dropped.
+//
+// TODO(cookieless-audience): if/when an exempt, always-on cookieless
+// audience-measurement tier is added (aggregate, no cross-site identifiers, no
+// consent required), initialize it HERE independently of the `analytics`
+// category gate below -- it must NOT reuse the consent-gated GA/PostHog path.
+// The cookie-consent-gated PostHog/GA loaders stay behind `analytics`. See the
+// separate design note in cr-company-docs before implementing.
 //
 // Persisting categories keeps the binary consent value in sync so the existing
 // banner-visibility + initAnalytics() paths need no changes: a recorded category
@@ -255,6 +279,7 @@ export function saveConsentCategories(
 ): ConsentCategories {
   const resolved: ConsentCategories = {
     necessary: true,
+    functional: categories.functional === true,
     analytics: categories.analytics === true,
     marketing: categories.marketing === true,
   };

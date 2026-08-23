@@ -114,8 +114,8 @@ export const sharedDe: LocaleMessages<typeof sharedEn> = {
       policy: {
         link: "Datenschutzerklärung"
       },
-      accept: "Akzeptieren",
-      decline: "Ablehnen",
+      accept: "Alle akzeptieren",
+      decline: "Alle ablehnen",
       manage: "Einstellungen verwalten",
       prefs: {
         description:
@@ -128,6 +128,11 @@ export const sharedDe: LocaleMessages<typeof sharedEn> = {
             label: "Unbedingt erforderlich",
             description:
               "Für den Betrieb der Website erforderlich. Diese können nicht deaktiviert werden."
+          },
+          functional: {
+            label: "Funktional",
+            description:
+              "Merken sich optionale Einstellungen wie Ihre Sprache oder Oberflächenauswahl."
           },
           analytics: {
             label: "Analyse",

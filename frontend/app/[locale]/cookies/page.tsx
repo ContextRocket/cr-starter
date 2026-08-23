@@ -14,8 +14,8 @@
  *     affirmative consent (no pre-ticked boxes; rejecting is as easy as
  *     accepting).
  *   - The categories described here match the starter's consent store exactly
- *     (necessary / analytics / marketing -- lib/consent.ts). Do not describe a
- *     category the banner cannot toggle.
+ *     (necessary / functional / analytics / marketing -- lib/consent.ts). Do
+ *     not describe a category the banner cannot toggle.
  *   - Whether analytics is actually active on a given fork is driven by that
  *     fork's own configuration via analyticsConfigured() (lib/analytics.ts), the
  *     same single gate the banner and privacy page read -- NOT a hardcoded
@@ -153,6 +153,12 @@ export default async function CookiesPage({ params }: CookiesPageProps) {
                 purpose={t("cookies.categories.necessary.purpose")}
                 consent={t("cookies.categories.necessary.consent")}
                 testId="cookies-category-necessary"
+              />
+              <CategoryRow
+                name={t("cookies.categories.functional.name")}
+                purpose={t("cookies.categories.functional.purpose")}
+                consent={t("cookies.categories.functional.consent")}
+                testId="cookies-category-functional"
               />
               <CategoryRow
                 name={t("cookies.categories.analytics.name")}

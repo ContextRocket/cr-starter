@@ -44,6 +44,7 @@ const { mockAnalytics, mockFeatures, mockChrome, saveConsentCategoriesMock } =
             categories.analytics === true ? "granted" : "denied";
           return {
             necessary: true,
+            functional: categories.functional === true,
             analytics: categories.analytics === true,
             marketing: categories.marketing === true,
           };
@@ -62,8 +63,9 @@ vi.mock("@/lib/analytics", () => ({
   denyConsent: vi.fn(() => {
     mockAnalytics.consent = "denied";
   }),
-  // Granular-category surface used by the shared preferences panel.
-  OPTIONAL_CONSENT_CATEGORIES: ["analytics", "marketing"] as const,
+  // Granular-category surface used by the shared preferences panel. Mirrors the
+  // real four-category model (necessary is always-on, not in this list).
+  OPTIONAL_CONSENT_CATEGORIES: ["functional", "analytics", "marketing"] as const,
   readConsentCategories: () => null,
   saveConsentCategories: saveConsentCategoriesMock,
 }));
@@ -302,8 +304,42 @@ const DIALOG = "cookie-consent-dialog";
 const PREFERENCES = "cookie-consent-preferences";
 const SAVE = "cookie-consent-save";
 const NECESSARY = "cookie-consent-pref-necessary";
+const PREF_FUNCTIONAL = "cookie-consent-pref-functional";
 const PREF_ANALYTICS = "cookie-consent-pref-analytics";
 const PREF_MARKETING = "cookie-consent-pref-marketing";
+
+// ── First-layer action contract (TDDDG §25) ───────────────────────────────────
+//
+// Every layout's FIRST layer exposes exactly three actions -- Accept all,
+// Reject all, and Manage -- with NO per-category toggles on the first layer.
+// Reject-all must be present with the same click-distance as Accept (both are
+// direct first-layer buttons, not buried behind Manage).
+
+describe.each(["bar", "card", "terminal"] as const)(
+  "CookieConsentBanner first layer (%s layout)",
+  (style) => {
+    function renderBanner() {
+      mockFeatures.cookieConsent = "on";
+      mockAnalytics.consent = null;
+      mockChrome.cookieBannerStyle = style;
+      render(<CookieConsentBanner />);
+    }
+
+    it("exposes Accept all, Reject all, and Manage on the first layer", () => {
+      renderBanner();
+      expect(screen.getByTestId(ACCEPT)).toBeInTheDocument();
+      expect(screen.getByTestId(DECLINE)).toBeInTheDocument();
+      expect(screen.getByTestId(MANAGE)).toBeInTheDocument();
+    });
+
+    it("puts NO per-category toggles on the first layer (only inside Manage)", () => {
+      renderBanner();
+      expect(screen.queryByTestId(PREF_FUNCTIONAL)).not.toBeInTheDocument();
+      expect(screen.queryByTestId(PREF_ANALYTICS)).not.toBeInTheDocument();
+      expect(screen.queryByTestId(PREF_MARKETING)).not.toBeInTheDocument();
+    });
+  },
+);
 
 describe.each(["bar", "card", "terminal"] as const)(
   "CookieConsentBanner manage settings (%s layout)",
@@ -333,26 +369,39 @@ describe.each(["bar", "card", "terminal"] as const)(
         .querySelector("input") as HTMLInputElement;
       expect(necessary.checked).toBe(true);
       expect(necessary.disabled).toBe(true);
-      // Analytics + Marketing are toggleable.
+      // Functional + Analytics + Marketing are toggleable (not disabled).
+      expect(screen.getByTestId(PREF_FUNCTIONAL)).toBeInTheDocument();
       expect(screen.getByTestId(PREF_ANALYTICS)).toBeInTheDocument();
       expect(screen.getByTestId(PREF_MARKETING)).toBeInTheDocument();
+      const functional = screen
+        .getByTestId(PREF_FUNCTIONAL)
+        .querySelector("input") as HTMLInputElement;
+      expect(functional.disabled).toBe(false);
     });
 
     it("Save persists the chosen categories and dismisses the dialog + banner", () => {
       renderOpen();
       fireEvent.click(screen.getByTestId(MANAGE));
 
-      // Turn analytics on, leave marketing off.
+      // Turn functional + analytics on, leave marketing off.
+      const functional = screen
+        .getByTestId(PREF_FUNCTIONAL)
+        .querySelector("input") as HTMLInputElement;
       const analytics = screen
         .getByTestId(PREF_ANALYTICS)
         .querySelector("input") as HTMLInputElement;
+      fireEvent.click(functional);
       fireEvent.click(analytics);
 
       fireEvent.click(screen.getByTestId(SAVE));
 
       expect(saveConsentCategoriesMock).toHaveBeenCalledTimes(1);
       expect(saveConsentCategoriesMock).toHaveBeenCalledWith(
-        expect.objectContaining({ analytics: true, marketing: false }),
+        expect.objectContaining({
+          functional: true,
+          analytics: true,
+          marketing: false,
+        }),
       );
       // Dialog AND banner are dismissed after saving preferences.
       expect(screen.queryByTestId(DIALOG)).not.toBeInTheDocument();

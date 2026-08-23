@@ -415,7 +415,7 @@ export const siteEn = {
       necessary:
         "Strictly necessary cookies run without consent — they are needed for the site to work.",
       optionalOff:
-        "All other categories are off by default. Analytics and marketing cookies are only set after you give prior, affirmative consent.",
+        "All other categories are off by default. Functional, analytics, and marketing cookies are only set after you give prior, affirmative consent.",
       noPreTicked: "No pre-ticked boxes — optional categories are never pre-selected.",
       noWall:
         "No cookie wall — you can use the core site whether or not you accept optional cookies.",
@@ -433,8 +433,14 @@ export const siteEn = {
       necessary: {
         name: "Strictly necessary",
         purpose:
-          "Security, load-balancing, remembering your cookie choice, and your language preference.",
+          "Session, authentication, and security, plus remembering your cookie consent choice. Required for the site to work.",
         consent: "Always on — no consent needed.",
+      },
+      functional: {
+        name: "Functional",
+        purpose:
+          "Remembering optional preferences such as your language or interface choices.",
+        consent: "Opt-in — set only after consent.",
       },
       analytics: {
         name: "Analytics",

@@ -8,13 +8,23 @@
  * browser store in the public starter.
  */
 
-export const CONSENT_STORE_VERSION = 1;
+// Bumped 1 -> 2 when `functional` (preferences) was added as a 4th consent
+// category. A stored v1 record (which has no `functional` field) is a different
+// consent model, so it must NOT silently pass: parseStoredConsent rejects it on
+// the version check and the visitor is re-prompted for a compliant re-consent.
+export const CONSENT_STORE_VERSION = 2;
 export const CONSENT_COOKIE_NAME = "cr_cookie_consent";
 export const CONSENT_MAX_AGE_SECONDS = 395 * 24 * 60 * 60;
 export const CONSENT_MAX_AGE_MS = CONSENT_MAX_AGE_SECONDS * 1000;
 export const CONSENT_CHANGED_EVENT = "cr-consent-changed";
 
-export const OPTIONAL_CONSENT_CATEGORIES = ["analytics", "marketing"] as const;
+// Order is the display + persistence order: functional, analytics, marketing.
+// `necessary` is not optional (always literal true) and is never in this list.
+export const OPTIONAL_CONSENT_CATEGORIES = [
+  "functional",
+  "analytics",
+  "marketing",
+] as const;
 
 export type OptionalConsentCategory =
   (typeof OPTIONAL_CONSENT_CATEGORIES)[number];
@@ -31,7 +41,12 @@ export interface StoredConsent {
 }
 
 export function defaultConsentCategories(): ConsentCategories {
-  return { necessary: true, analytics: false, marketing: false };
+  return {
+    necessary: true,
+    functional: false,
+    analytics: false,
+    marketing: false,
+  };
 }
 
 export function normalizeConsentCategories(
@@ -42,7 +57,12 @@ export function normalizeConsentCategories(
   }
 
   const record = value as Record<string, unknown>;
+  // Every optional category must be a present boolean. A legacy record missing
+  // `functional` fails here (returns null) rather than defaulting silently, so
+  // the changed model re-prompts instead of quietly granting/denying a category
+  // the visitor never saw.
   if (
+    typeof record.functional !== "boolean" ||
     typeof record.analytics !== "boolean" ||
     typeof record.marketing !== "boolean"
   ) {
@@ -51,6 +71,7 @@ export function normalizeConsentCategories(
 
   return {
     necessary: true,
+    functional: record.functional,
     analytics: record.analytics,
     marketing: record.marketing,
   };

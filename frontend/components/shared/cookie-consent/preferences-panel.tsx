@@ -7,6 +7,7 @@
  *
  * Categories (see lib/analytics.ts):
  *   - Necessary  -- always on, toggle disabled (strictly-required cookies).
+ *   - Functional -- opt-in; remembers non-essential UI/language preferences.
  *   - Analytics  -- governs whether analytics scripts load.
  *   - Marketing  -- persisted for forks; the shipped starter loads nothing.
  *
@@ -35,6 +36,10 @@ const OPTIONAL_META: Record<
   OptionalConsentCategory,
   { labelKey: string; descriptionKey: string }
 > = {
+  functional: {
+    labelKey: "cookie.consent.prefs.category.functional.label",
+    descriptionKey: "cookie.consent.prefs.category.functional.description",
+  },
   analytics: {
     labelKey: "cookie.consent.prefs.category.analytics.label",
     descriptionKey: "cookie.consent.prefs.category.analytics.description",
@@ -103,6 +108,7 @@ export function CookiePreferencesPanel({
     () =>
       readConsentCategories() ?? {
         necessary: true,
+        functional: false,
         analytics: false,
         marketing: false,
       },

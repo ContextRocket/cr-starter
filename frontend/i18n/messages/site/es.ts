@@ -420,7 +420,7 @@ export const siteEs: LocaleMessages<typeof siteEn> = {
       necessary:
         "Las cookies estrictamente necesarias funcionan sin consentimiento: son imprescindibles para que el sitio funcione.",
       optionalOff:
-        "Las demás categorías están desactivadas por defecto. Las cookies de analítica y marketing solo se activan tras tu consentimiento previo y afirmativo.",
+        "Las demás categorías están desactivadas por defecto. Las cookies funcionales, de analítica y de marketing solo se activan tras tu consentimiento previo y afirmativo.",
       noPreTicked:
         "Sin casillas premarcadas: las categorías opcionales nunca vienen preseleccionadas.",
       noWall:
@@ -439,8 +439,14 @@ export const siteEs: LocaleMessages<typeof siteEn> = {
       necessary: {
         name: "Estrictamente necesarias",
         purpose:
-          "Seguridad, balanceo de carga, recordar tu elección de cookies y tu preferencia de idioma.",
+          "Sesión, autenticación y seguridad, además de recordar tu elección de consentimiento de cookies. Necesarias para que el sitio funcione.",
         consent: "Siempre activas: no requieren consentimiento.",
+      },
+      functional: {
+        name: "Funcionales",
+        purpose:
+          "Recordar preferencias opcionales, como tu idioma o tus opciones de interfaz.",
+        consent: "Opcional: se activan solo tras el consentimiento.",
       },
       analytics: {
         name: "Analítica",

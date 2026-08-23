@@ -111,8 +111,8 @@ export const sharedEn = {
       policy: {
         link: "Privacy Policy"
       },
-      accept: "Accept",
-      decline: "Decline",
+      accept: "Accept all",
+      decline: "Reject all",
       manage: "Manage settings",
       prefs: {
         description:
@@ -125,6 +125,11 @@ export const sharedEn = {
             label: "Strictly necessary",
             description:
               "Required for the site to function. These cannot be turned off."
+          },
+          functional: {
+            label: "Functional",
+            description:
+              "Remembers optional preferences like your language or interface choices."
           },
           analytics: {
             label: "Analytics",

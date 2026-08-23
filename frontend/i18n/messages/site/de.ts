@@ -420,7 +420,7 @@ export const siteDe: LocaleMessages<typeof siteEn> = {
       necessary:
         "Technisch notwendige Cookies laufen ohne Einwilligung – sie sind für den Betrieb der Website erforderlich.",
       optionalOff:
-        "Alle anderen Kategorien sind standardmäßig aus. Analyse- und Marketing-Cookies werden erst nach deiner vorherigen, ausdrücklichen Einwilligung gesetzt.",
+        "Alle anderen Kategorien sind standardmäßig aus. Funktionale, Analyse- und Marketing-Cookies werden erst nach deiner vorherigen, ausdrücklichen Einwilligung gesetzt.",
       noPreTicked:
         "Keine vorangekreuzten Kästchen – optionale Kategorien sind nie vorausgewählt.",
       noWall:
@@ -439,8 +439,14 @@ export const siteDe: LocaleMessages<typeof siteEn> = {
       necessary: {
         name: "Technisch notwendig",
         purpose:
-          "Sicherheit, Lastverteilung, Speichern deiner Cookie-Wahl und deiner Sprachpräferenz.",
+          "Sitzung, Authentifizierung und Sicherheit sowie das Speichern deiner Cookie-Einwilligung. Für den Betrieb der Website erforderlich.",
         consent: "Immer aktiv – keine Einwilligung erforderlich.",
+      },
+      functional: {
+        name: "Funktional",
+        purpose:
+          "Speichern optionaler Einstellungen wie deiner Sprache oder Oberflächenauswahl.",
+        consent: "Opt-in – werden erst nach Einwilligung gesetzt.",
       },
       analytics: {
         name: "Analyse",
