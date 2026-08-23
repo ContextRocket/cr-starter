@@ -30,6 +30,7 @@ import { buildHomeJsonLd } from "@/lib/structured-data";
 import { buildAlternates } from "@/lib/seo";
 import { StructuredDataScripts } from "@/components/shared/seo/structured-data-scripts";
 import { SectionWrapper } from "@/components/shared/sections/section-wrapper";
+import { HeroBackgroundSection } from "@/components/shared/sections/hero-background";
 import { FeaturedArticles } from "@/components/shared/sections/featured-articles";
 import { CtaSubscribeSection } from "@/components/shared/sections/cta-subscribe-section";
 import { TestimonialsSection } from "@/components/shared/sections/testimonials-section";
@@ -91,30 +92,34 @@ export default async function Home({ params }: HomePageProps) {
 
       <main>
         {/* ── Hero section ────────────────────────────────────────────────────── */}
-        <SectionWrapper className="bg-background pt-32 pb-24">
-          <div className="mx-auto max-w-4xl text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
+        <HeroBackgroundSection
+          imageSrc="/images/blog/default-post.jpg"
+          overlayClassName="bg-gradient-to-br from-[#16091f]/80 via-brand-accent/55 to-[#061d28]/85"
+          className="bg-slate-950 pt-32 pb-24 text-white sm:pb-32"
+        >
+          <div className="text-center">
+            <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
               {t("home.hero.headline")}
             </h1>
-            <p className="mt-6 text-lg leading-8 text-muted-foreground">
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-white/80">
               {t("home.hero.subhead")}
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
                 href={siteConfig.paths.chat}
-                className="rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90"
+                className="rounded-md bg-white px-6 py-3 text-sm font-semibold text-slate-950 shadow-sm hover:bg-white/90"
               >
                 {t("home.hero.primaryCta")}
               </a>
               <a
                 href={siteConfig.paths.features}
-                className="text-sm font-semibold leading-6 text-foreground"
+                className="text-sm font-semibold leading-6 text-white hover:text-white/80"
               >
                 {t("home.hero.secondaryCta")} <span aria-hidden="true">→</span>
               </a>
             </div>
           </div>
-        </SectionWrapper>
+        </HeroBackgroundSection>
 
         {/* ── Features section ─────────────────────────────────────────────────── */}
         <SectionWrapper className="bg-muted/50">

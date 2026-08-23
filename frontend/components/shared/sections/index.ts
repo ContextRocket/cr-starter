@@ -7,6 +7,10 @@
  */
 
 export { HeroSection, type HeroProps } from "./hero";
+export {
+  HeroBackgroundSection,
+  type HeroBackgroundSectionProps,
+} from "./hero-background";
 export { FeatureGrid, type FeatureGridProps } from "./feature-grid";
 export { TestimonialGrid, type TestimonialGridProps } from "./testimonial-grid";
 export {
