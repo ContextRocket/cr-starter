@@ -24,6 +24,7 @@
     "sync": [
       "frontend/components/shared/**",
       "frontend/lib/**",
+      "frontend/tsconfig.json",
       "frontend/i18n/keys.ts",
       "frontend/i18n/messages/shared/**",
       "frontend/i18n/messages/app/**",
