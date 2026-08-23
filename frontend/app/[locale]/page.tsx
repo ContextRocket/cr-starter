@@ -94,7 +94,8 @@ export default async function Home({ params }: HomePageProps) {
         {/* ── Hero section ────────────────────────────────────────────────────── */}
         <HeroBackgroundSection
           imageSrc="/images/blog/default-post.jpg"
-          overlayClassName="bg-gradient-to-br from-slate-950/90 via-slate-800/55 to-[#1e293b]/90"
+          imageClassName="object-cover object-center grayscale brightness-75"
+          overlayClassName="bg-gradient-to-b from-black/60 via-black/35 to-black/80"
           className="bg-slate-950 pt-32 pb-24 text-white sm:pb-32"
         >
           <div className="text-center">

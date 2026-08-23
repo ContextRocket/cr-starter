@@ -22,7 +22,7 @@ export function HeroBackgroundSection({
   imageAlt = "",
   imageClassName = "object-cover object-center",
   overlayClassName =
-    "bg-gradient-to-br from-slate-950/90 via-slate-800/55 to-slate-950/85",
+    "bg-gradient-to-b from-black/60 via-black/35 to-black/80",
   contentClassName = "max-w-4xl",
   className = "",
 }: HeroBackgroundSectionProps) {
