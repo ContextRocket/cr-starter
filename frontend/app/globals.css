@@ -63,10 +63,9 @@
   --color-primary-hover: var(--primary-hover);
   --color-primary-soft: var(--primary-soft);
 
-  /* Brand accent — the high-intent CTA color (pink). Distinct from the
-     monochrome --primary so a fork gets a branded "Get started" / "Accept"
-     button for free without recoloring every neutral primary surface. Forks
-     re-brand via the --brand-accent pair in :root / .dark below. */
+  /* Brand accent — the high-intent CTA color. It may be shared with the
+     primary action token or kept distinct by a fork that needs another
+     hierarchy. */
   --color-brand-accent: var(--brand-accent);
   --color-brand-accent-foreground: var(--brand-accent-foreground);
   --color-brand-accent-hover: var(--brand-accent-hover);
@@ -244,10 +243,10 @@
   --card-foreground: hsl(0 0% 98%);
   --popover: hsl(0 0% 7%);
   --popover-foreground: hsl(0 0% 98%);
-  --primary: hsl(0 0% 98%);
-  --primary-foreground: hsl(0 0% 9%);
-  --primary-hover: hsl(0 0% 85%);
-  --primary-soft: hsl(0 0% 98% / 0.12);
+  --primary: #ff3d75;
+  --primary-foreground: #ffffff;
+  --primary-hover: #ff5c8c;
+  --primary-soft: rgb(255 61 117 / 0.12);
   /* Brand accent — slightly brighter on dark so the pink stays vivid against
      near-black; white foreground keeps AA button-text contrast. */
   --brand-accent: #ff3d75;
