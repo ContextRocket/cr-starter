@@ -19,6 +19,8 @@ import { resolveLocale } from "@/i18n/messages";
 import { buildAlternates } from "@/lib/seo";
 import { buildBreadcrumbListJsonLd } from "@/lib/structured-data";
 import { StructuredDataScripts } from "@/components/shared/seo/structured-data-scripts";
+import { LegalIdentityBlock } from "@/components/shared/legal/legal-identity-block";
+import { isLegalIdentityPlaceholder } from "@/components/shared/legal/legal-completeness";
 import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 
@@ -44,6 +46,10 @@ export default async function ImpressumPage({ params }: ImpressumPageProps) {
   const locale = resolveLocale(rawLocale);
   setLocale(locale);
   const legal = siteConfig.legal;
+  const isPlaceholder = isLegalIdentityPlaceholder({
+    ...legal,
+    contactEmail: siteConfig.contactEmail,
+  });
 
   // Home > Impressum breadcrumb (absolute, locale-prefixed URLs).
   const origin = siteConfig.siteUrl.replace(/\/$/, "");
@@ -61,9 +67,11 @@ export default async function ImpressumPage({ params }: ImpressumPageProps) {
         {t("impressum.legal.notice")}
       </p>
 
-      {/* PLACEHOLDER WARNING -- visible in development to prompt replacement */}
-      {legal.entity.includes("PLACEHOLDER") ||
-      legal.entity === "ContextRocket Starter GmbH" ? (
+      {/* PLACEHOLDER WARNING -- visible in development to prompt replacement.
+          Fires only when a field REQUIRED for the declared entity type is
+          missing (see legal-completeness.ts), not merely because VAT/registry
+          are absent for an individual/unincorporated brand. */}
+      {isPlaceholder ? (
         <div
           className="mb-8 border border-yellow-500 bg-yellow-50 text-yellow-900 p-4 rounded text-sm"
           role="alert"
@@ -72,43 +80,9 @@ export default async function ImpressumPage({ params }: ImpressumPageProps) {
         </div>
       ) : null}
 
-      <dl className="space-y-4">
-        <div>
-          <dt className="font-semibold">{t("impressum.entity.label")}</dt>
-          <dd className="text-muted-foreground">{legal.entity}</dd>
-        </div>
-        <div>
-          <dt className="font-semibold">{t("impressum.address.label")}</dt>
-          <dd className="text-muted-foreground whitespace-pre-line">
-            {legal.address}
-          </dd>
-        </div>
-        <div>
-          <dt className="font-semibold">{t("impressum.register.label")}</dt>
-          <dd className="text-muted-foreground">{legal.register}</dd>
-        </div>
-        <div>
-          <dt className="font-semibold">{t("impressum.vat.label")}</dt>
-          <dd className="text-muted-foreground">{legal.vat}</dd>
-        </div>
-        <div>
-          <dt className="font-semibold">
-            {t("impressum.represented.by.label")}
-          </dt>
-          <dd className="text-muted-foreground">{legal.representedBy}</dd>
-        </div>
-        <div>
-          <dt className="font-semibold">{t("impressum.contact.label")}</dt>
-          <dd className="text-muted-foreground">
-            <a
-              href={`mailto:${siteConfig.contactEmail}`}
-              className="hover:underline"
-            >
-              {siteConfig.contactEmail}
-            </a>
-          </dd>
-        </div>
-      </dl>
+      {/* Identity block renders on the entity-type spectrum (company /
+          individual / unincorporated) from siteConfig.legal. */}
+      <LegalIdentityBlock legal={legal} contactEmail={siteConfig.contactEmail} />
 
       <nav className="mt-12 text-sm">
         <Link href="/" className="text-muted-foreground hover:underline">

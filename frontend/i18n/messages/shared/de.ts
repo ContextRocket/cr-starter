@@ -104,6 +104,25 @@ export const sharedDe: LocaleMessages<typeof sharedEn> = {
     next: "Nächstes Bild",
     counter: "{current} von {total}"
   },
+  legal: {
+    identity: {
+      // Unternehmen (eingetragene juristische Person).
+      entity: "Firma",
+      legalForm: "Rechtsform",
+      address: "Anschrift",
+      register: "Handelsregister",
+      vat: "USt-IdNr.",
+      representedBy: "Vertreten durch",
+      pendingRegistration: "Registrierung ausstehend",
+      // Einzelperson (natürliche Person).
+      responsiblePerson: "Verantwortliche Person",
+      // Nicht eingetragen (Handelsname + verantwortliche Person).
+      tradingName: "Handelsname",
+      notRegisteredCompany: "Dies ist kein eingetragenes Unternehmen.",
+      // Gemeinsame Kontaktzeile.
+      contact: "Kontakt"
+    }
+  },
   cookie: {
     consent: {
       aria: {

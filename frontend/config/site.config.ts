@@ -52,6 +52,20 @@ const siteChrome = siteData.chrome as typeof siteData.chrome & {
   exemptPrefixes?: readonly string[];
 };
 
+// Not every brand is an incorporated company. The legal identity block renders
+// on an entity-type spectrum: a company carries a registry entry + VAT + a
+// legal form, an individual is a natural person, and an unincorporated venture
+// is a trading name plus a responsible person. `register` and `vat` are only
+// meaningful for the company type, so they are OPTIONAL here and a fork that is
+// an individual/unincorporated omits them (see legal-identity-block.tsx).
+export type LegalEntityType = "company" | "individual" | "unincorporated";
+const siteLegal = siteData.legal as typeof siteData.legal & {
+  entityType?: LegalEntityType;
+  register?: string;
+  vat?: string;
+  representedBy?: string;
+};
+
 // ── Identity (from site.json + .env) ─────────────────────────────────────────
 
 export const siteConfig = {
@@ -162,7 +176,18 @@ export const siteConfig = {
   // human-readable copy lives in i18n/messages/site/ and is resolved via t().
   nav: siteData.nav,
   stats: siteData.stats,
-  legal: siteData.legal,
+  legal: {
+    // Default to "company" so an existing fork that has not yet declared an
+    // entity type keeps the current company-shaped identity block.
+    entityType: (siteLegal.entityType ?? "company") as LegalEntityType,
+    entity: siteLegal.entity,
+    address: siteLegal.address,
+    // register/vat/representedBy are company-only fields (optional overall).
+    register: siteLegal.register,
+    vat: siteLegal.vat,
+    representedBy: siteLegal.representedBy,
+    privacyContact: siteLegal.privacyContact,
+  },
 
   // ── Paths ──────────────────────────────────────────────────────────────────
   paths: {

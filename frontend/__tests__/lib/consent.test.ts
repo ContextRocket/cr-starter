@@ -16,9 +16,8 @@ describe("cookie consent record", () => {
       "analytics",
       "marketing",
     ]);
-    // The store version is bumped so the added `functional` category re-prompts
-    // existing visitors (compliant re-consent on model change).
-    expect(CONSENT_STORE_VERSION).toBe(2);
+    // Single version in the early phase (no users, no migration machinery).
+    expect(CONSENT_STORE_VERSION).toBe(1);
     expect(defaultConsentCategories()).toEqual({
       necessary: true,
       functional: false,
@@ -27,7 +26,7 @@ describe("cookie consent record", () => {
     });
   });
 
-  it("round-trips a versioned category record with all four categories", () => {
+  it("round-trips a category record with all four categories", () => {
     const record = createConsentRecord({
       necessary: true,
       functional: true,
@@ -35,7 +34,7 @@ describe("cookie consent record", () => {
       marketing: false,
     });
 
-    expect(record.version).toBe(2);
+    expect(record.version).toBe(1);
     expect(parseStoredConsent(serializeConsent(record))).toEqual(record);
   });
 
@@ -48,45 +47,50 @@ describe("cookie consent record", () => {
     expect(parseStoredConsent(record)).toBeNull();
   });
 
-  it("rejects records from an unknown schema version", () => {
-    expect(
-      parseStoredConsent({
-        version: CONSENT_STORE_VERSION + 1,
-        recordedAt: new Date().toISOString(),
-        categories: defaultConsentCategories(),
-      }),
-    ).toBeNull();
+  it("accepts a record regardless of its version number (single model)", () => {
+    // Single version in early phase: a stored version number must NOT cause a
+    // re-prompt. Any numeric version is accepted; missing optional categories
+    // default to false (see the lenient-default case below).
+    const parsed = parseStoredConsent({
+      version: 99,
+      recordedAt: new Date().toISOString(),
+      categories: { necessary: true, functional: true, analytics: false, marketing: false },
+    });
+    expect(parsed).not.toBeNull();
+    expect(parsed?.categories).toEqual({
+      necessary: true,
+      functional: true,
+      analytics: false,
+      marketing: false,
+    });
   });
 
-  it("re-prompts a legacy v1 record (older store version -> null)", () => {
-    // A pre-`functional` record was stored under version 1. It must NOT pass:
-    // the version check rejects it so the visitor is re-prompted.
-    expect(
-      parseStoredConsent({
-        version: 1,
-        recordedAt: new Date().toISOString(),
-        categories: { necessary: true, analytics: true, marketing: false },
-      }),
-    ).toBeNull();
-  });
-
-  it("fails normalization when `functional` is missing (does NOT silently pass)", () => {
-    // Even at the current version, a categories map lacking `functional` is the
-    // old model. It must fail normalization rather than defaulting the field.
+  it("defaults a missing optional category to false rather than rejecting", () => {
+    // A categories map lacking `functional` is the lenient single model: it must
+    // normalize with `functional: false`, NOT reject.
     expect(
       normalizeConsentCategories({
         analytics: true,
         marketing: false,
       }),
-    ).toBeNull();
-    // And the same map inside an otherwise-current record is rejected.
-    expect(
-      parseStoredConsent({
-        version: CONSENT_STORE_VERSION,
-        recordedAt: new Date().toISOString(),
-        categories: { necessary: true, analytics: true, marketing: false },
-      }),
-    ).toBeNull();
+    ).toEqual({
+      necessary: true,
+      functional: false,
+      analytics: true,
+      marketing: false,
+    });
+    // And the same map inside a stored record is accepted with the default.
+    const parsed = parseStoredConsent({
+      version: CONSENT_STORE_VERSION,
+      recordedAt: new Date().toISOString(),
+      categories: { necessary: true, analytics: true, marketing: false },
+    });
+    expect(parsed?.categories).toEqual({
+      necessary: true,
+      functional: false,
+      analytics: true,
+      marketing: false,
+    });
   });
 
   it("always restores necessary consent and rejects invalid categories", () => {

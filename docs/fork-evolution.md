@@ -127,6 +127,26 @@ Each policy carries the canonical parent URL, so a fresh clone can add its
 fetch-only parent remote automatically; existing local sibling remotes remain
 usable.
 
+### Two policy invariants every fork must honor
+
+`cr-starter` is the root of the family and has no parent, so its
+`.fork-sync.json` is the canonical policy *template* rather than an operational
+config (`make sync-parent` is never run there). Downstream policies derive from
+it and must preserve these two invariants:
+
+- **The generated OpenAPI client is preserved.**
+  `frontend/lib/openapi-client/**` is generated code owned by each repo's own
+  codegen, not parent-owned source. It matches the broad `frontend/lib/**` sync
+  glob, so any policy that syncs `frontend/lib/**` MUST also list
+  `frontend/lib/openapi-client/**` under `policy.preserve`; otherwise a sync
+  clobbers a fork's generated client with the parent's copy.
+- **Shared launch-locale i18n genuinely syncs.**
+  `frontend/i18n/messages/shared/{en,de,es}.ts` is common copy that is meant to
+  propagate from the parent, so it stays in `policy.sync` and is NOT re-listed
+  under `policy.preserve`. Preserving those three would freeze a fork on stale
+  shared copy. Only a fork-*specific* locale (for example a fork's own `zh.ts`)
+  belongs in that fork's preserve list.
+
 ## Verification tiers
 
 The starter carries the complete shared test suite; the forks do not need to

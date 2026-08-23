@@ -276,6 +276,7 @@
     "github": ""
   },
   "legal": {
+    "entityType": "company",
     "entity": "ContextRocket Starter GmbH",
     "address": "Musterstraße 1, 10115 Berlin, Germany",
     "register": "HRB 000000, Amtsgericht Berlin Charlottenburg",

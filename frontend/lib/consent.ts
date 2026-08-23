@@ -8,11 +8,9 @@
  * browser store in the public starter.
  */
 
-// Bumped 1 -> 2 when `functional` (preferences) was added as a 4th consent
-// category. A stored v1 record (which has no `functional` field) is a different
-// consent model, so it must NOT silently pass: parseStoredConsent rejects it on
-// the version check and the visitor is re-prompted for a compliant re-consent.
-export const CONSENT_STORE_VERSION = 2;
+// Single version in early phase; re-introduce versioned re-prompt when we have
+// users and change the model (see cookie-taxonomy.md).
+export const CONSENT_STORE_VERSION = 1;
 export const CONSENT_COOKIE_NAME = "cr_cookie_consent";
 export const CONSENT_MAX_AGE_SECONDS = 395 * 24 * 60 * 60;
 export const CONSENT_MAX_AGE_MS = CONSENT_MAX_AGE_SECONDS * 1000;
@@ -57,23 +55,23 @@ export function normalizeConsentCategories(
   }
 
   const record = value as Record<string, unknown>;
-  // Every optional category must be a present boolean. A legacy record missing
-  // `functional` fails here (returns null) rather than defaulting silently, so
-  // the changed model re-prompts instead of quietly granting/denying a category
-  // the visitor never saw.
+  // Single-model lenient default: a missing optional category is treated as
+  // `false` (not granted), not a rejection. Fail closed only on genuinely
+  // malformed input -- a present-but-wrong-type value (e.g. a string) is
+  // rejected below.
   if (
-    typeof record.functional !== "boolean" ||
-    typeof record.analytics !== "boolean" ||
-    typeof record.marketing !== "boolean"
+    ("functional" in record && typeof record.functional !== "boolean") ||
+    ("analytics" in record && typeof record.analytics !== "boolean") ||
+    ("marketing" in record && typeof record.marketing !== "boolean")
   ) {
     return null;
   }
 
   return {
     necessary: true,
-    functional: record.functional,
-    analytics: record.analytics,
-    marketing: record.marketing,
+    functional: record.functional === true,
+    analytics: record.analytics === true,
+    marketing: record.marketing === true,
   };
 }
 
@@ -99,8 +97,9 @@ export function serializeConsent(record: StoredConsent): string {
 }
 
 /**
- * Parse a localStorage or cookie value. Invalid and expired records are
- * rejected so a changed consent policy can prompt the visitor again.
+ * Parse a localStorage or cookie value. Malformed and expired records are
+ * rejected (fail closed) so the visitor is prompted again; a record is never
+ * rejected merely for its version number in the current single-version model.
  */
 export function parseStoredConsent(
   value: unknown,
@@ -125,7 +124,11 @@ export function parseStoredConsent(
   }
 
   const record = parsed as Record<string, unknown>;
-  if (record.version !== CONSENT_STORE_VERSION) return null;
+  // Single version in early phase: do NOT reject a record on its version number.
+  // A stored `version` field, if present, must at least be a number, but any
+  // number is accepted (there is only one model). Re-introduce a version gate
+  // when we have users and change the model (see cookie-taxonomy.md).
+  if ("version" in record && typeof record.version !== "number") return null;
   if (typeof record.recordedAt !== "string") return null;
 
   const recordedAt = new Date(record.recordedAt).getTime();

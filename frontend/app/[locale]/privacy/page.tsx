@@ -24,6 +24,8 @@ import { CONSENT_STORAGE_KEY, analyticsConfigured } from "@/lib/analytics";
 import { buildAlternates } from "@/lib/seo";
 import { buildBreadcrumbListJsonLd } from "@/lib/structured-data";
 import { StructuredDataScripts } from "@/components/shared/seo/structured-data-scripts";
+import { LegalIdentityBlock } from "@/components/shared/legal/legal-identity-block";
+import { isLegalIdentityPlaceholder } from "@/components/shared/legal/legal-completeness";
 import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 
@@ -60,9 +62,10 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
   const locale = resolveLocale(rawLocale);
   setLocale(locale);
   const legal = siteConfig.legal;
-  const isPlaceholder =
-    legal.entity.includes("PLACEHOLDER") ||
-    legal.entity === "ContextRocket Starter GmbH";
+  const isPlaceholder = isLegalIdentityPlaceholder({
+    ...legal,
+    contactEmail: siteConfig.contactEmail,
+  });
 
   // Home > Privacy breadcrumb (absolute, locale-prefixed URLs).
   const origin = siteConfig.siteUrl.replace(/\/$/, "");
@@ -108,14 +111,17 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
           <p className="text-sm text-muted-foreground mb-3">
             {t("privacy.controller.intro")}
           </p>
-          <address
-            className="not-italic text-sm text-muted-foreground"
+          {/* Controller identity renders on the entity-type spectrum
+              (company / individual / unincorporated) from siteConfig.legal. */}
+          <div
+            className="text-sm"
             data-testid="privacy-controller-address"
           >
-            <strong>{legal.entity}</strong>
-            <br />
-            {legal.address}
-          </address>
+            <LegalIdentityBlock
+              legal={legal}
+              contactEmail={siteConfig.contactEmail}
+            />
+          </div>
         </div>
 
         {/* Privacy Contact */}

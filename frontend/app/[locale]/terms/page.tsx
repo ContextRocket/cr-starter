@@ -22,6 +22,8 @@ import { resolveLocale } from "@/i18n/messages";
 import { buildAlternates } from "@/lib/seo";
 import { buildBreadcrumbListJsonLd } from "@/lib/structured-data";
 import { StructuredDataScripts } from "@/components/shared/seo/structured-data-scripts";
+import { LegalIdentityBlock } from "@/components/shared/legal/legal-identity-block";
+import { isLegalIdentityPlaceholder } from "@/components/shared/legal/legal-completeness";
 import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 
@@ -76,9 +78,10 @@ export default async function TermsPage({ params }: TermsPageProps) {
   const locale = resolveLocale(rawLocale);
   setLocale(locale);
   const legal = siteConfig.legal;
-  const isPlaceholder =
-    legal.entity.includes("PLACEHOLDER") ||
-    legal.entity === "ContextRocket Starter GmbH";
+  const isPlaceholder = isLegalIdentityPlaceholder({
+    ...legal,
+    contactEmail: siteConfig.contactEmail,
+  });
 
   // Home > Terms breadcrumb (absolute, locale-prefixed URLs).
   const origin = siteConfig.siteUrl.replace(/\/$/, "");
@@ -124,21 +127,14 @@ export default async function TermsPage({ params }: TermsPageProps) {
             <p className="text-sm text-muted-foreground mb-3">
               {t("terms.provider.intro")}
             </p>
-            <address
-              className="not-italic text-sm text-muted-foreground"
-              data-testid="terms-provider-address"
-            >
-              <strong>{legal.entity}</strong>
-              <br />
-              <span className="whitespace-pre-line">{legal.address}</span>
-              <br />
-              <a
-                href={`mailto:${siteConfig.contactEmail}`}
-                className="hover:underline text-primary"
-              >
-                {siteConfig.contactEmail}
-              </a>
-            </address>
+            {/* Provider identity renders on the entity-type spectrum
+                (company / individual / unincorporated) from siteConfig.legal. */}
+            <div className="text-sm" data-testid="terms-provider-address">
+              <LegalIdentityBlock
+                legal={legal}
+                contactEmail={siteConfig.contactEmail}
+              />
+            </div>
           </div>
 
           <TermsSection

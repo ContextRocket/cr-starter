@@ -35,6 +35,7 @@ import {
 import { buildAlternates } from "@/lib/seo";
 import { buildBreadcrumbListJsonLd } from "@/lib/structured-data";
 import { StructuredDataScripts } from "@/components/shared/seo/structured-data-scripts";
+import { LegalIdentityBlock } from "@/components/shared/legal/legal-identity-block";
 import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 
@@ -237,17 +238,14 @@ export default async function CookiesPage({ params }: CookiesPageProps) {
             <p className="text-sm text-muted-foreground mb-2">
               {t("cookies.contact.intro")}
             </p>
-            <address className="not-italic text-sm text-muted-foreground">
-              <strong>{legal.entity}</strong>
-              <br />
-              <a
-                href={`mailto:${siteConfig.contactEmail}`}
-                className="hover:underline text-primary"
-                data-testid="cookies-contact-email"
-              >
-                {siteConfig.contactEmail}
-              </a>
-            </address>
+            {/* Contact identity renders on the entity-type spectrum
+                (company / individual / unincorporated) from siteConfig.legal. */}
+            <div className="text-sm" data-testid="cookies-contact-section-identity">
+              <LegalIdentityBlock
+                legal={legal}
+                contactEmail={siteConfig.contactEmail}
+              />
+            </div>
           </div>
         </section>
 

@@ -89,18 +89,30 @@ describe("siteConfig shape", () => {
     expect(siteConfig.blog.contentDir).toBeTruthy();
   });
 
-  it("has all required legal fields defined when Impressum is enabled", () => {
+  it("declares a legal entity type and a non-empty identity", () => {
     // Existing-site forks may intentionally disable the generic Impressum
     // route while retaining their own legal/privacy pages. They should not
     // have to invent placeholder register or VAT data just to satisfy the
     // starter smoke test.
     if (!siteConfig.features.impressum) return;
 
+    // entityType is on the spectrum company | individual | unincorporated.
+    expect(["company", "individual", "unincorporated"]).toContain(
+      siteConfig.legal.entityType,
+    );
+    // Every entity type has a name (legal name / person / trading name) and a
+    // privacy contact.
     expect(siteConfig.legal.entity.length).toBeGreaterThan(0);
-    expect(siteConfig.legal.address.length).toBeGreaterThan(0);
-    expect(siteConfig.legal.register.length).toBeGreaterThan(0);
-    expect(siteConfig.legal.vat.length).toBeGreaterThan(0);
-    expect(siteConfig.legal.representedBy.length).toBeGreaterThan(0);
     expect(siteConfig.legal.privacyContact).toContain("@");
+
+    // register + VAT are company-only. They are OPTIONAL overall and only
+    // asserted for the company type -- an individual/unincorporated brand is
+    // complete without them.
+    if (siteConfig.legal.entityType === "company") {
+      expect(siteConfig.legal.address?.length ?? 0).toBeGreaterThan(0);
+      expect(siteConfig.legal.register?.length ?? 0).toBeGreaterThan(0);
+      expect(siteConfig.legal.vat?.length ?? 0).toBeGreaterThan(0);
+      expect(siteConfig.legal.representedBy?.length ?? 0).toBeGreaterThan(0);
+    }
   });
 });

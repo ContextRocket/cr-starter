@@ -101,6 +101,25 @@ export const sharedEn = {
     next: "Next image",
     counter: "{current} of {total}"
   },
+  legal: {
+    identity: {
+      // Company (incorporated entity) fields.
+      entity: "Entity",
+      legalForm: "Legal form",
+      address: "Address",
+      register: "Company register",
+      vat: "VAT ID",
+      representedBy: "Represented by",
+      pendingRegistration: "Registration pending",
+      // Individual (natural person) fields.
+      responsiblePerson: "Responsible person",
+      // Unincorporated (trading name + responsible person) fields.
+      tradingName: "Trading name",
+      notRegisteredCompany: "This is not a registered company.",
+      // Shared contact row.
+      contact: "Contact"
+    }
+  },
   cookie: {
     consent: {
       aria: {
