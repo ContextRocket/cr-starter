@@ -64,6 +64,48 @@ describe("LegalIdentityBlock", () => {
     expect(dl).not.toHaveTextContent(PENDING_REGISTRATION);
   });
 
+  it("shows a pending marker for a not-yet-issued VAT, never the raw sentinel", () => {
+    render(
+      <LegalIdentityBlock
+        legal={{
+          entityType: "company",
+          entity: "Acme GmbH",
+          address: "Main St 1",
+          register: PENDING_REGISTRATION,
+          vat: PENDING_REGISTRATION,
+          representedBy: "Jane Doe",
+        }}
+        contactEmail="hi@acme.example"
+      />,
+    );
+
+    const dl = screen.getByTestId("legal-identity-company");
+    // Neither the register nor the VAT row may leak the raw sentinel; both
+    // resolve to the localized "registration pending" marker.
+    expect(dl).not.toHaveTextContent(PENDING_REGISTRATION);
+    expect(dl).toHaveTextContent("hi@acme.example");
+  });
+
+  it("renders the legal form row when provided", () => {
+    render(
+      <LegalIdentityBlock
+        legal={{
+          entityType: "company",
+          entity: "Acme S.L.",
+          legalForm: "Sociedad Limitada (S.L.)",
+          address: "Calle Mayor 1",
+          register: "TOMO 1",
+          vat: "ESB123",
+          representedBy: "Jane Doe",
+        }}
+        contactEmail="hi@acme.example"
+      />,
+    );
+
+    const dl = screen.getByTestId("legal-identity-company");
+    expect(dl).toHaveTextContent("Sociedad Limitada (S.L.)");
+  });
+
   it("renders an individual with name + contact and NO registry/VAT", () => {
     render(
       <LegalIdentityBlock

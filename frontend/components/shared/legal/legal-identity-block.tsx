@@ -151,7 +151,14 @@ export function LegalIdentityBlock({
         }
       />
       {legal.vat ? (
-        <IdentityRow label={t("legal.identity.vat")} value={legal.vat} />
+        <IdentityRow
+          label={t("legal.identity.vat")}
+          value={
+            legal.vat === PENDING_REGISTRATION
+              ? t("legal.identity.pendingRegistration")
+              : legal.vat
+          }
+        />
       ) : null}
       {contactRow}
     </dl>

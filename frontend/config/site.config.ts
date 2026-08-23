@@ -61,6 +61,7 @@ const siteChrome = siteData.chrome as typeof siteData.chrome & {
 export type LegalEntityType = "company" | "individual" | "unincorporated";
 const siteLegal = siteData.legal as typeof siteData.legal & {
   entityType?: LegalEntityType;
+  legalForm?: string;
   register?: string;
   vat?: string;
   representedBy?: string;
@@ -181,6 +182,8 @@ export const siteConfig = {
     // entity type keeps the current company-shaped identity block.
     entityType: (siteLegal.entityType ?? "company") as LegalEntityType,
     entity: siteLegal.entity,
+    // legalForm (e.g. "Sociedad Limitada (S.L.)") is company-only, optional.
+    legalForm: siteLegal.legalForm,
     address: siteLegal.address,
     // register/vat/representedBy are company-only fields (optional overall).
     register: siteLegal.register,
