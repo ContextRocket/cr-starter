@@ -73,6 +73,22 @@ const DEFAULT_PUBLIC_ROUTES: readonly PublicRouteConfig[] = [
     changeFrequency: "monthly",
   },
   {
+    key: "terms",
+    path: "terms",
+    indexable: true,
+    includeInLlms: true,
+    priority: 0.3,
+    changeFrequency: "monthly",
+  },
+  {
+    key: "cookies",
+    path: "cookies",
+    indexable: true,
+    includeInLlms: true,
+    priority: 0.3,
+    changeFrequency: "monthly",
+  },
+  {
     key: "impressum",
     path: "impressum",
     feature: "impressum",

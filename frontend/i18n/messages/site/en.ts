@@ -209,6 +209,8 @@ export const siteEn = {
     powered_by: "Powered by",
     impressum: "Impressum",
     privacy: "Privacy Policy",
+    terms: "Terms",
+    cookies: "Cookies",
     faq: "FAQ",
     attribution: "Attribution",
   },
@@ -300,6 +302,174 @@ export const siteEn = {
       complaint:
         "Right to lodge a complaint with a supervisory authority (Art. 77 GDPR)",
       outro: "To exercise your rights, contact the privacy address above.",
+    },
+  },
+  terms: {
+    title: "Terms of Service",
+    generated: {
+      notice:
+        "Generated from site.config. This is a generic template, not legal advice. Review with legal counsel before launch.",
+    },
+    disclaimer:
+      "These Terms are a generic starting point with placeholder identity values. Replace the entity details in site.config and have them reviewed by qualified legal counsel before going live.",
+    intro:
+      "These Terms of Service (“Terms”) govern your access to and use of this service. Please read them carefully. By creating an account or using the service, you agree to these Terms.",
+    provider: {
+      heading: "Who We Are",
+      intro: "The service is provided by:",
+    },
+    service: {
+      heading: "The Service",
+      body: "We provide the service described on this site. The specific features available to you may depend on your plan and configuration. We may improve, change, add, or remove features over time.",
+    },
+    acceptance: {
+      heading: "Acceptance of These Terms",
+      body1:
+        "By registering for, accessing, or using the service you confirm that you have read, understood, and agree to these Terms and to our Privacy Policy. If you use the service on behalf of an organization, you confirm that you are authorized to bind that organization, and “you” includes that organization. If you do not agree, do not use the service.",
+      body2:
+        "Where required, acceptance of these Terms is recorded as a separate, explicit event from your acknowledgement of the Privacy Policy and from any marketing consent, together with the version of the documents shown to you.",
+    },
+    accounts: {
+      heading: "Accounts and Eligibility",
+      body: "You must provide accurate account information and keep it up to date, safeguard your credentials, and take responsibility for all activity under your account. You must be old enough to form a binding contract in your jurisdiction. Notify us promptly of any unauthorized use.",
+    },
+    acceptableUse: {
+      heading: "Acceptable Use",
+      intro: "You agree not to:",
+      item: {
+        unlawful: "use the service unlawfully or to send spam;",
+        rights:
+          "upload or process content you do not have the right to use, or infringe others’ rights;",
+        security:
+          "attempt to gain unauthorized access to, disrupt, or overload the service or its infrastructure;",
+        reverse:
+          "reverse engineer, scrape, or circumvent technical limits except where such a restriction is prohibited by law;",
+        resell:
+          "resell or provide the service to third parties except as expressly permitted.",
+      },
+      outro:
+        "We may suspend or limit access to protect the service, our users, or third parties, or to comply with law.",
+    },
+    ip: {
+      heading: "Intellectual Property",
+      body: "The service, including its software, design, and the content we provide (excluding your content), is owned by the provider or its licensors and is protected by intellectual-property laws. We grant you a limited, non-exclusive, non-transferable, revocable right to use the service in accordance with these Terms and your plan. No other rights are granted.",
+    },
+    content: {
+      heading: "Your Content and Ownership",
+      body1:
+        "You retain ownership of the content and data you submit (“Your Content”). You grant us a limited license to host, process, transmit, and display Your Content solely to provide, secure, and improve the service for you, and as described in the Privacy Policy.",
+      body2:
+        "You are responsible for Your Content and for having the rights and any consents needed to submit and process it. We handle personal data within Your Content as described in the Privacy Policy.",
+    },
+    thirdParty: {
+      heading: "Third-Party Services and Automated Outputs",
+      body: "The service may use third-party providers to deliver features. Where the service produces automated or AI-generated outputs, those outputs may be inaccurate, incomplete, or unsuitable for a given purpose; you are responsible for reviewing outputs before relying on or publishing them. We do not warrant that outputs are error-free or fit for any particular purpose.",
+    },
+    disclaimers: {
+      heading: "Disclaimers",
+      body: "To the maximum extent permitted by law, the service is provided “as is” and “as available”, without warranties of any kind, whether express or implied, including fitness for a particular purpose, non-infringement, accuracy, or uninterrupted availability. Nothing in these Terms excludes rights you have as a consumer that cannot be waived under applicable law.",
+    },
+    liability: {
+      heading: "Limitation of Liability",
+      body: "To the maximum extent permitted by law, we are not liable for indirect, incidental, special, consequential, or punitive damages, or for loss of profits, revenue, data, or goodwill. Nothing in these Terms limits liability that cannot be limited by law, including liability for fraud, willful misconduct, gross negligence, death or personal injury caused by negligence, or mandatory consumer rights.",
+    },
+    fees: {
+      heading: "Fees",
+      body: "Where the service is offered for a fee, the applicable fees, billing terms, and taxes are presented at the point of purchase or in a separate order before any charge. Unless stated otherwise, fees once charged are non-refundable except where required by law.",
+    },
+    termination: {
+      heading: "Term and Termination",
+      body: "These Terms apply while you use the service. You may stop using the service and close your account at any time. We may suspend or terminate your access for breach of these Terms, legal reasons, or discontinuation of the service, with reasonable notice where practicable. On termination, your right to use the service ends, and we handle any remaining personal data as described in the Privacy Policy, subject to legal retention duties.",
+    },
+    changes: {
+      heading: "Changes to These Terms",
+      body: "We may update these Terms. When we make a material change, we will publish a new version and, where appropriate, notify you. Each version is dated; continued use after a change takes effect means you accept the updated Terms. If you do not accept a change, stop using the service.",
+    },
+    governingLaw: {
+      heading: "Governing Law and Jurisdiction",
+      body: "These Terms are governed by the laws of the provider’s jurisdiction, without prejudice to mandatory consumer-protection rules of your country of residence. Set the governing law and competent courts for your entity before launch.",
+    },
+    miscellaneous: {
+      heading: "Miscellaneous",
+      body: "If any provision of these Terms is found unenforceable, the remaining provisions stay in effect. Our failure to enforce a provision is not a waiver. You may not assign these Terms without our consent; we may assign them in connection with a merger, acquisition, or sale of assets.",
+    },
+    contact: {
+      heading: "Contact",
+      intro: "Questions about these Terms:",
+    },
+  },
+  cookies: {
+    title: "Cookie Notice",
+    generated: {
+      notice:
+        "Generated from site.config. This is a generic template, not legal advice. Review with legal counsel before launch.",
+    },
+    intro:
+      "This Cookie Notice explains how this site uses cookies and similar device storage (together, “cookies”) and how you control them. It complements our Privacy Policy.",
+    what: {
+      heading: "What Cookies Are",
+      body: "Cookies are small files or data entries stored on your device when you visit a site. They help a site function, remember choices, understand usage, or support marketing.",
+    },
+    controls: {
+      heading: "Your Consent Controls",
+      necessary:
+        "Strictly necessary cookies run without consent — they are needed for the site to work.",
+      optionalOff:
+        "All other categories are off by default. Analytics and marketing cookies are only set after you give prior, affirmative consent.",
+      noPreTicked: "No pre-ticked boxes — optional categories are never pre-selected.",
+      noWall:
+        "No cookie wall — you can use the core site whether or not you accept optional cookies.",
+      rejectEasy:
+        "Rejecting is as easy as accepting — the banner offers Accept, Decline, and Manage settings with equal prominence.",
+      withdraw:
+        "You can change or withdraw your choice at any time from the cookie settings.",
+      reprompt:
+        "We ask again if this notice’s version changes or your stored choice expires.",
+      proof:
+        "We record the timestamp, the version, and your per-category choices to demonstrate compliance.",
+    },
+    categories: {
+      heading: "Cookie Categories",
+      necessary: {
+        name: "Strictly necessary",
+        purpose:
+          "Security, load-balancing, remembering your cookie choice, and your language preference.",
+        consent: "Always on — no consent needed.",
+      },
+      analytics: {
+        name: "Analytics",
+        purpose: "Understanding how the site is used so we can improve it.",
+        consent: "Opt-in — loaded only after consent.",
+      },
+      marketing: {
+        name: "Marketing",
+        purpose: "Measuring and delivering relevant marketing.",
+        consent: "Opt-in — loaded only after consent.",
+      },
+      analyticsActive:
+        "Analytics is currently configured on this site and loads only after you grant consent.",
+      analyticsInactive:
+        "No analytics or marketing provider is currently configured on this site, so only strictly necessary storage is used. Any provider added later will load only after you grant consent.",
+    },
+    manage: {
+      heading: "Managing Your Choice",
+      body: "When you first visit, a cookie banner asks for your consent. Use “Accept”, “Decline”, or “Manage settings” to set your per-category choices. You can reopen the banner’s “Manage settings” controls at any time to change or withdraw consent.",
+      storageIntro:
+        "Your choice is stored in your browser under the key",
+      storageAfterKey: "— clearing it will prompt the banner again.",
+    },
+    browser: {
+      heading: "Managing Cookies in Your Browser",
+      body: "You can also block or delete cookies through your browser settings. Note that blocking strictly-necessary cookies may prevent parts of the site from working.",
+    },
+    privacy: {
+      heading: "Relation to the Privacy Policy",
+      body: "For details on how we process personal data, including any data collected via cookies, see our",
+      link: "Privacy Policy",
+    },
+    contact: {
+      heading: "Contact",
+      intro: "Questions about cookies:",
     },
   },
   preview: {

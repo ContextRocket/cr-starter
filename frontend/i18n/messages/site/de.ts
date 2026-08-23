@@ -212,6 +212,8 @@ export const siteDe: LocaleMessages<typeof siteEn> = {
     powered_by: "Unterstützt von",
     impressum: "Impressum",
     privacy: "Datenschutzerklärung",
+    terms: "AGB",
+    cookies: "Cookies",
     faq: "Häufige Fragen",
     attribution: "Bildnachweis",
   },
@@ -305,6 +307,175 @@ export const siteDe: LocaleMessages<typeof siteEn> = {
         "Recht auf Beschwerde bei einer Aufsichtsbehörde (Art. 77 DSGVO)",
       outro:
         "Zur Ausübung deiner Rechte wende dich an die oben genannte Datenschutzadresse.",
+    },
+  },
+  terms: {
+    title: "Allgemeine Geschäftsbedingungen",
+    generated: {
+      notice:
+        "Aus site.config generiert. Dies ist eine generische Vorlage, keine Rechtsberatung. Vor der Veröffentlichung mit rechtlichem Beistand prüfen.",
+    },
+    disclaimer:
+      "Diese AGB sind ein generischer Ausgangspunkt mit Platzhalter-Identitätsangaben. Ersetze die Angaben zur Rechtsperson in site.config und lasse sie vor der Veröffentlichung durch qualifizierten rechtlichen Beistand prüfen.",
+    intro:
+      "Diese Allgemeinen Geschäftsbedingungen („AGB“) regeln deinen Zugang zu und deine Nutzung dieses Dienstes. Bitte lies sie sorgfältig. Mit dem Anlegen eines Kontos oder der Nutzung des Dienstes stimmst du diesen AGB zu.",
+    provider: {
+      heading: "Wer wir sind",
+      intro: "Der Dienst wird bereitgestellt von:",
+    },
+    service: {
+      heading: "Der Dienst",
+      body: "Wir stellen den auf dieser Website beschriebenen Dienst bereit. Die dir verfügbaren Funktionen können von deinem Tarif und deiner Konfiguration abhängen. Wir können Funktionen im Laufe der Zeit verbessern, ändern, hinzufügen oder entfernen.",
+    },
+    acceptance: {
+      heading: "Annahme dieser AGB",
+      body1:
+        "Mit der Registrierung, dem Zugriff auf oder der Nutzung des Dienstes bestätigst du, dass du diese AGB und unsere Datenschutzerklärung gelesen, verstanden und akzeptiert hast. Wenn du den Dienst im Namen einer Organisation nutzt, bestätigst du, dass du berechtigt bist, diese zu verpflichten, und „du“ schließt diese Organisation ein. Wenn du nicht einverstanden bist, nutze den Dienst nicht.",
+      body2:
+        "Soweit erforderlich, wird die Annahme dieser AGB als gesondertes, ausdrückliches Ereignis getrennt von deiner Bestätigung der Datenschutzerklärung und einer etwaigen Marketing-Einwilligung erfasst, zusammen mit der dir angezeigten Version der Dokumente.",
+    },
+    accounts: {
+      heading: "Konten und Berechtigung",
+      body: "Du musst zutreffende Kontoangaben machen und aktuell halten, deine Zugangsdaten schützen und für alle Aktivitäten unter deinem Konto verantwortlich sein. Du musst alt genug sein, um in deiner Rechtsordnung einen bindenden Vertrag zu schließen. Teile uns eine unbefugte Nutzung unverzüglich mit.",
+    },
+    acceptableUse: {
+      heading: "Zulässige Nutzung",
+      intro: "Du verpflichtest dich, nicht:",
+      item: {
+        unlawful: "den Dienst rechtswidrig zu nutzen oder Spam zu versenden;",
+        rights:
+          "Inhalte hochzuladen oder zu verarbeiten, für die du keine Rechte hast, oder Rechte Dritter zu verletzen;",
+        security:
+          "unbefugten Zugriff auf den Dienst oder seine Infrastruktur zu versuchen, diese zu stören oder zu überlasten;",
+        reverse:
+          "den Dienst zurückzuentwickeln, zu scrapen oder technische Beschränkungen zu umgehen, außer soweit eine solche Beschränkung gesetzlich unzulässig ist;",
+        resell:
+          "den Dienst an Dritte weiterzuverkaufen oder bereitzustellen, außer soweit ausdrücklich gestattet.",
+      },
+      outro:
+        "Wir können den Zugang einschränken oder aussetzen, um den Dienst, unsere Nutzer oder Dritte zu schützen oder um Gesetze einzuhalten.",
+    },
+    ip: {
+      heading: "Geistiges Eigentum",
+      body: "Der Dienst, einschließlich seiner Software, seines Designs und der von uns bereitgestellten Inhalte (ausgenommen deine Inhalte), gehört dem Anbieter oder seinen Lizenzgebern und ist durch Rechte des geistigen Eigentums geschützt. Wir gewähren dir ein beschränktes, nicht ausschließliches, nicht übertragbares und widerrufliches Recht zur Nutzung des Dienstes gemäß diesen AGB und deinem Tarif. Weitere Rechte werden nicht gewährt.",
+    },
+    content: {
+      heading: "Deine Inhalte und deren Eigentum",
+      body1:
+        "Du behältst das Eigentum an den von dir übermittelten Inhalten und Daten („Deine Inhalte“). Du gewährst uns eine beschränkte Lizenz, Deine Inhalte zu hosten, zu verarbeiten, zu übertragen und anzuzeigen, ausschließlich um den Dienst für dich bereitzustellen, zu sichern und zu verbessern, sowie wie in der Datenschutzerklärung beschrieben.",
+      body2:
+        "Du bist für Deine Inhalte verantwortlich und dafür, über die zur Übermittlung und Verarbeitung erforderlichen Rechte und Einwilligungen zu verfügen. Personenbezogene Daten innerhalb Deiner Inhalte verarbeiten wir wie in der Datenschutzerklärung beschrieben.",
+    },
+    thirdParty: {
+      heading: "Dienste Dritter und automatisierte Ergebnisse",
+      body: "Der Dienst kann Drittanbieter nutzen, um Funktionen bereitzustellen. Soweit der Dienst automatisierte oder KI-generierte Ergebnisse erzeugt, können diese ungenau, unvollständig oder für einen bestimmten Zweck ungeeignet sein; du bist dafür verantwortlich, Ergebnisse zu prüfen, bevor du dich darauf verlässt oder sie veröffentlichst. Wir gewährleisten nicht, dass Ergebnisse fehlerfrei oder für einen bestimmten Zweck geeignet sind.",
+    },
+    disclaimers: {
+      heading: "Haftungsausschlüsse",
+      body: "Soweit gesetzlich zulässig, wird der Dienst „wie besehen“ und „wie verfügbar“ bereitgestellt, ohne Gewährleistungen jeglicher Art, ob ausdrücklich oder stillschweigend, einschließlich der Eignung für einen bestimmten Zweck, der Nichtverletzung, der Richtigkeit oder der ununterbrochenen Verfügbarkeit. Nichts in diesen AGB schließt Rechte aus, die dir als Verbraucher zustehen und nach geltendem Recht nicht abbedungen werden können.",
+    },
+    liability: {
+      heading: "Haftungsbeschränkung",
+      body: "Soweit gesetzlich zulässig, haften wir nicht für mittelbare, zufällige, besondere, Folge- oder Strafschäden oder für den Verlust von Gewinn, Umsatz, Daten oder Geschäftswert. Nichts in diesen AGB beschränkt eine Haftung, die gesetzlich nicht beschränkt werden kann, einschließlich der Haftung für Vorsatz, arglistiges Verhalten, grobe Fahrlässigkeit, Tod oder Körperverletzung durch Fahrlässigkeit oder zwingende Verbraucherrechte.",
+    },
+    fees: {
+      heading: "Entgelte",
+      body: "Soweit der Dienst gegen Entgelt angeboten wird, werden die anwendbaren Entgelte, Abrechnungsbedingungen und Steuern zum Zeitpunkt des Kaufs oder in einer gesonderten Bestellung vor jeder Belastung angezeigt. Sofern nicht anders angegeben, sind einmal berechnete Entgelte nicht erstattungsfähig, außer soweit gesetzlich vorgeschrieben.",
+    },
+    termination: {
+      heading: "Laufzeit und Kündigung",
+      body: "Diese AGB gelten, solange du den Dienst nutzt. Du kannst die Nutzung des Dienstes jederzeit beenden und dein Konto schließen. Wir können deinen Zugang bei Verstoß gegen diese AGB, aus rechtlichen Gründen oder bei Einstellung des Dienstes aussetzen oder beenden, soweit möglich mit angemessener Vorankündigung. Mit Beendigung endet dein Nutzungsrecht, und wir behandeln verbleibende personenbezogene Daten wie in der Datenschutzerklärung beschrieben, vorbehaltlich gesetzlicher Aufbewahrungspflichten.",
+    },
+    changes: {
+      heading: "Änderungen dieser AGB",
+      body: "Wir können diese AGB aktualisieren. Bei einer wesentlichen Änderung veröffentlichen wir eine neue Version und informieren dich, wo angemessen. Jede Version ist datiert; die fortgesetzte Nutzung nach Inkrafttreten einer Änderung bedeutet, dass du die aktualisierten AGB akzeptierst. Wenn du eine Änderung nicht akzeptierst, beende die Nutzung des Dienstes.",
+    },
+    governingLaw: {
+      heading: "Anwendbares Recht und Gerichtsstand",
+      body: "Diese AGB unterliegen dem Recht der Rechtsordnung des Anbieters, unbeschadet zwingender verbraucherschützender Vorschriften deines Wohnsitzlandes. Lege vor der Veröffentlichung das anwendbare Recht und den zuständigen Gerichtsstand für deine Rechtsperson fest.",
+    },
+    miscellaneous: {
+      heading: "Sonstiges",
+      body: "Sollte eine Bestimmung dieser AGB unwirksam sein, bleiben die übrigen Bestimmungen wirksam. Verzichten wir auf die Durchsetzung einer Bestimmung, liegt darin kein Verzicht. Du darfst diese AGB nicht ohne unsere Zustimmung abtreten; wir dürfen sie im Zusammenhang mit einer Fusion, Übernahme oder einem Verkauf von Vermögenswerten abtreten.",
+    },
+    contact: {
+      heading: "Kontakt",
+      intro: "Fragen zu diesen AGB:",
+    },
+  },
+  cookies: {
+    title: "Cookie-Hinweis",
+    generated: {
+      notice:
+        "Aus site.config generiert. Dies ist eine generische Vorlage, keine Rechtsberatung. Vor der Veröffentlichung mit rechtlichem Beistand prüfen.",
+    },
+    intro:
+      "Dieser Cookie-Hinweis erläutert, wie diese Website Cookies und ähnliche Gerätespeicher (zusammen „Cookies“) verwendet und wie du sie steuerst. Er ergänzt unsere Datenschutzerklärung.",
+    what: {
+      heading: "Was Cookies sind",
+      body: "Cookies sind kleine Dateien oder Dateneinträge, die beim Besuch einer Website auf deinem Gerät gespeichert werden. Sie helfen einer Website zu funktionieren, Entscheidungen zu speichern, die Nutzung zu verstehen oder Marketing zu unterstützen.",
+    },
+    controls: {
+      heading: "Deine Einwilligungssteuerung",
+      necessary:
+        "Technisch notwendige Cookies laufen ohne Einwilligung – sie sind für den Betrieb der Website erforderlich.",
+      optionalOff:
+        "Alle anderen Kategorien sind standardmäßig aus. Analyse- und Marketing-Cookies werden erst nach deiner vorherigen, ausdrücklichen Einwilligung gesetzt.",
+      noPreTicked:
+        "Keine vorangekreuzten Kästchen – optionale Kategorien sind nie vorausgewählt.",
+      noWall:
+        "Keine Cookie-Wand – du kannst die Kernwebsite nutzen, unabhängig davon, ob du optionale Cookies akzeptierst.",
+      rejectEasy:
+        "Ablehnen ist so einfach wie Akzeptieren – das Banner bietet Akzeptieren, Ablehnen und Einstellungen verwalten gleichrangig an.",
+      withdraw:
+        "Du kannst deine Wahl jederzeit über die Cookie-Einstellungen ändern oder widerrufen.",
+      reprompt:
+        "Wir fragen erneut, wenn sich die Version dieses Hinweises ändert oder deine gespeicherte Wahl abläuft.",
+      proof:
+        "Wir erfassen Zeitstempel, Version und deine Wahl pro Kategorie, um die Einhaltung nachzuweisen.",
+    },
+    categories: {
+      heading: "Cookie-Kategorien",
+      necessary: {
+        name: "Technisch notwendig",
+        purpose:
+          "Sicherheit, Lastverteilung, Speichern deiner Cookie-Wahl und deiner Sprachpräferenz.",
+        consent: "Immer aktiv – keine Einwilligung erforderlich.",
+      },
+      analytics: {
+        name: "Analyse",
+        purpose: "Verstehen, wie die Website genutzt wird, um sie zu verbessern.",
+        consent: "Opt-in – werden erst nach Einwilligung geladen.",
+      },
+      marketing: {
+        name: "Marketing",
+        purpose: "Messen und Ausspielen relevanter Werbung.",
+        consent: "Opt-in – werden erst nach Einwilligung geladen.",
+      },
+      analyticsActive:
+        "Auf dieser Website ist derzeit Analyse konfiguriert; sie wird erst nach deiner Einwilligung geladen.",
+      analyticsInactive:
+        "Auf dieser Website ist derzeit kein Analyse- oder Marketing-Anbieter konfiguriert, daher wird nur technisch notwendiger Speicher verwendet. Ein später hinzugefügter Anbieter wird erst nach deiner Einwilligung geladen.",
+    },
+    manage: {
+      heading: "Deine Wahl verwalten",
+      body: "Bei deinem ersten Besuch fragt ein Cookie-Banner nach deiner Einwilligung. Über „Akzeptieren“, „Ablehnen“ oder „Einstellungen verwalten“ legst du deine Wahl pro Kategorie fest. Du kannst die Steuerung „Einstellungen verwalten“ des Banners jederzeit erneut öffnen, um deine Einwilligung zu ändern oder zu widerrufen.",
+      storageIntro:
+        "Deine Wahl wird in deinem Browser unter dem Schlüssel gespeichert",
+      storageAfterKey: "; beim Löschen wird das Banner erneut angezeigt.",
+    },
+    browser: {
+      heading: "Cookies in deinem Browser verwalten",
+      body: "Du kannst Cookies auch über die Einstellungen deines Browsers blockieren oder löschen. Beachte, dass das Blockieren technisch notwendiger Cookies dazu führen kann, dass Teile der Website nicht funktionieren.",
+    },
+    privacy: {
+      heading: "Verhältnis zur Datenschutzerklärung",
+      body: "Einzelheiten dazu, wie wir personenbezogene Daten verarbeiten, einschließlich der über Cookies erhobenen Daten, findest du in unserer",
+      link: "Datenschutzerklärung",
+    },
+    contact: {
+      heading: "Kontakt",
+      intro: "Fragen zu Cookies:",
     },
   },
   preview: {

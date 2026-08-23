@@ -212,6 +212,8 @@ export const siteEs: LocaleMessages<typeof siteEn> = {
     powered_by: "Desarrollado por",
     impressum: "Impressum",
     privacy: "Política de privacidad",
+    terms: "Términos",
+    cookies: "Cookies",
     faq: "Preguntas frecuentes",
     attribution: "Atribución",
   },
@@ -305,6 +307,175 @@ export const siteEs: LocaleMessages<typeof siteEn> = {
         "Derecho a presentar una reclamación ante una autoridad de control (art. 77 RGPD)",
       outro:
         "Para ejercer tus derechos, contacta con la dirección de privacidad indicada más arriba.",
+    },
+  },
+  terms: {
+    title: "Términos del servicio",
+    generated: {
+      notice:
+        "Generado desde site.config. Es una plantilla genérica, no asesoramiento legal. Revísala con asesoría legal antes de publicar.",
+    },
+    disclaimer:
+      "Estos Términos son un punto de partida genérico con valores de identidad de ejemplo. Reemplaza los datos de la entidad en site.config y haz que los revise asesoría legal cualificada antes de publicar el sitio.",
+    intro:
+      "Estos Términos del servicio («Términos») regulan tu acceso y uso de este servicio. Léelos con atención. Al crear una cuenta o usar el servicio, aceptas estos Términos.",
+    provider: {
+      heading: "Quiénes somos",
+      intro: "El servicio es prestado por:",
+    },
+    service: {
+      heading: "El servicio",
+      body: "Prestamos el servicio descrito en este sitio. Las funciones disponibles pueden depender de tu plan y configuración. Podemos mejorar, cambiar, añadir o eliminar funciones con el tiempo.",
+    },
+    acceptance: {
+      heading: "Aceptación de estos Términos",
+      body1:
+        "Al registrarte, acceder o usar el servicio confirmas que has leído, comprendido y aceptas estos Términos y nuestra Política de privacidad. Si usas el servicio en nombre de una organización, confirmas que estás autorizado para vincularla, y «tú» incluye a esa organización. Si no estás de acuerdo, no uses el servicio.",
+      body2:
+        "Cuando sea necesario, la aceptación de estos Términos se registra como un acto separado y explícito respecto de tu confirmación de la Política de privacidad y de cualquier consentimiento de marketing, junto con la versión de los documentos que se te mostraron.",
+    },
+    accounts: {
+      heading: "Cuentas y elegibilidad",
+      body: "Debes facilitar información de cuenta veraz y mantenerla actualizada, proteger tus credenciales y responsabilizarte de toda la actividad de tu cuenta. Debes tener edad suficiente para celebrar un contrato vinculante en tu jurisdicción. Comunícanos de inmediato cualquier uso no autorizado.",
+    },
+    acceptableUse: {
+      heading: "Uso aceptable",
+      intro: "Te comprometes a no:",
+      item: {
+        unlawful: "usar el servicio de forma ilícita ni enviar spam;",
+        rights:
+          "subir o tratar contenido sobre el que no tengas derechos, ni vulnerar los derechos de terceros;",
+        security:
+          "intentar acceder sin autorización, interrumpir o sobrecargar el servicio o su infraestructura;",
+        reverse:
+          "aplicar ingeniería inversa, extraer datos ni eludir límites técnicos, salvo cuando la ley prohíba dicha restricción;",
+        resell:
+          "revender o proporcionar el servicio a terceros salvo autorización expresa.",
+      },
+      outro:
+        "Podemos suspender o limitar el acceso para proteger el servicio, a nuestros usuarios o a terceros, o para cumplir la ley.",
+    },
+    ip: {
+      heading: "Propiedad intelectual",
+      body: "El servicio, incluidos su software, diseño y el contenido que proporcionamos (excluido tu contenido), es propiedad del prestador o de sus licenciantes y está protegido por las leyes de propiedad intelectual. Te concedemos un derecho limitado, no exclusivo, intransferible y revocable de uso del servicio conforme a estos Términos y tu plan. No se conceden otros derechos.",
+    },
+    content: {
+      heading: "Tu contenido y su titularidad",
+      body1:
+        "Conservas la titularidad del contenido y los datos que envías («Tu contenido»). Nos concedes una licencia limitada para alojar, tratar, transmitir y mostrar Tu contenido con el único fin de prestar, proteger y mejorar el servicio para ti, y según lo descrito en la Política de privacidad.",
+      body2:
+        "Eres responsable de Tu contenido y de contar con los derechos y consentimientos necesarios para enviarlo y tratarlo. Tratamos los datos personales incluidos en Tu contenido según lo descrito en la Política de privacidad.",
+    },
+    thirdParty: {
+      heading: "Servicios de terceros y resultados automatizados",
+      body: "El servicio puede usar proveedores externos para prestar funciones. Cuando el servicio genere resultados automatizados o generados por IA, estos pueden ser inexactos, incompletos o inadecuados para un fin concreto; eres responsable de revisarlos antes de basarte en ellos o publicarlos. No garantizamos que los resultados estén libres de errores ni sean aptos para un fin particular.",
+    },
+    disclaimers: {
+      heading: "Exenciones de responsabilidad",
+      body: "En la máxima medida permitida por la ley, el servicio se presta «tal cual» y «según disponibilidad», sin garantías de ningún tipo, expresas o implícitas, incluidas la idoneidad para un fin concreto, la no infracción, la exactitud o la disponibilidad ininterrumpida. Nada en estos Términos excluye los derechos que te correspondan como consumidor y que no puedan renunciarse conforme a la ley aplicable.",
+    },
+    liability: {
+      heading: "Limitación de responsabilidad",
+      body: "En la máxima medida permitida por la ley, no somos responsables de daños indirectos, incidentales, especiales, consecuentes o punitivos, ni de la pérdida de beneficios, ingresos, datos o fondo de comercio. Nada en estos Términos limita la responsabilidad que no pueda limitarse por ley, incluida la derivada de dolo, mala conducta intencionada, negligencia grave, muerte o lesiones causadas por negligencia, o los derechos imperativos del consumidor.",
+    },
+    fees: {
+      heading: "Tarifas",
+      body: "Cuando el servicio se ofrezca por una tarifa, las tarifas aplicables, las condiciones de facturación y los impuestos se presentan en el momento de la compra o en un pedido independiente antes de cualquier cargo. Salvo que se indique lo contrario, las tarifas ya cobradas no son reembolsables, excepto cuando la ley lo exija.",
+    },
+    termination: {
+      heading: "Duración y resolución",
+      body: "Estos Términos se aplican mientras uses el servicio. Puedes dejar de usar el servicio y cerrar tu cuenta en cualquier momento. Podemos suspender o resolver tu acceso por incumplimiento de estos Términos, por motivos legales o por la interrupción del servicio, con aviso razonable cuando sea posible. Tras la resolución, tu derecho de uso finaliza y tratamos los datos personales restantes según la Política de privacidad, con sujeción a las obligaciones legales de conservación.",
+    },
+    changes: {
+      heading: "Cambios en estos Términos",
+      body: "Podemos actualizar estos Términos. Cuando realicemos un cambio sustancial, publicaremos una nueva versión y, cuando proceda, te avisaremos. Cada versión está fechada; el uso continuado tras la entrada en vigor de un cambio implica que aceptas los Términos actualizados. Si no aceptas un cambio, deja de usar el servicio.",
+    },
+    governingLaw: {
+      heading: "Legislación aplicable y jurisdicción",
+      body: "Estos Términos se rigen por la legislación de la jurisdicción del prestador, sin perjuicio de las normas imperativas de protección al consumidor de tu país de residencia. Define la legislación aplicable y los tribunales competentes de tu entidad antes de publicar.",
+    },
+    miscellaneous: {
+      heading: "Disposiciones varias",
+      body: "Si alguna disposición de estos Términos resulta inaplicable, las demás seguirán en vigor. El hecho de no exigir el cumplimiento de una disposición no supone renuncia. No puedes ceder estos Términos sin nuestro consentimiento; nosotros podemos cederlos en el marco de una fusión, adquisición o venta de activos.",
+    },
+    contact: {
+      heading: "Contacto",
+      intro: "Preguntas sobre estos Términos:",
+    },
+  },
+  cookies: {
+    title: "Aviso de cookies",
+    generated: {
+      notice:
+        "Generado desde site.config. Es una plantilla genérica, no asesoramiento legal. Revísala con asesoría legal antes de publicar.",
+    },
+    intro:
+      "Este Aviso de cookies explica cómo este sitio utiliza cookies y almacenamiento similar en el dispositivo (conjuntamente, «cookies») y cómo puedes controlarlas. Complementa nuestra Política de privacidad.",
+    what: {
+      heading: "Qué son las cookies",
+      body: "Las cookies son pequeños archivos o datos que se almacenan en tu dispositivo al visitar un sitio. Ayudan a que un sitio funcione, recuerde elecciones, entienda el uso o dé soporte al marketing.",
+    },
+    controls: {
+      heading: "Tus controles de consentimiento",
+      necessary:
+        "Las cookies estrictamente necesarias funcionan sin consentimiento: son imprescindibles para que el sitio funcione.",
+      optionalOff:
+        "Las demás categorías están desactivadas por defecto. Las cookies de analítica y marketing solo se activan tras tu consentimiento previo y afirmativo.",
+      noPreTicked:
+        "Sin casillas premarcadas: las categorías opcionales nunca vienen preseleccionadas.",
+      noWall:
+        "Sin muro de cookies: puedes usar el sitio principal aceptes o no las cookies opcionales.",
+      rejectEasy:
+        "Rechazar es tan fácil como aceptar: el banner ofrece Aceptar, Rechazar y Gestionar ajustes con la misma relevancia.",
+      withdraw:
+        "Puedes cambiar o retirar tu elección en cualquier momento desde los ajustes de cookies.",
+      reprompt:
+        "Te volvemos a preguntar si cambia la versión de este aviso o caduca tu elección guardada.",
+      proof:
+        "Registramos la fecha y hora, la versión y tus elecciones por categoría para acreditar el cumplimiento.",
+    },
+    categories: {
+      heading: "Categorías de cookies",
+      necessary: {
+        name: "Estrictamente necesarias",
+        purpose:
+          "Seguridad, balanceo de carga, recordar tu elección de cookies y tu preferencia de idioma.",
+        consent: "Siempre activas: no requieren consentimiento.",
+      },
+      analytics: {
+        name: "Analítica",
+        purpose: "Entender cómo se usa el sitio para poder mejorarlo.",
+        consent: "Opcional: se cargan solo tras el consentimiento.",
+      },
+      marketing: {
+        name: "Marketing",
+        purpose: "Medir y ofrecer marketing relevante.",
+        consent: "Opcional: se cargan solo tras el consentimiento.",
+      },
+      analyticsActive:
+        "La analítica está actualmente configurada en este sitio y se carga solo tras otorgar tu consentimiento.",
+      analyticsInactive:
+        "Actualmente no hay ningún proveedor de analítica o marketing configurado en este sitio, por lo que solo se utiliza almacenamiento estrictamente necesario. Cualquier proveedor añadido más adelante se cargará únicamente tras otorgar tu consentimiento.",
+    },
+    manage: {
+      heading: "Gestionar tu elección",
+      body: "En tu primera visita, un banner de cookies solicita tu consentimiento. Usa «Aceptar», «Rechazar» o «Gestionar ajustes» para definir tus elecciones por categoría. Puedes volver a abrir los controles de «Gestionar ajustes» del banner en cualquier momento para cambiar o retirar tu consentimiento.",
+      storageIntro:
+        "Tu elección se almacena en tu navegador bajo la clave",
+      storageAfterKey: "; al borrarla, el banner volverá a mostrarse.",
+    },
+    browser: {
+      heading: "Gestionar cookies en tu navegador",
+      body: "También puedes bloquear o eliminar cookies desde los ajustes de tu navegador. Ten en cuenta que bloquear las cookies estrictamente necesarias puede impedir que partes del sitio funcionen.",
+    },
+    privacy: {
+      heading: "Relación con la Política de privacidad",
+      body: "Para más detalles sobre cómo tratamos los datos personales, incluidos los recabados mediante cookies, consulta nuestra",
+      link: "Política de privacidad",
+    },
+    contact: {
+      heading: "Contacto",
+      intro: "Preguntas sobre las cookies:",
     },
   },
   preview: {
