@@ -140,12 +140,14 @@ it and must preserve these two invariants:
   glob, so any policy that syncs `frontend/lib/**` MUST also list
   `frontend/lib/openapi-client/**` under `policy.preserve`; otherwise a sync
   clobbers a fork's generated client with the parent's copy.
-- **Shared launch-locale i18n genuinely syncs.**
-  `frontend/i18n/messages/shared/{en,de,es}.ts` is common copy that is meant to
-  propagate from the parent, so it stays in `policy.sync` and is NOT re-listed
-  under `policy.preserve`. Preserving those three would freeze a fork on stale
-  shared copy. Only a fork-*specific* locale (for example a fork's own `zh.ts`)
-  belongs in that fork's preserve list.
+- **Shared launch-locale i18n genuinely syncs for active locales.**
+  `frontend/i18n/messages/shared/{en,de,es}.ts` is common copy available from
+  the parent. A fork that actively serves a locale must leave its shared slice
+  in `policy.sync` so common copy propagates. An English-only fork may instead
+  list unused non-English shared slices (for example `shared/de.ts` and
+  `shared/es.ts`) in `policy.preserve` and omit those files locally. This keeps
+  the fork small without freezing the English slice or preventing the fork
+  from adding that locale later by removing the preserve entry.
 
 ## Verification tiers
 
