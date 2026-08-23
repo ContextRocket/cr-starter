@@ -7,7 +7,8 @@ FRONTEND_PORT ?= 3100
 
 .PHONY: help install start-next-only start-frontend test-frontend build-static \
         test-cli build-cli package-cli build-widget verify serve-static design-review \
-        verify-fork verify-static sync-parent sync-parent-check
+        verify-fork verify-static sync-parent sync-parent-check sync-parent-local \
+        sync-parent-preview
 
 help: ## Show available commands
 	@awk '/^[a-zA-Z_-]+:/{split($$1, target, ":"); print "  " target[1] "\t" substr($$0, index($$0,$$2))}' $(MAKEFILE_LIST)
@@ -24,11 +25,17 @@ start-next-only: ## Start the Next.js site (chat is canned unless live mode is c
 
 start-frontend: start-next-only
 
-sync-parent-check: ## Check parent-owned paths (used from a configured fork)
+sync-parent-check: ## Check parent-owned paths against the GitHub remote (read-only, works on a dirty tree)
 	node scripts/sync-parent.mjs --check
 
-sync-parent: ## Restore parent-owned paths and stage the sync (used from a fork)
+sync-parent-preview: ## Alias for sync-parent-check (preview drift without applying)
+	node scripts/sync-parent.mjs --check
+
+sync-parent: ## Restore parent-owned paths from the GitHub remote and stage the sync
 	node scripts/sync-parent.mjs --apply
+
+sync-parent-local: ## Restore parent-owned paths from a LOCAL sibling parent checkout (no push needed)
+	node scripts/sync-parent.mjs --apply --from-local
 
 test-frontend: ## Run the frontend unit tests
 	cd $(FRONTEND_DIR) && pnpm test
