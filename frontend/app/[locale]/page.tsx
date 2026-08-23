@@ -108,13 +108,13 @@ export default async function Home({ params }: HomePageProps) {
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
                 href={siteConfig.paths.chat}
-                className="rounded-md bg-white px-6 py-3 text-sm font-semibold text-slate-950 shadow-sm hover:bg-white/90"
+                className="rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
               >
                 {t("home.hero.primaryCta")}
               </a>
               <a
                 href={siteConfig.paths.features}
-                className="text-sm font-semibold leading-6 text-white hover:text-white/80"
+                className="text-sm font-semibold leading-6 text-white transition-colors hover:text-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
               >
                 {t("home.hero.secondaryCta")} <span aria-hidden="true">→</span>
               </a>
