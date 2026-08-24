@@ -39,7 +39,10 @@ export type Path = LeafPaths<typeof en>;
 export type TranslationValues = Record<string, string | number>;
 
 /** A locale-bound translation function: `t("key")` -> string. */
-export type Translator = (key: Path | (string & {}), params?: TranslationValues) => string;
+export type Translator = (
+  key: Path | (string & {}),
+  params?: TranslationValues,
+) => string;
 
 export type ArrayTranslator = (key: Path | (string & {})) => readonly string[];
 
@@ -118,7 +121,10 @@ function applyPlurals(
     const options = parsePluralOptions(m[2]);
     const category = new Intl.PluralRules(locale).select(value);
     const body =
-      options.get(`=${value}`) ?? options.get(category) ?? options.get("other") ?? "";
+      options.get(`=${value}`) ??
+      options.get(category) ??
+      options.get("other") ??
+      "";
     const num = new Intl.NumberFormat(locale).format(value);
     out += applyPlurals(locale, body.replace(/#/g, num), params);
     i = close + 1;
@@ -224,6 +230,7 @@ export function translateError(
   fallback: Messages = en,
   params?: TranslationValues,
 ): string {
-  const resolved = resolveString(messages, raw) ?? resolveString(fallback, raw) ?? raw;
+  const resolved =
+    resolveString(messages, raw) ?? resolveString(fallback, raw) ?? raw;
   return interpolate(resolved, params);
 }

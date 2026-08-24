@@ -70,9 +70,7 @@ export function registerLocaleMessages(
  * mutable server-side `t()` state, which can belong to a different concurrent
  * route render during development navigation.
  */
-export function translateForLocale(
-  locale: SupportedLocale,
-): Translator {
+export function translateForLocale(locale: SupportedLocale): Translator {
   const messages = _registry[locale] ?? _registry.en!;
   return createTranslator(locale, messages);
 }

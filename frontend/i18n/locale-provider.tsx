@@ -110,8 +110,7 @@ export function LocaleProvider({
         return;
       }
 
-      const loadLocale =
-        CLIENT_LOCALE_LOADERS[localeCode as SupportedLocale];
+      const loadLocale = CLIENT_LOCALE_LOADERS[localeCode as SupportedLocale];
       if (!loadLocale) {
         console.error(
           `[i18n] changeLocale: no loader registered for "${newLocale}"`,

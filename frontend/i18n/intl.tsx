@@ -73,7 +73,9 @@ function renderRich(
     last = tagRe.lastIndex;
   }
   if (last < text.length) nodes.push(plain(text.slice(last)));
-  return nodes.length === 1 ? nodes[0] : createElement(Fragment, null, ...nodes);
+  return nodes.length === 1
+    ? nodes[0]
+    : createElement(Fragment, null, ...nodes);
 }
 
 /** Like `renderRich` but string-in/string-out, for `t.markup`. */

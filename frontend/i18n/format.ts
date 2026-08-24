@@ -36,7 +36,8 @@ export function createFormatter(locale: SupportedLocale): Formatter {
       const to = value instanceof Date ? value.getTime() : value;
       const deltaMs = to - from;
       const abs = Math.abs(deltaMs);
-      const [unit, ms] = RELATIVE_UNITS.find(([, u]) => abs >= u) ??
+      const [unit, ms] =
+        RELATIVE_UNITS.find(([, u]) => abs >= u) ??
         RELATIVE_UNITS[RELATIVE_UNITS.length - 1];
       const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
       return rtf.format(Math.round(deltaMs / ms), unit);

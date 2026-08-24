@@ -13,7 +13,9 @@ const tree = {
 
 describe("formatMessage (ICU plural, dependency-free)", () => {
   it("is byte-identical to interpolation for non-plural strings", () => {
-    expect(formatMessage("en", "Hello, {name}", { name: "Ada" })).toBe("Hello, Ada");
+    expect(formatMessage("en", "Hello, {name}", { name: "Ada" })).toBe(
+      "Hello, Ada",
+    );
     // no params -> untouched
     expect(formatMessage("en", "Hello, {name}")).toBe("Hello, {name}");
   });
