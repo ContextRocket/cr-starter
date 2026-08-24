@@ -72,9 +72,9 @@ export function FooterSection({
               &copy; {new Date().getFullYear()} {companyName}
             </span>
             <span className="hidden sm:inline mx-2">-</span>
-            <div className="flex justify-center items-center gap-1">
+            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
               {links.map((link, index) => (
-                <span key={link.href} className="flex items-center">
+                <span key={link.href} className="flex items-center gap-x-2">
                   <Link
                     href={link.href}
                     className="underline hover:text-primary transition-colors"
@@ -82,7 +82,9 @@ export function FooterSection({
                     {link.label}
                   </Link>
                   {index < links.length - 1 && (
-                    <span className="mx-2 text-muted-foreground/60">|</span>
+                    <span className="text-muted-foreground/60" aria-hidden="true">
+                      |
+                    </span>
                   )}
                 </span>
               ))}
