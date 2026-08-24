@@ -25,6 +25,12 @@ start-next-only: ## Start the Next.js site (chat is canned unless live mode is c
 
 start-frontend: start-next-only
 
+start-frontend-fast: ## Faster dev -- build only English (or the single configured locale); skips es/de static generation
+	@echo "Starting Next.js (fast: single-language, NEXT_PUBLIC_CR_LOCALES=en) on port $(FRONTEND_PORT)"
+	-@lsof -ti :$(FRONTEND_PORT) | xargs kill 2>/dev/null || true
+	cd $(FRONTEND_DIR) && NEXT_PUBLIC_CR_LOCALES=en ./start.sh
+
+
 sync-parent-check: ## Check parent-owned paths against the GitHub remote (read-only, works on a dirty tree)
 	node scripts/sync-parent.mjs --check
 

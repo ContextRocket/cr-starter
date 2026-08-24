@@ -6,6 +6,7 @@
     "i18n:generate": "node scripts/generate-i18n-registry.mjs",
     "predev": "pnpm run i18n:generate",
     "dev": "next dev --turbopack",
+    "dev:en": "NEXT_PUBLIC_CR_LOCALES=en pnpm run dev",
     "pretypecheck": "pnpm run i18n:generate",
     "typecheck": "tsc --noEmit",
     "prebuild": "pnpm run i18n:generate",
