@@ -9,8 +9,12 @@
  * locale strings except English: every other locale is loaded per-request on
  * the server and serialized to the client as a prop.
  *
- *   - Server: `const t = await getTranslator(locale)` (i18n/server.ts).
- *   - Client: `const { t } = useTranslations()` (i18n/client.tsx).
+ *   - Server: `const t = await getTranslations(ns?)` (i18n/server.ts).
+ *   - Client: `const t = useTranslations(ns?)`        (i18n/client.tsx).
+ *
+ * next-intl compatibility: the richer, namespace-aware translator with
+ * `.rich` / `.raw` / `.has` lives in i18n/intl.tsx and builds on the resolvers
+ * and `formatMessage` exported here. This core stays React-free.
  */
 
 import { en } from "./messages/en";
@@ -31,17 +35,116 @@ type LeafPaths<T, K extends keyof T = keyof T> = K extends string
 
 export type Path = LeafPaths<typeof en>;
 
+/** Values for `{name}` interpolation and ICU `plural` selection. */
+export type TranslationValues = Record<string, string | number>;
+
 /** A locale-bound translation function: `t("key")` -> string. */
-export type Translator = (key: Path | (string & {}), params?: Record<string, string>) => string;
+export type Translator = (key: Path | (string & {}), params?: TranslationValues) => string;
 
 export type ArrayTranslator = (key: Path | (string & {})) => readonly string[];
 
-function interpolate(text: string, params?: Record<string, string>): string {
+/** Simple `{name}` placeholder interpolation. */
+function interpolate(text: string, params?: TranslationValues): string {
   if (!params) return text;
-  return text.replace(/\{(\w+)\}/g, (_, key) => params[key] ?? `{${key}}`);
+  return text.replace(/\{(\w+)\}/g, (_, key) =>
+    params[key] !== undefined ? String(params[key]) : `{${key}}`,
+  );
 }
 
-function resolveString(tree: Messages, key: string): string | undefined {
+const PLURAL_MARKER = ", plural";
+
+/** Index of the `}` that matches the `{` at `open` (balanced). */
+function matchBrace(text: string, open: number): number {
+  let depth = 0;
+  for (let i = open; i < text.length; i++) {
+    if (text[i] === "{") depth++;
+    else if (text[i] === "}" && --depth === 0) return i;
+  }
+  return -1;
+}
+
+/** Parse `one {..} other {..} =0 {..}` into a selector -> body map. */
+function parsePluralOptions(options: string): Map<string, string> {
+  const map = new Map<string, string>();
+  let i = 0;
+  while (i < options.length) {
+    while (i < options.length && /\s/.test(options[i])) i++;
+    let selector = "";
+    while (i < options.length && !/\s/.test(options[i]) && options[i] !== "{") {
+      selector += options[i++];
+    }
+    while (i < options.length && /\s/.test(options[i])) i++;
+    if (options[i] !== "{") break;
+    const close = matchBrace(options, i);
+    if (close === -1) break;
+    map.set(selector, options.slice(i + 1, close));
+    i = close + 1;
+  }
+  return map;
+}
+
+/**
+ * Apply ICU `plural` blocks: exact `=N` matches and CLDR categories via
+ * `Intl.PluralRules`, with `#` replaced by the locale-formatted number. Covers
+ * the subset actually in use (plural only; no select / number-skeleton /
+ * nesting). Non-plural `{...}` braces are left untouched for `{name}`
+ * interpolation.
+ */
+function applyPlurals(
+  locale: string,
+  text: string,
+  params: TranslationValues,
+): string {
+  let out = "";
+  let i = 0;
+  while (i < text.length) {
+    if (text[i] !== "{") {
+      out += text[i++];
+      continue;
+    }
+    const close = matchBrace(text, i);
+    if (close === -1) {
+      out += text.slice(i);
+      break;
+    }
+    const inner = text.slice(i + 1, close);
+    const m = /^\s*([A-Za-z0-9_]+)\s*,\s*plural\s*,\s*([\s\S]*)$/.exec(inner);
+    if (!m) {
+      out += text.slice(i, close + 1);
+      i = close + 1;
+      continue;
+    }
+    const value = Number(params[m[1]] ?? 0);
+    const options = parsePluralOptions(m[2]);
+    const category = new Intl.PluralRules(locale).select(value);
+    const body =
+      options.get(`=${value}`) ?? options.get(category) ?? options.get("other") ?? "";
+    const num = new Intl.NumberFormat(locale).format(value);
+    out += applyPlurals(locale, body.replace(/#/g, num), params);
+    i = close + 1;
+  }
+  return out;
+}
+
+/**
+ * Format a resolved message: ICU `plural` (only when the string contains one)
+ * then `{name}` interpolation. For non-plural strings this is byte-identical to
+ * plain interpolation, so existing messages are unaffected.
+ */
+export function formatMessage(
+  locale: string,
+  text: string,
+  params?: TranslationValues,
+): string {
+  if (!params) return text;
+  const expanded = text.includes(PLURAL_MARKER)
+    ? applyPlurals(locale, text, params)
+    : text;
+  return interpolate(expanded, params);
+}
+
+/** Resolve a string leaf from a nested tree by dot-path. */
+export function resolveString(tree: Messages, key: string): string | undefined {
   const direct = (tree as Record<string, unknown>)[key];
   if (typeof direct === "string") return direct;
 
@@ -62,8 +165,8 @@ function resolveString(tree: Messages, key: string): string | undefined {
   return undefined;
 }
 
-/** Resolve any node (string or array) from a nested tree by dot-path. */
-function resolveNode(tree: Messages, key: string): unknown {
+/** Resolve any node (string or array or object) from a nested tree by dot-path. */
+export function resolveNode(tree: Messages, key: string): unknown {
   const direct = (tree as Record<string, unknown>)[key];
   if (direct !== undefined) return direct;
 
@@ -91,12 +194,12 @@ export function createTranslator(
   messages: Messages,
   fallback: Messages = en,
 ): Translator {
-  return (key: string, params?: Record<string, string>): string => {
+  return (key: string, params?: TranslationValues): string => {
     const text = resolveString(messages, key) ?? resolveString(fallback, key);
     if (text === undefined) {
       throw new Error(`[i18n] Missing key: "${key}" (locale: ${locale})`);
     }
-    return interpolate(text, params);
+    return formatMessage(locale, text, params);
   };
 }
 
@@ -119,7 +222,7 @@ export function translateError(
   messages: Messages,
   raw: string,
   fallback: Messages = en,
-  params?: Record<string, string>,
+  params?: TranslationValues,
 ): string {
   const resolved = resolveString(messages, raw) ?? resolveString(fallback, raw) ?? raw;
   return interpolate(resolved, params);

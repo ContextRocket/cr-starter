@@ -26,10 +26,10 @@ import { usePathname, useRouter } from "@/i18n/navigation";
 import {
   setLocale,
   registerLocaleMessages,
-  t,
-  translateForLocale,
+  getCurrentLocale,
+  getLocaleMessages,
 } from "./keys";
-import type { Path, Translator } from "./keys";
+import { getIntlTranslator, type IntlTranslator } from "./intl";
 import type { SupportedLocale } from "./messages";
 import { CLIENT_LOCALE_LOADERS } from "./locale-loaders";
 
@@ -156,19 +156,20 @@ export function useLocaleOptional(): LocaleContextValue | null {
 }
 
 /**
- * Locale-bound translator for client components.
+ * Locale-bound translator for client components. next-intl-compatible: pass an
+ * optional `namespace` to resolve keys relative to it, and use `t.rich`,
+ * `t.raw`, `t.has` on the returned function.
  *
  * This is especially important during SSR: a client component is rendered on
  * the server before LocaleProvider hydrates, so reading the global `t()` state
  * can pick up another request's locale. The provider's explicit locale is
  * stable for that render and also handles forks that add locales such as zh.
  */
-export function useTranslations(): Translator {
+export function useTranslations(namespace?: string): IntlTranslator {
   const context = useLocaleOptional();
-  return useMemo(() => {
-    if (!context) return t;
-    const translate = translateForLocale(context.locale);
-    return ((key: Path | (string & {}), params?: Record<string, string>) =>
-      translate(key, params)) as Translator;
-  }, [context?.locale]);
+  const locale = context?.locale ?? getCurrentLocale();
+  return useMemo(
+    () => getIntlTranslator(locale, getLocaleMessages(locale), namespace),
+    [locale, namespace],
+  );
 }

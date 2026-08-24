@@ -28,12 +28,20 @@ import {
   type Messages,
   type Translator,
   type ArrayTranslator,
+  type TranslationValues,
 } from "./translator";
 import { type SupportedLocale } from "./messages/registry";
 import { resolveLocale } from "./messages";
 
 // Re-export types for consumers.
-export type { Path, SupportedLocale, Translator, ArrayTranslator };
+export type {
+  Path,
+  SupportedLocale,
+  Translator,
+  ArrayTranslator,
+  TranslationValues,
+  Messages,
+};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Runtime message registry
@@ -67,6 +75,15 @@ export function translateForLocale(
 ): Translator {
   const messages = _registry[locale] ?? _registry.en!;
   return createTranslator(locale, messages);
+}
+
+/**
+ * The registered message tree for a locale (falling back to English). Used by
+ * the next-intl-compatible hooks/functions (i18n/client.tsx, i18n/server.ts) to
+ * build a namespace-aware translator.
+ */
+export function getLocaleMessages(locale: SupportedLocale): Messages {
+  return _registry[locale] ?? _registry.en!;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -109,7 +126,7 @@ export function getCurrentLocale(): SupportedLocale {
  */
 export function t(
   key: Path | (string & {}),
-  params?: Record<string, string>,
+  params?: TranslationValues,
 ): string {
   const locale = getCurrentLocale();
   return translateForLocale(locale)(key, params);
@@ -131,7 +148,7 @@ export function tArray(key: Path | (string & {})): readonly string[] {
  */
 export function translateError(
   raw: string,
-  params?: Record<string, string>,
+  params?: TranslationValues,
 ): string {
   const locale = getCurrentLocale();
   const messages = _registry[locale] ?? _registry.en!;
