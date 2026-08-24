@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "@/i18n/locale-provider";
+import { LocaleSwitcher } from "@/i18n/locale-switcher";
 
 import { ChatPanel } from "@/components/shared/chat/chat-panel";
 import { BrandLogo } from "@/components/shared/sections/brand-logo";
@@ -266,6 +267,10 @@ export function ChatFab({
               />
             </span>
             <div className="flex items-center gap-1">
+              {/* Language selector: same right-side slot in both drawer and
+                  fullscreen headers, so it does not shift on expansion. Renders
+                  nothing on single-locale forks (LocaleSwitcher self-hides). */}
+              <LocaleSwitcher />
               <button
                 ref={fullscreenCollapseRef}
                 onClick={collapseFullscreen}
@@ -349,17 +354,21 @@ export function ChatFab({
                     </span>
                   )}
                 </div>
-                <button
-                  onClick={(event) => {
-                    fullscreenReturnFocusRef.current = event.currentTarget;
-                    setFullscreen(true);
-                  }}
-                  aria-label={t("chat.expand")}
-                  data-testid="chat-fab-expand"
-                  className="flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                >
-                  <Maximize2Icon className="size-3.5" aria-hidden />
-                </button>
+                <div className="flex items-center gap-1">
+                  {/* Same language-selector slot as the fullscreen header. */}
+                  <LocaleSwitcher />
+                  <button
+                    onClick={(event) => {
+                      fullscreenReturnFocusRef.current = event.currentTarget;
+                      setFullscreen(true);
+                    }}
+                    aria-label={t("chat.expand")}
+                    data-testid="chat-fab-expand"
+                    className="flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  >
+                    <Maximize2Icon className="size-3.5" aria-hidden />
+                  </button>
+                </div>
               </div>
 
               <ChatPanel
