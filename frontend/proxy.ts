@@ -40,18 +40,31 @@ function applyLocale(request: NextRequest): NextResponse {
   const { pathname } = request.nextUrl;
   const firstSegment = pathname.split("/")[1];
 
+  // SINGLE active locale: clean/unprefixed URLs. Rewrite EVERY path into the
+  // physical `/<locale>` tree (the visible URL stays clean) so the real page
+  // renders instead of `[locale]/page.tsx` treating the first segment as a
+  // locale and falling through to the homepage. (Previously only "/" was
+  // rewritten, which left deep clean paths -- e.g. /podcast -- rendering the
+  // homepage.)
   if (ACTIVE_LOCALES_LIST.length === 1) {
     const locale = ACTIVE_LOCALES_LIST[0];
     const headers = new Headers(request.headers);
     headers.set("x-locale", locale);
-    if (pathname === "/") {
-      const url = request.nextUrl.clone();
-      url.pathname = `/${locale}/`;
-      const response = NextResponse.rewrite(url, { request: { headers } });
+
+    // The standalone embed stays unprefixed AND unwrapped (one stable URL).
+    if (pathname === "/embed" || pathname.startsWith("/embed/")) {
+      return NextResponse.next({ request: { headers } });
+    }
+    // Already inside the `/<locale>` tree -> pass through untouched.
+    if (firstSegment === locale) {
+      const response = NextResponse.next({ request: { headers } });
       response.cookies.set(LOCALE_COOKIE, locale, { path: "/" });
       return response;
     }
-    const response = NextResponse.next({ request: { headers } });
+    // Clean URL -> rewrite into `/<locale>/...` (address bar stays clean).
+    const url = request.nextUrl.clone();
+    url.pathname = `/${locale}${pathname === "/" ? "" : pathname}`;
+    const response = NextResponse.rewrite(url, { request: { headers } });
     response.cookies.set(LOCALE_COOKIE, locale, { path: "/" });
     return response;
   }

@@ -38,7 +38,7 @@ export function createNoFlashScript(
 ): string {
   return `(function(){try{var k=${JSON.stringify(
     THEME_STORAGE_KEY,
-  )};var d=document.documentElement;var t=null;try{t=localStorage.getItem(k)}catch(e){}if(!t){t=${JSON.stringify(
+  )};var d=document.documentElement;var t=null;try{t=localStorage.getItem(k)}catch(e){}if(t!=="light"&&t!=="dark"&&t!=="system"){t=${JSON.stringify(
     defaultTheme,
   )}}if(t==="system"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}d.classList.remove("light","dark");d.classList.add(t);d.style.colorScheme=t}catch(e){}})();`;
 }

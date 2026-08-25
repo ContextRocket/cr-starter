@@ -23,13 +23,27 @@ export function AosProvider() {
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    // Reduced motion: skip AOS entirely. Content stays visible via the
+    // `html:not(.aos-ready)` safety net in globals.css -- no animation, and no
+    // risk of content being stuck at opacity:0.
+    if (reduce) return;
+
     AOS.init({
       duration: 600,
       easing: "ease-out",
       once: true,
       offset: 40,
-      disable: reduce,
     });
+
+    // Only NOW does aos.css's `[data-aos]{opacity:0}` hiding take effect. Until
+    // this class is present, [data-aos] content is forced fully visible, so a
+    // missed / failed / slow AOS init can never blank the page.
+    document.documentElement.classList.add("aos-ready");
+
+    // Re-measure after late layout shifts (images, fonts) so above-the-fold
+    // elements reliably reveal instead of staying hidden.
+    const id = window.setTimeout(() => AOS.refresh(), 300);
+    return () => window.clearTimeout(id);
   }, []);
 
   return null;
