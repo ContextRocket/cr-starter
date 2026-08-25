@@ -54,7 +54,7 @@ export default async function LocaleLayout({
   // Server-side locale bound to the URL locale (explicit, no global state),
   // plus the tree serialized to the client LocaleProvider below.
   setLocale(locale);
-  const localeMessages = getServerLocaleTree(locale);
+  const localeMessages = await getServerLocaleTree(locale);
 
   // Dev-visible configuration warning: an unreplaced siteUrl default poisons
   // every canonical/OG/JSON-LD signal. The starter ships the ContextRocket

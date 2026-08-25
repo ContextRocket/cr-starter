@@ -58,7 +58,7 @@ export default async function EmbedPage({ searchParams }: EmbedPageProps) {
   // primary market language rather than the en fallback.
   const locale = siteConfig.defaultLocale as SupportedLocale;
   setLocale(locale);
-  const localeMessages = getServerLocaleTree(locale);
+  const localeMessages = await getServerLocaleTree(locale);
 
   const params = await searchParams;
 
