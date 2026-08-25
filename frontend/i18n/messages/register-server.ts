@@ -29,9 +29,9 @@ registerLocaleMessages("en", en as unknown as Record<string, unknown>);
 const NON_EN_LOADERS: Partial<
   Record<SupportedLocale, () => Promise<Record<string, unknown>>>
 > = {
-  "de": async () =>
+  de: async () =>
     (await import("./de")).de as unknown as Record<string, unknown>,
-  "es": async () =>
+  es: async () =>
     (await import("./es")).es as unknown as Record<string, unknown>,
 };
 

@@ -14,6 +14,8 @@ export type LocaleLoader = () => Promise<Record<string, unknown>>;
 export const CLIENT_LOCALE_LOADERS: Partial<
   Record<SupportedLocale, LocaleLoader>
 > = {
-  "de": () => import("./messages/de").then((m) => m.de as Record<string, unknown>),
-  "es": () => import("./messages/es").then((m) => m.es as Record<string, unknown>),
+  de: () =>
+    import("./messages/de").then((m) => m.de as Record<string, unknown>),
+  es: () =>
+    import("./messages/es").then((m) => m.es as Record<string, unknown>),
 };

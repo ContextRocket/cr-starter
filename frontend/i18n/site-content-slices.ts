@@ -11,7 +11,7 @@ import { siteEn } from "./messages/site/en";
 import { siteEs } from "./messages/site/es";
 
 export const SITE_MESSAGE_SLICES: Record<string, Record<string, unknown>> = {
-  "de": siteDe as unknown as Record<string, unknown>,
-  "en": siteEn as unknown as Record<string, unknown>,
-  "es": siteEs as unknown as Record<string, unknown>,
+  de: siteDe as unknown as Record<string, unknown>,
+  en: siteEn as unknown as Record<string, unknown>,
+  es: siteEs as unknown as Record<string, unknown>,
 };

@@ -19,25 +19,25 @@ import { appEs } from "./app/es";
 import { siteEs } from "./site/es";
 
 export const LOCALE_MESSAGE_TREES = {
-  "de": de,
-  "en": en,
-  "es": es,
+  de: de,
+  en: en,
+  es: es,
 } as const;
 
 export const LOCALE_MESSAGE_SLICES = {
-  "de": {
+  de: {
     merged: de,
     shared: sharedDe,
     app: appDe,
     site: siteDe,
   },
-  "en": {
+  en: {
     merged: en,
     shared: sharedEn,
     app: appEn,
     site: siteEn,
   },
-  "es": {
+  es: {
     merged: es,
     shared: sharedEs,
     app: appEs,

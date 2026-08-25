@@ -7,12 +7,12 @@
  * trees.
  */
 
-export const SUPPORTED_LOCALES = ["de","en","es"] as const;
+export const SUPPORTED_LOCALES = ["de", "en", "es"] as const;
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
 
 /** Conventional translated labels in the shared locale slice. */
 export const LOCALE_LABEL_PATHS: Record<SupportedLocale, string> = {
-  "de": "locale.labelGerman",
-  "en": "locale.labelEnglish",
-  "es": "locale.labelSpanish",
+  de: "locale.labelGerman",
+  en: "locale.labelEnglish",
+  es: "locale.labelSpanish",
 };
