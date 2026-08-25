@@ -133,7 +133,12 @@ describe("ThemeProvider", () => {
   });
 
   it("generates a no-flash script for the configured first-visit theme", () => {
-    expect(createNoFlashScript("dark")).toContain('if(!t){t="dark"}');
+    // The no-flash script validates the stored value against light/dark/system
+    // and falls back to the configured default otherwise (robust to a corrupt
+    // localStorage value), so the default appears via that guarded assignment.
+    expect(createNoFlashScript("dark")).toContain(
+      'if(t!=="light"&&t!=="dark"&&t!=="system"){t="dark"}',
+    );
     expect(createNoFlashScript("system")).toContain("prefers-color-scheme");
   });
 });

@@ -5,9 +5,10 @@
  *
  * The visible counterpart to the ThemeProvider (components/ui/theme-provider.tsx):
  * a single icon button in the site chrome that flips between light and dark.
- * One click flips: Sun shows in light mode (click → dark), Moon shows in dark
- * mode (click → light). next-themes flips the `.dark` class on <html>
- * (attribute="class"), which drives the `.dark {}` token block in globals.css.
+ * The icon shows the mode you'll switch TO (the action), not the current mode:
+ * a Sun in dark mode (click → light) and a Moon in light mode (click → dark).
+ * next-themes flips the `.dark` class on <html> (attribute="class"), which
+ * drives the `.dark {}` token block in globals.css.
  *
  * The ThemeProvider keeps `enableSystem` so a FIRST visit follows the OS
  * preference; this toggle then resolves that to a concrete light/dark choice --
@@ -60,8 +61,11 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
   const nextTheme = isDark ? "light" : "dark";
   const current = isDark ? "dark" : "light";
 
-  const Icon = isDark ? Moon : Sun;
-  const label = `${t("theme.toggle")}: ${t(`theme.${current}`)}`;
+  // Show the TARGET mode's icon (the action): Sun in dark (→ light), Moon in
+  // light (→ dark). The aria-label/title name that same target so screen-reader
+  // and hover text match the icon.
+  const Icon = isDark ? Sun : Moon;
+  const label = `${t("theme.toggle")}: ${t(`theme.${nextTheme}`)}`;
 
   return (
     <button
