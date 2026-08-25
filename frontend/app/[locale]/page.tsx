@@ -113,7 +113,7 @@ export default async function Home({ params }: HomePageProps) {
                 {t("home.hero.primaryCta")}
               </a>
               <a
-                href={siteConfig.paths.features}
+                href="#features"
                 className="text-sm font-semibold leading-6 text-white transition-colors hover:text-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
               >
                 {t("home.hero.secondaryCta")} <span aria-hidden="true">→</span>
@@ -124,7 +124,7 @@ export default async function Home({ params }: HomePageProps) {
 
         {/* ── Features section ─────────────────────────────────────────────────── */}
         <SectionWrapper className="bg-muted/50">
-          <div className="mx-auto max-w-6xl">
+          <div id="features" className="mx-auto max-w-6xl scroll-mt-20">
             <div className="text-center">
               <p className="text-sm font-semibold text-primary">
                 {t("home.features.label")}
