@@ -22,7 +22,8 @@ interface ChatPageProps {
 export default async function ChatPage({ params }: ChatPageProps) {
   const locale = resolveLocale((await params).locale);
   setLocale(locale);
-  const agentUrl = siteConfig.chat.mode === "live" ? siteConfig.chat.agentUrl : "";
+  const agentUrl =
+    siteConfig.chat.mode === "live" ? siteConfig.chat.agentUrl : "";
   const enabled = siteConfig.features.chatFab;
 
   if (!enabled) {

@@ -84,7 +84,11 @@ export interface AttributionData {
  * Validate a single raw library entry into an Attribution. Throws with index
  * context on any malformed shape (missing/empty name, wrong field types).
  */
-function validateLibrary(raw: unknown, index: number, filePath: string): Attribution {
+function validateLibrary(
+  raw: unknown,
+  index: number,
+  filePath: string,
+): Attribution {
   if (typeof raw !== "object" || raw === null || Array.isArray(raw)) {
     throw new Error(
       `[attributions] libraries[${index}] in ${filePath} must be an object, got ${typeof raw}.`,
@@ -129,7 +133,10 @@ function validateLink(
   }
   const link = raw as Record<string, unknown>;
   for (const field of ["name", "url"] as const) {
-    if (typeof link[field] !== "string" || (link[field] as string).trim() === "") {
+    if (
+      typeof link[field] !== "string" ||
+      (link[field] as string).trim() === ""
+    ) {
       throw new Error(
         `[attributions] images[${index}].${section} in ${filePath} is missing a non-empty "${field}" string.`,
       );
@@ -145,7 +152,11 @@ function validateLink(
  * Validate a single raw image entry into an ImageAttribution. Throws with index
  * context on any malformed shape.
  */
-function validateImage(raw: unknown, index: number, filePath: string): ImageAttribution {
+function validateImage(
+  raw: unknown,
+  index: number,
+  filePath: string,
+): ImageAttribution {
   if (typeof raw !== "object" || raw === null || Array.isArray(raw)) {
     throw new Error(
       `[attributions] images[${index}] in ${filePath} must be an object, got ${typeof raw}.`,
@@ -154,7 +165,10 @@ function validateImage(raw: unknown, index: number, filePath: string): ImageAttr
   const entry = raw as Record<string, unknown>;
 
   for (const field of ["filename", "thumbnail", "url"] as const) {
-    if (typeof entry[field] !== "string" || (entry[field] as string).trim() === "") {
+    if (
+      typeof entry[field] !== "string" ||
+      (entry[field] as string).trim() === ""
+    ) {
       throw new Error(
         `[attributions] images[${index}] in ${filePath} is missing a non-empty "${field}" string.`,
       );
@@ -175,12 +189,17 @@ function validateImage(raw: unknown, index: number, filePath: string): ImageAttr
  * separately from file IO so it can be unit-tested without the filesystem.
  * The root must be an object with array `images` and `libraries` sections.
  */
-export function parseAttributions(source: string, filePath: string): AttributionData {
+export function parseAttributions(
+  source: string,
+  filePath: string,
+): AttributionData {
   let parsed: unknown;
   try {
     parsed = JSON.parse(source);
   } catch (err) {
-    throw new Error(`[attributions] Invalid JSON in ${filePath}.`, { cause: err });
+    throw new Error(`[attributions] Invalid JSON in ${filePath}.`, {
+      cause: err,
+    });
   }
 
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
@@ -204,7 +223,9 @@ export function parseAttributions(source: string, filePath: string): Attribution
 
   return {
     images: root.images.map((raw, i) => validateImage(raw, i, filePath)),
-    libraries: root.libraries.map((raw, i) => validateLibrary(raw, i, filePath)),
+    libraries: root.libraries.map((raw, i) =>
+      validateLibrary(raw, i, filePath),
+    ),
   };
 }
 
@@ -220,7 +241,10 @@ function resolveAttributionsPath(): string {
   const fromFrontend = path.resolve(process.cwd(), "content/attributions.json");
   if (fs.existsSync(fromFrontend)) return fromFrontend;
 
-  const fromRoot = path.resolve(process.cwd(), "frontend/content/attributions.json");
+  const fromRoot = path.resolve(
+    process.cwd(),
+    "frontend/content/attributions.json",
+  );
   if (fs.existsSync(fromRoot)) return fromRoot;
 
   return fromFrontend; // error messages reference this candidate
@@ -243,7 +267,9 @@ export function loadAttributions(): AttributionData {
   try {
     raw = fs.readFileSync(filePath, "utf-8");
   } catch (err) {
-    throw new Error(`[attributions] Could not read ${filePath}.`, { cause: err });
+    throw new Error(`[attributions] Could not read ${filePath}.`, {
+      cause: err,
+    });
   }
 
   return parseAttributions(raw, filePath);

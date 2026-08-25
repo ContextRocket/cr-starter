@@ -50,13 +50,7 @@ function initials(name: string): string {
 }
 
 /** Render a 5-slot star row with `rating` filled. Decorative; label is on the group. */
-function StarRating({
-  rating,
-  label,
-}: {
-  rating: number;
-  label?: string;
-}) {
+function StarRating({ rating, label }: { rating: number; label?: string }) {
   const clamped = Math.max(0, Math.min(5, Math.round(rating)));
   return (
     <div

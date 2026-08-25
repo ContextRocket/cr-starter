@@ -62,7 +62,10 @@ export default async function RootRedirectPage() {
     return (
       <>
         <script dangerouslySetInnerHTML={{ __html: LOCALE_NO_FLASH_SCRIPT }} />
-        <meta httpEquiv="refresh" content={`0;url=/${siteConfig.defaultLocale}/`} />
+        <meta
+          httpEquiv="refresh"
+          content={`0;url=/${siteConfig.defaultLocale}/`}
+        />
         <p>Redirecting...</p>
       </>
     );

@@ -1,7 +1,4 @@
-import type {
-  A2AEvent,
-  A2ATaskParams,
-} from "@/lib/a2a-client";
+import type { A2AEvent, A2ATaskParams } from "@/lib/a2a-client";
 
 // Used as a fallback when translating isn't possible outside of React context,
 // though in `use-a2a-stream` we pass the translated response to this mock.
@@ -10,11 +7,14 @@ const DEFAULT_CANNED_RESPONSE = `This is a simulated response. The chat operates
 export async function* mockStreamTask(
   params: A2ATaskParams,
   signal?: AbortSignal,
-  localizedResponse?: string
+  localizedResponse?: string,
 ): AsyncGenerator<A2AEvent> {
   const responseText = localizedResponse || DEFAULT_CANNED_RESPONSE;
   const taskId = "task-" + Math.random().toString(36).slice(2);
-  const threadId = params.sessionId || params.metadata?.thread_id || "thread-" + Math.random().toString(36).slice(2);
+  const threadId =
+    params.sessionId ||
+    params.metadata?.thread_id ||
+    "thread-" + Math.random().toString(36).slice(2);
 
   // 1. Initial working event
   yield {
@@ -32,13 +32,13 @@ export async function* mockStreamTask(
   // Use a regex to split by whitespace but keep the whitespace.
   const tokens = responseText.split(/(\s+)/);
   let index = 0;
-  
+
   for (let i = 0; i < tokens.length; i++) {
     if (signal?.aborted) return;
     const isFirst = i === 0;
     const isLast = i === tokens.length - 1;
     const token = tokens[i];
-    
+
     // Skip empty tokens if any
     if (token === "") continue;
 
@@ -54,10 +54,12 @@ export async function* mockStreamTask(
       final: false,
       metadata: { thread_id: threadId },
     };
-    
+
     index++;
     // Simulate typing delay, slightly faster for whitespace
-    await new Promise((r) => setTimeout(r, token.trim() ? 20 + Math.random() * 30 : 5));
+    await new Promise((r) =>
+      setTimeout(r, token.trim() ? 20 + Math.random() * 30 : 5),
+    );
   }
 
   // 3. Completed event

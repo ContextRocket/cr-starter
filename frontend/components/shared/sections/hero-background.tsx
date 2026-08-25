@@ -21,8 +21,7 @@ export function HeroBackgroundSection({
   imageSrc,
   imageAlt = "",
   imageClassName = "object-cover object-center",
-  overlayClassName =
-    "bg-gradient-to-b from-black/60 via-black/35 to-black/80",
+  overlayClassName = "bg-gradient-to-b from-black/60 via-black/35 to-black/80",
   contentClassName = "max-w-4xl",
   className = "",
 }: HeroBackgroundSectionProps) {

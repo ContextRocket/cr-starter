@@ -60,7 +60,9 @@ test.describe("Cookie banner ?showbanner override", () => {
     await page.getByTestId("cookie-consent-manage").first().click();
     const dialog = page.getByTestId("cookie-consent-dialog");
     await expect(dialog).toBeVisible();
-    await expect(page.getByTestId("cookie-consent-pref-necessary")).toBeVisible();
+    await expect(
+      page.getByTestId("cookie-consent-pref-necessary"),
+    ).toBeVisible();
 
     await page.getByTestId("cookie-consent-save").click();
     await expect(dialog).not.toBeVisible();

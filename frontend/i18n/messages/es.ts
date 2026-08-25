@@ -17,7 +17,7 @@
  * "Datenschutz" -> "Privacidad" / "Politica de privacidad" is the standard.
  */
 
-import type { en, LocaleMessages } from './en';
+import type { en, LocaleMessages } from "./en";
 import { sharedEs } from "./shared/es";
 import { appEs } from "./app/es";
 import { siteEs } from "./site/es";

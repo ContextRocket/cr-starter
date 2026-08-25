@@ -126,7 +126,7 @@ export default async function EmbedPage({ searchParams }: EmbedPageProps) {
         data-testid="embed-page"
       >
         <ChatPanel
-          agentUrl={config.mode === "live" ? config.agentUrl ?? "" : ""}
+          agentUrl={config.mode === "live" ? (config.agentUrl ?? "") : ""}
           clientOpts={{
             mode: config.mode,
             handle: config.handle ?? undefined,

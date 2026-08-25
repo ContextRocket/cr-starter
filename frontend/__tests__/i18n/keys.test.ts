@@ -1,4 +1,11 @@
-import { setLocale, getCurrentLocale, t, tArray, translateError, registerLocaleMessages } from "@/i18n/keys";
+import {
+  setLocale,
+  getCurrentLocale,
+  t,
+  tArray,
+  translateError,
+  registerLocaleMessages,
+} from "@/i18n/keys";
 
 // Reset locale to en before each test.
 beforeEach(() => {
@@ -54,14 +61,20 @@ describe("translateError()", () => {
   });
 
   it("supports {param} interpolation", () => {
-    registerLocaleMessages("en", { ERROR_USER: "User {name} not found" } as unknown as Record<string, unknown>);
-    expect(translateError("ERROR_USER", { name: "Bob" })).toBe("User Bob not found");
+    registerLocaleMessages("en", {
+      ERROR_USER: "User {name} not found",
+    } as unknown as Record<string, unknown>);
+    expect(translateError("ERROR_USER", { name: "Bob" })).toBe(
+      "User Bob not found",
+    );
   });
 });
 
 describe("registerLocaleMessages", () => {
   it("makes a locale available for t()", () => {
-    registerLocaleMessages("es", { "test.key": "valor de prueba" } as unknown as Record<string, unknown>);
+    registerLocaleMessages("es", {
+      "test.key": "valor de prueba",
+    } as unknown as Record<string, unknown>);
     setLocale("es");
     expect(t("test.key" as string & {})).toBe("valor de prueba");
   });

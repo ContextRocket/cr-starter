@@ -14,7 +14,9 @@ describe("prefixLocale", () => {
   });
 
   it("passes through external URLs unchanged", () => {
-    expect(prefixLocale("https://example.com", "es")).toBe("https://example.com");
+    expect(prefixLocale("https://example.com", "es")).toBe(
+      "https://example.com",
+    );
     expect(prefixLocale("http://example.com", "es")).toBe("http://example.com");
   });
 
@@ -23,7 +25,9 @@ describe("prefixLocale", () => {
   });
 
   it("passes through mailto links unchanged", () => {
-    expect(prefixLocale("mailto:hi@example.com", "es")).toBe("mailto:hi@example.com");
+    expect(prefixLocale("mailto:hi@example.com", "es")).toBe(
+      "mailto:hi@example.com",
+    );
   });
 
   it("normalizes relative paths", () => {

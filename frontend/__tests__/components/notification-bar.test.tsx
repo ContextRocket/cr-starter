@@ -17,7 +17,9 @@ function items(): NotificationItem[] {
   ];
 }
 
-function renderStack(props: Partial<React.ComponentProps<typeof NotificationBarStack>> = {}) {
+function renderStack(
+  props: Partial<React.ComponentProps<typeof NotificationBarStack>> = {},
+) {
   return render(
     <NotificationBarStack
       items={items()}
@@ -51,7 +53,9 @@ describe("NotificationBarStack", () => {
   it("renders nothing when items is empty (no wrapper)", () => {
     const { container } = renderStack({ items: [] });
     expect(container.innerHTML).toBe("");
-    expect(screen.queryByTestId("notification-bar-stack")).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId("notification-bar-stack"),
+    ).not.toBeInTheDocument();
   });
 
   it("dismiss removes a bar and leaves the others", async () => {

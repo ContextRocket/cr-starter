@@ -9,7 +9,10 @@ import { en } from "@/i18n/messages/en";
 
 function renderWithLocale(ui: React.ReactElement) {
   return render(
-    <LocaleProvider initialLocale="en" messages={en as unknown as Record<string, unknown>}>
+    <LocaleProvider
+      initialLocale="en"
+      messages={en as unknown as Record<string, unknown>}
+    >
       {ui}
     </LocaleProvider>,
   );

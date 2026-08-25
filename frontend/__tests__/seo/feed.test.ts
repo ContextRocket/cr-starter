@@ -63,9 +63,9 @@ describe("buildRssFeed", () => {
     const items = [...xml.matchAll(/<item>/g)];
     expect(items).toHaveLength(2);
     // "newer" (2026-03) must appear before "older" (2026-01).
-    expect(xml.indexOf("<link>" + `${ORIGIN}/${LOCALE}/blog/newer`)).toBeLessThan(
-      xml.indexOf("<link>" + `${ORIGIN}/${LOCALE}/blog/older`),
-    );
+    expect(
+      xml.indexOf("<link>" + `${ORIGIN}/${LOCALE}/blog/newer`),
+    ).toBeLessThan(xml.indexOf("<link>" + `${ORIGIN}/${LOCALE}/blog/older`));
   });
 
   it("uses locale-prefixed guids and links", () => {

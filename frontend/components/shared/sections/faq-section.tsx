@@ -30,7 +30,9 @@ export function FaqSection({
           {label}
         </p>
       )}
-      <h2 className="mt-4 text-3xl font-bold text-center sm:text-4xl">{title}</h2>
+      <h2 className="mt-4 text-3xl font-bold text-center sm:text-4xl">
+        {title}
+      </h2>
       <dl className="mt-14 divide-y divide-border">
         {items.map((item, i) => (
           <div key={i} className="py-1">
@@ -39,7 +41,9 @@ export function FaqSection({
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
                 className="flex w-full items-center justify-between py-5 text-left transition-colors hover:text-primary"
               >
-                <span className="text-base font-semibold pr-4">{item.question}</span>
+                <span className="text-base font-semibold pr-4">
+                  {item.question}
+                </span>
                 <ChevronDown
                   className={`h-5 w-5 shrink-0 text-primary transition-transform duration-200 ${
                     openIndex === i ? "rotate-180" : ""
@@ -52,7 +56,9 @@ export function FaqSection({
                 openIndex === i ? "max-h-96 pb-5" : "max-h-0"
               }`}
             >
-              <p className="text-sm leading-7 text-muted-foreground">{item.answer}</p>
+              <p className="text-sm leading-7 text-muted-foreground">
+                {item.answer}
+              </p>
             </dd>
           </div>
         ))}

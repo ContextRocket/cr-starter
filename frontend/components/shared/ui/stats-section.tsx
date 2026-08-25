@@ -61,7 +61,7 @@ function AnimatedNumber({
 
             const current = numericValue * eased;
             setDisplayValue(
-              isDecimal ? current.toFixed(1) : Math.floor(current).toString()
+              isDecimal ? current.toFixed(1) : Math.floor(current).toString(),
             );
 
             if (progress < 1) {
@@ -74,7 +74,7 @@ function AnimatedNumber({
           requestAnimationFrame(animate);
         }
       },
-      { threshold: 0.5 }
+      { threshold: 0.5 },
     );
 
     if (ref.current) {
@@ -106,10 +106,7 @@ export function StatsSection({ title, stats, className }: StatsSectionProps) {
         )}
         <dl className="grid grid-cols-1 gap-x-8 gap-y-16 text-center lg:grid-cols-3">
           {stats.map((stat, index) => (
-            <div
-              key={index}
-              className="mx-auto flex max-w-xs flex-col gap-y-4"
-            >
+            <div key={index} className="mx-auto flex max-w-xs flex-col gap-y-4">
               <dt className="text-base leading-7 text-muted-foreground">
                 {stat.label}
               </dt>

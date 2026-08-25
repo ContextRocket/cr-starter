@@ -133,6 +133,8 @@ describe("FileSiteContentSource.longForm", () => {
     const doc = await source.longForm("terms", "en");
     expect(doc).not.toBeNull();
     expect(doc!.html).not.toContain("title: Terms");
-    expect(doc!.html).toBe("<p>First para.</p>\n<p>Second <strong>bold</strong> para.</p>");
+    expect(doc!.html).toBe(
+      "<p>First para.</p>\n<p>Second <strong>bold</strong> para.</p>",
+    );
   });
 });

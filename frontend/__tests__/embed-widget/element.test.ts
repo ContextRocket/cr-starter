@@ -41,7 +41,9 @@ describe("standalone ChatFab element", () => {
 
     const shadow = host.shadowRoot!;
     expect(shadow.querySelector("img")).not.toBeInTheDocument();
-    expect(shadow.querySelector(".cr-title")).toHaveTextContent("<img src=x>Ask");
+    expect(shadow.querySelector(".cr-title")).toHaveTextContent(
+      "<img src=x>Ask",
+    );
 
     host.remove();
   });

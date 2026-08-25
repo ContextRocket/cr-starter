@@ -8,10 +8,17 @@ import type { ComponentPropsWithoutRef, ReactNode } from "react";
  * <AosProvider/>). This is a thin wrapper that renders the appropriate
  * `data-aos` attributes; the animation names map 1:1 to AOS.
  */
-type Animation = "fade-up" | "fade-down" | "fade-right" | "fade-left" | "fade-in";
+type Animation =
+  | "fade-up"
+  | "fade-down"
+  | "fade-right"
+  | "fade-left"
+  | "fade-in";
 
-export interface ScrollRevealProps
-  extends Omit<ComponentPropsWithoutRef<"div">, "children"> {
+export interface ScrollRevealProps extends Omit<
+  ComponentPropsWithoutRef<"div">,
+  "children"
+> {
   children: ReactNode;
   animation?: Animation;
   /** Delay before the animation starts (ms). */

@@ -58,7 +58,8 @@ function hasRegistry(register: string | undefined): boolean {
 export function isLegalIdentityPlaceholder(
   input: LegalCompletenessInput,
 ): boolean {
-  const entityMissing = !isPresent(input.entity) || input.entity === PLACEHOLDER_ENTITY;
+  const entityMissing =
+    !isPresent(input.entity) || input.entity === PLACEHOLDER_ENTITY;
   if (entityMissing) return true;
 
   if (input.entityType === "individual") {

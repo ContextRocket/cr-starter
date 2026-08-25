@@ -61,7 +61,9 @@ describe("parseAttributions -- fail-loud contract", () => {
   });
 
   it("throws when the root is an array (old flat schema)", () => {
-    expect(() => parseAttributions("[]", FILE)).toThrow(/must be a JSON object/);
+    expect(() => parseAttributions("[]", FILE)).toThrow(
+      /must be a JSON object/,
+    );
   });
 
   it("throws when images is missing / not an array", () => {

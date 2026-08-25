@@ -97,7 +97,11 @@ export const metadata: Metadata = {
       { url: siteConfig.assets.icon512, sizes: "512x512", type: "image/png" },
     ],
     apple: [
-      { url: siteConfig.assets.appleTouchIcon, sizes: "180x180", type: "image/png" },
+      {
+        url: siteConfig.assets.appleTouchIcon,
+        sizes: "180x180",
+        type: "image/png",
+      },
     ],
   },
 };

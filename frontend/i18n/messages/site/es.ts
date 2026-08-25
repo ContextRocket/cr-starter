@@ -466,8 +466,7 @@ export const siteEs: LocaleMessages<typeof siteEn> = {
     manage: {
       heading: "Gestionar tu elección",
       body: "En tu primera visita, un banner de cookies solicita tu consentimiento. Usa «Aceptar», «Rechazar» o «Gestionar ajustes» para definir tus elecciones por categoría. Puedes volver a abrir los controles de «Gestionar ajustes» del banner en cualquier momento para cambiar o retirar tu consentimiento.",
-      storageIntro:
-        "Tu elección se almacena en tu navegador bajo la clave",
+      storageIntro: "Tu elección se almacena en tu navegador bajo la clave",
       storageAfterKey: "; al borrarla, el banner volverá a mostrarse.",
     },
     browser: {

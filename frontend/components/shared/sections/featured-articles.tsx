@@ -59,7 +59,9 @@ export function FeaturedArticles({
       className={className}
     >
       <div className="mb-8 flex items-center justify-between gap-4">
-        <h2 className="text-lg md:text-xl font-bold text-foreground">{title}</h2>
+        <h2 className="text-lg md:text-xl font-bold text-foreground">
+          {title}
+        </h2>
         {viewAllLabel ? (
           <Link
             href={viewAllHref}

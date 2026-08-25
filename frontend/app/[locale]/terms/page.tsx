@@ -62,10 +62,7 @@ function TermsSection({
     <div data-testid={testId}>
       <h2 className="text-xl font-semibold mb-2">{heading}</h2>
       {paragraphs.map((paragraph, index) => (
-        <p
-          key={index}
-          className="text-sm text-muted-foreground mb-2 last:mb-0"
-        >
+        <p key={index} className="text-sm text-muted-foreground mb-2 last:mb-0">
           {paragraph}
         </p>
       ))}

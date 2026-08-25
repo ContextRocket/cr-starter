@@ -8,9 +8,9 @@ export const embedEs = {
       url: {
         rejected: {
           title: "URL del agente no permitida",
-          body: "El parámetro agent-url proporcionado al widget embebido no coincide con el agente configurado para este sitio."
-        }
-      }
-    }
+          body: "El parámetro agent-url proporcionado al widget embebido no coincide con el agente configurado para este sitio.",
+        },
+      },
+    },
   },
 } as const;

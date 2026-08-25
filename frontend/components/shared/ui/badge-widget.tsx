@@ -16,7 +16,6 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "@/i18n/locale-provider";
 
-
 interface ContextRocketBadgeProps {
   /** Badge variant */
   variant?: "default" | "minimal" | "icon-only";
@@ -60,7 +59,7 @@ export function ContextRocketBadge({
         className={cn(
           "h-3 w-auto opacity-70 transition-opacity group-hover:opacity-100",
           variant === "icon-only" && "h-4 w-4",
-          "dark:hidden"
+          "dark:hidden",
         )}
       />
       {/* Dark mode logo */}
@@ -72,7 +71,7 @@ export function ContextRocketBadge({
         className={cn(
           "h-3 w-auto opacity-70 transition-opacity group-hover:opacity-100",
           variant === "icon-only" && "h-4 w-4",
-          "hidden dark:block"
+          "hidden dark:block",
         )}
       />
     </a>

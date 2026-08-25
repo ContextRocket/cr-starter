@@ -8,9 +8,9 @@ export const embedEn = {
       url: {
         rejected: {
           title: "Agent URL not allowed",
-          body: "The agent-url passed to the embed widget does not match the agent configured for this site."
-        }
-      }
-    }
+          body: "The agent-url passed to the embed widget does not match the agent configured for this site.",
+        },
+      },
+    },
   },
 } as const;

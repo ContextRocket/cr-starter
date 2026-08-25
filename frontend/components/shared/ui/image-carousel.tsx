@@ -63,10 +63,7 @@ export function ImageCarousel({
 
   return (
     <div
-      className={cn(
-        "relative overflow-hidden rounded-2xl bg-muted",
-        className
-      )}
+      className={cn("relative overflow-hidden rounded-2xl bg-muted", className)}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -77,7 +74,7 @@ export function ImageCarousel({
             key={slide.image}
             className={cn(
               "absolute inset-0 transition-opacity duration-1000",
-              index === current ? "opacity-100" : "opacity-0"
+              index === current ? "opacity-100" : "opacity-0",
             )}
           >
             <Image
@@ -115,7 +112,7 @@ export function ImageCarousel({
               "h-2 w-2 rounded-full transition-all",
               index === current
                 ? "bg-white w-6"
-                : "bg-white/50 hover:bg-white/75"
+                : "bg-white/50 hover:bg-white/75",
             )}
             aria-label={`Go to slide ${index + 1}`}
           />

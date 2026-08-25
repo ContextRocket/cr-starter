@@ -47,7 +47,10 @@ export default defineConfig({
       "@": path.resolve(__dirname),
       // Next.js provides `server-only` at build/runtime; jsdom tests resolve it
       // to a no-op so server-only modules (i18n/redirect, i18n/server) load.
-      "server-only": path.resolve(__dirname, "__tests__/__mocks__/server-only.ts"),
+      "server-only": path.resolve(
+        __dirname,
+        "__tests__/__mocks__/server-only.ts",
+      ),
     },
   },
 });

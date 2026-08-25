@@ -43,14 +43,14 @@ export function FeatureShowcase({
         <div
           className={cn(
             "mx-auto grid max-w-2xl grid-cols-1 gap-x-16 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2",
-            imagePosition === "left" && "lg:grid-flow-dense"
+            imagePosition === "left" && "lg:grid-flow-dense",
           )}
         >
           {/* Content */}
           <div
             className={cn(
               "lg:pt-4",
-              imagePosition === "left" && "lg:col-start-2"
+              imagePosition === "left" && "lg:col-start-2",
             )}
           >
             {subtitle && (
@@ -86,7 +86,7 @@ export function FeatureShowcase({
           <div
             className={cn(
               "relative overflow-hidden rounded-2xl border bg-muted",
-              imagePosition === "left" && "lg:col-start-1"
+              imagePosition === "left" && "lg:col-start-1",
             )}
           >
             <Image

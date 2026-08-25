@@ -32,7 +32,7 @@ export function BentoCard({
         span === "col-2" && "md:col-span-2",
         span === "row-2" && "md:row-span-2",
         span === "full" && "md:col-span-full",
-        className
+        className,
       )}
     >
       {/* Gradient accent on hover */}
@@ -62,7 +62,7 @@ export function BentoGrid({ children, className }: BentoGridProps) {
     <div
       className={cn(
         "grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3",
-        className
+        className,
       )}
     >
       {children}

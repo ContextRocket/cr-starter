@@ -1,5 +1,5 @@
-import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
-import { blogRewrites } from './blog.config.mjs';
+import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
+import { blogRewrites } from "./blog.config.mjs";
 
 const STATIC_EXPORT = process.env.STATIC_EXPORT === "true";
 
@@ -35,7 +35,11 @@ const nextConfig = {
   // build error. patch-static-lang.mjs creates the equivalent aliases for
   // single-language static forks. See blog.config.mjs / lib/blog-path.ts.
   ...(!STATIC_EXPORT && blogRewrites().length > 0
-    ? { async rewrites() { return blogRewrites(); } }
+    ? {
+        async rewrites() {
+          return blogRewrites();
+        },
+      }
     : {}),
   // E2E cookie-consent build: isolate the build output (own distDir, suffixed
   // per analytics/no-analytics mode) and alias the site config to the "auto"
@@ -45,7 +49,9 @@ const nextConfig = {
     ? {
         distDir: `.next-e2e-cookie-consent${process.env.E2E_COOKIE_CONSENT_DIST_SUFFIX ? `-${process.env.E2E_COOKIE_CONSENT_DIST_SUFFIX}` : ""}`,
         turbopack: {
-          resolveAlias: { "@/config/site.config": "./e2e/fixtures/site-config-cookie-auto.ts" },
+          resolveAlias: {
+            "@/config/site.config": "./e2e/fixtures/site-config-cookie-auto.ts",
+          },
         },
       }
     : {}),
@@ -61,7 +67,7 @@ const nextConfig = {
               },
             },
           },
-        })
+        }),
       );
     }
     return config;

@@ -39,7 +39,7 @@ export { Navbar, type NavbarProps, type NavLink } from "./navbar";
 export { InsightCard, type InsightCardProps } from "./insight-card";
 export { SectionWrapper, type SectionWrapperProps } from "./section-wrapper";
 export { ScrollReveal, type ScrollRevealProps } from "./scroll-reveal";
-export { SectionHeader, type SectionHeaderProps } from './section-header';
+export { SectionHeader, type SectionHeaderProps } from "./section-header";
 export {
   PricingSection,
   type PricingSectionProps,
@@ -78,7 +78,4 @@ export {
 } from "./notification-bar";
 
 // Badge widgets
-export {
-  BadgeWidget,
-  ContextRocketBadge,
-} from "../ui/badge-widget";
+export { BadgeWidget, ContextRocketBadge } from "../ui/badge-widget";

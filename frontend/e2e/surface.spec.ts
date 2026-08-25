@@ -41,7 +41,10 @@ test.describe("Surface split", () => {
     // The (terminal) route group was removed; the terminal surface is now
     // previewed via the ?surface=terminal override (enabled in the E2E build).
     await page.goto("/en?surface=terminal", { waitUntil: "domcontentloaded" });
-    await expect(page.locator("body")).toHaveAttribute("data-surface", "terminal");
+    await expect(page.locator("body")).toHaveAttribute(
+      "data-surface",
+      "terminal",
+    );
 
     const { fontFamily, radius } = await page.evaluate(() => {
       const cs = getComputedStyle(document.body);

@@ -25,7 +25,9 @@ export function TestimonialGrid({
           {label}
         </p>
       )}
-      <h2 className="mt-4 text-3xl font-bold text-center sm:text-4xl">{title}</h2>
+      <h2 className="mt-4 text-3xl font-bold text-center sm:text-4xl">
+        {title}
+      </h2>
       <div className="mt-14 grid gap-6 sm:grid-cols-2">
         {items.map((item) => (
           <blockquote

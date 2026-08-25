@@ -10,7 +10,9 @@ export interface StatsBarProps {
 
 export function StatsBar({ items, className = "" }: StatsBarProps) {
   return (
-    <section className={`border-y border-border bg-muted/50 py-10 ${className}`}>
+    <section
+      className={`border-y border-border bg-muted/50 py-10 ${className}`}
+    >
       <div
         className="max-w-5xl mx-auto px-6 grid gap-8"
         style={{ gridTemplateColumns: `repeat(${items.length}, 1fr)` }}

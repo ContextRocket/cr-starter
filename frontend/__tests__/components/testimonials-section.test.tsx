@@ -58,7 +58,9 @@ describe("TestimonialsSection", () => {
   it("renders nothing when there are no items", () => {
     const { container } = renderSection([]);
     expect(container).toBeEmptyDOMElement();
-    expect(screen.queryByText("What our customers say")).not.toBeInTheDocument();
+    expect(
+      screen.queryByText("What our customers say"),
+    ).not.toBeInTheDocument();
   });
 
   it("renders an avatar image when provided", () => {

@@ -53,14 +53,12 @@ export function ErrorPage({
     <div
       className={cn(
         "flex min-h-screen flex-col items-center justify-center bg-background px-6",
-        className
+        className,
       )}
     >
       <div className="mx-auto max-w-md text-center">
         {/* Error code */}
-        {code && (
-          <p className="text-8xl font-bold text-primary">{code}</p>
-        )}
+        {code && <p className="text-8xl font-bold text-primary">{code}</p>}
 
         {/* Title */}
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
@@ -94,8 +92,7 @@ export function ErrorPage({
                 href={secondaryAction.href}
                 className="text-sm font-semibold leading-6 text-foreground"
               >
-                {secondaryAction.label}{" "}
-                <span aria-hidden="true">&rarr;</span>
+                {secondaryAction.label} <span aria-hidden="true">&rarr;</span>
               </Link>
             )}
           </div>
@@ -128,10 +125,7 @@ export function ErrorCard({
 }: ErrorCardProps) {
   return (
     <div
-      className={cn(
-        "rounded-2xl border bg-card p-6 text-center",
-        className
-      )}
+      className={cn("rounded-2xl border bg-card p-6 text-center", className)}
     >
       {/* Error icon */}
       <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-destructive/10">
@@ -182,7 +176,12 @@ interface InlineErrorProps {
 
 export function InlineError({ message, className }: InlineErrorProps) {
   return (
-    <div className={cn("flex items-center gap-2 text-sm text-destructive", className)}>
+    <div
+      className={cn(
+        "flex items-center gap-2 text-sm text-destructive",
+        className,
+      )}
+    >
       <svg
         className="h-4 w-4 flex-shrink-0"
         fill="none"

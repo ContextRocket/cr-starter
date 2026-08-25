@@ -118,7 +118,9 @@ describe("LegalIdentityBlock", () => {
     expect(dl).toHaveTextContent("Jane Doe");
     expect(dl).toHaveTextContent("jane@example.com");
     // No company-only rows.
-    expect(screen.queryByTestId("legal-identity-company")).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId("legal-identity-company"),
+    ).not.toBeInTheDocument();
   });
 
   it("renders an unincorporated venture with a not-registered line", () => {

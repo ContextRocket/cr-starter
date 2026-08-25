@@ -31,7 +31,6 @@ import {
 } from "@/lib/analytics";
 import { useTranslations } from "@/i18n/locale-provider";
 
-
 const OPTIONAL_META: Record<
   OptionalConsentCategory,
   { labelKey: string; descriptionKey: string }
@@ -96,11 +95,7 @@ function CategoryRow({
  * Shared preferences panel. `onSaved` fires after a successful save so the
  * wrapper can dismiss the banner.
  */
-export function CookiePreferencesPanel({
-  onSaved,
-}: {
-  onSaved?: () => void;
-}) {
+export function CookiePreferencesPanel({ onSaved }: { onSaved?: () => void }) {
   const t = useTranslations();
 
   // Seed from any prior granular choice; default is privacy-preserving (off).
@@ -124,7 +119,10 @@ export function CookiePreferencesPanel({
   }
 
   return (
-    <div className="flex flex-col gap-2" data-testid="cookie-consent-preferences">
+    <div
+      className="flex flex-col gap-2"
+      data-testid="cookie-consent-preferences"
+    >
       <p className="text-xs leading-relaxed text-muted-foreground">
         {t("cookie.consent.prefs.description")}
       </p>

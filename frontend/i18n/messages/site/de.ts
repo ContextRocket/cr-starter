@@ -450,7 +450,8 @@ export const siteDe: LocaleMessages<typeof siteEn> = {
       },
       analytics: {
         name: "Analyse",
-        purpose: "Verstehen, wie die Website genutzt wird, um sie zu verbessern.",
+        purpose:
+          "Verstehen, wie die Website genutzt wird, um sie zu verbessern.",
         consent: "Opt-in – werden erst nach Einwilligung geladen.",
       },
       marketing: {

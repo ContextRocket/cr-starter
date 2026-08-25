@@ -43,8 +43,12 @@ if (missingInLight.length > 0) {
 }
 
 if (failed) {
-  console.error("\nvalidate-theme: FAILED -- light and dark blocks must have the same tokens.");
+  console.error(
+    "\nvalidate-theme: FAILED -- light and dark blocks must have the same tokens.",
+  );
   process.exit(1);
 }
 
-console.log(`validate-theme: OK -- ${lightKeys.length} tokens, light/dark symmetric.`);
+console.log(
+  `validate-theme: OK -- ${lightKeys.length} tokens, light/dark symmetric.`,
+);

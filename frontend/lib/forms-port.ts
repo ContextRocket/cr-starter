@@ -74,14 +74,14 @@ export function createFormSubmissionPort(
  * Without a handler, every submission succeeds. With a handler, the test
  * controls the outcome per call.
  */
-export function createInMemoryFormSubmissionPort(
-  handler?: {
-    submitForm?: (
-      key: string,
-      payload: Record<string, unknown>,
-    ) => Promise<SubmitResult>;
-  },
-): FormSubmissionPort & { calls: Array<{ key: string; payload: Record<string, unknown> }> } {
+export function createInMemoryFormSubmissionPort(handler?: {
+  submitForm?: (
+    key: string,
+    payload: Record<string, unknown>,
+  ) => Promise<SubmitResult>;
+}): FormSubmissionPort & {
+  calls: Array<{ key: string; payload: Record<string, unknown> }>;
+} {
   const calls: Array<{ key: string; payload: Record<string, unknown> }> = [];
 
   return {

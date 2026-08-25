@@ -45,7 +45,11 @@ describe("parseWidgetConfig", () => {
 
   it("does not accept non-canonical credential names", () => {
     const config = parseWidgetConfig(
-      makeParams({ mode: "live", "agent-url": "https://api.example.com", "site-key": "pk_test" }),
+      makeParams({
+        mode: "live",
+        "agent-url": "https://api.example.com",
+        "site-key": "pk_test",
+      }),
     );
     expect(config.apiKey).toBeNull();
   });
@@ -53,8 +57,20 @@ describe("parseWidgetConfig", () => {
 
 describe("isAllowedAgentUrl", () => {
   it("accepts the configured origin and rejects foreign origins", () => {
-    expect(isAllowedAgentUrl("https://agent.example.com/api", "https://agent.example.com")).toBe(true);
-    expect(isAllowedAgentUrl("https://evil.example.net", "https://agent.example.com")).toBe(false);
-    expect(isAllowedAgentUrl("javascript:alert(1)", "https://agent.example.com")).toBe(false);
+    expect(
+      isAllowedAgentUrl(
+        "https://agent.example.com/api",
+        "https://agent.example.com",
+      ),
+    ).toBe(true);
+    expect(
+      isAllowedAgentUrl(
+        "https://evil.example.net",
+        "https://agent.example.com",
+      ),
+    ).toBe(false);
+    expect(
+      isAllowedAgentUrl("javascript:alert(1)", "https://agent.example.com"),
+    ).toBe(false);
   });
 });

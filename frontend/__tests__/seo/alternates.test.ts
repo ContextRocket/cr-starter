@@ -24,9 +24,7 @@ describe("buildAlternates", () => {
     for (const locale of SUPPORTED_LOCALES) {
       expect(languages[locale]).toBe(`/${locale}/pricing`);
     }
-    expect(languages["x-default"]).toBe(
-      `/${siteConfig.defaultLocale}/pricing`,
-    );
+    expect(languages["x-default"]).toBe(`/${siteConfig.defaultLocale}/pricing`);
     // Exactly the supported locales + x-default, nothing extra.
     expect(Object.keys(languages).sort()).toEqual(
       [...SUPPORTED_LOCALES, "x-default"].sort(),
@@ -47,12 +45,8 @@ describe("buildAlternates", () => {
 
   it("x-default resolves to the default locale variant", () => {
     const { languages } = buildAlternates("de", "/about");
-    expect(languages["x-default"]).toBe(
-      `/${siteConfig.defaultLocale}/about`,
-    );
+    expect(languages["x-default"]).toBe(`/${siteConfig.defaultLocale}/about`);
     // defaultLocale entry and x-default point at the same URL.
-    expect(languages["x-default"]).toBe(
-      languages[siteConfig.defaultLocale],
-    );
+    expect(languages["x-default"]).toBe(languages[siteConfig.defaultLocale]);
   });
 });

@@ -60,36 +60,39 @@ export default async function ImpressumPage({ params }: ImpressumPageProps) {
 
   return (
     <>
-    <StructuredDataScripts items={[breadcrumb]} />
-    <main className="min-h-screen bg-background text-foreground p-8 max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-2">{t("impressum.title")}</h1>
-      <p className="text-sm text-muted-foreground mb-8">
-        {t("impressum.legal.notice")}
-      </p>
+      <StructuredDataScripts items={[breadcrumb]} />
+      <main className="min-h-screen bg-background text-foreground p-8 max-w-2xl mx-auto">
+        <h1 className="text-3xl font-bold mb-2">{t("impressum.title")}</h1>
+        <p className="text-sm text-muted-foreground mb-8">
+          {t("impressum.legal.notice")}
+        </p>
 
-      {/* PLACEHOLDER WARNING -- visible in development to prompt replacement.
+        {/* PLACEHOLDER WARNING -- visible in development to prompt replacement.
           Fires only when a field REQUIRED for the declared entity type is
           missing (see legal-completeness.ts), not merely because VAT/registry
           are absent for an individual/unincorporated brand. */}
-      {isPlaceholder ? (
-        <div
-          className="mb-8 border border-yellow-500 bg-yellow-50 text-yellow-900 p-4 rounded text-sm"
-          role="alert"
-        >
-          <strong>{t("dev.notice.label")}</strong> {t("impressum.disclaimer")}
-        </div>
-      ) : null}
+        {isPlaceholder ? (
+          <div
+            className="mb-8 border border-yellow-500 bg-yellow-50 text-yellow-900 p-4 rounded text-sm"
+            role="alert"
+          >
+            <strong>{t("dev.notice.label")}</strong> {t("impressum.disclaimer")}
+          </div>
+        ) : null}
 
-      {/* Identity block renders on the entity-type spectrum (company /
+        {/* Identity block renders on the entity-type spectrum (company /
           individual / unincorporated) from siteConfig.legal. */}
-      <LegalIdentityBlock legal={legal} contactEmail={siteConfig.contactEmail} />
+        <LegalIdentityBlock
+          legal={legal}
+          contactEmail={siteConfig.contactEmail}
+        />
 
-      <nav className="mt-12 text-sm">
-        <Link href="/" className="text-muted-foreground hover:underline">
-          &larr; Back to home
-        </Link>
-      </nav>
-    </main>
+        <nav className="mt-12 text-sm">
+          <Link href="/" className="text-muted-foreground hover:underline">
+            &larr; Back to home
+          </Link>
+        </nav>
+      </main>
     </>
   );
 }

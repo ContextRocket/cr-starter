@@ -7,7 +7,10 @@ import Link from "next/link";
 import { Link as LocaleLink } from "@/i18n/navigation";
 import { ThemeToggle } from "@/components/shared/ui/theme-toggle";
 import { LocaleSwitcher } from "@/i18n/locale-switcher";
-import { BrandLogo, type BrandLogoAsset } from "@/components/shared/sections/brand-logo";
+import {
+  BrandLogo,
+  type BrandLogoAsset,
+} from "@/components/shared/sections/brand-logo";
 
 export interface NavLink {
   label: string;

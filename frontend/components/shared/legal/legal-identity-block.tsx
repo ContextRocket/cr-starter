@@ -90,7 +90,10 @@ export function LegalIdentityBlock({
           value={legal.entity}
         />
         {legal.address ? (
-          <IdentityRow label={t("legal.identity.address")} value={legal.address} />
+          <IdentityRow
+            label={t("legal.identity.address")}
+            value={legal.address}
+          />
         ) : null}
         {contactRow}
       </dl>
@@ -113,10 +116,16 @@ export function LegalIdentityBlock({
           />
         ) : null}
         {legal.address ? (
-          <IdentityRow label={t("legal.identity.address")} value={legal.address} />
+          <IdentityRow
+            label={t("legal.identity.address")}
+            value={legal.address}
+          />
         ) : null}
         {contactRow}
-        <p className="text-sm text-muted-foreground" data-testid="legal-not-registered">
+        <p
+          className="text-sm text-muted-foreground"
+          data-testid="legal-not-registered"
+        >
           {t("legal.identity.notRegisteredCompany")}
         </p>
       </dl>
@@ -134,7 +143,10 @@ export function LegalIdentityBlock({
         />
       ) : null}
       {legal.address ? (
-        <IdentityRow label={t("legal.identity.address")} value={legal.address} />
+        <IdentityRow
+          label={t("legal.identity.address")}
+          value={legal.address}
+        />
       ) : null}
       {legal.representedBy ? (
         <IdentityRow

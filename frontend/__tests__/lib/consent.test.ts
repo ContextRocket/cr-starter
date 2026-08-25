@@ -54,7 +54,12 @@ describe("cookie consent record", () => {
     const parsed = parseStoredConsent({
       version: 99,
       recordedAt: new Date().toISOString(),
-      categories: { necessary: true, functional: true, analytics: false, marketing: false },
+      categories: {
+        necessary: true,
+        functional: true,
+        analytics: false,
+        marketing: false,
+      },
     });
     expect(parsed).not.toBeNull();
     expect(parsed?.categories).toEqual({

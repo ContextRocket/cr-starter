@@ -77,7 +77,12 @@ export function StatusPage({
                   accent.ring,
                 )}
               >
-                <span className={cn("flex h-8 w-8 items-center justify-center", accent.text)}>
+                <span
+                  className={cn(
+                    "flex h-8 w-8 items-center justify-center",
+                    accent.text,
+                  )}
+                >
                   {icon}
                 </span>
               </div>

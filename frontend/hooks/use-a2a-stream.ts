@@ -142,7 +142,8 @@ export type UseA2AStreamResult = UseA2AStreamState & UseA2AStreamActions;
 
 function resolveBaseUrl(): string {
   if (typeof process !== "undefined") {
-    const envUrl = process.env.NEXT_PUBLIC_CR_AGENT_URL || siteConfig.chat.agentUrl;
+    const envUrl =
+      process.env.NEXT_PUBLIC_CR_AGENT_URL || siteConfig.chat.agentUrl;
     if (envUrl) return envUrl.replace(/\/$/, "");
   }
   return "";
@@ -220,12 +221,13 @@ function classifyError(
 export function useA2AStream(
   clientOpts?: Partial<A2AClientOptions>,
 ): UseA2AStreamResult {
-
   // An explicit base URL in a caller is an explicit request for live A2A.
   // This keeps the hook easy to exercise in tests and useful for an embedded
   // consumer, while the site-level default remains canned demo mode.
-  const mode = clientOpts?.mode ?? (clientOpts?.baseUrl ? "live" : siteConfig.chat.mode);
-  const baseUrl = clientOpts?.baseUrl ?? (mode === "live" ? resolveBaseUrl() : "");
+  const mode =
+    clientOpts?.mode ?? (clientOpts?.baseUrl ? "live" : siteConfig.chat.mode);
+  const baseUrl =
+    clientOpts?.baseUrl ?? (mode === "live" ? resolveBaseUrl() : "");
   const handle = clientOpts?.handle ?? siteConfig.chat.handle;
   const apiKey = clientOpts?.apiKey ?? siteConfig.chat.apiKey;
 
@@ -303,10 +305,7 @@ export function useA2AStream(
   }, [clearTimers]);
 
   const sendMessage = useCallback(
-    (
-      text: string,
-      opts?: { scope?: Record<string, unknown> },
-    ) => {
+    (text: string, opts?: { scope?: Record<string, unknown> }) => {
       if (!text.trim()) return;
 
       // Cancel any running turn.
@@ -376,9 +375,14 @@ export function useA2AStream(
 
       async function run() {
         try {
-          const stream = opts_client.mode === "live" && opts_client.baseUrl
-            ? streamTask(opts_client, params, controller.signal)
-            : mockStreamTask(params, controller.signal, t("chat.mock.response"));
+          const stream =
+            opts_client.mode === "live" && opts_client.baseUrl
+              ? streamTask(opts_client, params, controller.signal)
+              : mockStreamTask(
+                  params,
+                  controller.signal,
+                  t("chat.mock.response"),
+                );
 
           for await (const event of stream) {
             if (controller.signal.aborted) break;

@@ -76,10 +76,11 @@ export const ACTIVE_LOCALES: readonly string[] = computeActiveUiLocales(
 );
 
 /** Site default, validated against the generated message registry. */
-export const DEFAULT_LOCALE: SupportedLocale =
-  (SUPPORTED_LOCALES as readonly string[]).includes(siteConfig.defaultLocale)
-    ? (siteConfig.defaultLocale as SupportedLocale)
-    : "en";
+export const DEFAULT_LOCALE: SupportedLocale = (
+  SUPPORTED_LOCALES as readonly string[]
+).includes(siteConfig.defaultLocale)
+  ? (siteConfig.defaultLocale as SupportedLocale)
+  : "en";
 
 /**
  * Resolve a raw locale string (e.g. from a cookie or Accept-Language header)

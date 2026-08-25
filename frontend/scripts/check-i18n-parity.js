@@ -50,9 +50,28 @@ const ts = require("typescript");
 // Maps a --domain flag to the top-level namespaces it owns.
 // ---------------------------------------------------------------------------
 const DOMAIN_NAMESPACES = {
-  shared: ["form", "nav", "theme", "error", "locale", "breadcrumb", "pagination", "cookie", "gallery"],
+  shared: [
+    "form",
+    "nav",
+    "theme",
+    "error",
+    "locale",
+    "breadcrumb",
+    "pagination",
+    "cookie",
+    "gallery",
+  ],
   app: ["dev", "chat", "embed"],
-  site: ["home", "blog", "faq", "footer", "impressum", "privacy", "preview", "attribution"],
+  site: [
+    "home",
+    "blog",
+    "faq",
+    "footer",
+    "impressum",
+    "privacy",
+    "preview",
+    "attribution",
+  ],
 };
 // Domains whose non-en locales MAY be an incomplete subset (missing -> warn).
 const SUBSET_DOMAINS = new Set(["site"]);
@@ -128,9 +147,14 @@ function getSiteConfigLocales() {
     }
   }
 
-  const siteConfigPath = path.resolve(MESSAGES_DIR, "../../config/site.config.ts");
+  const siteConfigPath = path.resolve(
+    MESSAGES_DIR,
+    "../../config/site.config.ts",
+  );
   if (!fs.existsSync(siteConfigPath)) {
-    console.warn("WARNING: site.config.ts not found, skipping locales verification");
+    console.warn(
+      "WARNING: site.config.ts not found, skipping locales verification",
+    );
     return [];
   }
 
@@ -147,7 +171,11 @@ function getSiteConfigLocales() {
     // Find the siteConfig object and extract the locales array
     let locales = [];
     const walk = (node) => {
-      if (ts.isPropertyAssignment(node) && ts.isIdentifier(node.name) && node.name.text === "locales") {
+      if (
+        ts.isPropertyAssignment(node) &&
+        ts.isIdentifier(node.name) &&
+        node.name.text === "locales"
+      ) {
         if (ts.isArrayLiteralExpression(node.initializer)) {
           locales = node.initializer.elements
             .filter(ts.isStringLiteral)
@@ -186,11 +214,15 @@ function verifyLocalesHaveMessageFiles() {
   }
 
   if (hasError) {
-    console.error("\nERROR: Missing message files for locales defined in site.config.ts:");
+    console.error(
+      "\nERROR: Missing message files for locales defined in site.config.ts:",
+    );
     for (const file of missingFiles) {
       console.error(`  - ${file}`);
     }
-    console.error("\nAll locales in site.config.locales must have message files in i18n/messages/{app,shared,site}/");
+    console.error(
+      "\nAll locales in site.config.locales must have message files in i18n/messages/{app,shared,site}/",
+    );
   }
 
   return !hasError;
@@ -412,7 +444,8 @@ for (const locale of CHECK_LOCALES) {
   // failure for strict domains, but only a WARNING for subset domains (site),
   // which may ship an incomplete locale ahead of full translation.
   const missingIsFatal = !SUBSET_MODE;
-  const localeFailed = orphan.length > 0 || (missingIsFatal && missing.length > 0);
+  const localeFailed =
+    orphan.length > 0 || (missingIsFatal && missing.length > 0);
   if (localeFailed) hasMismatch = true;
 
   const verb = localeFailed ? "FAIL" : "WARN";

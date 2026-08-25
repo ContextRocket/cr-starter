@@ -131,7 +131,8 @@ export function NotificationBar({
 }: NotificationBarProps) {
   const tone = item.tone ?? "neutral";
   const dismissible = item.dismissible ?? true;
-  const Icon = item.icon ?? (item.iconName ? ICON_BY_NAME[item.iconName] : undefined);
+  const Icon =
+    item.icon ?? (item.iconName ? ICON_BY_NAME[item.iconName] : undefined);
 
   return (
     <div
@@ -143,9 +144,7 @@ export function NotificationBar({
         TONE_CLASSES[tone],
       ].join(" ")}
     >
-      {Icon && (
-        <Icon aria-hidden="true" className="size-4 shrink-0" />
-      )}
+      {Icon && <Icon aria-hidden="true" className="size-4 shrink-0" />}
       <p className="min-w-0 flex-1 leading-snug">
         {item.message}
         {item.action && (

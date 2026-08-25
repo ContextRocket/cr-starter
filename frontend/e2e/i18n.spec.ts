@@ -23,9 +23,7 @@ test.describe("Locale switching", () => {
     for (const locale of LOCALES) {
       await page.goto(`/${locale}/faq`, { waitUntil: "domcontentloaded" });
       await expect(page.locator("html")).toHaveAttribute("lang", locale);
-      await expect(
-        page.getByRole("heading", { level: 1 }),
-      ).toBeVisible();
+      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     }
   });
 

@@ -8,9 +8,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import {
-  ArrowTopRightOnSquareIcon,
-} from "@heroicons/react/24/solid";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import { resolveLocale } from "@/i18n/messages";
 import { buildAlternates } from "@/lib/seo";
 import { SectionWrapper } from "@/components/shared/sections/section-wrapper";
@@ -20,7 +18,9 @@ interface PageProps {
   params: Promise<{ locale: string }>;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const locale = resolveLocale((await params).locale);
   return {
     alternates: buildAlternates(locale, "portfolio"),
@@ -31,14 +31,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 const projects = [
   {
     title: "Project One",
-    description: "A brief description of the project and what technologies were used.",
+    description:
+      "A brief description of the project and what technologies were used.",
     image: "/images/blog/programming-setup.jpg",
     link: "#",
     tags: ["React", "TypeScript", "Tailwind"],
   },
   {
     title: "Project Two",
-    description: "Another project description highlighting the impact and results.",
+    description:
+      "Another project description highlighting the impact and results.",
     image: "/images/blog/ai-brain-future.jpg",
     link: "#",
     tags: ["Next.js", "Python", "AI"],
@@ -57,19 +59,22 @@ const experience = [
     role: "Senior Engineer",
     company: "Tech Company",
     period: "2022 -- Present",
-    description: "Led development of core platform features serving 10M+ users.",
+    description:
+      "Led development of core platform features serving 10M+ users.",
   },
   {
     role: "Software Engineer",
     company: "Startup Inc",
     period: "2020 -- 2022",
-    description: "Built the initial product from 0 to 1. Shipped 15+ features in the first year.",
+    description:
+      "Built the initial product from 0 to 1. Shipped 15+ features in the first year.",
   },
   {
     role: "Junior Developer",
     company: "Agency Co",
     period: "2018 -- 2020",
-    description: "Delivered client projects across e-commerce, SaaS, and media.",
+    description:
+      "Delivered client projects across e-commerce, SaaS, and media.",
   },
 ];
 
@@ -83,8 +88,8 @@ export default async function PortfolioPage() {
             Hi, I'm [Your Name]
           </h1>
           <p className="mt-6 text-xl leading-8 text-muted-foreground">
-            I build products that people love to use. Currently focused on AI-powered
-            developer tools and making complex systems simple.
+            I build products that people love to use. Currently focused on
+            AI-powered developer tools and making complex systems simple.
           </p>
           <div className="mt-10 flex items-center gap-x-6">
             <Link
@@ -166,7 +171,9 @@ export default async function PortfolioPage() {
                     {job.role}
                   </h3>
                   <p className="text-primary">{job.company}</p>
-                  <p className="mt-2 text-muted-foreground">{job.description}</p>
+                  <p className="mt-2 text-muted-foreground">
+                    {job.description}
+                  </p>
                 </div>
               </div>
             ))}

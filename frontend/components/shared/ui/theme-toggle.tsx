@@ -29,7 +29,6 @@ import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "@/i18n/locale-provider";
 
-
 interface ThemeToggleProps {
   className?: string;
 }

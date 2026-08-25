@@ -23,9 +23,17 @@ const actionStyles = {
     "inline-flex items-center gap-2 rounded-full border border-border px-8 py-3.5 text-base font-semibold transition-all hover:border-primary/30 hover:bg-foreground/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
 };
 
-export function HeroSection({ title, description, actions, className = "", children }: HeroProps) {
+export function HeroSection({
+  title,
+  description,
+  actions,
+  className = "",
+  children,
+}: HeroProps) {
   return (
-    <section className={`relative overflow-hidden px-6 pt-24 pb-32 sm:pt-32 sm:pb-40 max-w-4xl mx-auto text-center ${className}`}>
+    <section
+      className={`relative overflow-hidden px-6 pt-24 pb-32 sm:pt-32 sm:pb-40 max-w-4xl mx-auto text-center ${className}`}
+    >
       <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-6xl lg:text-7xl">
         {title}
       </h1>

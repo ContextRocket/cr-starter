@@ -1,4 +1,8 @@
-import { createTranslator, createArrayTranslator, translateError } from "@/i18n/translator";
+import {
+  createTranslator,
+  createArrayTranslator,
+  translateError,
+} from "@/i18n/translator";
 import { en } from "@/i18n/messages/en";
 
 describe("createTranslator", () => {
@@ -46,7 +50,10 @@ describe("createArrayTranslator", () => {
   });
 
   it("returns empty array for non-array keys", () => {
-    const tArray = createArrayTranslator("en", en as unknown as Record<string, unknown>);
+    const tArray = createArrayTranslator(
+      "en",
+      en as unknown as Record<string, unknown>,
+    );
     expect(tArray("chat.empty.title")).toEqual([]);
   });
 
@@ -70,7 +77,12 @@ describe("translateError", () => {
 
   it("supports {param} interpolation", () => {
     const messages = { ERROR_USER: "User {name} not found" };
-    const result = translateError(messages, "ERROR_USER", {}, { name: "Alice" });
+    const result = translateError(
+      messages,
+      "ERROR_USER",
+      {},
+      { name: "Alice" },
+    );
     expect(result).toBe("User Alice not found");
   });
 });

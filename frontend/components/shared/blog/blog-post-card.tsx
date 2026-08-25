@@ -24,7 +24,10 @@ interface BlogPostCardProps {
 }
 
 function readMinutes(body: string): number {
-  return Math.max(1, Math.round(body.split(/\s+/).filter(Boolean).length / 200));
+  return Math.max(
+    1,
+    Math.round(body.split(/\s+/).filter(Boolean).length / 200),
+  );
 }
 
 export function BlogPostCard({ post, locale }: BlogPostCardProps) {
@@ -43,7 +46,10 @@ export function BlogPostCard({ post, locale }: BlogPostCardProps) {
       data-testid={`blog-post-${post.slug}`}
       className="bg-warm-surface rounded-xl border border-card-border shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden flex flex-col"
     >
-      <Link href={blogPostPath(post.slug)} className="group flex flex-col h-full">
+      <Link
+        href={blogPostPath(post.slug)}
+        className="group flex flex-col h-full"
+      >
         {/* Image (16:9) -- always renders a real image; BlogImage falls back to
             the bundled default when the post has no image or its image 404s. */}
         <div className="aspect-[16/9] relative overflow-hidden">

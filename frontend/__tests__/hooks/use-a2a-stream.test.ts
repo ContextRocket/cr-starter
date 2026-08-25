@@ -562,7 +562,8 @@ describe("useA2AStream", () => {
       // Second fetch hangs forever WITHOUT rejecting, so the second turn is
       // still in-flight while the first turn's AbortError settles.
       const secondFetch = () => new Promise(() => {});
-      global.fetch = vi        .fn()
+      global.fetch = vi
+        .fn()
         .mockImplementationOnce(firstFetch)
         .mockImplementationOnce(secondFetch);
 
@@ -590,7 +591,8 @@ describe("useA2AStream", () => {
 
     it("completes the second turn normally after the first was superseded", async () => {
       const firstFetch = hangingFetchThatRejectsOnAbort();
-      global.fetch = vi        .fn()
+      global.fetch = vi
+        .fn()
         .mockImplementationOnce(firstFetch)
         .mockImplementationOnce(() =>
           Promise.resolve({

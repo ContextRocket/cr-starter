@@ -10,7 +10,9 @@ const logger = createLogger("frontend:watcher");
 const openapiFile = process.env.OPENAPI_OUTPUT_FILE;
 
 if (!openapiFile) {
-  logger.info("OPENAPI_OUTPUT_FILE is not defined, skipping OpenAPI file watch.");
+  logger.info(
+    "OPENAPI_OUTPUT_FILE is not defined, skipping OpenAPI file watch.",
+  );
 } else {
   // Watch the specific file for changes
   chokidar.watch(openapiFile).on("change", (path) => {
@@ -28,4 +30,3 @@ if (!openapiFile) {
     });
   });
 }
-

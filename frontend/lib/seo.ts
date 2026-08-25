@@ -36,11 +36,7 @@ export function buildAlternates(
   locale: string,
   path = "",
 ): { canonical: string; languages: Record<string, string> } {
-  const normalizedPath = path
-    ? path.startsWith("/")
-      ? path
-      : `/${path}`
-    : "";
+  const normalizedPath = path ? (path.startsWith("/") ? path : `/${path}`) : "";
   const servedLocales = siteConfig.locales.length
     ? siteConfig.locales
     : SUPPORTED_LOCALES;
@@ -48,7 +44,7 @@ export function buildAlternates(
   for (const l of servedLocales) languages[l] = `/${l}${normalizedPath}`;
   const defaultLocale = servedLocales.includes(siteConfig.defaultLocale)
     ? siteConfig.defaultLocale
-    : servedLocales[0] ?? siteConfig.defaultLocale;
+    : (servedLocales[0] ?? siteConfig.defaultLocale);
   languages["x-default"] = `/${defaultLocale}${normalizedPath}`;
   return { canonical: `/${locale}${normalizedPath}`, languages };
 }

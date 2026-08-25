@@ -273,7 +273,9 @@ export interface BlogPostingJsonLdInput {
  * points back at the canonical URL. Inject via
  * `<StructuredDataScripts items={[buildBlogPostingJsonLd(input)]} />`.
  */
-export function buildBlogPostingJsonLd(input: BlogPostingJsonLdInput): JsonLdNode {
+export function buildBlogPostingJsonLd(
+  input: BlogPostingJsonLdInput,
+): JsonLdNode {
   const origin = siteConfig.siteUrl.replace(/\/$/, "");
   const imageUrl = input.imageUrl
     ? input.imageUrl.startsWith("http")

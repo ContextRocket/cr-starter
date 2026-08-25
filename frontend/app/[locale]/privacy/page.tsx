@@ -76,162 +76,161 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
 
   return (
     <>
-    <StructuredDataScripts items={[breadcrumb]} />
-    <main className="min-h-screen bg-background text-foreground p-8 max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-2">{t("privacy.title")}</h1>
+      <StructuredDataScripts items={[breadcrumb]} />
+      <main className="min-h-screen bg-background text-foreground p-8 max-w-2xl mx-auto">
+        <h1 className="text-3xl font-bold mb-2">{t("privacy.title")}</h1>
 
-      {/* Generated-from-config notice */}
-      <p
-        className="text-xs text-muted-foreground mb-6 italic"
-        data-testid="privacy-generated-notice"
-      >
-        {t("privacy.generated.notice")}
-      </p>
-
-      {/* Placeholder warning -- visible when legal fields have not been filled */}
-      {isPlaceholder ? (
-        <div
-          className="mb-8 border border-yellow-500 bg-yellow-50 text-yellow-900 p-4 rounded text-sm"
-          role="alert"
-          data-testid="privacy-placeholder-warning"
+        {/* Generated-from-config notice */}
+        <p
+          className="text-xs text-muted-foreground mb-6 italic"
+          data-testid="privacy-generated-notice"
         >
-          <strong>{t("impressum.disclaimer")}</strong>
-        </div>
-      ) : null}
+          {t("privacy.generated.notice")}
+        </p>
 
-      <section className="space-y-8 text-foreground">
-        {/* Intro */}
-        <p className="text-sm text-muted-foreground">{t("privacy.intro")}</p>
-
-        {/* Data Controller */}
-        <div data-testid="privacy-controller-section">
-          <h2 className="text-xl font-semibold mb-2">
-            {t("privacy.controller.heading")}
-          </h2>
-          <p className="text-sm text-muted-foreground mb-3">
-            {t("privacy.controller.intro")}
-          </p>
-          {/* Controller identity renders on the entity-type spectrum
-              (company / individual / unincorporated) from siteConfig.legal. */}
+        {/* Placeholder warning -- visible when legal fields have not been filled */}
+        {isPlaceholder ? (
           <div
-            className="text-sm"
-            data-testid="privacy-controller-address"
+            className="mb-8 border border-yellow-500 bg-yellow-50 text-yellow-900 p-4 rounded text-sm"
+            role="alert"
+            data-testid="privacy-placeholder-warning"
           >
-            <LegalIdentityBlock
-              legal={legal}
-              contactEmail={siteConfig.contactEmail}
-            />
+            <strong>{t("impressum.disclaimer")}</strong>
           </div>
-        </div>
+        ) : null}
 
-        {/* Privacy Contact */}
-        <div data-testid="privacy-contact-section">
-          <h2 className="text-xl font-semibold mb-2">
-            {t("privacy.contact.label")}
-          </h2>
-          <p className="text-sm text-muted-foreground mb-2">
-            {t("privacy.contact.intro")}
-          </p>
-          <a
-            href={`mailto:${legal.privacyContact}`}
-            className="text-sm hover:underline text-primary"
-            data-testid="privacy-contact-email"
-          >
-            {legal.privacyContact}
-          </a>
-        </div>
+        <section className="space-y-8 text-foreground">
+          {/* Intro */}
+          <p className="text-sm text-muted-foreground">{t("privacy.intro")}</p>
 
-        {/* Data Processing */}
-        <div>
-          <h2 className="text-xl font-semibold mb-4">
-            {t("privacy.data.heading")}
-          </h2>
-
-          {/* Site operation data */}
-          <div className="mb-4">
-            <h3 className="text-base font-semibold mb-1">
-              {t("privacy.data.site.heading")}
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              {t("privacy.data.site.body")}
+          {/* Data Controller */}
+          <div data-testid="privacy-controller-section">
+            <h2 className="text-xl font-semibold mb-2">
+              {t("privacy.controller.heading")}
+            </h2>
+            <p className="text-sm text-muted-foreground mb-3">
+              {t("privacy.controller.intro")}
             </p>
+            {/* Controller identity renders on the entity-type spectrum
+              (company / individual / unincorporated) from siteConfig.legal. */}
+            <div className="text-sm" data-testid="privacy-controller-address">
+              <LegalIdentityBlock
+                legal={legal}
+                contactEmail={siteConfig.contactEmail}
+              />
+            </div>
           </div>
 
-          {/* Strictly-necessary cookies */}
-          <div className="mb-4">
-            <h3 className="text-base font-semibold mb-1">
-              {t("privacy.data.cookies.heading")}
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              {t("privacy.data.cookies.body")}
+          {/* Privacy Contact */}
+          <div data-testid="privacy-contact-section">
+            <h2 className="text-xl font-semibold mb-2">
+              {t("privacy.contact.label")}
+            </h2>
+            <p className="text-sm text-muted-foreground mb-2">
+              {t("privacy.contact.intro")}
             </p>
+            <a
+              href={`mailto:${legal.privacyContact}`}
+              className="text-sm hover:underline text-primary"
+              data-testid="privacy-contact-email"
+            >
+              {legal.privacyContact}
+            </a>
           </div>
 
-          {/* Analytics -- rendered only when at least one provider key is set.
+          {/* Data Processing */}
+          <div>
+            <h2 className="text-xl font-semibold mb-4">
+              {t("privacy.data.heading")}
+            </h2>
+
+            {/* Site operation data */}
+            <div className="mb-4">
+              <h3 className="text-base font-semibold mb-1">
+                {t("privacy.data.site.heading")}
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                {t("privacy.data.site.body")}
+              </p>
+            </div>
+
+            {/* Strictly-necessary cookies */}
+            <div className="mb-4">
+              <h3 className="text-base font-semibold mb-1">
+                {t("privacy.data.cookies.heading")}
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                {t("privacy.data.cookies.body")}
+              </p>
+            </div>
+
+            {/* Analytics -- rendered only when at least one provider key is set.
               Same gate as the cookie-consent banner's "auto" mode:
               analyticsConfigured() from lib/analytics.ts (single source). */}
-          {analyticsConfigured() ? (
-            <div data-testid="privacy-analytics-section">
-              <h3 className="text-base font-semibold mb-1">
-                {t("privacy.analytics.heading")}
-              </h3>
-              <p className="text-sm text-muted-foreground mb-2">
-                {t("privacy.analytics.body")}
-              </p>
-              <p className="text-sm text-muted-foreground mb-1">
-                {t("privacy.analytics.providers.intro")}
-              </p>
-              <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
-                {gaEnabled ? <li>{t("privacy.analytics.ga.label")}</li> : null}
-                {posthogEnabled ? (
-                  <li>{t("privacy.analytics.posthog.label")}</li>
-                ) : null}
-              </ul>
-            </div>
-          ) : null}
-        </div>
+            {analyticsConfigured() ? (
+              <div data-testid="privacy-analytics-section">
+                <h3 className="text-base font-semibold mb-1">
+                  {t("privacy.analytics.heading")}
+                </h3>
+                <p className="text-sm text-muted-foreground mb-2">
+                  {t("privacy.analytics.body")}
+                </p>
+                <p className="text-sm text-muted-foreground mb-1">
+                  {t("privacy.analytics.providers.intro")}
+                </p>
+                <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
+                  {gaEnabled ? (
+                    <li>{t("privacy.analytics.ga.label")}</li>
+                  ) : null}
+                  {posthogEnabled ? (
+                    <li>{t("privacy.analytics.posthog.label")}</li>
+                  ) : null}
+                </ul>
+              </div>
+            ) : null}
+          </div>
 
-        {/* Cookie Consent and Withdrawal */}
-        <div>
-          <h2 className="text-xl font-semibold mb-2">
-            {t("privacy.consent.heading")}
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            {t("privacy.consent.body")}{" "}
-            <code className="font-mono bg-muted px-1 rounded text-xs">
-              {CONSENT_STORAGE_KEY}
-            </code>{" "}
-            {t("privacy.consent.bodyAfterKey")}
-          </p>
-        </div>
+          {/* Cookie Consent and Withdrawal */}
+          <div>
+            <h2 className="text-xl font-semibold mb-2">
+              {t("privacy.consent.heading")}
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              {t("privacy.consent.body")}{" "}
+              <code className="font-mono bg-muted px-1 rounded text-xs">
+                {CONSENT_STORAGE_KEY}
+              </code>{" "}
+              {t("privacy.consent.bodyAfterKey")}
+            </p>
+          </div>
 
-        {/* User Rights */}
-        <div>
-          <h2 className="text-xl font-semibold mb-2">
-            {t("privacy.rights.heading")}
-          </h2>
-          <p className="text-sm text-muted-foreground mb-2">
-            {t("privacy.rights.intro")}
-          </p>
-          <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
-            <li>{t("privacy.rights.access")}</li>
-            <li>{t("privacy.rights.rectification")}</li>
-            <li>{t("privacy.rights.erasure")}</li>
-            <li>{t("privacy.rights.portability")}</li>
-            <li>{t("privacy.rights.complaint")}</li>
-          </ul>
-          <p className="text-sm text-muted-foreground mt-2">
-            {t("privacy.rights.outro")}
-          </p>
-        </div>
-      </section>
+          {/* User Rights */}
+          <div>
+            <h2 className="text-xl font-semibold mb-2">
+              {t("privacy.rights.heading")}
+            </h2>
+            <p className="text-sm text-muted-foreground mb-2">
+              {t("privacy.rights.intro")}
+            </p>
+            <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
+              <li>{t("privacy.rights.access")}</li>
+              <li>{t("privacy.rights.rectification")}</li>
+              <li>{t("privacy.rights.erasure")}</li>
+              <li>{t("privacy.rights.portability")}</li>
+              <li>{t("privacy.rights.complaint")}</li>
+            </ul>
+            <p className="text-sm text-muted-foreground mt-2">
+              {t("privacy.rights.outro")}
+            </p>
+          </div>
+        </section>
 
-      <nav className="mt-12 text-sm">
-        <Link href="/" className="text-muted-foreground hover:underline">
-          &larr; Back to home
-        </Link>
-      </nav>
-    </main>
+        <nav className="mt-12 text-sm">
+          <Link href="/" className="text-muted-foreground hover:underline">
+            &larr; Back to home
+          </Link>
+        </nav>
+      </main>
     </>
   );
 }

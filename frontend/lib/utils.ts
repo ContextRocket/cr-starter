@@ -6,9 +6,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function getErrorMessage(
-  error: { detail?: unknown },
-): string {
+export function getErrorMessage(error: { detail?: unknown }): string {
   let errorMessage = "An unknown error occurred";
 
   if (typeof error.detail === "string") {

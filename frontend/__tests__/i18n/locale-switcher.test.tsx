@@ -12,7 +12,10 @@ import { ACTIVE_LOCALES, SUPPORTED_LOCALES } from "@/i18n/messages";
 
 function withLocale(ui: React.ReactElement) {
   return (
-    <LocaleProvider initialLocale="en" messages={en as unknown as Record<string, unknown>}>
+    <LocaleProvider
+      initialLocale="en"
+      messages={en as unknown as Record<string, unknown>}
+    >
       {ui}
     </LocaleProvider>
   );
@@ -66,7 +69,9 @@ describe("LocaleSwitcher", () => {
       fireEvent.click(screen.getByTestId("locale-switcher"));
       fireEvent.click(screen.getByTestId("locale-switcher-option-es"));
 
-      expect(screen.queryByTestId("locale-switcher-menu")).not.toBeInTheDocument();
+      expect(
+        screen.queryByTestId("locale-switcher-menu"),
+      ).not.toBeInTheDocument();
     });
   }
 });

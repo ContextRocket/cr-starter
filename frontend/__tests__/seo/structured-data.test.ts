@@ -59,7 +59,10 @@ describe("buildBlogPostingJsonLd", () => {
     expect(node.publisher).toEqual({ "@id": `${ORIGIN}/#organization` });
     expect(node["@id"]).toBe(`${input.url}#article`);
     expect(node.headline).toBe("A post");
-    expect(node.author).toMatchObject({ "@type": "Person", name: "Author Name" });
+    expect(node.author).toMatchObject({
+      "@type": "Person",
+      name: "Author Name",
+    });
     expect(node.mainEntityOfPage).toMatchObject({ "@id": input.url });
   });
 

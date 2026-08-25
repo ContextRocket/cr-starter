@@ -58,14 +58,20 @@ describe("I18nProvider", () => {
     document.cookie = "NEXT_LOCALE=;path=/;max-age=0";
     mockRouter.replace.mockClear();
     for (const [locale, tree] of Object.entries(LOCALE_MESSAGE_TREES)) {
-      registerLocaleMessages(locale, tree as unknown as Record<string, unknown>);
+      registerLocaleMessages(
+        locale,
+        tree as unknown as Record<string, unknown>,
+      );
     }
   });
 
   describe("defaults", () => {
     it("renders with the given locale", () => {
       render(
-        <LocaleProvider initialLocale="en" messages={en as unknown as Record<string, unknown>}>
+        <LocaleProvider
+          initialLocale="en"
+          messages={en as unknown as Record<string, unknown>}
+        >
           <LocaleConsumer targetLocale={alternateLocale} />
         </LocaleProvider>,
       );
@@ -74,7 +80,10 @@ describe("I18nProvider", () => {
 
     it("exposes locale and changeLocale via useLocale hook", () => {
       render(
-        <LocaleProvider initialLocale="en" messages={en as unknown as Record<string, unknown>}>
+        <LocaleProvider
+          initialLocale="en"
+          messages={en as unknown as Record<string, unknown>}
+        >
           <LocaleConsumer targetLocale={alternateLocale} />
         </LocaleProvider>,
       );
@@ -89,7 +98,9 @@ describe("I18nProvider", () => {
         const { locale } = useLocale();
         return <span data-testid="bare-locale">{locale}</span>;
       }
-      expect(() => render(<Bare />)).toThrow(/useLocale must be used within a LocaleProvider/);
+      expect(() => render(<Bare />)).toThrow(
+        /useLocale must be used within a LocaleProvider/,
+      );
     });
   });
 
@@ -107,7 +118,10 @@ describe("I18nProvider", () => {
       if (alternateLocale === "en") return;
       const user = userEvent.setup();
       render(
-        <LocaleProvider initialLocale="en" messages={en as unknown as Record<string, unknown>}>
+        <LocaleProvider
+          initialLocale="en"
+          messages={en as unknown as Record<string, unknown>}
+        >
           <LocaleConsumer targetLocale={alternateLocale} />
         </LocaleProvider>,
       );
@@ -124,7 +138,10 @@ describe("I18nProvider", () => {
     it("is a no-op when switching to the same locale", async () => {
       const user = userEvent.setup();
       render(
-        <LocaleProvider initialLocale="en" messages={en as unknown as Record<string, unknown>}>
+        <LocaleProvider
+          initialLocale="en"
+          messages={en as unknown as Record<string, unknown>}
+        >
           <LocaleConsumer targetLocale="en" />
         </LocaleProvider>,
       );
@@ -142,7 +159,10 @@ describe("I18nProvider", () => {
       if (alternateLocale === "en") return;
       const user = userEvent.setup();
       render(
-        <LocaleProvider initialLocale="en" messages={en as unknown as Record<string, unknown>}>
+        <LocaleProvider
+          initialLocale="en"
+          messages={en as unknown as Record<string, unknown>}
+        >
           <LocaleConsumer targetLocale={alternateLocale} />
         </LocaleProvider>,
       );
@@ -165,7 +185,10 @@ describe("I18nProvider", () => {
         return <span data-testid="value">{t("chat.empty.title")}</span>;
       }
       render(
-        <LocaleProvider initialLocale="en" messages={en as unknown as Record<string, unknown>}>
+        <LocaleProvider
+          initialLocale="en"
+          messages={en as unknown as Record<string, unknown>}
+        >
           <Consumer />
         </LocaleProvider>,
       );

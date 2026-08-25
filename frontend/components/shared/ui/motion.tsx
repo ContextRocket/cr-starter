@@ -22,7 +22,12 @@ function toMs(seconds: number): number {
   return Math.round(seconds * 1000);
 }
 
-export function FadeIn({ children, className, delay = 0, ...props }: MotionProps) {
+export function FadeIn({
+  children,
+  className,
+  delay = 0,
+  ...props
+}: MotionProps) {
   return (
     <div
       data-aos="fade-up"
@@ -35,7 +40,12 @@ export function FadeIn({ children, className, delay = 0, ...props }: MotionProps
   );
 }
 
-export function SlideIn({ children, className, delay = 0, ...props }: MotionProps) {
+export function SlideIn({
+  children,
+  className,
+  delay = 0,
+  ...props
+}: MotionProps) {
   return (
     <div
       data-aos="fade-up"

@@ -28,10 +28,15 @@ const PUBLIC_DIR = path.resolve(__dirname, "..", "public");
 async function trimFile(filePath) {
   const ext = path.extname(filePath);
   const base = path.basename(filePath, ext);
-  const trimmedPath = path.join(path.dirname(filePath), `${base}-trimmed${ext}`);
+  const trimmedPath = path.join(
+    path.dirname(filePath),
+    `${base}-trimmed${ext}`,
+  );
 
   const metadata = await sharp(filePath).metadata();
-  console.log(`Trimming ${path.basename(filePath)} (${metadata.width}×${metadata.height})...`);
+  console.log(
+    `Trimming ${path.basename(filePath)} (${metadata.width}×${metadata.height})...`,
+  );
 
   const info = await sharp(filePath)
     .trim({ threshold: 10 })
@@ -41,7 +46,9 @@ async function trimFile(filePath) {
   const original = (metadata.width || 1) * (metadata.height || 1);
   const reduction = ((1 - saved / original) * 100).toFixed(0);
 
-  console.log(`  → ${path.basename(trimmedPath)} (${info.width}×${info.height}, ${reduction}% smaller)`);
+  console.log(
+    `  → ${path.basename(trimmedPath)} (${info.width}×${info.height}, ${reduction}% smaller)`,
+  );
   return trimmedPath;
 }
 
@@ -70,7 +77,9 @@ async function main() {
     });
 
     if (files.length === 0) {
-      console.log("No logo/favicon files found in public/. Pass a file path to trim a specific image.");
+      console.log(
+        "No logo/favicon files found in public/. Pass a file path to trim a specific image.",
+      );
       console.log("Example: node scripts/trim-assets.js public/my-logo.png");
       return;
     }
@@ -79,7 +88,9 @@ async function main() {
       await trimFile(path.join(PUBLIC_DIR, file));
     }
 
-    console.log("\nDone. Update site.config.ts assets.logo to point to the trimmed version.");
+    console.log(
+      "\nDone. Update site.config.ts assets.logo to point to the trimmed version.",
+    );
   }
 }
 

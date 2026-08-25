@@ -36,9 +36,13 @@ export function FeatureGrid({
           {label}
         </p>
       )}
-      <h2 className="mt-4 text-3xl font-bold text-center sm:text-4xl">{title}</h2>
+      <h2 className="mt-4 text-3xl font-bold text-center sm:text-4xl">
+        {title}
+      </h2>
       {subtitle && (
-        <p className="mt-3 text-lg text-muted-foreground text-center">{subtitle}</p>
+        <p className="mt-3 text-lg text-muted-foreground text-center">
+          {subtitle}
+        </p>
       )}
       <div className={`mt-16 grid gap-6 ${columnClasses[columns]}`}>
         {items.map((item) => (

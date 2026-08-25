@@ -101,22 +101,26 @@ test.describe("Locale detection", () => {
 });
 
 test.describe("Language switching", () => {
-  test("switching language navigates to the configured alternate locale", async ({ page }) => {
+  test("switching language navigates to the configured alternate locale", async ({
+    page,
+  }) => {
     test.skip(!ALTERNATE_LOCALE, "only one locale is configured");
     await page.goto(`/${DEFAULT_LOCALE}`);
     await page.waitForLoadState("networkidle");
 
     // Find and click the locale switcher (desktop header; there is also a
     // mobile-menu copy, hence .first())
-    const localeSwitcher = page.locator('[data-testid="locale-switcher"]').first();
+    const localeSwitcher = page
+      .locator('[data-testid="locale-switcher"]')
+      .first();
     await expect(localeSwitcher).toBeVisible();
 
     // Click to open dropdown
     await localeSwitcher.click();
 
-    const alternateOption = page.locator(
-      `[data-testid="locale-switcher-option-${ALTERNATE_LOCALE}"]`,
-    ).first();
+    const alternateOption = page
+      .locator(`[data-testid="locale-switcher-option-${ALTERNATE_LOCALE}"]`)
+      .first();
     await expect(alternateOption).toBeVisible();
     await alternateOption.click();
 
@@ -127,23 +131,23 @@ test.describe("Language switching", () => {
 test.describe("Hydration consistency", () => {
   for (const locale of siteConfig.locales) {
     test(`no hydration error on /${locale}`, async ({ page }) => {
-    // Listen for console errors
-    const errors: string[] = [];
-    page.on("console", (msg) => {
-      if (msg.type() === "error") {
-        errors.push(msg.text());
-      }
-    });
+      // Listen for console errors
+      const errors: string[] = [];
+      page.on("console", (msg) => {
+        if (msg.type() === "error") {
+          errors.push(msg.text());
+        }
+      });
 
-    await page.goto(`/${locale}`);
-    await page.waitForLoadState("networkidle");
-    await page.waitForTimeout(2000);
+      await page.goto(`/${locale}`);
+      await page.waitForLoadState("networkidle");
+      await page.waitForTimeout(2000);
 
-    // Check for hydration errors
-    const hydrationErrors = errors.filter(
-      (e) => e.includes("Hydration") || e.includes("hydrat")
-    );
-    expect(hydrationErrors).toHaveLength(0);
+      // Check for hydration errors
+      const hydrationErrors = errors.filter(
+        (e) => e.includes("Hydration") || e.includes("hydrat"),
+      );
+      expect(hydrationErrors).toHaveLength(0);
     });
   }
 });

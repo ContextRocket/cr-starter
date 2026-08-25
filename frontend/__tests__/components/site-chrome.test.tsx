@@ -138,7 +138,9 @@ describe("SiteChrome", () => {
     expect(brandLink).toHaveAttribute("href", "/");
     // Only the footer powered-by images should be rendered
     const images = screen.queryAllByRole("img");
-    expect(images.every(img => img.getAttribute("alt") === "ContextRocket")).toBe(true);
+    expect(
+      images.every((img) => img.getAttribute("alt") === "ContextRocket"),
+    ).toBe(true);
   });
 
   it("minimal header shows the brand NAME when showBrandLogo is false (no logo)", () => {
@@ -148,7 +150,9 @@ describe("SiteChrome", () => {
     expect(brandLink).toHaveAttribute("href", "/");
     // Only the footer powered-by images should be rendered
     const images = screen.queryAllByRole("img");
-    expect(images.every(img => img.getAttribute("alt") === "ContextRocket")).toBe(true);
+    expect(
+      images.every((img) => img.getAttribute("alt") === "ContextRocket"),
+    ).toBe(true);
   });
 
   it("renders the brand NAME beside the icon logo in the marketing header", () => {

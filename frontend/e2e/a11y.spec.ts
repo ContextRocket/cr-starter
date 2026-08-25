@@ -50,7 +50,9 @@ for (const { name, path } of PAGES) {
     expect(
       blocking,
       blocking
-        .map((v) => `${v.id} [${v.impact}]: ${v.help} (${v.nodes.length} node(s))`)
+        .map(
+          (v) => `${v.id} [${v.impact}]: ${v.help} (${v.nodes.length} node(s))`,
+        )
         .join("\n"),
     ).toEqual([]);
   });

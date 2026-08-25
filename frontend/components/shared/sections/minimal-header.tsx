@@ -19,7 +19,10 @@ import { Link as LocaleLink } from "@/i18n/navigation";
 import type { NavLink } from "@/components/shared/sections/navbar";
 import { ThemeToggle } from "@/components/shared/ui/theme-toggle";
 import { LocaleSwitcher } from "@/i18n/locale-switcher";
-import { BrandLogo, type BrandLogoAsset } from "@/components/shared/sections/brand-logo";
+import {
+  BrandLogo,
+  type BrandLogoAsset,
+} from "@/components/shared/sections/brand-logo";
 
 export interface MinimalHeaderProps {
   /** Right-aligned inline links. Empty → just the brand, no link set. */

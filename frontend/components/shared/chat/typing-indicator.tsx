@@ -2,7 +2,6 @@
 
 import { useTranslations } from "@/i18n/locale-provider";
 
-
 export function TypingIndicator() {
   const t = useTranslations();
   return (

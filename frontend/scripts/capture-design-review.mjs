@@ -53,7 +53,12 @@ for (let i = 0; i < args.length; i++) {
   }
 }
 
-const outputDir = resolve(process.cwd(), "scratchpad", "design-review", scenario);
+const outputDir = resolve(
+  process.cwd(),
+  "scratchpad",
+  "design-review",
+  scenario,
+);
 
 // Ensure output directory exists
 mkdirSync(outputDir, { recursive: true });
@@ -147,7 +152,7 @@ function filterScreenshots(names, pattern) {
   if (!pattern) return names;
   const regex = new RegExp(
     "^" + pattern.replace(/\*/g, ".*").replace(/\?/g, ".") + "$",
-    "i"
+    "i",
   );
   return names.filter((name) => regex.test(name));
 }
@@ -204,7 +209,7 @@ async function captureScreenshots() {
         try {
           const url = `${BASE_URL}${page.path}`;
           console.log(
-            `[design-review] Capturing: ${page.name} (${viewport.name}/${theme})`
+            `[design-review] Capturing: ${page.name} (${viewport.name}/${theme})`,
           );
 
           await pageObj.goto(url, { waitUntil: "networkidle", timeout: 30000 });
@@ -258,7 +263,7 @@ async function captureScreenshots() {
         } catch (error) {
           console.error(
             `[design-review] Error capturing ${page.name} (${viewport.name}/${theme}):`,
-            error.message
+            error.message,
           );
         } finally {
           await context.close();
@@ -398,7 +403,9 @@ function generateViewer(screenshots) {
 <div class="grid" id="grid">
 ${screenshots
   .map(
-    (s) => `  <article id="capture-${escapeHtml(s.captureId ?? s.file.replace(/\.png$/i, ""))}" class="card" data-surface="${escapeHtml(s.surface)}" data-viewport="${escapeHtml(s.viewport)}" data-theme="${escapeHtml(s.theme)}" data-type="${s.full ? "full" : "viewport"}">
+    (
+      s,
+    ) => `  <article id="capture-${escapeHtml(s.captureId ?? s.file.replace(/\.png$/i, ""))}" class="card" data-surface="${escapeHtml(s.surface)}" data-viewport="${escapeHtml(s.viewport)}" data-theme="${escapeHtml(s.theme)}" data-type="${s.full ? "full" : "viewport"}">
     <div class="card-header">
       <span class="surface">${escapeHtml(s.surfaceLabel ?? s.surface)}</span>
       <span class="meta">${escapeHtml(s.viewport)} (${s.viewportWidth}×${s.viewportHeight}) / ${escapeHtml(s.theme)}${s.full ? " / full" : ""}</span>

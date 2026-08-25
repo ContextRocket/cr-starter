@@ -13,11 +13,19 @@ test.describe("Theme playground", () => {
     page,
   }) => {
     await page.goto("/en?surface=terminal");
-    await expect(page.locator("body")).toHaveAttribute("data-surface", "terminal");
+    await expect(page.locator("body")).toHaveAttribute(
+      "data-surface",
+      "terminal",
+    );
   });
 
-  test("?surface=marketing restores the marketing surface", async ({ page }) => {
+  test("?surface=marketing restores the marketing surface", async ({
+    page,
+  }) => {
     await page.goto("/en?surface=marketing");
-    await expect(page.locator("body")).toHaveAttribute("data-surface", "marketing");
+    await expect(page.locator("body")).toHaveAttribute(
+      "data-surface",
+      "marketing",
+    );
   });
 });

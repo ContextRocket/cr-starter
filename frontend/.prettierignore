@@ -1,2 +1,19 @@
+# Dependencies + lockfile (never reformat)
+node_modules
+pnpm-lock.yaml
+
+# Build / test artifacts
+.next
+.next-e2e-cookie-consent*
+coverage
+playwright-report
+test-results
+next-env.d.ts
+
+# Generated code -- owned by its generator, not Prettier
 openapi.json
+lib/openapi-client
 public/embed/widget.js
+
+# Scratch / working files
+scratchpad

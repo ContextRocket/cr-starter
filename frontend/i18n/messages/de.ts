@@ -20,7 +20,7 @@
  *   "Datenschutzkontakt" -- Privacy contact.
  */
 
-import type { en, LocaleMessages } from './en';
+import type { en, LocaleMessages } from "./en";
 import { sharedDe } from "./shared/de";
 import { appDe } from "./app/de";
 import { siteDe } from "./site/de";

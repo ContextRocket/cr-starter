@@ -416,7 +416,8 @@ export const siteEn = {
         "Strictly necessary cookies run without consent — they are needed for the site to work.",
       optionalOff:
         "All other categories are off by default. Functional, analytics, and marketing cookies are only set after you give prior, affirmative consent.",
-      noPreTicked: "No pre-ticked boxes — optional categories are never pre-selected.",
+      noPreTicked:
+        "No pre-ticked boxes — optional categories are never pre-selected.",
       noWall:
         "No cookie wall — you can use the core site whether or not you accept optional cookies.",
       rejectEasy:
@@ -460,8 +461,7 @@ export const siteEn = {
     manage: {
       heading: "Managing Your Choice",
       body: "When you first visit, a cookie banner asks for your consent. Use “Accept”, “Decline”, or “Manage settings” to set your per-category choices. You can reopen the banner’s “Manage settings” controls at any time to change or withdraw consent.",
-      storageIntro:
-        "Your choice is stored in your browser under the key",
+      storageIntro: "Your choice is stored in your browser under the key",
       storageAfterKey: "— clearing it will prompt the banner again.",
     },
     browser: {

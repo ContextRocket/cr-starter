@@ -46,7 +46,10 @@ describe("EmbedPage -- live mode", () => {
 
   it("rejects a foreign or unsafe live agent URL", async () => {
     const foreign = await EmbedPage({
-      searchParams: makeSearchParams({ mode: "live", "agent-url": "https://evil.example" }),
+      searchParams: makeSearchParams({
+        mode: "live",
+        "agent-url": "https://evil.example",
+      }),
     });
     render(foreign);
     expect(screen.getByTestId("embed-page-rejected")).toBeInTheDocument();

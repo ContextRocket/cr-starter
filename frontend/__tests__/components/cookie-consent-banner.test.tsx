@@ -65,7 +65,11 @@ vi.mock("@/lib/analytics", () => ({
   }),
   // Granular-category surface used by the shared preferences panel. Mirrors the
   // real four-category model (necessary is always-on, not in this list).
-  OPTIONAL_CONSENT_CATEGORIES: ["functional", "analytics", "marketing"] as const,
+  OPTIONAL_CONSENT_CATEGORIES: [
+    "functional",
+    "analytics",
+    "marketing",
+  ] as const,
   readConsentCategories: () => null,
   saveConsentCategories: saveConsentCategoriesMock,
 }));

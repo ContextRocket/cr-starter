@@ -50,7 +50,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function AttributionPage({ params }: AttributionPageProps) {
+export default async function AttributionPage({
+  params,
+}: AttributionPageProps) {
   const { locale: rawLocale } = await params;
   const locale = resolveLocale(rawLocale);
   setLocale(locale);

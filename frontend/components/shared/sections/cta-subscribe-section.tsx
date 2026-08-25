@@ -108,10 +108,7 @@ export function CtaSubscribeSection({
       >
         {submitted ? (
           <div className="flex flex-col items-center gap-3">
-            <CheckCircleIcon
-              className="h-12 w-12 text-primary"
-              aria-hidden
-            />
+            <CheckCircleIcon className="h-12 w-12 text-primary" aria-hidden />
             <p className="text-lg font-medium text-foreground">
               {successMessage}
             </p>

@@ -274,7 +274,9 @@ export function getItemReviewed(
 ): ItemReviewedConfig {
   const configured =
     override ?? (rawConfig as TestimonialsConfigFile).itemReviewed ?? {};
-  const name = configured.name?.trim() ? configured.name : siteConfig.companyName;
+  const name = configured.name?.trim()
+    ? configured.name
+    : siteConfig.companyName;
   return {
     type: configured.type ?? "Service",
     name,

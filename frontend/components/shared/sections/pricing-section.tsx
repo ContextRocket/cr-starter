@@ -58,11 +58,13 @@ export function PricingSection({
 
   return (
     <section className={`px-6 py-24 sm:py-32 max-w-6xl mx-auto ${className}`}>
-      {(subtitle || description) || title ? (
+      {subtitle || description || title ? (
         <div className="text-center">
           {subtitle && (
             <FadeIn>
-              <h2 className="text-base/7 font-semibold text-primary">{subtitle}</h2>
+              <h2 className="text-base/7 font-semibold text-primary">
+                {subtitle}
+              </h2>
             </FadeIn>
           )}
           <FadeIn delay={0.1}>
@@ -137,7 +139,9 @@ export function PricingSection({
                   <li key={i} className="flex gap-x-3">
                     <CheckIcon
                       className={`h-5 w-5 flex-none ${
-                        tier.featured ? "text-primary-foreground" : "text-primary"
+                        tier.featured
+                          ? "text-primary-foreground"
+                          : "text-primary"
                       }`}
                       aria-hidden="true"
                     />

@@ -80,7 +80,9 @@ describe("MessageList", () => {
       "href",
       "https://example.com",
     );
-    expect(screen.queryByRole("link", { name: "unsafe" })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("link", { name: "unsafe" }),
+    ).not.toBeInTheDocument();
     expect(screen.queryByRole("img")).not.toBeInTheDocument();
   });
 

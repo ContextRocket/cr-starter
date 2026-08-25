@@ -92,7 +92,9 @@ export interface HeroInsightsOverlayProps {
   className?: string;
 }
 
-export type HeroInsightsProps = HeroInsightsGridProps | HeroInsightsOverlayProps;
+export type HeroInsightsProps =
+  | HeroInsightsGridProps
+  | HeroInsightsOverlayProps;
 
 export function HeroInsights(props: HeroInsightsProps) {
   if (props.layout === "overlay") {
@@ -150,7 +152,9 @@ function HeroInsightsGrid({
             key={item.label}
             className={
               "h-full rounded-xl border border-card-border bg-card p-6 shadow-sm transition-all duration-500 ease-out motion-reduce:transition-none " +
-              (revealed ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0")
+              (revealed
+                ? "translate-y-0 opacity-100"
+                : "translate-y-3 opacity-0")
             }
             style={
               reduceMotion
@@ -261,7 +265,9 @@ function HeroInsightsOverlay({
               opacity: revealed ? 1 : 0,
               transform: revealed ? "scale(1)" : "scale(0.8)",
               transition: reduceMotion ? "none" : "all 0.5s ease-out",
-              transitionDelay: reduceMotion ? "0ms" : (scoreBadge.delay ?? "800ms"),
+              transitionDelay: reduceMotion
+                ? "0ms"
+                : (scoreBadge.delay ?? "800ms"),
             }}
             data-testid="score-badge"
           />

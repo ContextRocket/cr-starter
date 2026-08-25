@@ -39,7 +39,10 @@ export function isAllowedAgentUrl(
   try {
     const candidateUrl = new URL(candidate);
     const configuredUrl = new URL(configuredAgentUrl);
-    if (candidateUrl.protocol !== "http:" && candidateUrl.protocol !== "https:") {
+    if (
+      candidateUrl.protocol !== "http:" &&
+      candidateUrl.protocol !== "https:"
+    ) {
       return false;
     }
     return candidateUrl.origin === configuredUrl.origin;

@@ -19,9 +19,8 @@ describe("blog-path -- shipped default (/blog, Blog)", () => {
   });
 
   it("blogBasePath is /blog and isDefault is true", async () => {
-    const { blogBasePath, isDefaultBlogBasePath } = await import(
-      "@/lib/blog-path"
-    );
+    const { blogBasePath, isDefaultBlogBasePath } =
+      await import("@/lib/blog-path");
     expect(blogBasePath()).toBe("/blog");
     expect(isDefaultBlogBasePath()).toBe(true);
   });
@@ -48,18 +47,15 @@ describe("blog-path -- custom fork segment", () => {
   });
 
   it("normalizes the custom segment and reports non-default", async () => {
-    const { blogBasePath, isDefaultBlogBasePath } = await import(
-      "@/lib/blog-path"
-    );
+    const { blogBasePath, isDefaultBlogBasePath } =
+      await import("@/lib/blog-path");
     expect(blogBasePath()).toBe("/the-creator-economy-for-b2b");
     expect(isDefaultBlogBasePath()).toBe(false);
   });
 
   it("blogPostPath + blogTitle honor the custom config", async () => {
     const { blogPostPath, blogTitle } = await import("@/lib/blog-path");
-    expect(blogPostPath("launch")).toBe(
-      "/the-creator-economy-for-b2b/launch",
-    );
+    expect(blogPostPath("launch")).toBe("/the-creator-economy-for-b2b/launch");
     expect(blogTitle()).toBe("The Creator Economy for B2B");
   });
 });

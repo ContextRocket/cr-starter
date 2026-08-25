@@ -14,13 +14,13 @@ export const sharedEn = {
   form: {
     email: "Email",
     placeholder: {
-      email: "m@example.com"
+      email: "m@example.com",
     },
     validation: {
       email: {
-        invalid: "Invalid email address"
-      }
-    }
+        invalid: "Invalid email address",
+      },
+    },
   },
   nav: {
     blog: "Blog",
@@ -28,13 +28,13 @@ export const sharedEn = {
     about: "About",
     pricing: "Pricing",
     aria: {
-      primary: "Primary"
-    }
+      primary: "Primary",
+    },
   },
   theme: {
     toggle: "Toggle theme",
     light: "Light",
-    dark: "Dark"
+    dark: "Dark",
   },
   notifications: {
     region: "Site notifications",
@@ -42,22 +42,22 @@ export const sharedEn = {
     example: {
       info: {
         message: "We just shipped a new feature.",
-        action: "Read the update"
+        action: "Read the update",
       },
       warning: {
-        message: "Scheduled maintenance this weekend."
-      }
-    }
+        message: "Scheduled maintenance this weekend.",
+      },
+    },
   },
   error: {
     generic: "Something went wrong. Please try again.",
     try: {
-      again: "Try again"
+      again: "Try again",
     },
     unexpected: "An unexpected error occurred. Please try again later.",
     network: "Network error",
     no: {
-      data: "No data returned from server"
+      data: "No data returned from server",
     },
     unknown: "Unknown error",
     internal: "Internal server error",
@@ -65,28 +65,28 @@ export const sharedEn = {
       title: "Page not found",
       description:
         "The page you are looking for does not exist or has been moved.",
-      action: "Go back home"
-    }
+      action: "Go back home",
+    },
   },
   locale: {
     labelEnglish: "English",
     labelSpanish: "Spanish",
     labelGerman: "German",
     labelChinese: "Chinese",
-    changeLanguage: "Change language"
+    changeLanguage: "Change language",
   },
   breadcrumb: {
-    home: "Home"
+    home: "Home",
   },
   pagination: {
     items: {
       per: {
-        page: "Items per page:"
-      }
+        page: "Items per page:",
+      },
     },
     no: {
-      results: "0 results"
-    }
+      results: "0 results",
+    },
   },
   gallery: {
     title: "Image gallery",
@@ -99,7 +99,7 @@ export const sharedEn = {
     close: "Close image",
     previous: "Previous image",
     next: "Next image",
-    counter: "{current} of {total}"
+    counter: "{current} of {total}",
   },
   legal: {
     identity: {
@@ -117,18 +117,18 @@ export const sharedEn = {
       tradingName: "Trading name",
       notRegisteredCompany: "This is not a registered company.",
       // Shared contact row.
-      contact: "Contact"
-    }
+      contact: "Contact",
+    },
   },
   cookie: {
     consent: {
       aria: {
-        label: "Cookie consent"
+        label: "Cookie consent",
       },
       title: "This site uses cookies",
       body: "We use analytics cookies. See our",
       policy: {
-        link: "Privacy Policy"
+        link: "Privacy Policy",
       },
       accept: "Accept all",
       decline: "Reject all",
@@ -143,25 +143,25 @@ export const sharedEn = {
           necessary: {
             label: "Strictly necessary",
             description:
-              "Required for the site to function. These cannot be turned off."
+              "Required for the site to function. These cannot be turned off.",
           },
           functional: {
             label: "Functional",
             description:
-              "Remembers optional preferences like your language or interface choices."
+              "Remembers optional preferences like your language or interface choices.",
           },
           analytics: {
             label: "Analytics",
             description:
-              "Help us understand how the site is used so we can improve it."
+              "Help us understand how the site is used so we can improve it.",
           },
           marketing: {
             label: "Marketing",
             description:
-              "Used to personalise content and measure marketing campaigns."
-          }
-        }
-      }
-    }
-  }
+              "Used to personalise content and measure marketing campaigns.",
+          },
+        },
+      },
+    },
+  },
 } as const;

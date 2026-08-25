@@ -26,7 +26,10 @@ interface FeaturedBlogPostProps {
 }
 
 function readMinutes(body: string): number {
-  return Math.max(1, Math.round(body.split(/\s+/).filter(Boolean).length / 200));
+  return Math.max(
+    1,
+    Math.round(body.split(/\s+/).filter(Boolean).length / 200),
+  );
 }
 
 export function FeaturedBlogPost({ post, locale }: FeaturedBlogPostProps) {

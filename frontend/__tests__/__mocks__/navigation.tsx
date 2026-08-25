@@ -63,7 +63,14 @@ export function permanentRedirect(href: string): never {
 
 /** Locale-stripped mock: just returns the href as-is for test isolation. */
 export function prefixLocale(href: string, locale: string): string {
-  if (href.startsWith("http://") || href.startsWith("https://") || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:")) return href;
+  if (
+    href.startsWith("http://") ||
+    href.startsWith("https://") ||
+    href.startsWith("#") ||
+    href.startsWith("mailto:") ||
+    href.startsWith("tel:")
+  )
+    return href;
   const first = href.split("/")[1] ?? "";
   if (["en", "es", "de"].includes(first)) return href;
   const normalized = href.startsWith("/") ? href : `/${href}`;

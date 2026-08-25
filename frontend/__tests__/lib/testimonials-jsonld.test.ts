@@ -14,10 +14,7 @@
  */
 
 import { buildTestimonialsJsonLd } from "@/lib/testimonials-jsonld";
-import {
-  buildServiceJsonLd,
-  getPrimaryServiceId,
-} from "@/lib/structured-data";
+import { buildServiceJsonLd, getPrimaryServiceId } from "@/lib/structured-data";
 import { getItemReviewed, resolveTestimonials } from "@/lib/testimonials";
 import type {
   ItemReviewedConfig,
@@ -144,10 +141,7 @@ describe("buildTestimonialsJsonLd -- text-match invariant", () => {
 describe("buildTestimonialsJsonLd -- per-review rating gate", () => {
   it("emits reviewRating only when the testimonial has a rating", () => {
     const node = buildTestimonialsJsonLd(
-      [
-        testimonial({ id: "rated", rating: 4 }),
-        testimonial({ id: "unrated" }),
-      ],
+      [testimonial({ id: "rated", rating: 4 }), testimonial({ id: "unrated" })],
       SERVICE,
     ) as Node;
     const [rated, unrated] = node.review as Node[];

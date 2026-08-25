@@ -41,7 +41,8 @@ const PUBLIC_DIR = path.join(FRONTEND_ROOT, "public");
 
 // Source PNG: CLI arg > env var > the shipped ContextRocket rocket (red bg).
 const DEFAULT_SOURCE = path.join(PUBLIC_DIR, "favicon-source.png");
-const rawSource = process.argv[2] || process.env.FAVICON_SOURCE || DEFAULT_SOURCE;
+const rawSource =
+  process.argv[2] || process.env.FAVICON_SOURCE || DEFAULT_SOURCE;
 const SOURCE = path.isAbsolute(rawSource)
   ? rawSource
   : path.resolve(FRONTEND_ROOT, rawSource);

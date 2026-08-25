@@ -39,7 +39,9 @@ export function FooterSection({
       <footer
         className={`mt-auto border-t border-border bg-background text-muted-foreground ${className}`}
       >
-        <div className={`mx-auto flex flex-col items-center justify-between gap-3 py-6 text-sm sm:flex-row ${containerClassName}`}>
+        <div
+          className={`mx-auto flex flex-col items-center justify-between gap-3 py-6 text-sm sm:flex-row ${containerClassName}`}
+        >
           <span>
             &copy; {new Date().getFullYear()} {companyName}
           </span>
@@ -82,7 +84,10 @@ export function FooterSection({
                     {link.label}
                   </Link>
                   {index < links.length - 1 && (
-                    <span className="text-muted-foreground/60" aria-hidden="true">
+                    <span
+                      className="text-muted-foreground/60"
+                      aria-hidden="true"
+                    >
                       |
                     </span>
                   )}

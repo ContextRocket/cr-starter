@@ -240,7 +240,10 @@ export default async function CookiesPage({ params }: CookiesPageProps) {
             </p>
             {/* Contact identity renders on the entity-type spectrum
                 (company / individual / unincorporated) from siteConfig.legal. */}
-            <div className="text-sm" data-testid="cookies-contact-section-identity">
+            <div
+              className="text-sm"
+              data-testid="cookies-contact-section-identity"
+            >
               <LegalIdentityBlock
                 legal={legal}
                 contactEmail={siteConfig.contactEmail}

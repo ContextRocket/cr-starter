@@ -43,7 +43,8 @@ function items(): HeroInsightItem[] {
 }
 
 function renderPanel(overrides: Partial<HeroInsightItem>[] = []) {
-  const data = overrides.length > 0 ? (overrides as HeroInsightItem[]) : items();
+  const data =
+    overrides.length > 0 ? (overrides as HeroInsightItem[]) : items();
   return render(
     <HeroInsights
       layout="grid"
@@ -75,9 +76,7 @@ describe("HeroInsights (grid)", () => {
   });
 
   it("renders the heading but no card values when items is empty", () => {
-    render(
-      <HeroInsights layout="grid" headline="Empty panel" items={[]} />,
-    );
+    render(<HeroInsights layout="grid" headline="Empty panel" items={[]} />);
     expect(screen.getByText("Empty panel")).toBeInTheDocument();
     expect(screen.queryByText("92%")).not.toBeInTheDocument();
   });

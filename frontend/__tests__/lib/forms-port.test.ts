@@ -137,9 +137,8 @@ describe("createFormSubmissionPort", () => {
     // Override the mock for this test by re-importing.
     vi.doUnmock("@/config/site.config");
     vi.doMock("@/config/site.config", () => ({ forms: unconfiguredForms }));
-    const { createFormSubmissionPort: freshPort } = await import(
-      "@/lib/forms-port"
-    );
+    const { createFormSubmissionPort: freshPort } =
+      await import("@/lib/forms-port");
 
     const fetchImpl = vi.fn();
     const port = freshPort(fetchImpl);
@@ -153,9 +152,8 @@ describe("createFormSubmissionPort", () => {
   it("returns success without calling fetch when form key is absent from config", async () => {
     vi.doUnmock("@/config/site.config");
     vi.doMock("@/config/site.config", () => ({ forms: {} }));
-    const { createFormSubmissionPort: freshPort } = await import(
-      "@/lib/forms-port"
-    );
+    const { createFormSubmissionPort: freshPort } =
+      await import("@/lib/forms-port");
 
     const fetchImpl = vi.fn();
     const port = freshPort(fetchImpl);
@@ -206,7 +204,9 @@ describe("createInMemoryFormSubmissionPort", () => {
   });
 
   it("custom handler receives correct arguments", async () => {
-    const handler = { submitForm: vi.fn().mockResolvedValue({ success: true }) };
+    const handler = {
+      submitForm: vi.fn().mockResolvedValue({ success: true }),
+    };
     const port = createInMemoryFormSubmissionPort(handler);
 
     await port.submitForm("waitlist", { name: "Bob", ref: "twitter" });

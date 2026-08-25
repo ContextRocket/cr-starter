@@ -30,7 +30,7 @@ export function ValuePropCard({
       className={cn(
         "group relative overflow-hidden rounded-2xl border bg-card p-6 transition-all duration-300",
         "hover:-translate-y-1 hover:shadow-lg hover:border-primary/20",
-        className
+        className,
       )}
     >
       {/* Gradient accent on hover */}
@@ -68,7 +68,7 @@ export function ValuePropGrid({ items, className }: ValuePropGridProps) {
     <div
       className={cn(
         "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3",
-        className
+        className,
       )}
     >
       {items.map((item, index) => (

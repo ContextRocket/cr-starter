@@ -11,7 +11,6 @@ import { ArrowUpIcon, SquareIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "@/i18n/locale-provider";
 
-
 interface ChatComposerProps {
   onSend: (text: string) => void;
   onStop?: () => void;
