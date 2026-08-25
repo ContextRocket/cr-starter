@@ -1,0 +1,17 @@
+/* AOS safety net -- content must NEVER depend on the scroll-animation JS to be
+   visible. aos.css sets `[data-aos]{opacity:0}` and reveals elements on
+   scroll/init; if that JS is disabled, errors, or hydrates slowly, every
+   ScrollReveal section would stay invisible -- a blank page. Until AosProvider
+   confirms AOS is live (adds `.aos-ready` to <html>), force `[data-aos]`
+   content fully visible. Progressive enhancement, not a hard dependency.
+
+   Co-located with (and imported by) aos-provider.tsx so this parent-owned guard
+   travels with the JS half as ONE unit across the fork family. It lives here,
+   NOT in globals.css, because globals.css is fork-owned and would not propagate
+   on a parent sync -- which would ship the AOS JS change without its CSS guard
+   and blank the page for reduced-motion users. */
+html:not(.aos-ready) [data-aos] {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}

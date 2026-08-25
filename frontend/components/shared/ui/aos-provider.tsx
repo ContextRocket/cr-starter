@@ -3,6 +3,9 @@
 import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+// Parent-owned blank-page guard (see aos-safety.css). Co-located so it syncs
+// with this component as one unit; must NOT live in fork-owned globals.css.
+import "./aos-safety.css";
 
 /**
  * AosProvider -- initializes AOS (Animate On Scroll), the project's standard

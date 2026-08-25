@@ -378,15 +378,3 @@
 .text-darken {
   color: var(--darken, var(--foreground));
 }
-
-/* AOS safety net -- content must NEVER depend on the scroll-animation JS to be
-   visible. aos.css sets `[data-aos]{opacity:0}` and reveals elements on
-   scroll/init; if that JS is disabled, errors, or hydrates slowly, every
-   ScrollReveal section would stay invisible -- a blank page. Until AosProvider
-   confirms AOS is live (adds `.aos-ready` to <html>), force `[data-aos]`
-   content fully visible. Progressive enhancement, not a hard dependency. */
-html:not(.aos-ready) [data-aos] {
-  opacity: 1 !important;
-  transform: none !important;
-  transition: none !important;
-}
