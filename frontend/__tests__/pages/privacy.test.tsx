@@ -42,14 +42,6 @@ describe("Privacy Page", () => {
     expect(heading.textContent).toBeTruthy();
   });
 
-  it("renders the generated-from-config notice", async () => {
-    await renderPrivacy();
-
-    const notice = screen.getByTestId("privacy-generated-notice");
-    expect(notice).toBeInTheDocument();
-    expect(notice.textContent).toBeTruthy();
-  });
-
   it("renders the data controller section", async () => {
     await renderPrivacy();
 

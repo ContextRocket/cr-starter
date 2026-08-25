@@ -104,14 +104,6 @@ export default async function CookiesPage({ params }: CookiesPageProps) {
       <main className="min-h-screen bg-background text-foreground p-8 max-w-2xl mx-auto">
         <h1 className="text-3xl font-bold mb-2">{t("cookies.title")}</h1>
 
-        {/* Generated-from-config notice */}
-        <p
-          className="text-xs text-muted-foreground mb-6 italic"
-          data-testid="cookies-generated-notice"
-        >
-          {t("cookies.generated.notice")}
-        </p>
-
         <section className="space-y-8 text-foreground">
           {/* Intro */}
           <p className="text-sm text-muted-foreground">{t("cookies.intro")}</p>

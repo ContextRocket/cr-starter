@@ -80,14 +80,6 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
       <main className="min-h-screen bg-background text-foreground p-8 max-w-2xl mx-auto">
         <h1 className="text-3xl font-bold mb-2">{t("privacy.title")}</h1>
 
-        {/* Generated-from-config notice */}
-        <p
-          className="text-xs text-muted-foreground mb-6 italic"
-          data-testid="privacy-generated-notice"
-        >
-          {t("privacy.generated.notice")}
-        </p>
-
         {/* Placeholder warning -- visible when legal fields have not been filled */}
         {isPlaceholder ? (
           <div

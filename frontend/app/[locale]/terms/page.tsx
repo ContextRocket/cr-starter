@@ -93,14 +93,6 @@ export default async function TermsPage({ params }: TermsPageProps) {
       <main className="min-h-screen bg-background text-foreground p-8 max-w-2xl mx-auto">
         <h1 className="text-3xl font-bold mb-2">{t("terms.title")}</h1>
 
-        {/* Generated-from-config notice */}
-        <p
-          className="text-xs text-muted-foreground mb-6 italic"
-          data-testid="terms-generated-notice"
-        >
-          {t("terms.generated.notice")}
-        </p>
-
         {/* Placeholder warning -- visible when legal fields have not been filled */}
         {isPlaceholder ? (
           <div
