@@ -53,7 +53,11 @@ export const sharedDe: LocaleMessages<typeof sharedEn> = {
     },
   },
   error: {
-    generic: "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+    generic: {
+      title: "Etwas ist schiefgelaufen",
+      description: "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+      action: "Erneut versuchen",
+    },
     try: {
       again: "Erneut versuchen",
     },

@@ -53,7 +53,11 @@ export const sharedEs: LocaleMessages<typeof sharedEn> = {
     },
   },
   error: {
-    generic: "Algo ha salido mal. Por favor, inténtalo de nuevo.",
+    generic: {
+      title: "Algo ha salido mal",
+      description: "Algo ha salido mal. Por favor, inténtalo de nuevo.",
+      action: "Intentar de nuevo",
+    },
     try: {
       again: "Intentar de nuevo",
     },

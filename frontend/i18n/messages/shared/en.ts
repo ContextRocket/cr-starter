@@ -50,7 +50,11 @@ export const sharedEn = {
     },
   },
   error: {
-    generic: "Something went wrong. Please try again.",
+    generic: {
+      title: "Something went wrong",
+      description: "Something went wrong. Please try again.",
+      action: "Try again",
+    },
     try: {
       again: "Try again",
     },
