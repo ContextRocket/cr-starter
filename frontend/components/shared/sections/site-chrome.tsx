@@ -28,6 +28,7 @@
  */
 
 import { usePathname } from "@/i18n/navigation";
+import { SUPPORTED_LOCALES } from "@/i18n/messages";
 import { Navbar, type NavLink } from "@/components/shared/sections/navbar";
 import { MinimalHeader } from "@/components/shared/sections/minimal-header";
 import type { BrandLogoAsset } from "@/components/shared/sections/brand-logo";
@@ -68,7 +69,16 @@ export function SiteChrome({
   navLabel,
   containerClassName,
 }: SiteChromeProps) {
-  const pathname = usePathname() || "/";
+  // Strip a leading locale segment before matching exempt prefixes. In
+  // single-language (`fast`) mode our `usePathname` returns the path WITH the
+  // locale (e.g. `/en/probe`), so a bare `/probe` prefix would never match.
+  const rawPathname = usePathname() || "/";
+  const segments = rawPathname.split("/");
+  const pathname =
+    segments.length > 1 &&
+    (SUPPORTED_LOCALES as readonly string[]).includes(segments[1])
+      ? `/${segments.slice(2).join("/")}`
+      : rawPathname;
   const exemptPrefixes = siteConfig.chrome.exemptPrefixes ?? [
     "/dashboard",
     "/auth",
