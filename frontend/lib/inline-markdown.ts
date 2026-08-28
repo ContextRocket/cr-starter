@@ -13,8 +13,19 @@
 
 /** Convert inline Markdown in a single text block to an HTML string. */
 export function renderInlineMarkdown(text: string): string {
+  // Escape HTML FIRST so literal tags in the authored content -- e.g. `<h1>` in
+  // inline code, or a <script> in an example -- render as visible text instead
+  // of being injected as real DOM nodes. Injecting raw tags via
+  // dangerouslySetInnerHTML produced invalid nesting (a block element inside
+  // <p>/<code>) and script tags, which the browser reparents, causing a
+  // hydration mismatch. The Markdown tokens below never contain <, >, or & so
+  // they still match after escaping; the tags we insert are added afterwards.
+  const escaped = text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
   return (
-    text
+    escaped
       // images ![alt](src)  (before links -- both use the "](" token)
       .replace(
         /!\[([^\]]*)\]\(([^)]+)\)/g,
