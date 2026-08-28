@@ -1,4 +1,5 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, vi } from "vitest";
+import type { ReactElement } from "react";
 import { render } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { siteConfig } from "@/config/site.config";
@@ -25,7 +26,7 @@ import Faq from "@/app/[locale]/faq/page";
 
 type PageFn = (props: {
   params: Promise<{ locale: string }>;
-}) => Promise<React.ReactElement>;
+}) => Promise<ReactElement>;
 
 const PAGES: [string, PageFn][] = [
   ["cookies", Cookies as PageFn],
@@ -35,13 +36,30 @@ const PAGES: [string, PageFn][] = [
   ["faq", Faq as PageFn],
 ];
 
+/** notFound()/redirect() are Next control-flow signals (a fork may disable a
+ * page via feature flag), not missing-key crashes. Allow them; fail on the
+ * rest (e.g. a missing i18n key). */
+function isNextControlFlow(err: unknown): boolean {
+  const digest = (err as { digest?: unknown } | null)?.digest;
+  return (
+    typeof digest === "string" &&
+    (digest.startsWith("NEXT_HTTP_ERROR_FALLBACK") ||
+      digest.startsWith("NEXT_REDIRECT"))
+  );
+}
+
 describe("core outer-loop pages render without missing keys", () => {
   for (const [name, Page] of PAGES) {
     for (const locale of siteConfig.locales) {
       it(`${name} (${locale})`, async () => {
-        const ui = await Page({ params: Promise.resolve({ locale }) });
-        expect(() => render(ui)).not.toThrow();
+        try {
+          render(await Page({ params: Promise.resolve({ locale }) }));
+        } catch (err) {
+          if (isNextControlFlow(err)) return;
+          throw err;
+        }
       });
     }
   }
-});
+}
+);
