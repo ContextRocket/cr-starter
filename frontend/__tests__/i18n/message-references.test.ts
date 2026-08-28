@@ -27,7 +27,7 @@ function flatten(
 }
 
 function walk(dir: string, acc: string[] = []): string[] {
-  let entries: string[] = [];
+  let entries: string[];
   try {
     entries = readdirSync(dir);
   } catch {
