@@ -52,6 +52,21 @@ The public API is in `frontend/i18n/keys.ts`:
 - server components use `setLocale(locale); t("KEY")`;
 - client components use `useLocale()` plus `t()` from `keys.ts`.
 
+## Local development
+
+To set up locally and launch the frontend for design and content work:
+
+```bash
+source ~/.zshrc && nvm use --silent   # Node version from .nvmrc
+cd frontend && pnpm install
+pnpm dev                              # preview at http://localhost:3000
+```
+
+Before committing, run `pnpm run typecheck`, `pnpm run lint`,
+`pnpm run i18n:check`, and `pnpm test` from `frontend/`. A fork may also provide
+a step-by-step `GETTING_STARTED.md` at its root with a beginner walkthrough and
+the content re-sync workflow.
+
 ## Toolchain
 
 - Frontend: pnpm, Next.js App Router, TypeScript, Vitest.
