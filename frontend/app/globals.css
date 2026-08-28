@@ -3,7 +3,7 @@
  *
  * FORK OWNERS: edit site.config.ts > theme {} to change colors, borders, and
  * radius. The CSS variables below reference those values. The single design
- * touchpoint is site.config.ts — you should rarely need to edit this file.
+ * touchpoint is site.config.ts -- you should rarely need to edit this file.
  *
  * Add a .dark {} block below :root to support dark mode. Set the body class
  * in app/[locale]/layout.tsx if you want dark mode by default.
@@ -20,14 +20,14 @@
 @custom-variant dark (&:is(.dark, .dark *));
 
 /*
- * DESIGN-TOKEN CONTRACT (Layer 1 — generic, source of truth)
+ * DESIGN-TOKEN CONTRACT (Layer 1 -- generic, source of truth)
  * ----------------------------------------------------------
  * These generic semantic tokens (--primary / --secondary / --tertiary, each with
  * -hover / -soft / -foreground; plus --muted, --accent, semantic --success/
  * --warning/--info/--error, and --text-secondary/-tertiary) are the SINGLE source
  * of truth. A derived product (e.g. ContextRocket) keeps its brand vocabulary as
- * thin ALIASES in its own globals — e.g. `--cr-pink: var(--primary)`,
- * `--cr-cyan: var(--tertiary)`, `--cr-blue: var(--info)` — never a parallel value
+ * thin ALIASES in its own globals -- e.g. `--cr-pink: var(--primary)`,
+ * `--cr-cyan: var(--tertiary)`, `--cr-blue: var(--info)` -- never a parallel value
  * system. This starter never hardcodes brand color names; forks re-brand via
  * `siteConfig.theme` in site.config.ts.
  *
@@ -38,7 +38,7 @@
  */
 
 @theme {
-  /* Fonts — set in the [locale] layout via next/font. Swap the font files
+  /* Fonts -- set in the [locale] layout via next/font. Swap the font files
      (or switch to next/font/google) without touching component classes. */
   --font-sans: var(--font-sans, "Geist", system-ui, sans-serif);
   --font-mono: var(--font-mono, "Geist Mono", "Space Mono", monospace);
@@ -63,14 +63,14 @@
   --color-primary-hover: var(--primary-hover);
   --color-primary-soft: var(--primary-soft);
 
-  /* Brand accent — the high-intent CTA color. It may be shared with the
+  /* Brand accent -- the high-intent CTA color. It may be shared with the
      primary action token or kept distinct by a fork that needs another
      hierarchy. */
   --color-brand-accent: var(--brand-accent);
   --color-brand-accent-foreground: var(--brand-accent-foreground);
   --color-brand-accent-hover: var(--brand-accent-hover);
 
-  /* Card border — lifted above the generic --border in dark mode so metric /
+  /* Card border -- lifted above the generic --border in dark mode so metric /
      feature / blog / cookie cards read as panels, not floating text. In light
      mode it equals --border. */
   --color-card-border: var(--card-border, var(--border));
@@ -121,7 +121,7 @@
   --color-disabled: var(--disabled);
   --color-disabled-foreground: var(--disabled-foreground);
 
-  /* Accent surface pairs (context-rocket pattern) — soft tinted backgrounds
+  /* Accent surface pairs (context-rocket pattern) -- soft tinted backgrounds
      with matching foregrounds for badges, tags, status pills. Fork owners
      override the fg/bg pairs per brand. */
   --color-accent-green-bg: var(--accent-green-bg, #dcfce7);
@@ -136,7 +136,7 @@
   --color-accent-brand-fg: var(--accent-brand-fg, var(--primary));
   --color-accent-slate-bg: var(--accent-slate-bg, #f1f5f9);
   --color-accent-slate-fg: var(--accent-slate-fg, #334155);
-  /* Lavender/indigo pair — soft info tint (notification-bar "info" tone).
+  /* Lavender/indigo pair -- soft info tint (notification-bar "info" tone).
      bg #eef2ff / fg #3730a3 clears WCAG AA (7.9:1). */
   --color-accent-indigo-bg: var(--accent-indigo-bg, #eef2ff);
   --color-accent-indigo-fg: var(--accent-indigo-fg, #3730a3);
@@ -169,7 +169,7 @@
   --popover-foreground: hsl(0 0% 3.9%);
   --primary: hsl(340 76% 43%);
   --primary-foreground: hsl(0 0% 98%);
-  /* Hover/soft variants — fork owners adjust alongside --primary */
+  /* Hover/soft variants -- fork owners adjust alongside --primary */
   --primary-hover: hsl(340 81% 30%);
   --primary-soft: hsl(340 76% 43% / 0.08);
   /* Brand accent (high-intent CTAs). #FF2B67 matches the header rocket glyph;
@@ -215,7 +215,7 @@
   --disabled: #e5e7eb;
   --disabled-foreground: #9ca3af;
 
-  /* Active font family — indirection so a route-group can flip the whole
+  /* Active font family -- indirection so a route-group can flip the whole
      surface between the sans (marketing) and mono (terminal) face without
      touching component classes. Default = marketing. See the surface blocks
      below. */
@@ -227,7 +227,7 @@
  * -------------------------------
  * next-themes toggles the `.dark` class on <html> (attribute="class"). This
  * block must override EVERY light `:root` token so no element falls back to a
- * light-only value — including the hover/soft variants, the semantic tokens
+ * light-only value -- including the hover/soft variants, the semantic tokens
  * (success/warning/info/error/disabled + foregrounds), and the accent-surface
  * BG/FG pairs whose @theme fallbacks are light hex. All pairs below are chosen
  * for WCAG AA legibility on a dark (#0a0a0a-ish) surface.
@@ -247,7 +247,7 @@
   --primary-foreground: #ffffff;
   --primary-hover: #ff5c8c;
   --primary-soft: rgb(255 61 117 / 0.12);
-  /* Brand accent — slightly brighter on dark so the pink stays vivid against
+  /* Brand accent -- slightly brighter on dark so the pink stays vivid against
      near-black; white foreground keeps AA button-text contrast. */
   --brand-accent: #ff3d75;
   --brand-accent-foreground: #ffffff;
@@ -263,7 +263,7 @@
   --muted: hsl(0 0% 14.9%);
   /* 63.9% clears AA (4.5:1) for body/caption text on the dark --muted/-card. */
   --muted-foreground: hsl(0 0% 63.9%);
-  /* Text tiers — explicit so text-secondary/-tertiary do not fall back to a
+  /* Text tiers -- explicit so text-secondary/-tertiary do not fall back to a
      light value in dark mode. */
   --text-secondary: hsl(0 0% 74%);
   --text-tertiary: hsl(0 0% 63.9%);
@@ -283,7 +283,7 @@
   --chart-4: hsl(280 65% 60%);
   --chart-5: hsl(340 75% 55%);
 
-  /* Semantic tokens — brighter fills + light foregrounds read correctly on a
+  /* Semantic tokens -- brighter fills + light foregrounds read correctly on a
      dark surface (the light --success etc. would be too muddy). */
   --success: #22c55e;
   --success-foreground: #052e16;
@@ -296,7 +296,7 @@
   --disabled: hsl(0 0% 20%);
   --disabled-foreground: hsl(0 0% 45%);
 
-  /* Accent-surface pairs — dark, low-saturation tints with light foregrounds
+  /* Accent-surface pairs -- dark, low-saturation tints with light foregrounds
      (mirror of the light hex defaults in @theme). Without these overrides the
      notification bar / badges would paint a LIGHT tint on the dark page. Each
      pair clears WCAG AA for its foreground text. */
@@ -316,14 +316,14 @@
 }
 
 /*
- * SURFACE SPLIT (Layer 2 — one token foundation, two surfaces)
+ * SURFACE SPLIT (Layer 2 -- one token foundation, two surfaces)
  * -----------------------------------------------------------
  * A single site renders two surfaces from the SAME Layer-1 tokens above:
- *   • outer/marketing (the DEFAULT) — sans face, rounded corners.
- *   • inner/terminal  — mono face, square corners.
+ *   • outer/marketing (the DEFAULT) -- sans face, rounded corners.
+ *   • inner/terminal  -- mono face, square corners.
  * The surface is switched per route-group by setting `data-surface` on that
  * group's layout wrapper; these blocks override only a couple of tokens
- * (`--font-active`, `--radius`) — never the color values. The site default is
+ * (`--font-active`, `--radius`) -- never the color values. The site default is
  * set on <body> in app/[locale]/layout.tsx (data-surface="marketing").
  *
  * Intended ContextRocket map (a derived product wires it this way):

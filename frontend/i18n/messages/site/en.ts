@@ -413,15 +413,15 @@ export const siteEn = {
     controls: {
       heading: "Your Consent Controls",
       necessary:
-        "Strictly necessary cookies run without consent — they are needed for the site to work.",
+        "Strictly necessary cookies run without consent -- they are needed for the site to work.",
       optionalOff:
         "All other categories are off by default. Functional, analytics, and marketing cookies are only set after you give prior, affirmative consent.",
       noPreTicked:
-        "No pre-ticked boxes — optional categories are never pre-selected.",
+        "No pre-ticked boxes -- optional categories are never pre-selected.",
       noWall:
-        "No cookie wall — you can use the core site whether or not you accept optional cookies.",
+        "No cookie wall -- you can use the core site whether or not you accept optional cookies.",
       rejectEasy:
-        "Rejecting is as easy as accepting — the banner offers Accept, Decline, and Manage settings with equal prominence.",
+        "Rejecting is as easy as accepting -- the banner offers Accept, Decline, and Manage settings with equal prominence.",
       withdraw:
         "You can change or withdraw your choice at any time from the cookie settings.",
       reprompt:
@@ -435,23 +435,23 @@ export const siteEn = {
         name: "Strictly necessary",
         purpose:
           "Session, authentication, and security, plus remembering your cookie consent choice. Required for the site to work.",
-        consent: "Always on — no consent needed.",
+        consent: "Always on -- no consent needed.",
       },
       functional: {
         name: "Functional",
         purpose:
           "Remembering optional preferences such as your language or interface choices.",
-        consent: "Opt-in — set only after consent.",
+        consent: "Opt-in -- set only after consent.",
       },
       analytics: {
         name: "Analytics",
         purpose: "Understanding how the site is used so we can improve it.",
-        consent: "Opt-in — loaded only after consent.",
+        consent: "Opt-in -- loaded only after consent.",
       },
       marketing: {
         name: "Marketing",
         purpose: "Measuring and delivering relevant marketing.",
-        consent: "Opt-in — loaded only after consent.",
+        consent: "Opt-in -- loaded only after consent.",
       },
       analyticsActive:
         "Analytics is currently configured on this site and loads only after you grant consent.",
@@ -462,7 +462,7 @@ export const siteEn = {
       heading: "Managing Your Choice",
       body: "When you first visit, a cookie banner asks for your consent. Use “Accept”, “Decline”, or “Manage settings” to set your per-category choices. You can reopen the banner’s “Manage settings” controls at any time to change or withdraw consent.",
       storageIntro: "Your choice is stored in your browser under the key",
-      storageAfterKey: "— clearing it will prompt the banner again.",
+      storageAfterKey: "-- clearing it will prompt the banner again.",
     },
     browser: {
       heading: "Managing Cookies in Your Browser",

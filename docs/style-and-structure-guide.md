@@ -10,15 +10,15 @@ It is deliberately not a second copy of the company brand canon. The source of
 truth for the *why* is [`cr-company-docs`](https://github.com/ContextRocket/cr-company-docs):
 
 - [Style guide](https://github.com/ContextRocket/cr-company-docs/blob/main/brand/style-guide.md)
-  — voice registers, terminology, and visual principles;
+  -- voice registers, terminology, and visual principles;
 - [Visual identity](https://github.com/ContextRocket/cr-company-docs/blob/main/brand/visual-identity.md)
-  — palette, semantic tokens, typography, and accessibility intent;
+  -- palette, semantic tokens, typography, and accessibility intent;
 - [Voice lexicon](https://github.com/ContextRocket/cr-company-docs/blob/main/voice/lexicon-and-voice.md)
-  — approved language and claims discipline;
+  -- approved language and claims discipline;
 - [Starter and fork ecosystem](https://github.com/ContextRocket/cr-company-docs/blob/main/strategy/starter-and-fork-ecosystem.md)
-  — repository roles, ownership, and synchronization strategy; and
+  -- repository roles, ownership, and synchronization strategy; and
 - [Website content](https://github.com/ContextRocket/cr-company-docs/tree/main/website)
-  — the current ContextRocket marketing structure and content decisions.
+  -- the current ContextRocket marketing structure and content decisions.
 
 If this document and the company canon appear to disagree, follow the company
 canon and update this implementation checkpoint. If a fork's real customer or
