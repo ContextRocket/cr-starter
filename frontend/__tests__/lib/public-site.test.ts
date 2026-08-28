@@ -32,8 +32,12 @@ describe("public-site contract", () => {
       blogSlugs: ["welcome"],
       lastModified: new Date("2026-01-01T00:00:00.000Z"),
     });
-    const home = entries.find((entry) => entry.url.endsWith("/en"));
     const defaultLocale = getDefaultPublicLocale(siteConfig.locales);
+    // Find the home entry by the fork's default locale, not a hardcoded /en:
+    // forks may be Spanish-first (defaultLocale: es) and still inherit this test.
+    const home = entries.find((entry) =>
+      entry.url.endsWith(`/${defaultLocale}`),
+    );
     const blogRoute = getPublicRoute("blog");
     const post = entries.find((entry) =>
       entry.url.endsWith(`/${blogRoute?.path}/welcome`),
