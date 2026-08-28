@@ -149,6 +149,34 @@ it and must preserve these two invariants:
   the fork small without freezing the English slice or preventing the fork
   from adding that locale later by removing the preserve entry.
 
+### Sync invariants and gotchas
+
+Beyond the two above, these keep forks from drifting or breaking a sync:
+
+- **Message slices are top-level disjoint.** `shared`, `app`, and `site` own
+  disjoint top-level namespaces (enforced by
+  `__tests__/i18n/domain-split.test.ts`). A whole namespace such as `privacy`
+  lives in exactly one slice; do not add a sub-key to it from a second slice,
+  even though the runtime merge is deep. Generic copy that belongs to a
+  fork-owned namespace (for example `privacy.data.site`) still goes in the
+  owning slice (`site`), not `shared`. To make a namespace inherited by every
+  fork, move all of it to a parent-owned slice; never split it.
+- **Generated i18n registries are per-fork.** `i18n/locale-loaders.ts` and
+  `i18n/site-content-slices.ts` are produced by
+  `scripts/generate-i18n-registry.mjs` from the fork's own locale set, so they
+  legitimately differ from the parent. Keep them in `policy.preserve` (never in
+  `policy.sync`, and never captured by a broad `i18n/*.ts` glob). After a sync,
+  rebuild and confirm `git status` is clean before committing; do not
+  `git add -A` a sync blindly.
+- **Parent-owned tests must be default-locale and language agnostic.** Forks run
+  different default locales (for example Spanish-first) and different supported
+  languages. Do not assert a hardcoded `/en` path or an English UI string;
+  resolve the expected value from `siteConfig.defaultLocale` and the translator.
+- **Tests that assert inherited behavior belong in `policy.sync`.** If a test
+  covers parent-owned code (consent, embed, public-site, privacy), add it to
+  `policy.sync` so forks inherit the current version instead of carrying a stale
+  copy that silently drifts.
+
 ## Verification tiers
 
 The starter carries the complete shared test suite; the forks do not need to
