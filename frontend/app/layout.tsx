@@ -10,7 +10,7 @@
  * The [locale] layout (app/[locale]/layout.tsx) renders only the page body.
  */
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import Script from "next/script";
 import { headers } from "next/headers";
@@ -105,6 +105,43 @@ export const metadata: Metadata = {
     ],
   },
 };
+
+// Browser/PWA chrome color (address bar, task switcher) follows the fork's own
+// theme tokens in site.json -- never a hardcoded brand color. A dark-default
+// fork gets its dark `--primary`, a light-default fork its light one, and a
+// "system" fork matches the visitor's active color scheme.
+export function generateViewport(): Viewport {
+  const light = siteConfig.theme.light["--primary"];
+  const dark = siteConfig.theme.dark["--primary"];
+  const defaultTheme = siteConfig.chrome.defaultTheme;
+
+  let themeColor: Viewport["themeColor"];
+  if (defaultTheme === "dark") {
+    themeColor = dark;
+  } else if (defaultTheme === "light") {
+    themeColor = light;
+  } else {
+    // "system": let the browser pick per the active color scheme.
+    themeColor = [
+      ...(light
+        ? [{ media: "(prefers-color-scheme: light)", color: light }]
+        : []),
+      ...(dark ? [{ media: "(prefers-color-scheme: dark)", color: dark }] : []),
+    ];
+  }
+
+  const hasThemeColor =
+    typeof themeColor === "string"
+      ? Boolean(themeColor)
+      : Array.isArray(themeColor) && themeColor.length > 0;
+
+  return {
+    width: "device-width",
+    initialScale: 1,
+    viewportFit: "cover",
+    ...(hasThemeColor ? { themeColor } : {}),
+  };
+}
 
 export default async function RootLayout({
   children,
