@@ -14,6 +14,14 @@ import type { sharedEn } from "./en";
 import type { LocaleMessages } from "../en";
 
 export const sharedDe: LocaleMessages<typeof sharedEn> = {
+  privacy: {
+    data: {
+      site: {
+        heading: "Daten zum Seitenbetrieb",
+        body: "Um diese Website bereitzustellen und zu sichern, verarbeitet unsere Hosting-Infrastruktur technische Daten wie deine IP-Adresse, den Browsertyp und die von dir aufgerufenen Seiten. Wir verwenden sie, um die Website auszuliefern, Missbrauch zu verhindern und den Dienst zuverlässig zu halten. Rechtsgrundlage: berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO).",
+      },
+    },
+  },
   form: {
     email: "E-Mail",
     placeholder: {

@@ -11,6 +11,14 @@
  */
 
 export const sharedEn = {
+  privacy: {
+    data: {
+      site: {
+        heading: "Site Operation Data",
+        body: "To deliver and secure this website, our hosting infrastructure processes technical data such as your IP address, browser type, and the pages you request. We use it to serve the site, prevent abuse, and keep the service reliable. Legal basis: legitimate interest (Art. 6(1)(f) GDPR).",
+      },
+    },
+  },
   form: {
     email: "Email",
     placeholder: {

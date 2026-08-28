@@ -14,6 +14,14 @@ import type { sharedEn } from "./en";
 import type { LocaleMessages } from "../en";
 
 export const sharedEs: LocaleMessages<typeof sharedEn> = {
+  privacy: {
+    data: {
+      site: {
+        heading: "Datos de funcionamiento del sitio",
+        body: "Para ofrecer y proteger este sitio web, nuestra infraestructura de alojamiento trata datos técnicos como tu dirección IP, el tipo de navegador y las páginas que solicitas. Los utilizamos para servir el sitio, prevenir abusos y mantener el servicio fiable. Base legal: interés legítimo (art. 6.1.f RGPD).",
+      },
+    },
+  },
   form: {
     email: "Correo electrónico",
     placeholder: {
