@@ -61,5 +61,4 @@ describe("core outer-loop pages render without missing keys", () => {
       });
     }
   }
-}
-);
+});

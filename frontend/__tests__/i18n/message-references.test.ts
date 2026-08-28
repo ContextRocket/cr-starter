@@ -63,9 +63,7 @@ describe("i18n message references", () => {
       }
     }
     if (missing.size) {
-      const report = [...missing]
-        .map(([k, f]) => `  ${k}  (${f})`)
-        .join("\n");
+      const report = [...missing].map(([k, f]) => `  ${k}  (${f})`).join("\n");
       throw new Error(
         `Missing i18n keys referenced by pages/components:\n${report}`,
       );
