@@ -21,16 +21,25 @@ import {
 } from "@/lib/landing-page/resolve";
 import type { Testimonial } from "@/lib/testimonials";
 
-function MediaBlock({ section }: { section: Extract<ResolvedSection, { kind: "media" }> }) {
+function MediaBlock({
+  section,
+}: {
+  section: Extract<ResolvedSection, { kind: "media" }>;
+}) {
   return (
-    <section className="px-6 py-16 max-w-3xl mx-auto text-center" data-section={section.id}>
+    <section
+      className="px-6 py-16 max-w-3xl mx-auto text-center"
+      data-section={section.id}
+    >
       {section.eyebrow ? (
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
           {section.eyebrow}
         </p>
       ) : null}
       {section.title ? (
-        <h2 className="mt-3 text-2xl font-bold text-foreground">{section.title}</h2>
+        <h2 className="mt-3 text-2xl font-bold text-foreground">
+          {section.title}
+        </h2>
       ) : null}
       <div className="mt-8 space-y-6">
         {section.images.map((img) => (
@@ -64,7 +73,9 @@ function RichTextBlock({
   return (
     <section className="px-6 py-12 max-w-2xl mx-auto" data-section={section.id}>
       {section.title ? (
-        <h2 className="text-2xl font-bold text-foreground mb-4">{section.title}</h2>
+        <h2 className="text-2xl font-bold text-foreground mb-4">
+          {section.title}
+        </h2>
       ) : null}
       <div className="space-y-4 text-base leading-7 text-muted-foreground">
         {section.paragraphs.map((p) => (
@@ -81,7 +92,10 @@ function ContentFeedBlock({
   section: Extract<ResolvedSection, { kind: "content_feed" }>;
 }) {
   return (
-    <section className="px-6 py-16 max-w-3xl mx-auto text-center" data-section={section.id}>
+    <section
+      className="px-6 py-16 max-w-3xl mx-auto text-center"
+      data-section={section.id}
+    >
       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
         {section.title}
       </p>
@@ -95,7 +109,9 @@ function ContentFeedBlock({
               {item.title}
             </Link>
             {item.summary ? (
-              <p className="mt-2 text-sm text-muted-foreground">{item.summary}</p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {item.summary}
+              </p>
             ) : null}
           </li>
         ))}
@@ -124,9 +140,11 @@ function renderSection(section: ResolvedSection) {
           >
             {section.body.length > 1 ? (
               <div className="mt-10 space-y-4 text-left text-base leading-7 text-muted-foreground max-w-[560px] mx-auto">
-                {section.body.slice(section.description === section.body[0] ? 1 : 0).map((p) => (
-                  <p key={p}>{p}</p>
-                ))}
+                {section.body
+                  .slice(section.description === section.body[0] ? 1 : 0)
+                  .map((p) => (
+                    <p key={p}>{p}</p>
+                  ))}
               </div>
             ) : null}
           </HeroSection>
@@ -163,7 +181,7 @@ function renderSection(section: ResolvedSection) {
         </div>
       );
     case "testimonial": {
-      const items: Testimonial[] = section.items.map((item) => ({
+      const items: Testimonial[] = section.items.map((item, order) => ({
         id: item.id,
         author: item.author,
         quote: item.quote,
@@ -171,6 +189,8 @@ function renderSection(section: ResolvedSection) {
         role: item.role ?? "",
         avatar: item.avatar,
         rating: item.rating,
+        featured: false,
+        order,
       }));
       return (
         <div key={section.id} data-section={section.id}>
@@ -204,14 +224,18 @@ function renderSection(section: ResolvedSection) {
 export function ManifestPage({ manifest }: { manifest: LandingPageManifest }) {
   const sections = resolveManifestSections(manifest);
   return (
-    <main data-landing-page={manifest.page_id} data-schema-version={manifest.schema_version}>
+    <main
+      data-landing-page={manifest.page_id}
+      data-schema-version={manifest.schema_version}
+    >
       {manifest.appearance.missing_inputs &&
       manifest.appearance.missing_inputs.length > 0 ? (
         <p
           className="sr-only"
           data-missing-appearance={manifest.appearance.missing_inputs.join(",")}
         >
-          Missing appearance inputs: {manifest.appearance.missing_inputs.join(", ")}
+          Missing appearance inputs:{" "}
+          {manifest.appearance.missing_inputs.join(", ")}
         </p>
       ) : null}
       {sections.map((section) => renderSection(section))}
