@@ -23,6 +23,7 @@
     "generate-placeholder-favicon": "node scripts/generate-placeholder-favicon.mjs",
     "generate-og-fallback": "node scripts/generate-og-fallback.js",
     "test:contract": "VITE_CONFIG_NATIVE_IGNORE_WARNING=true vitest run __tests__/components/chat __tests__/embed-widget --maxWorkers=2",
+    "test:landing-page": "VITE_CONFIG_NATIVE_IGNORE_WARNING=true vitest run __tests__/landing-page --maxWorkers=2",
     "test:parent": "VITE_CONFIG_NATIVE_IGNORE_WARNING=true vitest run",
     "test:fork": "node ../scripts/run-fork-tests.mjs --frontend",
     "test": "VITE_CONFIG_NATIVE_IGNORE_WARNING=true node ../scripts/run-fork-tests.mjs --frontend",

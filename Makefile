@@ -8,7 +8,8 @@ FRONTEND_PORT ?= 3003
 .PHONY: help install start-next-only start-frontend test-frontend build-static \
         test-cli build-cli package-cli build-widget verify serve-static design-review \
         verify-fork verify-static sync-parent sync-parent-check sync-parent-local \
-        sync-parent-preview
+        sync-parent-preview sync-landing-page-manifest check-landing-page-manifest \
+        test-landing-page
 
 help: ## Show available commands
 	@awk '/^[a-zA-Z_-]+:/{split($$1, target, ":"); print "  " target[1] "\t" substr($$0, index($$0,$$2))}' $(MAKEFILE_LIST)
@@ -80,3 +81,14 @@ serve-static: ## Serve frontend/out locally after build-static
 
 design-review: ## Capture design-review screenshots (no backend needed)
 	cd $(FRONTEND_DIR) && source ~/.zshrc && nvm use --silent && node scripts/capture-design-review.mjs design-review
+
+# LandingPageManifest consumer (synced from ContextRocket product repo)
+PRODUCT_ROOT ?= /Users/markmacmahon/dev/context-rocket-wt-1mv-96
+sync-landing-page-manifest: ## Pull schema/types/fixtures from PRODUCT_ROOT into this starter
+	cd $(PRODUCT_ROOT) && $(MAKE) sync-landing-page-manifest STARTER_ROOT=$(CURDIR)
+
+check-landing-page-manifest: ## Fail when synced LandingPageManifest artifacts have drifted
+	cd $(PRODUCT_ROOT) && $(MAKE) check-landing-page-manifest STARTER_ROOT=$(CURDIR)
+
+test-landing-page: ## Focused Vitest for the LandingPageManifest adapter
+	cd $(FRONTEND_DIR) && source ~/.zshrc && nvm use --silent && pnpm vitest run __tests__/landing-page --maxWorkers=2
