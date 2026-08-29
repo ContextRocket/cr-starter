@@ -22,6 +22,7 @@ export interface AssetRef {
   alt_text: string;
   width?: number | null;
   height?: number | null;
+  focal_point?: { x: number; y: number } | null;
   review_state?: string;
   rights_posture?: string;
   surface_suitability?: string[];
@@ -159,12 +160,14 @@ export interface LandingPageManifest {
     description: string;
     social_title?: string | null;
     social_description?: string | null;
+    social_asset_id?: string | null;
     indexing_intent?: string;
     sitemap_include?: boolean;
     robots_intent?: string;
     canonical_intent?: string;
   };
   appearance: {
+    profile_ref?: string | null;
     fallback?: string;
     tokens?: Record<string, string | null | undefined>;
     typography_role?: string;
@@ -1320,6 +1323,19 @@ export const landingPageManifestJsonSchema = {
           "minLength": 1,
           "title": "Validation Error Message",
           "type": "string"
+        },
+        "variant_ref": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Variant Ref"
         }
       },
       "required": [
