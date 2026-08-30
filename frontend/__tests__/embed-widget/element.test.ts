@@ -40,10 +40,32 @@ describe("standalone ChatFab element", () => {
     document.body.appendChild(host);
 
     const shadow = host.shadowRoot!;
-    expect(shadow.querySelector("img")).not.toBeInTheDocument();
+    expect(shadow.querySelector(".cr-title img")).not.toBeInTheDocument();
     expect(shadow.querySelector(".cr-title")).toHaveTextContent(
       "<img src=x>Ask",
     );
+
+    host.remove();
+  });
+
+  it("uses the canonical powered-by badge and exact label", () => {
+    const host = document.createElement("contextrocket-chat");
+    document.body.appendChild(host);
+
+    const badge = host.shadowRoot!.querySelector<HTMLAnchorElement>(
+      ".powered-by-badge",
+    );
+    expect(badge).toHaveAttribute(
+      "href",
+      "https://www.contextrocket.ai?ref=widget",
+    );
+    expect(badge).toHaveTextContent("Powered by ContextRocket");
+    expect(badge).toHaveAttribute("target", "_blank");
+    expect(badge?.querySelector("img")).toHaveAttribute(
+      "src",
+      "https://www.contextrocket.ai/brand/icon-bg-transparent-red.svg",
+    );
+    expect(badge?.querySelector("img")).toHaveAttribute("alt", "");
 
     host.remove();
   });

@@ -136,11 +136,9 @@ describe("SiteChrome", () => {
     renderChrome({ logo: undefined });
     const brandLink = screen.getByRole("link", { name: "Acme" });
     expect(brandLink).toHaveAttribute("href", "/");
-    // Only the footer powered-by images should be rendered
-    const images = screen.queryAllByRole("img");
     expect(
-      images.every((img) => img.getAttribute("alt") === "ContextRocket"),
-    ).toBe(true);
+      screen.getByRole("link", { name: "Powered by ContextRocket" }),
+    ).toBeInTheDocument();
   });
 
   it("minimal header shows the brand NAME when showBrandLogo is false (no logo)", () => {
@@ -148,11 +146,9 @@ describe("SiteChrome", () => {
     renderChrome({ logo: undefined });
     const brandLink = screen.getByRole("link", { name: "Acme" });
     expect(brandLink).toHaveAttribute("href", "/");
-    // Only the footer powered-by images should be rendered
-    const images = screen.queryAllByRole("img");
     expect(
-      images.every((img) => img.getAttribute("alt") === "ContextRocket"),
-    ).toBe(true);
+      screen.getByRole("link", { name: "Powered by ContextRocket" }),
+    ).toBeInTheDocument();
   });
 
   it("renders the brand NAME beside the icon logo in the marketing header", () => {

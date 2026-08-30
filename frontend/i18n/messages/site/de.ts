@@ -209,7 +209,6 @@ export const siteDe: LocaleMessages<typeof siteEn> = {
     },
   },
   footer: {
-    powered_by: "Unterstützt von",
     impressum: "Impressum",
     privacy: "Datenschutzerklärung",
     terms: "AGB",

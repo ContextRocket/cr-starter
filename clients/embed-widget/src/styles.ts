@@ -300,14 +300,26 @@ export function widgetStyles(accentColor = "#ff2b67"): string {
   color: var(--cr-muted);
 }
 
-.cr-footer a {
+.powered-by-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: var(--cr-muted);
   text-decoration: none;
+  opacity: .8;
+  transition: opacity .2s ease, color .2s ease;
 }
 
-.cr-footer a:hover {
+.powered-by-badge img {
+  display: block;
+  width: 14px;
+  height: 14px;
+}
+
+.powered-by-badge:hover,
+.powered-by-badge:focus-visible {
   color: var(--cr-accent);
-  text-decoration: underline;
+  opacity: 1;
 }
 `.trim();
 }

@@ -209,7 +209,6 @@ export const siteEs: LocaleMessages<typeof siteEn> = {
     },
   },
   footer: {
-    powered_by: "Desarrollado por",
     impressum: "Impressum",
     privacy: "Política de privacidad",
     terms: "Términos",

@@ -206,7 +206,6 @@ export const siteEn = {
     },
   },
   footer: {
-    powered_by: "Powered by",
     impressum: "Impressum",
     privacy: "Privacy Policy",
     terms: "Terms",

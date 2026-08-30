@@ -64,7 +64,17 @@ try {
 
 const remote = config.parent?.remote;
 const branch = config.parent?.branch;
-if (!remote || !branch) fail(".fork-sync.json has no parent remote and branch");
+// cr-starter is the root of the fork family. Its policy is a template and
+// intentionally has no parent remote; the root must still be able to run its
+// own complete suite through the normal `pnpm test` entrypoint.
+if (!remote || !branch) {
+  if (config.projectType === "starter") {
+    console.log("fork-tests: root starter; running the full parent suite");
+    runAllTests();
+    process.exit(0);
+  }
+  fail(".fork-sync.json has no parent remote and branch");
+}
 
 const parentRef = `${remote}/${branch}`;
 try {

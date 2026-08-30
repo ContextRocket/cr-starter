@@ -3,85 +3,54 @@
 /**
  * Badge Widget -- ContextRocket brand attribution badge.
  *
- * This is a shared component that provides consistent ContextRocket
- * branding across all forks. The badge is localized and works in
- * both light and dark mode.
+ * This is a shared component that provides the one ContextRocket attribution
+ * treatment across all forks. The badge deliberately keeps its brand label
+ * stable in every locale: `Powered by ContextRocket`.
  *
  * Usage:
  *   <ContextRocketBadge />
- *   <ContextRocketBadge variant="minimal" />
  */
 
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { useTranslations } from "@/i18n/locale-provider";
 
 interface ContextRocketBadgeProps {
-  /** Badge variant */
-  variant?: "default" | "minimal" | "icon-only";
   /** Additional class names */
   className?: string;
 }
 
 export function ContextRocketBadge({
-  variant = "default",
   className,
 }: ContextRocketBadgeProps) {
-  const translate = useTranslations();
-
-  const baseClasses = "inline-flex items-center gap-1.5 transition-colors";
-  const variantClasses = {
-    // Full-opacity muted-foreground (43% gray) clears WCAG AA 4.5:1 on the
-    // footer surface; the reduced-opacity variants were too faint to pass.
-    default: "text-xs text-muted-foreground",
-    minimal: "text-[10px] text-muted-foreground",
-    "icon-only": "text-muted-foreground",
-  };
-
   return (
     <a
-      href="https://contextrocket.ai"
+      href="https://www.contextrocket.ai"
       target="_blank"
       rel="noopener noreferrer"
-      className={cn(baseClasses, variantClasses[variant], "group", className)}
-    >
-      {variant !== "icon-only" && (
-        <span className="text-[10px] tracking-wide uppercase font-semibold">
-          {translate("footer.powered_by")}
-        </span>
+      className={cn(
+        "powered-by-badge inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors group",
+        className,
       )}
-      {/* Light mode logo */}
+      data-testid="powered-by-badge"
+    >
+      {/* The attribution icon is intentionally separate from the label. */}
       <Image
-        src="/brand/cr-logo-horizontal.svg"
-        alt="ContextRocket"
-        width={96}
-        height={16}
-        className={cn(
-          "h-3 w-auto opacity-70 transition-opacity group-hover:opacity-100",
-          variant === "icon-only" && "h-4 w-4",
-          "dark:hidden",
-        )}
+        src="/brand/cr-icon-red.svg"
+        alt=""
+        width={14}
+        height={14}
+        aria-hidden="true"
+        className="h-3.5 w-3.5 opacity-70 transition-opacity group-hover:opacity-100 dark:hidden"
       />
-      {/* Dark mode logo */}
       <Image
-        src="/brand/cr-logo-horizontal-white.png"
-        alt="ContextRocket"
-        width={96}
-        height={16}
-        className={cn(
-          "h-3 w-auto opacity-70 transition-opacity group-hover:opacity-100",
-          variant === "icon-only" && "h-4 w-4",
-          "hidden dark:block",
-        )}
+        src="/brand/cr-icon-white.svg"
+        alt=""
+        width={14}
+        height={14}
+        aria-hidden="true"
+        className="hidden h-3.5 w-3.5 opacity-70 transition-opacity group-hover:opacity-100 dark:block"
       />
+      <span className="font-semibold">Powered by ContextRocket</span>
     </a>
   );
-}
-
-/**
- * @deprecated Use ContextRocketBadge instead.
- * This is kept for backward compatibility only.
- */
-export function BadgeWidget(props: ContextRocketBadgeProps) {
-  return <ContextRocketBadge {...props} />;
 }

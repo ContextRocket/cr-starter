@@ -22,7 +22,6 @@ const COPY = {
     stop: "Stop response",
     retry: "Try again",
     placeholder: "Ask a question…",
-    poweredBy: "Powered by",
     working: "Working…",
     submitted: "Connecting…",
     inputRequired: "A response is needed to continue.",
@@ -41,7 +40,6 @@ const COPY = {
     stop: "Detener respuesta",
     retry: "Intentar de nuevo",
     placeholder: "Haz una pregunta…",
-    poweredBy: "Desarrollado por",
     working: "Trabajando…",
     submitted: "Conectando…",
     inputRequired: "Se necesita una respuesta para continuar.",
@@ -60,7 +58,6 @@ const COPY = {
     stop: "Antwort stoppen",
     retry: "Erneut versuchen",
     placeholder: "Frage stellen…",
-    poweredBy: "Bereitgestellt von",
     working: "Wird bearbeitet…",
     submitted: "Verbindung wird hergestellt…",
     inputRequired: "Für die Fortsetzung ist eine Antwort erforderlich.",
@@ -174,7 +171,10 @@ export class ContextRocketChatElement extends HTMLElement {
           <button class="cr-send" type="submit" aria-label="${copy.send}">${copy.send}</button>
         </form>
         <footer class="cr-footer" part="footer">
-          ${copy.poweredBy} <a href="${escapeHtml(buildPoweredByHref(config))}" target="_blank" rel="noopener noreferrer">ContextRocket</a>
+          <a class="powered-by-badge" href="${escapeHtml(buildPoweredByHref(config))}" target="_blank" rel="noopener noreferrer">
+            <img src="https://www.contextrocket.ai/brand/icon-bg-transparent-red.svg" alt="" width="14" height="14" aria-hidden="true">
+            <span>Powered by ContextRocket</span>
+          </a>
         </footer>
       </div>
       <button type="button" class="cr-launcher" aria-label="${copy.open}" aria-expanded="false" aria-controls="contextrocket-chat-panel" part="launcher">⌁</button>

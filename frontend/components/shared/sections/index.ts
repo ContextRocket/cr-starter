@@ -78,4 +78,4 @@ export {
 } from "./notification-bar";
 
 // Badge widgets
-export { BadgeWidget, ContextRocketBadge } from "../ui/badge-widget";
+export { ContextRocketBadge } from "../ui/badge-widget";
