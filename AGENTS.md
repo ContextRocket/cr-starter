@@ -40,8 +40,8 @@ local demos. Typed browser access uses `@contextrocket/sdk` (A2A +
 Forks add brand-specific pages under `src/pages/` or `src/components/custom/`
 when needed. Do not force FAQ/About onto every port.
 
-Brand → one light landing experiments live under `examples/` (see
-`examples/README.md` and `scripts/apply-brand-pack.mjs`).
+Brand crawl / Brand Lab tooling is **internal** and lives in the sibling
+`cr-labs` repo (`docs/brand-lab.md`), not in this public starter.
 
 ## Hard rules
 

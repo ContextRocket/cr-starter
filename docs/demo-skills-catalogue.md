@@ -10,14 +10,13 @@ fork of cr-starter.
 Extract brand identity (colors, logo, typography, tagline) into a
 **brand pack**, then apply it onto the Astro starter.
 
-- **Experiment surface:** `examples/` + `scripts/apply-brand-pack.mjs`
-  (see `examples/README.md`). Kleos is the first curated pack.
+- **Experiment surface (internal):** sibling `cr-labs` —
+  `examples/` + `pnpm brand:apply` (see `cr-labs/docs/brand-lab.md`).
 - **Target composition:** `src/components/pages/LightBrandHome.astro`
   (light one-pager: logo, name, headline, subhead, CTA).
 - **Proven (manual pack):** cr-kleos colors navy `#082444` / yellow `#F5C842`
-- **Input:** Curated `examples/<brand>/brand-pack.json` (+ assets)
+- **Input:** Curated `cr-labs/examples/<brand>/brand-pack.json` (+ assets)
 - **Output:** `config/site.json` theme/identity/assets + `home.hero.*` site copy
-- **Crawl automation:** not yet — packs are hand/agent-filled from the live site
 
 ### 2. Logo Trimming
 Auto-trim transparent padding from scraped logos so they're legible at
