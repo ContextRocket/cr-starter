@@ -8,20 +8,20 @@ site configuration and future publishing tools.
 
 ## Recommended layout
 
-Keep the files in a predictable folder structure under `frontend/public/`:
+Keep the files in a predictable folder structure under `public/`:
 
 ```text
-frontend/public/gallery/
+public/gallery/
   profile/
     mark-macmahon-2026.jpg
   events/
     contextrocket-launch/
       keynote.jpg
       team.jpg
-frontend/content/gallery.json
+content/gallery.json
 ```
 
-The manifest stores paths relative to `frontend/public/`:
+The manifest stores paths relative to `public/`:
 
 ```json
 {
@@ -91,18 +91,22 @@ when a newer image is added. `getLatestGalleryAsset(assets, { role:
 "profile" })` is available for “latest” queries and tooling, but should not
 silently replace the canonical site image.
 
-The route `/[locale]/gallery` is feature-gated by
-`features.gallery`. A fork that wants the route enables the feature and adds a
-normal `site.json` navigation link. A fork that only wants the lightbox can
-leave the route disabled and use `ImageLightbox` directly.
+The route `/[locale]/gallery` (or unprefixed `/gallery` on single-locale
+forks) is feature-gated by `features.gallery`. A fork that wants the route
+enables the feature and keeps the Gallery entry as the **last** item in
+`nav.footerLinks` in `site.json` (label key `gallery.title` → “Gallery”). Do
+not put Gallery in the header `nav.links`. `SiteChrome` hides the footer entry
+when `features.gallery` is false, so the starter can ship the conventional
+footer slot without a dead link. A fork that only wants the lightbox can leave
+the route disabled and use `ImageLightbox` directly.
 
 ## CDN direction
 
 `path` is a stable publishing key. Locally, `galleryAssetUrl` produces
-`/gallery/...`; setting `NEXT_PUBLIC_GALLERY_ASSET_BASE_URL` to a CDN root
-produces the same path below that root. This means a future CLI/CDN publisher
-can upload the files and manifest without rewriting page content or changing
-asset IDs.
+`/gallery/...`; setting `PUBLIC_GALLERY_ASSET_BASE_URL` (or
+`site.json` → `gallery.assetBaseUrl`) to a CDN root produces the same path
+below that root. This means a future CLI/CDN publisher can upload the files
+and manifest without rewriting page content or changing asset IDs.
 
 The first version intentionally does not add upload state, private assets,
 automatic derivative generation, or a remote API. Those belong in the
@@ -122,9 +126,9 @@ intrinsic dimensions. Prefer purpose names (`thumbnail`, `card`, `profile`,
 `lightbox`) over vague names such as `small` and `large`; the consuming layout
 can then change without renaming the underlying files.
 
-For ordinary Next.js rendering, `next/image` can generate responsive sizes from
-one source. Explicit variants become useful when the files will also be
-published to a CDN, used by static-only sites, or shared with non-Next clients.
+For ordinary Astro/static rendering, the browser loads the published asset
+URLs directly. Explicit variants become useful when the files will also be
+published to a CDN or shared with non-site clients.
 The base asset should remain a sufficiently high-quality source, while a
 lightbox should never be fed a tiny card derivative. The optional
 `galleryAssetUrl(asset, baseUrl, "card")` and

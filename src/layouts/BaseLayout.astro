@@ -1,0 +1,304 @@
+---
+import { siteConfig, isSingleLocale } from "@/config/site.config";
+import type { SupportedLocale } from "@/i18n/locales";
+import SiteChrome from "@/components/chrome/SiteChrome.astro";
+import CookieBanner from "@/components/chrome/CookieBanner.astro";
+import {
+  buildHomeJsonLd,
+  serializeJsonLd,
+  type JsonLdNode,
+} from "@/lib/structured-data";
+import { absoluteUrl } from "@/lib/paths";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  locale: SupportedLocale;
+  path?: string;
+  /** Absolute or site-relative image for Open Graph / Twitter cards. */
+  image?: string;
+  /** When true (default on home), emit Organization + WebSite JSON-LD. */
+  includeSiteJsonLd?: boolean;
+  /** Extra JSON-LD nodes merged after the optional home Organization/WebSite. */
+  jsonLdExtra?: unknown[];
+  ogType?: "website" | "article";
+}
+
+const { locale, path = "/" } = Astro.props;
+const pageTitle = Astro.props.title;
+const title = pageTitle
+  ? `${pageTitle} · ${siteConfig.companyName}`
+  : `${siteConfig.homeTitle || siteConfig.companyName} · ${siteConfig.tagline}`;
+const description = Astro.props.description ?? siteConfig.description;
+const ogType = Astro.props.ogType ?? "website";
+const includeSiteJsonLd = Astro.props.includeSiteJsonLd ?? path === "/";
+
+const pathPart =
+  path === "/" ? "/" : path.endsWith("/") ? path : `${path}/`;
+const origin = siteConfig.siteUrl.replace(/\/$/, "");
+const canonical = isSingleLocale()
+  ? `${origin}${pathPart}`
+  : path === "/"
+    ? `${origin}/${locale}/`
+    : `${origin}/${locale}${pathPart}`;
+
+const rawImage =
+  Astro.props.image ||
+  siteConfig.assets.icon512 ||
+  siteConfig.assets.appleTouchIcon ||
+  siteConfig.assets.logo ||
+  "/favicon.ico";
+const ogImage = rawImage.startsWith("http")
+  ? rawImage
+  : `${origin}${rawImage.startsWith("/") ? rawImage : `/${rawImage}`}`;
+
+const twitterHandle = siteConfig.social.twitter?.replace(/^https?:\/\/(www\.)?(twitter|x)\.com\//, "@")
+  || siteConfig.social.twitter;
+
+const multiLocale = !isSingleLocale();
+const hreflangLocales = multiLocale
+  ? (siteConfig.locales as readonly string[])
+  : [];
+const defaultHreflangLocale = hreflangLocales.includes(siteConfig.defaultLocale)
+  ? siteConfig.defaultLocale
+  : (hreflangLocales[0] ?? siteConfig.defaultLocale);
+
+function hreflangHref(forLocale: string): string {
+  if (path === "/") return `${origin}/${forLocale}/`;
+  return `${origin}/${forLocale}${pathPart}`;
+}
+
+const theme = siteConfig.theme;
+const lightEntries = Object.entries(theme.light ?? {});
+const darkEntries = Object.entries(theme.dark ?? {});
+const radius = theme.radius ?? "0.5rem";
+const defaultTheme = siteConfig.chrome.defaultTheme;
+const themeColorLight = theme.light?.["--primary"] as string | undefined;
+const themeColorDark = theme.dark?.["--primary"] as string | undefined;
+
+const themeInit = `(function(){try{var d=${JSON.stringify(defaultTheme)};var s=localStorage.getItem("theme");var t=s||d;var dark=t==="dark"||(t==="system"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.classList.toggle("dark",dark);}catch(e){}})();`;
+
+const themeCss = `html:root{--radius:${radius};${lightEntries
+  .map(([k, v]) => `${k}:${v}`)
+  .join(";")}}html.dark{${darkEntries.map(([k, v]) => `${k}:${v}`).join(";")}}`;
+
+const showChat = siteConfig.features.chatFab;
+const accent =
+  (siteConfig.theme.light?.["--brand-accent"] as string | undefined) ||
+  (siteConfig.theme.dark?.["--brand-accent"] as string | undefined) ||
+  (siteConfig.theme.light?.["--primary"] as string | undefined) ||
+  "#c2185b";
+const widgetSnippet = showChat
+  ? `<script src="/embed/widget.js" defer data-contextrocket-handle="${siteConfig.chat.handle}" data-contextrocket-api-key="${siteConfig.chat.apiKey}" data-contextrocket-agent-url="${siteConfig.chat.agentUrl}" data-contextrocket-mode="${siteConfig.chat.mode}" data-contextrocket-accent="${accent}" data-contextrocket-theme="system"></script>`
+  : "";
+
+const homeJsonLd = includeSiteJsonLd ? buildHomeJsonLd() : [];
+const extraJsonLd = (Astro.props.jsonLdExtra ?? []).filter(
+  (node): node is JsonLdNode =>
+    Boolean(node) && typeof node === "object" && !Array.isArray(node),
+);
+const jsonLd = [...homeJsonLd, ...extraJsonLd];
+const jsonLdPayload = jsonLd.length > 0 ? jsonLd : null;
+---
+
+<!doctype html>
+<html lang={locale} translate="no" class="notranslate" data-surface="marketing">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="google" content="notranslate" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="application-name" content={siteConfig.companyName} />
+    <meta name="author" content={siteConfig.legalName} />
+    <meta name="robots" content="index, follow" />
+    {
+      siteConfig.verification?.google && (
+        <meta
+          name="google-site-verification"
+          content={siteConfig.verification.google}
+        />
+      )
+    }
+    {
+      defaultTheme === "dark" && themeColorDark ? (
+        <meta name="theme-color" content={themeColorDark} />
+      ) : defaultTheme === "light" && themeColorLight ? (
+        <meta name="theme-color" content={themeColorLight} />
+      ) : (
+        <>
+          {themeColorLight && (
+            <meta
+              name="theme-color"
+              media="(prefers-color-scheme: light)"
+              content={themeColorLight}
+            />
+          )}
+          {themeColorDark && (
+            <meta
+              name="theme-color"
+              media="(prefers-color-scheme: dark)"
+              content={themeColorDark}
+            />
+          )}
+        </>
+      )
+    }
+    <link rel="canonical" href={canonical} />
+    {
+      multiLocale &&
+        hreflangLocales.map((l) => (
+          <link rel="alternate" hreflang={l} href={hreflangHref(l)} />
+        ))
+    }
+    {
+      multiLocale && (
+        <link
+          rel="alternate"
+          hreflang="x-default"
+          href={hreflangHref(defaultHreflangLocale)}
+        />
+      )
+    }
+    <link
+      rel="icon"
+      {...(String(siteConfig.assets.faviconIco || "").endsWith(".svg")
+        ? { type: "image/svg+xml" }
+        : {})}
+      href={siteConfig.assets.faviconIco ?? "/favicon.ico"}
+    />
+    {
+      siteConfig.assets.icon16 && (
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href={siteConfig.assets.icon16}
+        />
+      )
+    }
+    {
+      siteConfig.assets.icon32 && (
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href={siteConfig.assets.icon32}
+        />
+      )
+    }
+    {
+      siteConfig.assets.icon192 && (
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="192x192"
+          href={siteConfig.assets.icon192}
+        />
+      )
+    }
+    {
+      siteConfig.assets.icon512 && (
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="512x512"
+          href={siteConfig.assets.icon512}
+        />
+      )
+    }
+    {
+      siteConfig.assets.appleTouchIcon && (
+        <link rel="apple-touch-icon" href={siteConfig.assets.appleTouchIcon} />
+      )
+    }
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    {/* Open Graph */}
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={siteConfig.companyName} />
+    <meta property="og:title" content={pageTitle || siteConfig.homeTitle || siteConfig.companyName} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={locale} />
+    <meta property="og:image" content={ogImage} />
+
+    {/* Twitter / X */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle || siteConfig.homeTitle || siteConfig.companyName} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    {twitterHandle && <meta name="twitter:site" content={twitterHandle} />}
+    {twitterHandle && <meta name="twitter:creator" content={twitterHandle} />}
+
+    {
+      siteConfig.features.blog && (
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="RSS"
+          href={absoluteUrl("/feed.xml")}
+        />
+      )
+    }
+    {
+      jsonLdPayload && (
+        <script
+          type="application/ld+json"
+          set:html={serializeJsonLd(jsonLdPayload)}
+        />
+      )
+    }
+    <link
+      rel="preload"
+      href="/fonts/GeistVF.woff"
+      as="font"
+      type="font/woff"
+      crossorigin
+    />
+    <style is:global>
+      @font-face {
+        font-family: "Geist";
+        src: url("/fonts/GeistVF.woff") format("woff");
+        font-weight: 100 900;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Geist Mono";
+        src: url("/fonts/GeistMonoVF.woff") format("woff");
+        font-weight: 100 900;
+        font-display: swap;
+      }
+      :root {
+        --font-sans: "Geist", system-ui, sans-serif;
+        --font-mono: "Geist Mono", ui-monospace, monospace;
+        --font-active: var(--font-sans);
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+      }
+    </style>
+    <style set:html={themeCss}></style>
+    <script is:inline set:html={themeInit}></script>
+    {widgetSnippet && <Fragment set:html={widgetSnippet} />}
+  </head>
+  <body
+    class="flex min-h-screen flex-col bg-background font-sans text-foreground antialiased"
+  >
+    <SiteChrome locale={locale} path={path}>
+      <div class="flex-1">
+        <slot />
+      </div>
+    </SiteChrome>
+    <CookieBanner locale={locale} />
+  </body>
+</html>

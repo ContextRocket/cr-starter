@@ -1,0 +1,209 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://sourcepoint.com/",
+    "capturedAt": "2026-09-06",
+    "method": "crawl",
+    "notes": "Colors: light body background kept; no CTA fill → body ink as primary; link color → accent only. Font: Oswald → Google Inter (nearest). Logo: wordmark-paths lightFit=true alt=\"Sourcepoint by Didomi\"",
+    "markDisambiguation": {
+      "used": false,
+      "reason": "skipped"
+    }
+  },
+  "identity": {
+    "name": "Sourcepoint by Didomi",
+    "siteUrl": "https://sourcepoint.com/"
+  },
+  "tech": {
+    "cmp": {
+      "vendor": "sourcepoint",
+      "detected": true,
+      "closed": true,
+      "action": "accept",
+      "strategy": "sourcepoint"
+    },
+    "platform": {
+      "id": "wordpress",
+      "label": "WordPress",
+      "confidence": 0.7,
+      "signals": [
+        "asset-path"
+      ]
+    },
+    "platforms": [
+      {
+        "id": "wordpress",
+        "label": "WordPress",
+        "confidence": 0.7,
+        "signals": [
+          "asset-path"
+        ]
+      }
+    ],
+    "generator": null
+  },
+  "colors": {
+    "background": "#ffffff",
+    "foreground": "#646664",
+    "primary": "#646664",
+    "accent": "#272727",
+    "provenance": {
+      "background": "body.backgroundColor",
+      "foreground": "body.color",
+      "primary": "body.color (ink fallback)",
+      "accent": "link.color"
+    },
+    "observed": [
+      {
+        "role": "background",
+        "hex": "#ffffff",
+        "source": "body"
+      },
+      {
+        "role": "ink",
+        "hex": "#646664",
+        "source": "body"
+      },
+      {
+        "role": "h1",
+        "hex": "#411f90",
+        "source": "h1.color"
+      },
+      {
+        "role": "link",
+        "hex": "#272727",
+        "source": "ranked-links"
+      }
+    ]
+  },
+  "typography": {
+    "fontFamily": "Inter",
+    "requestedFontFamily": "Oswald",
+    "notes": "Nearest Google Font to \"Oswald\""
+  },
+  "assets": {
+    "logo": "./assets/logo.svg",
+    "favicon": "./assets/favicon.ico",
+    "appleTouch": "./assets/apple-touch.png",
+    "screenshots": {
+      "viewport": "./assets/viewport.png",
+      "fullpage": "./assets/fullpage.png"
+    },
+    "logoAnalysis": {
+      "fitsLightBackground": true,
+      "fitsDarkBackground": false,
+      "solidPlate": false,
+      "plateHex": null,
+      "reason": "wordmark-paths",
+      "palette": []
+    },
+    "logoNav": "./assets/logo.svg",
+    "candidates": [
+      {
+        "file": "./assets/logo.svg",
+        "role": "logo",
+        "crawlScore": 163,
+        "packScore": 388,
+        "zone": "header",
+        "alt": "Sourcepoint by Didomi",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 2455×500 · aspect 4.91",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": []
+        }
+      },
+      {
+        "file": "./assets/candidate-header-logo.svg",
+        "role": "header-logo",
+        "crawlScore": 133,
+        "packScore": 318,
+        "zone": "footer",
+        "alt": "Sourcepoint by Didomi",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 2456×500 · aspect 4.91",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": []
+        }
+      },
+      {
+        "file": "./assets/candidate-logo-keyword.png",
+        "role": "logo-keyword",
+        "crawlScore": 130,
+        "packScore": 260,
+        "zone": "page",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/candidate-logo-keyword.png",
+        "role": "logo-keyword",
+        "crawlScore": 130,
+        "packScore": 260,
+        "zone": "page",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/candidate-logo-keyword.png",
+        "role": "logo-keyword",
+        "crawlScore": 130,
+        "packScore": 260,
+        "zone": "page",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/apple-touch.png",
+        "role": "apple-touch",
+        "crawlScore": 5,
+        "packScore": -15,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": false,
+        "solidPlate": true,
+        "plateHex": "#5c5c5c",
+        "reason": "dark-plate:#5c5c5c"
+      },
+      {
+        "file": "./assets/favicon.ico",
+        "role": "favicon",
+        "crawlScore": 2,
+        "packScore": -38,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": false,
+        "solidPlate": true,
+        "plateHex": "#5c5c5c",
+        "reason": "dark-plate:#5c5c5c"
+      }
+    ]
+  },
+  "landing": {
+    "variant": "light-hero"
+  }
+}

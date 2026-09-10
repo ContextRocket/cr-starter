@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://www.doctolib.fr/",
+    "capturedAt": "2026-09-06",
+    "method": "crawl",
+    "notes": "Colors: light body background kept; CTA fill → primary (Rechercher). Font: Montserrat → Google Montserrat. Logo: transparent-mark lightFit=true alt=\"Doctolib\"",
+    "markDisambiguation": {
+      "used": false,
+      "reason": "skipped"
+    }
+  },
+  "identity": {
+    "name": "Doctolib",
+    "siteUrl": "https://www.doctolib.fr/"
+  },
+  "tech": {
+    "cmp": {
+      "vendor": "didomi",
+      "detected": true,
+      "closed": true,
+      "action": "reject",
+      "strategy": "cmp-api"
+    },
+    "platform": null,
+    "platforms": [],
+    "generator": null
+  },
+  "colors": {
+    "background": "#e4edf6",
+    "foreground": "#294056",
+    "primary": "#00264c",
+    "accent": "#00264c",
+    "provenance": {
+      "background": "body.backgroundColor",
+      "foreground": "body.color",
+      "primary": "cta.fill (Rechercher)",
+      "accent": "same as primary (CTA)"
+    },
+    "observed": [
+      {
+        "role": "background",
+        "hex": "#e4edf6",
+        "source": "body"
+      },
+      {
+        "role": "ink",
+        "hex": "#294056",
+        "source": "body"
+      },
+      {
+        "role": "cta",
+        "hex": "#00264c",
+        "source": "Rechercher"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#00264c",
+        "source": "Rechercher"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#107aca",
+        "source": "Ouvrir le Centre d'aide"
+      },
+      {
+        "role": "h1",
+        "hex": "#00264c",
+        "source": "h1.color"
+      },
+      {
+        "role": "link",
+        "hex": "#192634",
+        "source": "ranked-links"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#0c84cc",
+        "source": "logo (transparent-mark)"
+      }
+    ]
+  },
+  "typography": {
+    "fontFamily": "Montserrat",
+    "requestedFontFamily": "Montserrat",
+    "notes": "Exact Google Font match"
+  },
+  "assets": {
+    "logo": "./assets/logo.png",
+    "appleTouch": "./assets/apple-touch.png",
+    "screenshots": {
+      "viewport": "./assets/viewport.png",
+      "fullpage": "./assets/fullpage.png"
+    },
+    "logoAnalysis": {
+      "fitsLightBackground": true,
+      "fitsDarkBackground": false,
+      "solidPlate": false,
+      "plateHex": null,
+      "reason": "transparent-mark",
+      "palette": [
+        {
+          "hex": "#0c84cc",
+          "share": 1,
+          "luminance": 0.391,
+          "saturation": 0.753
+        }
+      ]
+    },
+    "candidates": [
+      {
+        "file": "./assets/logo.png",
+        "role": "logo",
+        "crawlScore": 150,
+        "packScore": 275,
+        "zone": "footer",
+        "alt": "Doctolib",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/apple-touch.png",
+        "role": "apple-touch",
+        "crawlScore": 5,
+        "packScore": -15,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": false,
+        "solidPlate": true,
+        "plateHex": "#107aca",
+        "reason": "dark-plate:#107aca"
+      }
+    ]
+  },
+  "landing": {
+    "variant": "light-hero"
+  }
+}

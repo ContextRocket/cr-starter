@@ -1,0 +1,248 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://grandpal.co/",
+    "capturedAt": "2026-09-06",
+    "method": "crawl",
+    "notes": "Colors: light body background kept; CTA fill → primary (Sign up for Free). Font: Lora → Google Inter (nearest). Logo: wordmark-paths lightFit=true alt=\"Grandpal\"",
+    "markDisambiguation": {
+      "used": false,
+      "reason": "skipped"
+    }
+  },
+  "identity": {
+    "name": "Grandpal",
+    "siteUrl": "https://grandpal.co/"
+  },
+  "tech": {
+    "cmp": null,
+    "platform": {
+      "id": "lovable",
+      "label": "Lovable",
+      "confidence": 0.7,
+      "signals": [
+        "asset-path"
+      ]
+    },
+    "platforms": [
+      {
+        "id": "lovable",
+        "label": "Lovable",
+        "confidence": 0.7,
+        "signals": [
+          "asset-path"
+        ]
+      }
+    ],
+    "generator": null
+  },
+  "colors": {
+    "background": "#faf8f5",
+    "foreground": "#27342e",
+    "primary": "#4c7f65",
+    "accent": "#4c7f65",
+    "provenance": {
+      "background": "body.backgroundColor",
+      "foreground": "body.color",
+      "primary": "cta.fill (Sign up for Free)",
+      "accent": "same as primary (CTA)"
+    },
+    "observed": [
+      {
+        "role": "background",
+        "hex": "#faf8f5",
+        "source": "body"
+      },
+      {
+        "role": "ink",
+        "hex": "#27342e",
+        "source": "body"
+      },
+      {
+        "role": "cta",
+        "hex": "#4c7f65",
+        "source": "Sign up for Free"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#4c7f65",
+        "source": "Sign up for Free"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#4c7f65",
+        "source": "Chat with Care Advisor"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#4c7f65",
+        "source": "Read Free Guide"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#4c7f65",
+        "source": "Chat with Care Advisor"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#4c7f65",
+        "source": "Read the Guide"
+      },
+      {
+        "role": "h1",
+        "hex": "#27342e",
+        "source": "h1.color"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#35415f",
+        "source": "logo (wordmark-paths)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#ffb819",
+        "source": "logo (wordmark-paths)"
+      }
+    ]
+  },
+  "typography": {
+    "fontFamily": "Inter",
+    "requestedFontFamily": "Lora",
+    "notes": "Nearest Google Font to \"Lora\""
+  },
+  "assets": {
+    "logo": "./assets/logo.svg",
+    "favicon": "./assets/favicon.ico",
+    "appleTouch": "./assets/apple-touch.png",
+    "ogImage": "./assets/og-image.jpg",
+    "screenshots": {
+      "viewport": "./assets/viewport.png",
+      "fullpage": "./assets/fullpage.png"
+    },
+    "logoAnalysis": {
+      "fitsLightBackground": true,
+      "fitsDarkBackground": true,
+      "solidPlate": false,
+      "plateHex": null,
+      "reason": "wordmark-paths",
+      "palette": [
+        {
+          "hex": "#35415f",
+          "share": null,
+          "luminance": 0.253,
+          "saturation": 0.165
+        },
+        {
+          "hex": "#ffb819",
+          "share": null,
+          "luminance": 0.736,
+          "saturation": 0.902
+        }
+      ]
+    },
+    "logoNav": "./assets/logo.svg",
+    "candidates": [
+      {
+        "file": "./assets/logo.svg",
+        "role": "logo",
+        "crawlScore": 188,
+        "packScore": 413,
+        "zone": "header",
+        "alt": "Grandpal",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": true,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 299×79 · aspect 3.78 · hues #35415f, #ffb819",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": [
+            {
+              "hex": "#35415f",
+              "count": 16,
+              "luminance": 0.253,
+              "saturation": 0.165
+            },
+            {
+              "hex": "#ffb819",
+              "count": 6,
+              "luminance": 0.736,
+              "saturation": 0.902
+            }
+          ]
+        }
+      },
+      {
+        "file": "./assets/candidate-header-logo.svg",
+        "role": "header-logo",
+        "crawlScore": 158,
+        "packScore": 343,
+        "zone": "footer",
+        "alt": "Grandpal",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": true,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 299×79 · aspect 3.78 · hues #ffb819",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": [
+            {
+              "hex": "#ffb819",
+              "count": 6,
+              "luminance": 0.736,
+              "saturation": 0.902
+            }
+          ]
+        }
+      },
+      {
+        "file": "./assets/apple-touch.png",
+        "role": "apple-touch",
+        "crawlScore": 5,
+        "packScore": 100,
+        "zone": "meta",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/favicon.ico",
+        "role": "favicon",
+        "crawlScore": 2,
+        "packScore": 77,
+        "zone": "meta",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/og-image.jpg",
+        "role": "og-image",
+        "crawlScore": 0,
+        "packScore": 15,
+        "zone": "meta",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      }
+    ]
+  },
+  "landing": {
+    "variant": "light-hero"
+  }
+}

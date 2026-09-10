@@ -1,0 +1,16 @@
+---
+import AttributionPage from "@/components/pages/AttributionPage.astro";
+import { isSingleLocale, siteConfig } from "@/config/site.config";
+import { getDefaultLocale } from "@/i18n/locales";
+import { soleLocale } from "@/lib/routing";
+
+if (!siteConfig.features.attribution) {
+  return new Response(null, { status: 404, statusText: "Not Found" });
+}
+if (!isSingleLocale()) {
+  return Astro.redirect(`/${getDefaultLocale()}/attribution/`);
+}
+const locale = soleLocale();
+---
+
+<AttributionPage locale={locale} />

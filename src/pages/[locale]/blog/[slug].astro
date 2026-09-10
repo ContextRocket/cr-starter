@@ -1,0 +1,22 @@
+---
+import BlogPost from "@/components/pages/BlogPost.astro";
+import { isSingleLocale } from "@/config/site.config";
+import { getActiveLocales, type SupportedLocale } from "@/i18n/locales";
+import { listPosts } from "@/lib/blog";
+
+export function getStaticPaths() {
+  if (isSingleLocale()) return [];
+  const paths = [];
+  for (const locale of getActiveLocales()) {
+    for (const post of listPosts(locale)) {
+      paths.push({ params: { locale, slug: post.slug } });
+    }
+  }
+  return paths;
+}
+
+const locale = Astro.params.locale as SupportedLocale;
+const slug = Astro.params.slug as string;
+---
+
+<BlogPost locale={locale} slug={slug} />

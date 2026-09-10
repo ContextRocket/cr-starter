@@ -1,0 +1,182 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://www.billiger-mietwagen.de/",
+    "capturedAt": "2026-09-06",
+    "method": "crawl",
+    "notes": "Colors: body bg transparent → assumed white canvas; CTA fill → primary (Mietwagen finden). Font: Quicksand → Google Quicksand. Logo: wordmark-paths lightFit=true",
+    "markDisambiguation": {
+      "used": false,
+      "reason": "skipped"
+    }
+  },
+  "identity": {
+    "name": "billiger-mietwagen",
+    "siteUrl": "https://www.billiger-mietwagen.de/"
+  },
+  "tech": {
+    "cmp": {
+      "vendor": "usercentrics",
+      "detected": true,
+      "closed": true,
+      "action": "reject",
+      "strategy": "cmp-api+save"
+    },
+    "platform": null,
+    "platforms": [],
+    "generator": null
+  },
+  "colors": {
+    "background": "#ffffff",
+    "foreground": "#000000",
+    "primary": "#00856a",
+    "accent": "#00856a",
+    "provenance": {
+      "background": "assumed-light-canvas (body transparent)",
+      "foreground": "body.color",
+      "primary": "cta.fill (Mietwagen finden)",
+      "accent": "same as primary (CTA)"
+    },
+    "observed": [
+      {
+        "role": "ink",
+        "hex": "#000000",
+        "source": "body"
+      },
+      {
+        "role": "cta",
+        "hex": "#00856a",
+        "source": "Mietwagen finden"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#00856a",
+        "source": "Mietwagen finden"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#00977d",
+        "source": "Mietwagen Mallorca"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#ff4b19",
+        "source": "Mietwagen Spanien"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#00977d",
+        "source": "Mietwagen Portugal"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#ff4b19",
+        "source": "Mietwagen Flughafen"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#cceae5",
+        "source": "Versicherung"
+      },
+      {
+        "role": "theme-color",
+        "hex": "#00977d",
+        "source": "meta.theme-color"
+      },
+      {
+        "role": "h1",
+        "hex": "#00977d",
+        "source": "h1.color"
+      },
+      {
+        "role": "link",
+        "hex": "#007a6a",
+        "source": "ranked-links"
+      }
+    ]
+  },
+  "typography": {
+    "fontFamily": "Quicksand",
+    "requestedFontFamily": "Quicksand",
+    "notes": "Exact Google Font match"
+  },
+  "assets": {
+    "logo": "./assets/logo.svg",
+    "favicon": "./assets/favicon.ico",
+    "appleTouch": "./assets/apple-touch.png",
+    "ogImage": "./assets/og-image.jpg",
+    "screenshots": {
+      "viewport": "./assets/viewport.png",
+      "fullpage": "./assets/fullpage.png"
+    },
+    "logoAnalysis": {
+      "fitsLightBackground": true,
+      "fitsDarkBackground": false,
+      "solidPlate": false,
+      "plateHex": null,
+      "reason": "wordmark-paths",
+      "palette": []
+    },
+    "candidates": [
+      {
+        "file": "./assets/logo.svg",
+        "role": "logo",
+        "crawlScore": 51800,
+        "packScore": 4155,
+        "zone": "header",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 615×63 · aspect 9.76",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": []
+        }
+      },
+      {
+        "file": "./assets/favicon.ico",
+        "role": "favicon",
+        "crawlScore": 2,
+        "packScore": 77,
+        "zone": "meta",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "default-ok"
+      },
+      {
+        "file": "./assets/apple-touch.png",
+        "role": "apple-touch",
+        "crawlScore": 5,
+        "packScore": -15,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": false,
+        "solidPlate": true,
+        "plateHex": "#00977d",
+        "reason": "dark-plate:#00977d"
+      },
+      {
+        "file": "./assets/og-image.jpg",
+        "role": "og-image",
+        "crawlScore": 0,
+        "packScore": -85,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": true,
+        "solidPlate": true,
+        "plateHex": "#4a4f4c",
+        "reason": "dark-plate:#4a4f4c"
+      }
+    ]
+  },
+  "landing": {
+    "variant": "light-hero"
+  }
+}

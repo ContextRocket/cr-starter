@@ -176,3 +176,15 @@ frontend/coverage/
 
 # Agent/dev scratch output (screenshots, temp capture scripts) — never published
 scratchpad/
+
+# Astro
+node_modules/
+dist/
+.astro/
+.vite/
+
+# Legacy Next (moved aside during migration)
+scratchpad/
+
+# Generated brand lab gallery
+examples/lab/dist/

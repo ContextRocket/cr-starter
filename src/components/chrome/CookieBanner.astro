@@ -1,0 +1,90 @@
+---
+/**
+ * Minimal cookie hygiene banner. Shows when features.cookieConsent is "on",
+ * or "auto" when an analytics endpoint is configured. Stores choice in
+ * localStorage under cr_cookie_consent (same key as the former Next starter).
+ */
+import { siteConfig } from "@/config/site.config";
+import { createT } from "@/i18n/keys";
+import type { SupportedLocale } from "@/i18n/locales";
+import { localizedHref } from "@/lib/paths";
+
+interface Props {
+  locale: SupportedLocale;
+}
+
+const { locale } = Astro.props;
+const t = createT(locale);
+const mode = siteConfig.features.cookieConsent;
+const analyticsConfigured = Boolean(siteConfig.analytics.webVitalsEndpoint);
+const enabled = mode === "on" || (mode === "auto" && analyticsConfigured);
+const cookiesHref = localizedHref(locale, "/cookies");
+---
+
+{
+  enabled && (
+    <div
+      id="cr-cookie-banner"
+      class="fixed inset-x-0 bottom-0 z-50 hidden border-t border-border bg-background/95 p-4 shadow-lg backdrop-blur"
+      role="dialog"
+      aria-label="Cookie consent"
+    >
+      <div class="mx-auto flex max-w-5xl flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <p class="text-sm text-text-secondary">
+          {t("cookie.consent.body")}{" "}
+          <a href={cookiesHref} class="underline hover:text-foreground">
+            {t("footer.cookies")}
+          </a>
+        </p>
+        <div class="flex gap-2">
+          <button
+            type="button"
+            data-consent="deny"
+            class="rounded-md border border-border px-3 py-1.5 text-sm"
+          >
+            {t("cookie.consent.decline")}
+          </button>
+          <button
+            type="button"
+            data-consent="accept"
+            class="rounded-md bg-primary px-3 py-1.5 text-sm text-primary-foreground"
+          >
+            {t("cookie.consent.accept")}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+{
+  enabled && (
+    <script is:inline>
+      (function () {
+        var KEY = "cr_cookie_consent";
+        var el = document.getElementById("cr-cookie-banner");
+        if (!el) return;
+        try {
+          if (localStorage.getItem(KEY)) return;
+        } catch (e) {}
+        el.classList.remove("hidden");
+        el.querySelectorAll("[data-consent]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var choice = btn.getAttribute("data-consent");
+            try {
+              localStorage.setItem(
+                KEY,
+                JSON.stringify({
+                  choice: choice,
+                  version: 1,
+                  at: new Date().toISOString(),
+                }),
+              );
+            } catch (e) {}
+            el.classList.add("hidden");
+          });
+        });
+      })();
+    </script>
+  )
+}

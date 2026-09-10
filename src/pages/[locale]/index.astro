@@ -1,0 +1,13 @@
+---
+import StarterHome from "@/components/pages/StarterHome.astro";
+import { multiLocalePaths } from "@/lib/routing";
+import type { SupportedLocale } from "@/i18n/locales";
+
+export function getStaticPaths() {
+  return multiLocalePaths();
+}
+
+const locale = Astro.params.locale as SupportedLocale;
+---
+
+<StarterHome locale={locale} />

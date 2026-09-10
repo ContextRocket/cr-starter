@@ -1,0 +1,76 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import type { SupportedLocale } from "@/i18n/locales";
+import { listPosts } from "@/lib/blog";
+import { blogPostHref, absoluteUrl, localizedHref, blogIndexHref } from "@/lib/paths";
+import { blogPublicBasePath } from "@/lib/blog";
+import { createT } from "@/i18n/keys";
+import { buildBreadcrumbListJsonLd } from "@/lib/structured-data";
+
+interface Props {
+  locale: SupportedLocale;
+}
+
+const { locale } = Astro.props;
+const t = createT(locale);
+const posts = listPosts(locale);
+const path = blogPublicBasePath();
+const blogTitle = t("blog.title");
+const blogSubtitle = t("blog.subtitle");
+const homeUrl = absoluteUrl(localizedHref(locale, "/"));
+const blogIndexUrl = absoluteUrl(blogIndexHref(locale));
+
+const jsonLdExtra = [
+  buildBreadcrumbListJsonLd([
+    { name: t("breadcrumb.home"), url: homeUrl },
+    { name: blogTitle, url: blogIndexUrl },
+  ]),
+];
+---
+
+<BaseLayout
+  locale={locale}
+  title={blogTitle}
+  description={blogSubtitle}
+  path={path}
+  includeSiteJsonLd={false}
+  jsonLdExtra={jsonLdExtra}
+>
+  <main class="mx-auto max-w-5xl px-4 py-16">
+    <h1 class="text-4xl font-semibold tracking-tight">{blogTitle}</h1>
+    {
+      blogSubtitle && (
+        <p class="mt-3 text-lg text-text-secondary">{blogSubtitle}</p>
+      )
+    }
+    <ul class="mt-10 space-y-10">
+      {
+        posts.map((post) => (
+          <li class="border-b border-border/60 pb-10">
+            <a
+              href={blogPostHref(locale, post.slug)}
+              class="group grid gap-6 sm:grid-cols-[minmax(0,14rem)_1fr] sm:items-start"
+            >
+              {post.image ? (
+                <img
+                  src={post.image}
+                  alt=""
+                  class="aspect-video w-full rounded-lg object-cover sm:aspect-[4/3]"
+                />
+              ) : null}
+              <div class={post.image ? "" : "sm:col-span-2"}>
+                <h2 class="text-2xl font-medium group-hover:underline">
+                  {post.title}
+                </h2>
+                <p class="mt-1 text-sm text-text-tertiary">{post.date}</p>
+                {post.excerpt && (
+                  <p class="mt-3 text-text-secondary">{post.excerpt}</p>
+                )}
+              </div>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</BaseLayout>

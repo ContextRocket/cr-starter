@@ -1,0 +1,175 @@
+---
+/**
+ * Site chrome -- marketing / minimal header + footer.
+ */
+import { Navbar } from "@/components/chrome/Navbar";
+import { MinimalHeader } from "@/components/chrome/MinimalHeader";
+import FooterSection from "@/components/chrome/FooterSection.astro";
+import { siteConfig, isSingleLocale, type NavLinkConfig } from "@/config/site.config";
+import { createT } from "@/i18n/keys";
+import { getActiveLocales, type SupportedLocale } from "@/i18n/locales";
+import { homeHref, localizedHref } from "@/lib/paths";
+import type { BrandLogoAsset } from "@/components/chrome/BrandLogo";
+import type { LocaleOption } from "@/components/chrome/LocaleSwitcher";
+
+interface Props {
+  locale: SupportedLocale;
+  path?: string;
+}
+
+const { locale, path = "/" } = Astro.props;
+const t = createT(locale);
+
+const navLinks = ((siteConfig.nav.links ?? []) as NavLinkConfig[])
+  .filter((link) => !link.href.includes("/faq"))
+  .map((link) => {
+    const href =
+      link.href.startsWith("http") || link.href.startsWith("mailto:")
+        ? link.href
+        : localizedHref(
+            locale,
+            link.href.startsWith("/") ? link.href : `/${link.href}`,
+          );
+    return {
+      label: t(link.labelKey),
+      href,
+      variant: (link.variant as "default" | "primary" | undefined) ?? "default",
+    };
+  });
+
+const hasBlogInNav = navLinks.some((l) =>
+  l.href.includes(siteConfig.blog.basePath.replace(/^\//, "")),
+);
+if (siteConfig.features.blog && !hasBlogInNav) {
+  navLinks.push({
+    label: siteConfig.blog.title,
+    href: localizedHref(locale, siteConfig.blog.basePath),
+    variant: "default",
+  });
+}
+
+const footerLinks = ((siteConfig.nav.footerLinks ?? []) as NavLinkConfig[])
+  .filter(
+    (link) =>
+      !link.href.includes("/faq") &&
+      !link.labelKey?.includes("faq") &&
+      // Convention: Gallery is the last footer link when enabled; omit when off.
+      (siteConfig.features.gallery ||
+        !(
+          link.href.includes("/gallery") ||
+          link.labelKey?.startsWith("gallery.")
+        )) &&
+      (siteConfig.features.attribution ||
+        !(
+          link.href.includes("/attribution") ||
+          link.labelKey?.includes("attribution")
+        )),
+  )
+  .map((link) => {
+    const href =
+      link.href.startsWith("http") || link.href.startsWith("mailto:")
+        ? link.href
+        : localizedHref(
+            locale,
+            link.href.startsWith("/") ? link.href : `/${link.href}`,
+          );
+    return { label: t(link.labelKey), href };
+  });
+
+const locales = getActiveLocales();
+const showLang =
+  siteConfig.features.languageSelector &&
+  !isSingleLocale() &&
+  locales.length > 1;
+
+const localeOptions: LocaleOption[] = showLang
+  ? locales.map((code) => {
+      const label =
+        code === "en"
+          ? t("locale.labelEnglish")
+          : code === "es"
+            ? t("locale.labelSpanish")
+            : code === "de"
+              ? t("locale.labelGerman")
+              : String(code).toUpperCase();
+      return {
+        code,
+        href: localizedHref(code, path),
+        label,
+      };
+    })
+  : [];
+
+const logoVariant = siteConfig.chrome.logoVariant ?? "icon";
+// Forks may omit wordmark keys in site.json; site.config normalizes at runtime,
+// but TypeScript still sees the JSON shape, so read through a widened view.
+const brandAssets = siteConfig.assets as {
+  logo: string;
+  logoDark: string;
+  wordmark?: string;
+  wordmarkDark?: string;
+};
+const logo: BrandLogoAsset | undefined = siteConfig.chrome.showBrandLogo
+  ? {
+      src:
+        logoVariant === "wordmark"
+          ? (brandAssets.wordmark ?? brandAssets.logo)
+          : brandAssets.logo,
+      srcDark:
+        logoVariant === "wordmark"
+          ? (brandAssets.wordmarkDark ?? brandAssets.logoDark)
+          : brandAssets.logoDark,
+      alt: siteConfig.companyName,
+      variant: logoVariant,
+      width: logoVariant === "wordmark" ? 160 : 28,
+      height: logoVariant === "wordmark" ? 28 : 28,
+    }
+  : undefined;
+
+const showHeader = siteConfig.chrome.header !== "none";
+const useMinimal = siteConfig.chrome.header === "minimal";
+const showFooter = siteConfig.chrome.footer !== "none";
+const footerVariant =
+  siteConfig.chrome.footer === "minimal" ? "minimal" : "full";
+
+const themeLabels = {
+  toggle: t("theme.toggle"),
+  light: t("theme.light"),
+  dark: t("theme.dark"),
+};
+const headerProps = {
+  links: navLinks,
+  logo,
+  brandName: siteConfig.companyName,
+  homeHref: homeHref(locale),
+  navLabel: t("nav.aria.primary"),
+  showThemeToggle: siteConfig.chrome.showThemeToggle ?? true,
+  showLanguageSelector: showLang,
+  locale,
+  localeOptions,
+  changeLanguageLabel: t("locale.changeLanguage"),
+  themeLabels,
+};
+---
+
+{
+  showHeader &&
+    (useMinimal ? (
+      <MinimalHeader client:load {...headerProps} />
+    ) : (
+      <Navbar client:load {...headerProps} />
+    ))
+}
+
+<slot />
+
+{
+  showFooter && (
+    <FooterSection
+      links={footerLinks}
+      companyName={siteConfig.legalName}
+      variant={footerVariant}
+      showPoweredByBadge={siteConfig.features.poweredByBadge}
+    />
+  )
+}

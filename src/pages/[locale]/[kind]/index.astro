@@ -1,0 +1,22 @@
+---
+import LegalPage from "@/components/pages/LegalPage.astro";
+import { isSingleLocale, siteConfig } from "@/config/site.config";
+import { getActiveLocales, type SupportedLocale } from "@/i18n/locales";
+import { legalKinds, type LegalKind } from "@/lib/legal";
+
+export function getStaticPaths() {
+  if (isSingleLocale()) return [];
+  const paths = [];
+  for (const locale of getActiveLocales()) {
+    for (const kind of legalKinds(siteConfig.features.impressum)) {
+      paths.push({ params: { locale, kind } });
+    }
+  }
+  return paths;
+}
+
+const locale = Astro.params.locale as SupportedLocale;
+const kind = Astro.params.kind as LegalKind;
+---
+
+<LegalPage locale={locale} kind={kind} />

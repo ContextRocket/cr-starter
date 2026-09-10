@@ -8,33 +8,34 @@ The starter has two chat modes:
 ## Configuration
 
 ```dotenv
-NEXT_PUBLIC_CR_CHAT_MODE=live
-NEXT_PUBLIC_CR_AGENT_URL=https://app-api.contextrocket.com
-NEXT_PUBLIC_CONTEXTROCKET_HANDLE=contextrocket
-NEXT_PUBLIC_CONTEXTROCKET_API_KEY=your-publishable-api-key
+PUBLIC_CR_CHAT_MODE=live
+PUBLIC_CR_AGENT_URL=https://app-api.contextrocket.com
+PUBLIC_CONTEXTROCKET_HANDLE=contextrocket
+PUBLIC_CONTEXTROCKET_API_KEY=your-publishable-api-key
 ```
 
 The starter showcase uses ContextRocket's `contextrocket` organization handle.
 Forks should replace it with their own published handle. The default site mode
 is still `demo`, so no API request occurs until live mode is enabled.
 
-The organization handle is the public identity of the published agent and is sent as `metadata.handle`. The website API key is sent as `X-Api-Key`; it is named `apiKey` in TypeScript and `api-key` in the iframe query contract.
+The organization handle is the public identity of the published agent and is sent as `metadata.handle`. The website API key is sent as `X-Api-Key`; it is named `apiKey` in TypeScript and `api-key` / `data-contextrocket-api-key` in the widget contract.
 
 ContextRocket must bind that credential to the published agent and validate the request `Origin` against its configured origin allowlist before executing A2A. Keys should be scoped, rate-limited, revocable, and unsuitable for administrative or source-management operations.
 
-## Direct A2A
+## Embed widget (primary integration)
 
-The reusable client is in `frontend/lib/a2a-client.ts`; the React hook is `frontend/hooks/use-a2a-stream.ts`. The client posts to `/api/agent/a2a` and consumes the `text/event-stream` response. No Next.js proxy is required.
+Customer sites use `@contextrocket/embed-chat` from the public `cr-sdk` repo
+(copied to `public/embed/widget.js` for local demos, or loaded from CDN later).
+The widget talks to ContextRocket over browser A2A. There is no API proxy and
+no in-repo chat page required for production embeds.
 
 The public integration sends only an organization handle and website API key. It does not create a local user, mint a local token, or expose a server credential.
 
 ## Standalone widget
 
-The standalone widget is built and released from this repository. The Context
-Rocket dashboard owns Website API-key provisioning and copy-ready installation
-guidance; it does not build or host a second widget. Use the starter source
-when you control the site repository, or the verified immutable CDN release
-when you need a copy/paste integration.
+The widget is built and released from **`cr-sdk`** (`packages/embed-chat`).
+This starter consumes it via pnpm `file:` (or CDN later). Use
+`pnpm run build:widget` to refresh `public/embed/widget.js`.
 
 Build it with:
 

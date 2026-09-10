@@ -1,0 +1,13 @@
+---
+import BlogIndex from "@/components/pages/BlogIndex.astro";
+import { isSingleLocale } from "@/config/site.config";
+import { getDefaultLocale } from "@/i18n/locales";
+import { soleLocale } from "@/lib/routing";
+
+if (!isSingleLocale()) {
+  return Astro.redirect(`/${getDefaultLocale()}/blog/`);
+}
+const locale = soleLocale();
+---
+
+<BlogIndex locale={locale} />

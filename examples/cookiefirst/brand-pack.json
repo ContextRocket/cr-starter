@@ -1,0 +1,300 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://cookiefirst.com/",
+    "capturedAt": "2026-09-06",
+    "method": "crawl",
+    "notes": "Colors: light body background kept; CTA fill → primary (Start your 14-day free trial). Font: Source Sans Pro → Google Source Sans 3 (nearest). Logo: default-ok lightFit=true alt=\"Cookie consent manager Aegon logo\"",
+    "markDisambiguation": {
+      "used": false,
+      "reason": "skipped"
+    }
+  },
+  "identity": {
+    "name": "CookieFirst - Cookie Consent Management",
+    "siteUrl": "https://cookiefirst.com/"
+  },
+  "tech": {
+    "cmp": {
+      "vendor": "cookiefirst",
+      "detected": true,
+      "closed": true,
+      "action": "reject",
+      "strategy": "cookiefirst"
+    },
+    "platform": {
+      "id": "wordpress",
+      "label": "WordPress",
+      "confidence": 0.7,
+      "signals": [
+        "asset-path"
+      ]
+    },
+    "platforms": [
+      {
+        "id": "wordpress",
+        "label": "WordPress",
+        "confidence": 0.7,
+        "signals": [
+          "asset-path"
+        ]
+      }
+    ],
+    "generator": null
+  },
+  "colors": {
+    "background": "#ffffff",
+    "foreground": "#222222",
+    "primary": "#ff5200",
+    "accent": "#ff5200",
+    "provenance": {
+      "background": "body.backgroundColor",
+      "foreground": "body.color",
+      "primary": "cta.fill (Start your 14-day free trial)",
+      "accent": "same as primary (CTA)"
+    },
+    "observed": [
+      {
+        "role": "background",
+        "hex": "#ffffff",
+        "source": "body"
+      },
+      {
+        "role": "ink",
+        "hex": "#222222",
+        "source": "body"
+      },
+      {
+        "role": "cta",
+        "hex": "#ff5200",
+        "source": "Start your 14-day free trial"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#ff5200",
+        "source": "Start your 14-day free trial"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#2ac4ea",
+        "source": "Try Basic"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#0d56c9",
+        "source": "Try Plus"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#f2f2f2",
+        "source": "GDPR"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#f2f2f2",
+        "source": "ePrivacy"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#f2f2f2",
+        "source": "CCPA"
+      },
+      {
+        "role": "h1",
+        "hex": "#222222",
+        "source": "h1.color"
+      },
+      {
+        "role": "link",
+        "hex": "#0d1441",
+        "source": "ranked-links"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#0c84cc",
+        "source": "logo (default-ok)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#242424",
+        "source": "logo (default-ok)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#3c3c3c",
+        "source": "logo (default-ok)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#3c9ccc",
+        "source": "logo (default-ok)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#e4e4fc",
+        "source": "logo (default-ok)"
+      }
+    ]
+  },
+  "typography": {
+    "fontFamily": "Source Sans 3",
+    "requestedFontFamily": "Source Sans Pro",
+    "notes": "Nearest Google Font to \"Source Sans Pro\""
+  },
+  "assets": {
+    "logo": "./assets/logo.png",
+    "favicon": "./assets/favicon.ico",
+    "appleTouch": "./assets/apple-touch.png",
+    "ogImage": "./assets/og-image.jpg",
+    "screenshots": {
+      "viewport": "./assets/viewport.png",
+      "fullpage": "./assets/fullpage.png"
+    },
+    "logoAnalysis": {
+      "fitsLightBackground": true,
+      "fitsDarkBackground": true,
+      "solidPlate": false,
+      "plateHex": null,
+      "reason": "default-ok",
+      "palette": [
+        {
+          "hex": "#0c84cc",
+          "share": 0.0733,
+          "luminance": 0.391,
+          "saturation": 0.753
+        },
+        {
+          "hex": "#242424",
+          "share": 0.004,
+          "luminance": 0.094,
+          "saturation": 0
+        },
+        {
+          "hex": "#3c3c3c",
+          "share": 0.0019,
+          "luminance": 0.188,
+          "saturation": 0
+        },
+        {
+          "hex": "#3c9ccc",
+          "share": 0.0009,
+          "luminance": 0.498,
+          "saturation": 0.565
+        },
+        {
+          "hex": "#e4e4fc",
+          "share": 0.0009,
+          "luminance": 0.854,
+          "saturation": 0.094
+        }
+      ]
+    },
+    "logoNav": "./assets/logo.png",
+    "candidates": [
+      {
+        "file": "./assets/logo.png",
+        "role": "logo",
+        "crawlScore": 105,
+        "packScore": 235,
+        "zone": "page",
+        "alt": "Cookie consent manager Aegon logo",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": true,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "default-ok"
+      },
+      {
+        "file": "./assets/candidate-logo-keyword.png",
+        "role": "logo-keyword",
+        "crawlScore": 105,
+        "packScore": 235,
+        "zone": "page",
+        "alt": "Cookie consent manager Prescan logo",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": true,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "default-ok"
+      },
+      {
+        "file": "./assets/candidate-logo-keyword.png",
+        "role": "logo-keyword",
+        "crawlScore": 105,
+        "packScore": 235,
+        "zone": "page",
+        "alt": "Cookie consent manager Berenberg Bank logo",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": true,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "default-ok"
+      },
+      {
+        "file": "./assets/candidate-logo-keyword.png",
+        "role": "logo-keyword",
+        "crawlScore": 105,
+        "packScore": 235,
+        "zone": "page",
+        "alt": "New Era Cap CookieFirst client logo",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/candidate-logo-keyword.png",
+        "role": "logo-keyword",
+        "crawlScore": 105,
+        "packScore": 235,
+        "zone": "page",
+        "alt": "Globus Baumarkte CookieFirst client logo",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": true,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/apple-touch.png",
+        "role": "apple-touch",
+        "crawlScore": 5,
+        "packScore": 100,
+        "zone": "meta",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/favicon.ico",
+        "role": "favicon",
+        "crawlScore": 2,
+        "packScore": 77,
+        "zone": "meta",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/og-image.jpg",
+        "role": "og-image",
+        "crawlScore": 0,
+        "packScore": 15,
+        "zone": "meta",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": true,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "default-ok"
+      }
+    ]
+  },
+  "landing": {
+    "variant": "light-hero"
+  }
+}

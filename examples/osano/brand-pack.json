@@ -1,0 +1,239 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://www.osano.com/",
+    "capturedAt": "2026-09-06",
+    "method": "crawl",
+    "notes": "Colors: body bg transparent → assumed white canvas; CTA fill → primary (Get a Demo). Font: Jost → Google Inter (nearest). Logo: wordmark-paths lightFit=true alt=\"Logo\"",
+    "markDisambiguation": {
+      "used": false,
+      "reason": "skipped"
+    }
+  },
+  "identity": {
+    "name": "Osano",
+    "siteUrl": "https://www.osano.com/"
+  },
+  "tech": {
+    "cmp": {
+      "vendor": "osano",
+      "detected": true,
+      "closed": true,
+      "action": "reject",
+      "strategy": "osano"
+    },
+    "platform": null,
+    "platforms": [],
+    "generator": null
+  },
+  "colors": {
+    "background": "#ffffff",
+    "foreground": "#000000",
+    "primary": "#3500df",
+    "accent": "#3500df",
+    "provenance": {
+      "background": "assumed-light-canvas (body transparent)",
+      "foreground": "body.color",
+      "primary": "cta.fill (Get a Demo)",
+      "accent": "same as primary (CTA)"
+    },
+    "observed": [
+      {
+        "role": "ink",
+        "hex": "#000000",
+        "source": "body"
+      },
+      {
+        "role": "cta",
+        "hex": "#3500df",
+        "source": "Get a Demo"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#3500df",
+        "source": "Get a Demo"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#3500df",
+        "source": "Get Your Demo"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#7a3ff1",
+        "source": "Get a Demo"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#7a3ff1",
+        "source": "Get a Free Compliance Scan"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#3500df",
+        "source": "View All Blog Posts"
+      },
+      {
+        "role": "link",
+        "hex": "#7a3ff1",
+        "source": "ranked-links"
+      }
+    ]
+  },
+  "typography": {
+    "fontFamily": "Inter",
+    "requestedFontFamily": "Jost",
+    "notes": "Nearest Google Font to \"Jost\""
+  },
+  "assets": {
+    "logo": "./assets/logo.svg",
+    "favicon": "./assets/favicon.ico",
+    "appleTouch": "./assets/apple-touch.png",
+    "screenshots": {
+      "viewport": "./assets/viewport.png",
+      "fullpage": "./assets/fullpage.png"
+    },
+    "logoAnalysis": {
+      "fitsLightBackground": true,
+      "fitsDarkBackground": false,
+      "solidPlate": false,
+      "plateHex": null,
+      "reason": "wordmark-paths",
+      "palette": []
+    },
+    "candidates": [
+      {
+        "file": "./assets/logo.svg",
+        "role": "logo",
+        "crawlScore": 188,
+        "packScore": 353,
+        "zone": "header",
+        "alt": "Logo",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 142×32 · aspect 4.44",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": []
+        }
+      },
+      {
+        "file": "./assets/candidate-header-logo.svg",
+        "role": "header-logo",
+        "crawlScore": 158,
+        "packScore": 283,
+        "zone": "footer",
+        "alt": "header logo vector",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 143×27 · aspect 5.30",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": []
+        }
+      },
+      {
+        "file": "./assets/candidate-logo-keyword.svg",
+        "role": "logo-keyword",
+        "crawlScore": 148,
+        "packScore": 278,
+        "zone": "hero",
+        "alt": "capterra-logo",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 73×16 · aspect 4.56",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": []
+        }
+      },
+      {
+        "file": "./assets/candidate-logo-keyword.svg",
+        "role": "logo-keyword",
+        "crawlScore": 148,
+        "packScore": 278,
+        "zone": "hero",
+        "alt": "GetApp Logo",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 89×16 · aspect 5.56",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": []
+        }
+      },
+      {
+        "file": "./assets/candidate-logo-keyword.svg",
+        "role": "logo-keyword",
+        "crawlScore": 148,
+        "packScore": 278,
+        "zone": "hero",
+        "alt": "GetApp logo gray 100",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 89×16 · aspect 5.56",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": []
+        }
+      },
+      {
+        "file": "./assets/apple-touch.png",
+        "role": "apple-touch",
+        "crawlScore": 5,
+        "packScore": 100,
+        "zone": "meta",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "default-ok"
+      },
+      {
+        "file": "./assets/favicon.ico",
+        "role": "favicon",
+        "crawlScore": 2,
+        "packScore": 77,
+        "zone": "meta",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      }
+    ]
+  },
+  "landing": {
+    "variant": "light-hero"
+  }
+}

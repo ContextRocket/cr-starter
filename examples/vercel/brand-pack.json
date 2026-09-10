@@ -1,0 +1,203 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://vercel.com/",
+    "capturedAt": "2026-09-06",
+    "method": "crawl",
+    "notes": "Colors: light body background kept; CTA fill → primary (Sign Up). Font: GeistSans → Google Inter (nearest). Logo: wordmark-paths lightFit=true",
+    "markDisambiguation": {
+      "used": false,
+      "reason": "skipped"
+    }
+  },
+  "identity": {
+    "name": "vercel",
+    "siteUrl": "https://vercel.com/"
+  },
+  "tech": {
+    "cmp": null,
+    "platform": {
+      "id": "nextjs",
+      "label": "Next.js",
+      "confidence": 0.7,
+      "signals": [
+        "asset-path"
+      ]
+    },
+    "platforms": [
+      {
+        "id": "nextjs",
+        "label": "Next.js",
+        "confidence": 0.7,
+        "signals": [
+          "asset-path"
+        ]
+      }
+    ],
+    "generator": null
+  },
+  "colors": {
+    "background": "#fafafa",
+    "foreground": "#171717",
+    "primary": "#171717",
+    "accent": "#171717",
+    "provenance": {
+      "background": "body.backgroundColor",
+      "foreground": "body.color",
+      "primary": "cta.fill (Sign Up)",
+      "accent": "same as primary (CTA)"
+    },
+    "observed": [
+      {
+        "role": "background",
+        "hex": "#fafafa",
+        "source": "body"
+      },
+      {
+        "role": "ink",
+        "hex": "#171717",
+        "source": "body"
+      },
+      {
+        "role": "cta",
+        "hex": "#171717",
+        "source": "Sign Up"
+      },
+      {
+        "role": "h1",
+        "hex": "#171717",
+        "source": "h1.color"
+      },
+      {
+        "role": "link",
+        "hex": "#4d4d4d",
+        "source": "ranked-links"
+      }
+    ]
+  },
+  "typography": {
+    "fontFamily": "Inter",
+    "requestedFontFamily": "GeistSans",
+    "notes": "Nearest Google Font to \"GeistSans\""
+  },
+  "assets": {
+    "logo": "./assets/logo.svg",
+    "favicon": "./assets/favicon.ico",
+    "appleTouch": "./assets/apple-touch.png",
+    "ogImage": "./assets/og-image.jpg",
+    "screenshots": {
+      "viewport": "./assets/viewport.png"
+    },
+    "logoAnalysis": {
+      "fitsLightBackground": true,
+      "fitsDarkBackground": false,
+      "solidPlate": false,
+      "plateHex": null,
+      "reason": "wordmark-paths",
+      "palette": []
+    },
+    "candidates": [
+      {
+        "file": "./assets/logo.svg",
+        "role": "logo",
+        "crawlScore": 6615,
+        "packScore": 4155,
+        "zone": "header",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 105×21 · aspect 5.00",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": []
+        }
+      },
+      {
+        "file": "./assets/candidate-header-logo.svg",
+        "role": "header-logo",
+        "crawlScore": 0,
+        "packScore": 195,
+        "zone": "page",
+        "alt": "Vercel",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "symbol",
+        "svg": {
+          "roleGuess": "symbol",
+          "roleConfidence": 0.6,
+          "summary": "symbol · 115×100 · aspect 1.15",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": []
+        }
+      },
+      {
+        "file": "./assets/candidate-header-logo.svg",
+        "role": "header-logo",
+        "crawlScore": 0,
+        "packScore": 195,
+        "zone": "page",
+        "alt": "Vercel",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "symbol",
+        "svg": {
+          "roleGuess": "symbol",
+          "roleConfidence": 0.6,
+          "summary": "symbol · 115×100 · aspect 1.15",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": []
+        }
+      },
+      {
+        "file": "./assets/favicon.ico",
+        "role": "favicon",
+        "crawlScore": 2,
+        "packScore": 77,
+        "zone": "meta",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/apple-touch.png",
+        "role": "apple-touch",
+        "crawlScore": 5,
+        "packScore": 0,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": true,
+        "solidPlate": true,
+        "plateHex": "#000000",
+        "reason": "dark-plate:#000000"
+      },
+      {
+        "file": "./assets/og-image.jpg",
+        "role": "og-image",
+        "crawlScore": 0,
+        "packScore": -85,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": true,
+        "solidPlate": true,
+        "plateHex": "#000000",
+        "reason": "dark-plate:#000000"
+      }
+    ]
+  },
+  "landing": {
+    "variant": "light-hero"
+  }
+}

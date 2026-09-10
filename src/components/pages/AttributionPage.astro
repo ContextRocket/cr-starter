@@ -1,0 +1,164 @@
+---
+/**
+ * Attribution page -- /attribution.
+ * Feature-gated at the route. Credits from content/attributions.json.
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import type { SupportedLocale } from "@/i18n/locales";
+import { createT } from "@/i18n/keys";
+import { loadAttributions } from "@/lib/attributions";
+import { homeHref } from "@/lib/paths";
+
+interface Props {
+  locale: SupportedLocale;
+}
+
+const { locale } = Astro.props;
+const t = createT(locale);
+const title = t("attribution.title");
+const description = t("attribution.description");
+const { images, libraries } = loadAttributions();
+const home = homeHref(locale);
+---
+
+<BaseLayout
+  locale={locale}
+  title={title}
+  description={t("attribution.subtitle")}
+  path="/attribution"
+>
+  <main
+    class="min-h-screen bg-background text-foreground"
+    data-testid="attribution-page"
+  >
+    <section class="bg-muted py-16">
+      <div class="wrap mx-auto max-w-4xl text-center">
+        <h1 class="text-3xl font-bold text-foreground md:text-4xl">{title}</h1>
+        <p class="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+          {description}
+        </p>
+      </div>
+    </section>
+
+    <section class="py-16">
+      <div class="wrap mx-auto max-w-4xl">
+        <section class="mb-16" data-testid="attribution-images">
+          <h2 class="mb-8 text-2xl font-bold text-foreground">
+            {t("attribution.images")}
+          </h2>
+          {
+            images.length > 0 ? (
+              <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                {images.map((image) => (
+                  <div class="p-6">
+                    <div class="flex items-start gap-4">
+                      <a
+                        href={image.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="block shrink-0 transition-opacity hover:opacity-80"
+                      >
+                        <img
+                          src={image.thumbnail}
+                          alt={image.filename}
+                          width="80"
+                          height="80"
+                          class="h-20 w-20 rounded-lg object-cover"
+                          loading="lazy"
+                        />
+                      </a>
+                      <div class="min-w-0 flex-1">
+                        <h3 class="mb-2 text-sm font-medium text-foreground">
+                          {image.filename}
+                        </h3>
+                        <p class="text-sm leading-relaxed text-muted-foreground">
+                          {t("attribution.photo_by")}{" "}
+                          <a
+                            href={image.author.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="text-primary hover:underline"
+                          >
+                            {image.author.name}
+                          </a>{" "}
+                          {t("attribution.on")}{" "}
+                          <a
+                            href={image.source.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="text-primary hover:underline"
+                          >
+                            {image.source.name}
+                          </a>
+                        </p>
+                        <a
+                          href={image.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="mt-2 inline-block text-sm font-medium text-primary hover:underline"
+                        >
+                          {t("attribution.view_original")}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p class="italic text-muted-foreground">{t("attribution.no_images")}</p>
+            )
+          }
+        </section>
+
+        <section data-testid="attribution-libraries">
+          <h2 class="mb-8 text-2xl font-bold text-foreground">
+            {t("attribution.libraries")}
+          </h2>
+          {
+            libraries.length > 0 ? (
+              <ul class="divide-y divide-border border border-border">
+                {libraries.map((library) => (
+                  <li class="flex flex-wrap items-baseline justify-between gap-2 px-4 py-3">
+                    <div>
+                      {library.url ? (
+                        <a
+                          href={library.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="font-medium text-foreground hover:text-primary hover:underline"
+                        >
+                          {library.name}
+                        </a>
+                      ) : (
+                        <span class="font-medium text-foreground">{library.name}</span>
+                      )}
+                      {library.note && (
+                        <p class="mt-1 text-sm text-muted-foreground">{library.note}</p>
+                      )}
+                    </div>
+                    {library.license && (
+                      <span class="text-xs text-muted-foreground">{library.license}</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="italic text-muted-foreground">
+                {t("attribution.no_libraries")}
+              </p>
+            )
+          }
+        </section>
+
+        <p class="mt-12 text-center text-sm text-muted-foreground">
+          {t("attribution.license_note")}
+        </p>
+        <p class="mt-6 text-center">
+          <a href={home} class="text-sm text-primary hover:underline">
+            {t("breadcrumb.home")}
+          </a>
+        </p>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

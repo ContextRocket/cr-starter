@@ -1,0 +1,163 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://www.otto.de/",
+    "capturedAt": "2026-09-06",
+    "method": "crawl",
+    "notes": "Colors: body bg transparent → assumed white canvas; no CTA fill → body ink as primary. Font: OTTOSans → Google Inter (nearest). Logo: default-ok lightFit=true",
+    "markDisambiguation": {
+      "used": false,
+      "reason": "skipped"
+    }
+  },
+  "identity": {
+    "name": "OTTO",
+    "siteUrl": "https://www.otto.de/"
+  },
+  "tech": {
+    "cmp": {
+      "vendor": "onetrust",
+      "detected": true,
+      "closed": true,
+      "action": "reject",
+      "strategy": "cmp-api"
+    },
+    "platform": null,
+    "platforms": [],
+    "generator": null
+  },
+  "colors": {
+    "background": "#ffffff",
+    "foreground": "#212121",
+    "primary": "#212121",
+    "accent": "#f0f0f0",
+    "provenance": {
+      "background": "assumed-light-canvas (body transparent)",
+      "foreground": "body.color",
+      "primary": "body.color (ink fallback)",
+      "accent": "meta.theme-color"
+    },
+    "observed": [
+      {
+        "role": "ink",
+        "hex": "#212121",
+        "source": "body"
+      },
+      {
+        "role": "theme-color",
+        "hex": "#f0f0f0",
+        "source": "meta.theme-color"
+      },
+      {
+        "role": "h1",
+        "hex": "#212121",
+        "source": "h1.color"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#6c2424",
+        "source": "logo (default-ok)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#843c3c",
+        "source": "logo (default-ok)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#542424",
+        "source": "logo (default-ok)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#9c3c3c",
+        "source": "logo (default-ok)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#540c0c",
+        "source": "logo (default-ok)"
+      }
+    ]
+  },
+  "typography": {
+    "fontFamily": "Inter",
+    "requestedFontFamily": "OTTOSans",
+    "notes": "Nearest Google Font to \"OTTOSans\""
+  },
+  "assets": {
+    "logo": "./assets/logo.png",
+    "screenshots": {
+      "viewport": "./assets/viewport.png",
+      "fullpage": "./assets/fullpage.png"
+    },
+    "logoAnalysis": {
+      "fitsLightBackground": true,
+      "fitsDarkBackground": true,
+      "solidPlate": false,
+      "plateHex": null,
+      "reason": "default-ok",
+      "palette": [
+        {
+          "hex": "#6c2424",
+          "share": 0.0622,
+          "luminance": 0.154,
+          "saturation": 0.282
+        },
+        {
+          "hex": "#843c3c",
+          "share": 0.0619,
+          "luminance": 0.248,
+          "saturation": 0.282
+        },
+        {
+          "hex": "#542424",
+          "share": 0.0197,
+          "luminance": 0.134,
+          "saturation": 0.188
+        },
+        {
+          "hex": "#9c3c3c",
+          "share": 0.0186,
+          "luminance": 0.268,
+          "saturation": 0.376
+        },
+        {
+          "hex": "#540c0c",
+          "share": 0.0159,
+          "luminance": 0.06,
+          "saturation": 0.282
+        }
+      ]
+    },
+    "candidates": [
+      {
+        "file": "./assets/logo.png",
+        "role": "logo",
+        "crawlScore": 120,
+        "packScore": 285,
+        "zone": "header",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": true,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "default-ok"
+      },
+      {
+        "file": "./assets/candidate-header-logo.png",
+        "role": "header-logo",
+        "crawlScore": 120,
+        "packScore": 285,
+        "zone": "header",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": true,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "default-ok"
+      }
+    ]
+  },
+  "landing": {
+    "variant": "light-hero"
+  }
+}

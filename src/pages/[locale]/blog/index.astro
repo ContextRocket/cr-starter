@@ -1,0 +1,13 @@
+---
+import BlogIndex from "@/components/pages/BlogIndex.astro";
+import { multiLocalePaths } from "@/lib/routing";
+import type { SupportedLocale } from "@/i18n/locales";
+
+export function getStaticPaths() {
+  return multiLocalePaths();
+}
+
+const locale = Astro.params.locale as SupportedLocale;
+---
+
+<BlogIndex locale={locale} />

@@ -1,0 +1,228 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://www.contextrocket.ai/en",
+    "capturedAt": "2026-09-06",
+    "method": "crawl",
+    "notes": "Colors: light body background kept; CTA fill → primary (Sign Up). Font: Inter → Google Inter. Logo: wordmark-paths lightFit=true alt=\"ContextRocket Logo\"",
+    "markDisambiguation": {
+      "used": false,
+      "reason": "skipped"
+    }
+  },
+  "identity": {
+    "name": "contextrocket",
+    "siteUrl": "https://www.contextrocket.ai/en"
+  },
+  "tech": {
+    "cmp": null,
+    "platform": null,
+    "platforms": [],
+    "generator": null
+  },
+  "colors": {
+    "background": "#ffffff",
+    "foreground": "#0a0a0a",
+    "primary": "#ff2b67",
+    "accent": "#ff2b67",
+    "provenance": {
+      "background": "body.backgroundColor",
+      "foreground": "body.color",
+      "primary": "cta.fill (Sign Up)",
+      "accent": "same as primary (CTA)"
+    },
+    "observed": [
+      {
+        "role": "background",
+        "hex": "#ffffff",
+        "source": "body"
+      },
+      {
+        "role": "ink",
+        "hex": "#0a0a0a",
+        "source": "body"
+      },
+      {
+        "role": "cta",
+        "hex": "#ff2b67",
+        "source": "Sign Up"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#ff2b67",
+        "source": "Sign Up"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#ff2b67",
+        "source": "Get Started"
+      },
+      {
+        "role": "h1",
+        "hex": "#111827",
+        "source": "h1.color"
+      },
+      {
+        "role": "link",
+        "hex": "#4b5563",
+        "source": "ranked-links"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#ff2b67",
+        "source": "logo (wordmark-paths)"
+      }
+    ]
+  },
+  "typography": {
+    "fontFamily": "Inter",
+    "requestedFontFamily": "Inter",
+    "notes": "Exact Google Font match"
+  },
+  "assets": {
+    "logo": "./assets/logo.svg",
+    "favicon": "./assets/favicon.ico",
+    "appleTouch": "./assets/apple-touch.png",
+    "ogImage": "./assets/og-image.jpg",
+    "screenshots": {
+      "viewport": "./assets/viewport.png",
+      "fullpage": "./assets/fullpage.png"
+    },
+    "logoAnalysis": {
+      "fitsLightBackground": true,
+      "fitsDarkBackground": true,
+      "solidPlate": false,
+      "plateHex": null,
+      "reason": "wordmark-paths",
+      "palette": [
+        {
+          "hex": "#ff2b67",
+          "share": null,
+          "luminance": 0.362,
+          "saturation": 0.831
+        }
+      ]
+    },
+    "candidates": [
+      {
+        "file": "./assets/logo.svg",
+        "role": "logo",
+        "crawlScore": 163,
+        "packScore": 378,
+        "zone": "header",
+        "alt": "ContextRocket Logo",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": true,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 1312×449 · aspect 2.92 · hues #ff2b67",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": [
+            {
+              "hex": "#ff2b67",
+              "count": 2,
+              "luminance": 0.362,
+              "saturation": 0.831
+            }
+          ]
+        }
+      },
+      {
+        "file": "./assets/candidate-logo-keyword.png",
+        "role": "logo-keyword",
+        "crawlScore": 60,
+        "packScore": 190,
+        "zone": "main",
+        "alt": "Logo 1",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/candidate-logo-keyword.png",
+        "role": "logo-keyword",
+        "crawlScore": 60,
+        "packScore": 190,
+        "zone": "main",
+        "alt": "Logo 2",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/candidate-logo-keyword.png",
+        "role": "logo-keyword",
+        "crawlScore": 60,
+        "packScore": 190,
+        "zone": "main",
+        "alt": "Logo 3",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/candidate-logo-keyword.png",
+        "role": "logo-keyword",
+        "crawlScore": 60,
+        "packScore": 190,
+        "zone": "main",
+        "alt": "Logo 4",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/apple-touch.png",
+        "role": "apple-touch",
+        "crawlScore": 5,
+        "packScore": -15,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": false,
+        "solidPlate": true,
+        "plateHex": "#ff2a68",
+        "reason": "dark-plate:#ff2a68"
+      },
+      {
+        "file": "./assets/favicon.ico",
+        "role": "favicon",
+        "crawlScore": 2,
+        "packScore": -38,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": false,
+        "solidPlate": true,
+        "plateHex": "#ff2f6b",
+        "reason": "dark-plate:#ff2f6b"
+      },
+      {
+        "file": "./assets/og-image.jpg",
+        "role": "og-image",
+        "crawlScore": 0,
+        "packScore": 15,
+        "zone": "meta",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": true,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "default-ok"
+      }
+    ]
+  },
+  "landing": {
+    "variant": "light-hero"
+  }
+}

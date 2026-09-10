@@ -1,0 +1,237 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://www.holded.com/",
+    "capturedAt": "2026-09-06",
+    "method": "crawl",
+    "notes": "Colors: light body background kept; CTA fill → primary (Try free). Font: inter → Google Inter. Logo: wordmark-paths lightFit=true alt=\"Holded\"",
+    "markDisambiguation": {
+      "used": false,
+      "reason": "skipped"
+    }
+  },
+  "identity": {
+    "name": "Holded",
+    "siteUrl": "https://www.holded.com/"
+  },
+  "tech": {
+    "cmp": {
+      "vendor": "onetrust",
+      "detected": true,
+      "closed": true,
+      "action": "reject",
+      "strategy": "cmp-api"
+    },
+    "platform": {
+      "id": "nextjs",
+      "label": "Next.js",
+      "confidence": 0.85,
+      "signals": [
+        "dom",
+        "asset-path"
+      ]
+    },
+    "platforms": [
+      {
+        "id": "nextjs",
+        "label": "Next.js",
+        "confidence": 0.85,
+        "signals": [
+          "dom",
+          "asset-path"
+        ]
+      }
+    ],
+    "generator": null
+  },
+  "colors": {
+    "background": "#ffffff",
+    "foreground": "#121926",
+    "primary": "#121926",
+    "accent": "#121926",
+    "provenance": {
+      "background": "body.backgroundColor",
+      "foreground": "body.color",
+      "primary": "cta.fill (Try free)",
+      "accent": "same as primary (CTA)"
+    },
+    "observed": [
+      {
+        "role": "background",
+        "hex": "#ffffff",
+        "source": "body"
+      },
+      {
+        "role": "ink",
+        "hex": "#121926",
+        "source": "body"
+      },
+      {
+        "role": "cta",
+        "hex": "#121926",
+        "source": "Try free"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#121926",
+        "source": "Try free"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#eef2f6",
+        "source": "Book a demo"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#1963ef",
+        "source": "Try free 14 days"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#1963ef",
+        "source": "Start free now"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#1963ef",
+        "source": "Send"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#eef2f6",
+        "source": "Log in"
+      },
+      {
+        "role": "h1",
+        "hex": "#121926",
+        "source": "h1.color"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#ef4444",
+        "source": "logo (wordmark-paths)"
+      }
+    ]
+  },
+  "typography": {
+    "fontFamily": "Inter",
+    "requestedFontFamily": "inter",
+    "notes": "Exact Google Font match"
+  },
+  "assets": {
+    "logo": "./assets/logo.svg",
+    "favicon": "./assets/favicon.ico",
+    "appleTouch": "./assets/apple-touch.png",
+    "ogImage": "./assets/og-image.jpg",
+    "screenshots": {
+      "viewport": "./assets/viewport.png",
+      "fullpage": "./assets/fullpage.png"
+    },
+    "logoAnalysis": {
+      "fitsLightBackground": true,
+      "fitsDarkBackground": false,
+      "solidPlate": false,
+      "plateHex": null,
+      "reason": "wordmark-paths",
+      "palette": [
+        {
+          "hex": "#ef4444",
+          "share": null,
+          "luminance": 0.409,
+          "saturation": 0.671
+        }
+      ]
+    },
+    "logoNav": "./assets/logo.svg",
+    "candidates": [
+      {
+        "file": "./assets/logo.svg",
+        "role": "logo",
+        "crawlScore": 43980,
+        "packScore": 44260,
+        "zone": "header",
+        "alt": "Holded",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 120×18 · aspect 6.67 · hues #ef4444",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": [
+            {
+              "hex": "#ef4444",
+              "count": 4,
+              "luminance": 0.409,
+              "saturation": 0.671
+            }
+          ]
+        }
+      },
+      {
+        "file": "./assets/candidate-svg-wordmark.svg",
+        "role": "svg-wordmark",
+        "crawlScore": 37954,
+        "packScore": 38194,
+        "zone": "footer",
+        "alt": "Holded",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 101×18 · aspect 5.61",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": []
+        }
+      },
+      {
+        "file": "./assets/apple-touch.png",
+        "role": "apple-touch",
+        "crawlScore": 5,
+        "packScore": 100,
+        "zone": "meta",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/favicon.ico",
+        "role": "favicon",
+        "crawlScore": 2,
+        "packScore": 77,
+        "zone": "meta",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/og-image.jpg",
+        "role": "og-image",
+        "crawlScore": 0,
+        "packScore": 15,
+        "zone": "meta",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": true,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "default-ok"
+      }
+    ]
+  },
+  "landing": {
+    "variant": "light-hero"
+  }
+}

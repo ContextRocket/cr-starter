@@ -1,0 +1,245 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://tryformation.com/",
+    "capturedAt": "2026-09-06",
+    "method": "crawl",
+    "notes": "Colors: dark body → primary/foreground; white canvas assumed; chromatic h1 → accent (preferred over muted CTA). Font: Fira Mono → Google Inter (nearest). Logo: wordmark-paths lightFit=true",
+    "markDisambiguation": {
+      "used": false,
+      "reason": "skipped"
+    }
+  },
+  "identity": {
+    "name": "tryformation",
+    "siteUrl": "https://tryformation.com/"
+  },
+  "tech": {
+    "cmp": {
+      "vendor": "unknown",
+      "detected": true,
+      "closed": true,
+      "action": null,
+      "strategy": "generic"
+    },
+    "platform": null,
+    "platforms": [],
+    "generator": null
+  },
+  "colors": {
+    "background": "#ffffff",
+    "foreground": "#000000",
+    "primary": "#000000",
+    "accent": "#46ff63",
+    "provenance": {
+      "background": "assumed-light-canvas (body was dark)",
+      "foreground": "body.backgroundColor (dark→foreground)",
+      "primary": "body.backgroundColor (dark→primary)",
+      "accent": "h1.color (chromatic over near-ink CTA)"
+    },
+    "observed": [
+      {
+        "role": "brand-surface",
+        "hex": "#000000",
+        "source": "body-dark"
+      },
+      {
+        "role": "cta",
+        "hex": "#222326",
+        "source": "Book meeting"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#222326",
+        "source": "Book meeting"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#18181b",
+        "source": "Explore the FORMATION App"
+      },
+      {
+        "role": "h1",
+        "hex": "#46ff63",
+        "source": "h1.color"
+      },
+      {
+        "role": "link",
+        "hex": "#222326",
+        "source": "ranked-links"
+      }
+    ]
+  },
+  "typography": {
+    "fontFamily": "Inter",
+    "requestedFontFamily": "Fira Mono",
+    "notes": "Nearest Google Font to \"Fira Mono\""
+  },
+  "assets": {
+    "logo": "./assets/logo.svg",
+    "favicon": "./assets/favicon.ico",
+    "appleTouch": "./assets/apple-touch.png",
+    "ogImage": "./assets/og-image.jpg",
+    "screenshots": {
+      "viewport": "./assets/viewport.png",
+      "fullpage": "./assets/fullpage.png"
+    },
+    "logoAnalysis": {
+      "fitsLightBackground": true,
+      "fitsDarkBackground": false,
+      "solidPlate": false,
+      "plateHex": null,
+      "reason": "wordmark-paths",
+      "palette": []
+    },
+    "candidates": [
+      {
+        "file": "./assets/logo.svg",
+        "role": "logo",
+        "crawlScore": 14792,
+        "packScore": 4155,
+        "zone": "header",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 192×17 · aspect 11.29",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": []
+        }
+      },
+      {
+        "file": "./assets/candidate-logo-keyword.svg",
+        "role": "logo-keyword",
+        "crawlScore": 138,
+        "packScore": 268,
+        "zone": "main",
+        "alt": "Cavea",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 607×148 · aspect 4.10 · hues #00b0ff",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": [
+            {
+              "hex": "#00b0ff",
+              "count": 2,
+              "luminance": 0.566,
+              "saturation": 1
+            }
+          ]
+        }
+      },
+      {
+        "file": "./assets/candidate-logo-keyword.svg",
+        "role": "logo-keyword",
+        "crawlScore": 138,
+        "packScore": 268,
+        "zone": "main",
+        "alt": "Trekz",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 138×48 · aspect 2.88 · hues #004070",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": [
+            {
+              "hex": "#004070",
+              "count": 22,
+              "luminance": 0.211,
+              "saturation": 0.439
+            }
+          ]
+        }
+      },
+      {
+        "file": "./assets/candidate-header-logo.svg",
+        "role": "header-logo",
+        "crawlScore": 133,
+        "packScore": 258,
+        "zone": "footer",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "symbol",
+        "svg": {
+          "roleGuess": "symbol",
+          "roleConfidence": 0.6,
+          "summary": "symbol · 128×128 · aspect 1.00",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": []
+        }
+      },
+      {
+        "file": "./assets/candidate-logo-keyword.webp",
+        "role": "logo-keyword",
+        "crawlScore": 70,
+        "packScore": 200,
+        "zone": "main",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/apple-touch.png",
+        "role": "apple-touch",
+        "crawlScore": 5,
+        "packScore": 0,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": true,
+        "solidPlate": true,
+        "plateHex": "#46f863",
+        "reason": "dark-plate:#46f863"
+      },
+      {
+        "file": "./assets/favicon.ico",
+        "role": "favicon",
+        "crawlScore": 2,
+        "packScore": -23,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": true,
+        "solidPlate": true,
+        "plateHex": "#46f863",
+        "reason": "dark-plate:#46f863"
+      },
+      {
+        "file": "./assets/og-image.jpg",
+        "role": "og-image",
+        "crawlScore": 0,
+        "packScore": -85,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": true,
+        "solidPlate": true,
+        "plateHex": "#151012",
+        "reason": "dark-plate:#151012"
+      }
+    ]
+  },
+  "landing": {
+    "variant": "light-hero"
+  }
+}

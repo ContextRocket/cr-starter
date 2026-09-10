@@ -1,0 +1,12 @@
+---
+import { isSingleLocale } from "@/config/site.config";
+import { getDefaultLocale } from "@/i18n/locales";
+import StarterHome from "@/components/pages/StarterHome.astro";
+
+if (!isSingleLocale()) {
+  return Astro.redirect(`/${getDefaultLocale()}/`);
+}
+const locale = getDefaultLocale();
+---
+
+<StarterHome locale={locale} />

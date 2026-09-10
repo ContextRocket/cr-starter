@@ -7,14 +7,17 @@ fork of cr-starter.
 ## Skills
 
 ### 1. Brand Extraction
-Extract brand identity (colors, logo, typography, tagline) from original
-site into `siteConfig.theme` + `siteConfig.identity`.
-- **Proven:** cr-kleos (Webflow→navy #082444 / yellow #F5C842),
-  cr-landing (CR site→pink #ff2b67 / cream #f8f7f1),
-  cr-gba (Lovable→slate #0f172a / sky #38bdf8)
-- **Input:** Original site URL (Webflow CSS, inline styles, logo URL)
-- **Output:** Updated `config/site.config.ts` theme block + `public/` logo file
-- **Files:** `config/site.config.ts`, `app/globals.css`, `public/`
+Extract brand identity (colors, logo, typography, tagline) into a
+**brand pack**, then apply it onto the Astro starter.
+
+- **Experiment surface:** `examples/` + `scripts/apply-brand-pack.mjs`
+  (see `examples/README.md`). Kleos is the first curated pack.
+- **Target composition:** `src/components/pages/LightBrandHome.astro`
+  (light one-pager: logo, name, headline, subhead, CTA).
+- **Proven (manual pack):** cr-kleos colors navy `#082444` / yellow `#F5C842`
+- **Input:** Curated `examples/<brand>/brand-pack.json` (+ assets)
+- **Output:** `config/site.json` theme/identity/assets + `home.hero.*` site copy
+- **Crawl automation:** not yet — packs are hand/agent-filled from the live site
 
 ### 2. Logo Trimming
 Auto-trim transparent padding from scraped logos so they're legible at
@@ -40,14 +43,12 @@ Scrape blog posts into markdown with YAML frontmatter.
 - **Files:** `content/posts/` (or the fork's configured collection), `lib/blog.ts`
 
 ### 5. Hero Recreation
-Rebuild the hero section matching the original's headings, CTAs, and
-visual structure.
-- **Proven:** cr-landing (pink subtitle + gray-900 h1 + curved SVG),
-  cr-kleos (28px headings + yellow "We fix that"),
-  cr-gba ("Should you enter the Greater Bay Area?")
-- **Input:** Original hero HTML/CSS
-- **Output:** Updated `app/[locale]/page.tsx` using `HeroSection` component
-- **Files:** `components/shared/sections/hero.tsx`
+Rebuild the hero as a **light brand landing** first (`LightBrandHome`), then
+specialize (Kleos-class multi-section homes stay fork-owned).
+
+- **v0:** brand pack → `home.hero.*` + `LightBrandHome.astro`
+- **Later:** bespoke `components/pages/<Brand>Home.astro` when one page is not enough
+- **Proven direction:** cr-kleos full home; starter light template is the generator target
 
 ### 6. Icebreaker Generation
 Create domain-specific chat icebreaker prompts that feel native.

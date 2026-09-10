@@ -1,0 +1,103 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import type { SupportedLocale } from "@/i18n/locales";
+import { getPost, blogPublicBasePath } from "@/lib/blog";
+import { blogIndexHref, absoluteUrl, localizedHref } from "@/lib/paths";
+import { createT } from "@/i18n/keys";
+import { siteConfig } from "@/config/site.config";
+import {
+  buildBlogPostingJsonLd,
+  buildBreadcrumbListJsonLd,
+} from "@/lib/structured-data";
+
+interface Props {
+  locale: SupportedLocale;
+  slug: string;
+}
+
+const { locale, slug } = Astro.props;
+const t = createT(locale);
+const post = getPost(slug, locale);
+if (!post) {
+  throw new Error(`Missing post ${slug} for ${locale}`);
+}
+const path = `${blogPublicBasePath()}/${slug}`;
+const postUrl = absoluteUrl(localizedHref(locale, path));
+const blogIndexUrl = absoluteUrl(blogIndexHref(locale));
+const homeUrl = absoluteUrl(localizedHref(locale, "/"));
+
+const dateLabel = (() => {
+  try {
+    return new Date(post.date).toLocaleDateString(locale, {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "UTC",
+    });
+  } catch {
+    return post.date;
+  }
+})();
+
+const readingMinutes = Math.max(
+  1,
+  Math.round(post.bodyMarkdown.split(/\s+/).filter(Boolean).length / 200),
+);
+
+const jsonLdExtra = [
+  buildBlogPostingJsonLd({
+    title: post.title,
+    description: post.excerpt || siteConfig.description,
+    url: postUrl,
+    datePublished: post.date,
+    authorName: post.author || siteConfig.companyName,
+    imageUrl: post.image,
+  }),
+  buildBreadcrumbListJsonLd([
+    { name: t("breadcrumb.home"), url: homeUrl },
+    { name: t("blog.title"), url: blogIndexUrl },
+    { name: post.title, url: postUrl },
+  ]),
+];
+---
+
+<BaseLayout
+  locale={locale}
+  title={post.title}
+  description={post.excerpt}
+  path={path}
+  ogType="article"
+  image={post.image}
+  includeSiteJsonLd={false}
+  jsonLdExtra={jsonLdExtra}
+>
+  <article class="mx-auto max-w-3xl px-4 py-16">
+    <p class="text-sm text-text-tertiary">
+      <a href={blogIndexHref(locale)} class="hover:underline"
+        >← {t("blog.title")}</a
+      >
+      <span class="mx-2">·</span>
+      <time datetime={post.date}>{dateLabel}</time>
+      <span class="mx-2">·</span>
+      <span
+        >{readingMinutes}
+        {t("blog.min.read")}</span
+      >
+      {post.author && <span> · {post.author}</span>}
+    </p>
+    <h1 class="mt-4 text-4xl font-semibold tracking-tight">{post.title}</h1>
+    {
+      post.image && (
+        <img
+          src={post.image}
+          alt=""
+          class="mt-8 aspect-video w-full rounded-lg object-cover"
+        />
+      )
+    }
+    <div
+      class="prose prose-neutral dark:prose-invert mt-10 max-w-none"
+      set:html={post.bodyHtml}
+    />
+  </article>
+</BaseLayout>

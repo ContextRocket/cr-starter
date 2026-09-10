@@ -1,0 +1,160 @@
+---
+/**
+ * LegalIdentityBlock -- the config-driven controller / Impressum identity block.
+ *
+ * Entity-type spectrum from siteConfig.legal.entityType:
+ *   - company        legal name + legal form + address + represented-by +
+ *                    registry + VAT
+ *   - individual     natural person's name + contact (+ address)
+ *   - unincorporated trading name + responsible person + contact +
+ *                    "not a registered company" line
+ */
+import { createT } from "@/i18n/keys";
+import type { SupportedLocale } from "@/i18n/locales";
+import type { LegalEntityType } from "@/config/site.config";
+import { PENDING_REGISTRATION } from "@/lib/legal-completeness";
+
+export interface LegalIdentity {
+  entityType: LegalEntityType;
+  entity: string;
+  address?: string;
+  register?: string;
+  vat?: string;
+  legalForm?: string;
+  representedBy?: string;
+}
+
+interface Props {
+  locale: SupportedLocale;
+  legal: LegalIdentity;
+  contactEmail: string;
+}
+
+const { locale, legal, contactEmail } = Astro.props;
+const t = createT(locale);
+
+const registerDisplay =
+  legal.register === PENDING_REGISTRATION || !legal.register
+    ? t("legal.identity.pendingRegistration")
+    : legal.register;
+
+const vatDisplay =
+  legal.vat === PENDING_REGISTRATION
+    ? t("legal.identity.pendingRegistration")
+    : legal.vat;
+---
+
+{
+  legal.entityType === "individual" ? (
+    <dl class="space-y-4" data-testid="legal-identity-individual">
+      <div>
+        <dt class="font-semibold">{t("legal.identity.responsiblePerson")}</dt>
+        <dd class="whitespace-pre-line text-muted-foreground">{legal.entity}</dd>
+      </div>
+      {legal.address ? (
+        <div>
+          <dt class="font-semibold">{t("legal.identity.address")}</dt>
+          <dd class="whitespace-pre-line text-muted-foreground">
+            {legal.address}
+          </dd>
+        </div>
+      ) : null}
+      <div>
+        <dt class="font-semibold">{t("legal.identity.contact")}</dt>
+        <dd class="text-muted-foreground">
+          <a href={`mailto:${contactEmail}`} class="hover:underline">
+            {contactEmail}
+          </a>
+        </dd>
+      </div>
+    </dl>
+  ) : legal.entityType === "unincorporated" ? (
+    <dl class="space-y-4" data-testid="legal-identity-unincorporated">
+      <div>
+        <dt class="font-semibold">{t("legal.identity.tradingName")}</dt>
+        <dd class="whitespace-pre-line text-muted-foreground">{legal.entity}</dd>
+      </div>
+      {legal.representedBy ? (
+        <div>
+          <dt class="font-semibold">{t("legal.identity.responsiblePerson")}</dt>
+          <dd class="whitespace-pre-line text-muted-foreground">
+            {legal.representedBy}
+          </dd>
+        </div>
+      ) : null}
+      {legal.address ? (
+        <div>
+          <dt class="font-semibold">{t("legal.identity.address")}</dt>
+          <dd class="whitespace-pre-line text-muted-foreground">
+            {legal.address}
+          </dd>
+        </div>
+      ) : null}
+      <div>
+        <dt class="font-semibold">{t("legal.identity.contact")}</dt>
+        <dd class="text-muted-foreground">
+          <a href={`mailto:${contactEmail}`} class="hover:underline">
+            {contactEmail}
+          </a>
+        </dd>
+      </div>
+      <p
+        class="text-sm text-muted-foreground"
+        data-testid="legal-not-registered"
+      >
+        {t("legal.identity.notRegisteredCompany")}
+      </p>
+    </dl>
+  ) : (
+    <dl class="space-y-4" data-testid="legal-identity-company">
+      <div>
+        <dt class="font-semibold">{t("legal.identity.entity")}</dt>
+        <dd class="whitespace-pre-line text-muted-foreground">{legal.entity}</dd>
+      </div>
+      {legal.legalForm ? (
+        <div>
+          <dt class="font-semibold">{t("legal.identity.legalForm")}</dt>
+          <dd class="whitespace-pre-line text-muted-foreground">
+            {legal.legalForm}
+          </dd>
+        </div>
+      ) : null}
+      {legal.address ? (
+        <div>
+          <dt class="font-semibold">{t("legal.identity.address")}</dt>
+          <dd class="whitespace-pre-line text-muted-foreground">
+            {legal.address}
+          </dd>
+        </div>
+      ) : null}
+      {legal.representedBy ? (
+        <div>
+          <dt class="font-semibold">{t("legal.identity.representedBy")}</dt>
+          <dd class="whitespace-pre-line text-muted-foreground">
+            {legal.representedBy}
+          </dd>
+        </div>
+      ) : null}
+      <div>
+        <dt class="font-semibold">{t("legal.identity.register")}</dt>
+        <dd class="whitespace-pre-line text-muted-foreground">
+          {registerDisplay}
+        </dd>
+      </div>
+      {legal.vat ? (
+        <div>
+          <dt class="font-semibold">{t("legal.identity.vat")}</dt>
+          <dd class="whitespace-pre-line text-muted-foreground">{vatDisplay}</dd>
+        </div>
+      ) : null}
+      <div>
+        <dt class="font-semibold">{t("legal.identity.contact")}</dt>
+        <dd class="text-muted-foreground">
+          <a href={`mailto:${contactEmail}`} class="hover:underline">
+            {contactEmail}
+          </a>
+        </dd>
+      </div>
+    </dl>
+  )
+}

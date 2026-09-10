@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://linear.app/",
+    "capturedAt": "2026-09-06",
+    "method": "crawl",
+    "notes": "Colors: dark body → primary/foreground; white canvas assumed; CTA fill → accent (distinct from primary). Font: Inter Variable → Google Inter (nearest). Logo: wordmark-paths lightFit=true",
+    "markDisambiguation": {
+      "used": false,
+      "reason": "skipped"
+    }
+  },
+  "identity": {
+    "name": "linear",
+    "siteUrl": "https://linear.app/"
+  },
+  "tech": {
+    "cmp": null,
+    "platform": null,
+    "platforms": [],
+    "generator": null
+  },
+  "colors": {
+    "background": "#ffffff",
+    "foreground": "#08090a",
+    "primary": "#08090a",
+    "accent": "#5e6ad2",
+    "provenance": {
+      "background": "assumed-light-canvas (body was dark)",
+      "foreground": "body.backgroundColor (dark→foreground)",
+      "primary": "body.backgroundColor (dark→primary)",
+      "accent": "cta.fill (Skip to content →)"
+    },
+    "observed": [
+      {
+        "role": "brand-surface",
+        "hex": "#08090a",
+        "source": "body-dark"
+      },
+      {
+        "role": "cta",
+        "hex": "#5e6ad2",
+        "source": "Skip to content →"
+      },
+      {
+        "role": "link",
+        "hex": "#8a8f98",
+        "source": "ranked-links"
+      }
+    ]
+  },
+  "typography": {
+    "fontFamily": "Inter",
+    "requestedFontFamily": "Inter Variable",
+    "notes": "Nearest Google Font to \"Inter Variable\""
+  },
+  "assets": {
+    "logo": "./assets/logo.svg",
+    "favicon": "./assets/favicon.ico",
+    "appleTouch": "./assets/apple-touch.png",
+    "ogImage": "./assets/og-image.jpg",
+    "screenshots": {
+      "viewport": "./assets/viewport.png",
+      "fullpage": "./assets/fullpage.png"
+    },
+    "logoAnalysis": {
+      "fitsLightBackground": true,
+      "fitsDarkBackground": false,
+      "solidPlate": false,
+      "plateHex": null,
+      "reason": "wordmark-paths",
+      "palette": []
+    },
+    "candidates": [
+      {
+        "file": "./assets/logo.svg",
+        "role": "logo",
+        "crawlScore": 5808,
+        "packScore": 4155,
+        "zone": "header",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 400×22 · aspect 18.18",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": []
+        }
+      },
+      {
+        "file": "./assets/apple-touch.png",
+        "role": "apple-touch",
+        "crawlScore": 5,
+        "packScore": 0,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": true,
+        "solidPlate": true,
+        "plateHex": "#1a1b1d",
+        "reason": "dark-plate:#1a1b1d"
+      },
+      {
+        "file": "./assets/favicon.ico",
+        "role": "favicon",
+        "crawlScore": 2,
+        "packScore": -23,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": true,
+        "solidPlate": true,
+        "plateHex": "#000000",
+        "reason": "dark-plate:#000000"
+      },
+      {
+        "file": "./assets/og-image.jpg",
+        "role": "og-image",
+        "crawlScore": 0,
+        "packScore": -85,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": true,
+        "solidPlate": true,
+        "plateHex": "#1f2124",
+        "reason": "dark-plate:#1f2124"
+      }
+    ]
+  },
+  "landing": {
+    "variant": "light-hero"
+  }
+}

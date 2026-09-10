@@ -1,0 +1,551 @@
+---
+/**
+ * Legal pages -- /privacy, /terms, /cookies, /impressum
+ *
+ * Ported from the Next.js legal page stack. All controller / identity values
+ * come from siteConfig.legal; all copy from existing site/shared i18n keys.
+ * Do not invent new legal strings here.
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import LegalIdentityBlock from "@/components/legal/LegalIdentityBlock.astro";
+import { createT } from "@/i18n/keys";
+import type { SupportedLocale } from "@/i18n/locales";
+import { siteConfig } from "@/config/site.config";
+import type { LegalKind } from "@/lib/legal";
+import {
+  buildBreadcrumbListJsonLd,
+  serializeJsonLd,
+} from "@/lib/structured-data";
+import { absoluteUrl, homeHref, localizedHref } from "@/lib/paths";
+
+interface Props {
+  locale: SupportedLocale;
+  kind: LegalKind;
+}
+
+const { locale, kind } = Astro.props;
+const t = createT(locale);
+const legal = siteConfig.legal;
+const contactEmail = siteConfig.contactEmail;
+
+/** Matches CookieBanner localStorage key. */
+const CONSENT_STORAGE_KEY = "cr_cookie_consent";
+
+function analyticsConfigured(): boolean {
+  return Boolean(siteConfig.analytics.webVitalsEndpoint);
+}
+
+const gaEnabled = Boolean(import.meta.env.PUBLIC_GA_MEASUREMENT_ID);
+const posthogEnabled = Boolean(import.meta.env.PUBLIC_POSTHOG_KEY);
+const analyticsOn = analyticsConfigured();
+
+const titleKey =
+  kind === "privacy"
+    ? "privacy.title"
+    : kind === "terms"
+      ? "terms.title"
+      : kind === "cookies"
+        ? "cookies.title"
+        : "impressum.title";
+
+const pageTitle = t(titleKey);
+const breadcrumb = buildBreadcrumbListJsonLd([
+  { name: t("breadcrumb.home"), url: absoluteUrl(homeHref(locale)) },
+  {
+    name: pageTitle,
+    url: absoluteUrl(localizedHref(locale, `/${kind}`)),
+  },
+]);
+
+const homeLink = homeHref(locale);
+const privacyHref = localizedHref(locale, "/privacy");
+---
+
+<BaseLayout locale={locale} title={pageTitle} path={`/${kind}`}>
+  <script type="application/ld+json" set:html={serializeJsonLd(breadcrumb)} />
+  <main class="mx-auto min-h-screen max-w-2xl bg-background p-8 text-foreground">
+    <h1 class="mb-2 text-3xl font-bold">{pageTitle}</h1>
+
+    {
+      kind === "privacy" && (
+        <>
+          <section class="space-y-8 text-foreground">
+            <p class="text-sm text-muted-foreground">{t("privacy.intro")}</p>
+
+            <div data-testid="privacy-controller-section">
+              <h2 class="mb-2 text-xl font-semibold">
+                {t("privacy.controller.heading")}
+              </h2>
+              <p class="mb-3 text-sm text-muted-foreground">
+                {t("privacy.controller.intro")}
+              </p>
+              <div class="text-sm" data-testid="privacy-controller-address">
+                <LegalIdentityBlock
+                  locale={locale}
+                  legal={legal}
+                  contactEmail={contactEmail}
+                />
+              </div>
+            </div>
+
+            <div data-testid="privacy-contact-section">
+              <h2 class="mb-2 text-xl font-semibold">
+                {t("privacy.contact.label")}
+              </h2>
+              <p class="mb-2 text-sm text-muted-foreground">
+                {t("privacy.contact.intro")}
+              </p>
+              <a
+                href={`mailto:${legal.privacyContact}`}
+                class="text-sm text-primary hover:underline"
+                data-testid="privacy-contact-email"
+              >
+                {legal.privacyContact}
+              </a>
+            </div>
+
+            <div>
+              <h2 class="mb-4 text-xl font-semibold">
+                {t("privacy.data.heading")}
+              </h2>
+
+              <div class="mb-4">
+                <h3 class="mb-1 text-base font-semibold">
+                  {t("privacy.data.site.heading")}
+                </h3>
+                <p class="text-sm text-muted-foreground">
+                  {t("privacy.data.site.body")}
+                </p>
+              </div>
+
+              <div class="mb-4">
+                <h3 class="mb-1 text-base font-semibold">
+                  {t("privacy.data.cookies.heading")}
+                </h3>
+                <p class="text-sm text-muted-foreground">
+                  {t("privacy.data.cookies.body")}
+                </p>
+              </div>
+
+              {analyticsOn ? (
+                <div data-testid="privacy-analytics-section">
+                  <h3 class="mb-1 text-base font-semibold">
+                    {t("privacy.analytics.heading")}
+                  </h3>
+                  <p class="mb-2 text-sm text-muted-foreground">
+                    {t("privacy.analytics.body")}
+                  </p>
+                  <p class="mb-1 text-sm text-muted-foreground">
+                    {t("privacy.analytics.providers.intro")}
+                  </p>
+                  <ul class="list-inside list-disc space-y-1 text-sm text-muted-foreground">
+                    {gaEnabled ? (
+                      <li>{t("privacy.analytics.ga.label")}</li>
+                    ) : null}
+                    {posthogEnabled ? (
+                      <li>{t("privacy.analytics.posthog.label")}</li>
+                    ) : null}
+                  </ul>
+                </div>
+              ) : null}
+            </div>
+
+            <div>
+              <h2 class="mb-2 text-xl font-semibold">
+                {t("privacy.consent.heading")}
+              </h2>
+              <p class="text-sm text-muted-foreground">
+                {t("privacy.consent.body")}{" "}
+                <code class="rounded bg-muted px-1 font-mono text-xs">
+                  {CONSENT_STORAGE_KEY}
+                </code>{" "}
+                {t("privacy.consent.bodyAfterKey")}
+              </p>
+            </div>
+
+            <div>
+              <h2 class="mb-2 text-xl font-semibold">
+                {t("privacy.rights.heading")}
+              </h2>
+              <p class="mb-2 text-sm text-muted-foreground">
+                {t("privacy.rights.intro")}
+              </p>
+              <ul class="list-inside list-disc space-y-1 text-sm text-muted-foreground">
+                <li>{t("privacy.rights.access")}</li>
+                <li>{t("privacy.rights.rectification")}</li>
+                <li>{t("privacy.rights.erasure")}</li>
+                <li>{t("privacy.rights.portability")}</li>
+                <li>{t("privacy.rights.complaint")}</li>
+              </ul>
+              <p class="mt-2 text-sm text-muted-foreground">
+                {t("privacy.rights.outro")}
+              </p>
+            </div>
+          </section>
+        </>
+      )
+    }
+
+    {
+      kind === "terms" && (
+        <>
+          <section class="space-y-8 text-foreground">
+            <p class="text-sm text-muted-foreground">{t("terms.intro")}</p>
+
+            <div data-testid="terms-provider-section">
+              <h2 class="mb-2 text-xl font-semibold">
+                {t("terms.provider.heading")}
+              </h2>
+              <p class="mb-3 text-sm text-muted-foreground">
+                {t("terms.provider.intro")}
+              </p>
+              <div class="text-sm" data-testid="terms-provider-address">
+                <LegalIdentityBlock
+                  locale={locale}
+                  legal={legal}
+                  contactEmail={contactEmail}
+                />
+              </div>
+            </div>
+
+            <div>
+              <h2 class="mb-2 text-xl font-semibold">
+                {t("terms.service.heading")}
+              </h2>
+              <p class="text-sm text-muted-foreground">
+                {t("terms.service.body")}
+              </p>
+            </div>
+
+            <div>
+              <h2 class="mb-2 text-xl font-semibold">
+                {t("terms.acceptance.heading")}
+              </h2>
+              <p class="mb-2 text-sm text-muted-foreground">
+                {t("terms.acceptance.body1")}
+              </p>
+              <p class="text-sm text-muted-foreground">
+                {t("terms.acceptance.body2")}
+              </p>
+            </div>
+
+            <div>
+              <h2 class="mb-2 text-xl font-semibold">
+                {t("terms.accounts.heading")}
+              </h2>
+              <p class="text-sm text-muted-foreground">
+                {t("terms.accounts.body")}
+              </p>
+            </div>
+
+            <div>
+              <h2 class="mb-2 text-xl font-semibold">
+                {t("terms.acceptableUse.heading")}
+              </h2>
+              <p class="mb-2 text-sm text-muted-foreground">
+                {t("terms.acceptableUse.intro")}
+              </p>
+              <ul class="list-inside list-disc space-y-1 text-sm text-muted-foreground">
+                <li>{t("terms.acceptableUse.item.unlawful")}</li>
+                <li>{t("terms.acceptableUse.item.rights")}</li>
+                <li>{t("terms.acceptableUse.item.security")}</li>
+                <li>{t("terms.acceptableUse.item.reverse")}</li>
+                <li>{t("terms.acceptableUse.item.resell")}</li>
+              </ul>
+              <p class="mt-2 text-sm text-muted-foreground">
+                {t("terms.acceptableUse.outro")}
+              </p>
+            </div>
+
+            <div>
+              <h2 class="mb-2 text-xl font-semibold">{t("terms.ip.heading")}</h2>
+              <p class="text-sm text-muted-foreground">{t("terms.ip.body")}</p>
+            </div>
+
+            <div>
+              <h2 class="mb-2 text-xl font-semibold">
+                {t("terms.content.heading")}
+              </h2>
+              <p class="mb-2 text-sm text-muted-foreground">
+                {t("terms.content.body1")}
+              </p>
+              <p class="text-sm text-muted-foreground">
+                {t("terms.content.body2")}
+              </p>
+            </div>
+
+            <div>
+              <h2 class="mb-2 text-xl font-semibold">
+                {t("terms.thirdParty.heading")}
+              </h2>
+              <p class="text-sm text-muted-foreground">
+                {t("terms.thirdParty.body")}
+              </p>
+            </div>
+
+            <div>
+              <h2 class="mb-2 text-xl font-semibold">
+                {t("terms.disclaimers.heading")}
+              </h2>
+              <p class="text-sm text-muted-foreground">
+                {t("terms.disclaimers.body")}
+              </p>
+            </div>
+
+            <div>
+              <h2 class="mb-2 text-xl font-semibold">
+                {t("terms.liability.heading")}
+              </h2>
+              <p class="text-sm text-muted-foreground">
+                {t("terms.liability.body")}
+              </p>
+            </div>
+
+            <div data-testid="terms-fees-section">
+              <h2 class="mb-2 text-xl font-semibold">
+                {t("terms.fees.heading")}
+              </h2>
+              <p class="text-sm text-muted-foreground">{t("terms.fees.body")}</p>
+            </div>
+
+            <div>
+              <h2 class="mb-2 text-xl font-semibold">
+                {t("terms.termination.heading")}
+              </h2>
+              <p class="text-sm text-muted-foreground">
+                {t("terms.termination.body")}
+              </p>
+            </div>
+
+            <div>
+              <h2 class="mb-2 text-xl font-semibold">
+                {t("terms.changes.heading")}
+              </h2>
+              <p class="text-sm text-muted-foreground">
+                {t("terms.changes.body")}
+              </p>
+            </div>
+
+            <div>
+              <h2 class="mb-2 text-xl font-semibold">
+                {t("terms.governingLaw.heading")}
+              </h2>
+              <p class="text-sm text-muted-foreground">
+                {t("terms.governingLaw.body")}
+              </p>
+            </div>
+
+            <div>
+              <h2 class="mb-2 text-xl font-semibold">
+                {t("terms.miscellaneous.heading")}
+              </h2>
+              <p class="text-sm text-muted-foreground">
+                {t("terms.miscellaneous.body")}
+              </p>
+            </div>
+
+            <div data-testid="terms-contact-section">
+              <h2 class="mb-2 text-xl font-semibold">
+                {t("terms.contact.heading")}
+              </h2>
+              <p class="mb-2 text-sm text-muted-foreground">
+                {t("terms.contact.intro")}
+              </p>
+              <a
+                href={`mailto:${contactEmail}`}
+                class="text-sm text-primary hover:underline"
+                data-testid="terms-contact-email"
+              >
+                {contactEmail}
+              </a>
+            </div>
+          </section>
+        </>
+      )
+    }
+
+    {
+      kind === "cookies" && (
+        <section class="space-y-8 text-foreground">
+          <p class="text-sm text-muted-foreground">{t("cookies.intro")}</p>
+
+          <div>
+            <h2 class="mb-2 text-xl font-semibold">
+              {t("cookies.what.heading")}
+            </h2>
+            <p class="text-sm text-muted-foreground">{t("cookies.what.body")}</p>
+          </div>
+
+          <div data-testid="cookies-controls-section">
+            <h2 class="mb-2 text-xl font-semibold">
+              {t("cookies.controls.heading")}
+            </h2>
+            <ul class="list-inside list-disc space-y-1 text-sm text-muted-foreground">
+              <li>{t("cookies.controls.necessary")}</li>
+              <li>{t("cookies.controls.optionalOff")}</li>
+              <li>{t("cookies.controls.noPreTicked")}</li>
+              <li>{t("cookies.controls.noWall")}</li>
+              <li>{t("cookies.controls.rejectEasy")}</li>
+              <li>{t("cookies.controls.withdraw")}</li>
+              <li>{t("cookies.controls.reprompt")}</li>
+              <li>{t("cookies.controls.proof")}</li>
+            </ul>
+          </div>
+
+          <div data-testid="cookies-categories-section">
+            <h2 class="mb-4 text-xl font-semibold">
+              {t("cookies.categories.heading")}
+            </h2>
+            <div class="space-y-3">
+              <div
+                class="rounded-md border border-border px-3 py-2.5"
+                data-testid="cookies-category-necessary"
+              >
+                <p class="text-sm font-medium text-foreground">
+                  {t("cookies.categories.necessary.name")}
+                </p>
+                <p class="mt-0.5 text-sm text-muted-foreground">
+                  {t("cookies.categories.necessary.purpose")}
+                </p>
+                <p class="mt-1 text-xs font-medium text-muted-foreground">
+                  {t("cookies.categories.necessary.consent")}
+                </p>
+              </div>
+              <div
+                class="rounded-md border border-border px-3 py-2.5"
+                data-testid="cookies-category-functional"
+              >
+                <p class="text-sm font-medium text-foreground">
+                  {t("cookies.categories.functional.name")}
+                </p>
+                <p class="mt-0.5 text-sm text-muted-foreground">
+                  {t("cookies.categories.functional.purpose")}
+                </p>
+                <p class="mt-1 text-xs font-medium text-muted-foreground">
+                  {t("cookies.categories.functional.consent")}
+                </p>
+              </div>
+              <div
+                class="rounded-md border border-border px-3 py-2.5"
+                data-testid="cookies-category-analytics"
+              >
+                <p class="text-sm font-medium text-foreground">
+                  {t("cookies.categories.analytics.name")}
+                </p>
+                <p class="mt-0.5 text-sm text-muted-foreground">
+                  {t("cookies.categories.analytics.purpose")}
+                </p>
+                <p class="mt-1 text-xs font-medium text-muted-foreground">
+                  {t("cookies.categories.analytics.consent")}
+                </p>
+              </div>
+              <div
+                class="rounded-md border border-border px-3 py-2.5"
+                data-testid="cookies-category-marketing"
+              >
+                <p class="text-sm font-medium text-foreground">
+                  {t("cookies.categories.marketing.name")}
+                </p>
+                <p class="mt-0.5 text-sm text-muted-foreground">
+                  {t("cookies.categories.marketing.purpose")}
+                </p>
+                <p class="mt-1 text-xs font-medium text-muted-foreground">
+                  {t("cookies.categories.marketing.consent")}
+                </p>
+              </div>
+            </div>
+
+            <p class="mt-4 text-sm text-muted-foreground">
+              {analyticsOn
+                ? t("cookies.categories.analyticsActive")
+                : t("cookies.categories.analyticsInactive")}
+            </p>
+          </div>
+
+          <div data-testid="cookies-manage-section">
+            <h2 class="mb-2 text-xl font-semibold">
+              {t("cookies.manage.heading")}
+            </h2>
+            <p class="mb-2 text-sm text-muted-foreground">
+              {t("cookies.manage.body")}
+            </p>
+            <p class="text-sm text-muted-foreground">
+              {t("cookies.manage.storageIntro")}{" "}
+              <code class="rounded bg-muted px-1 font-mono text-xs">
+                {CONSENT_STORAGE_KEY}
+              </code>{" "}
+              {t("cookies.manage.storageAfterKey")}
+            </p>
+          </div>
+
+          <div>
+            <h2 class="mb-2 text-xl font-semibold">
+              {t("cookies.browser.heading")}
+            </h2>
+            <p class="text-sm text-muted-foreground">
+              {t("cookies.browser.body")}
+            </p>
+          </div>
+
+          <div>
+            <h2 class="mb-2 text-xl font-semibold">
+              {t("cookies.privacy.heading")}
+            </h2>
+            <p class="text-sm text-muted-foreground">
+              {t("cookies.privacy.body")}{" "}
+              <a
+                href={privacyHref}
+                class="text-primary hover:underline"
+                data-testid="cookies-privacy-link"
+              >
+                {t("cookies.privacy.link")}
+              </a>
+              .
+            </p>
+          </div>
+
+          <div data-testid="cookies-contact-section">
+            <h2 class="mb-2 text-xl font-semibold">
+              {t("cookies.contact.heading")}
+            </h2>
+            <p class="mb-2 text-sm text-muted-foreground">
+              {t("cookies.contact.intro")}
+            </p>
+            <div
+              class="text-sm"
+              data-testid="cookies-contact-section-identity"
+            >
+              <LegalIdentityBlock
+                locale={locale}
+                legal={legal}
+                contactEmail={contactEmail}
+              />
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    {
+      kind === "impressum" && (
+        <>
+          <p class="mb-8 text-sm text-muted-foreground">
+            {t("impressum.legal.notice")}
+          </p>
+
+          <LegalIdentityBlock
+            locale={locale}
+            legal={legal}
+            contactEmail={contactEmail}
+          />
+        </>
+      )
+    }
+
+    <nav class="mt-12 text-sm">
+      <a href={homeLink} class="text-muted-foreground hover:underline">
+        &larr; {t("faq.back.home")}
+      </a>
+    </nav>
+  </main>
+</BaseLayout>

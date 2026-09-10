@@ -1,0 +1,69 @@
+---
+/**
+ * Gallery page -- /gallery.
+ * Feature-gated at the route; uses GalleryBrowser island + lightbox.
+ * BaseLayout already wraps SiteChrome.
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import type { SupportedLocale } from "@/i18n/locales";
+import { createT } from "@/i18n/keys";
+import { siteConfig } from "@/config/site.config";
+import { loadGalleryManifest } from "@/lib/gallery-server";
+import { toGalleryImage } from "@/lib/gallery";
+import { GalleryBrowser } from "@/components/gallery/GalleryBrowser";
+
+interface Props {
+  locale: SupportedLocale;
+}
+
+const { locale } = Astro.props;
+
+const t = createT(locale);
+const title = t("gallery.title");
+const subtitle = t("gallery.subtitle");
+const manifest = loadGalleryManifest();
+const images = manifest.assets.map((asset) =>
+  toGalleryImage(asset, siteConfig.gallery.assetBaseUrl, "card"),
+);
+---
+
+<BaseLayout
+  locale={locale}
+  title={title}
+  description={subtitle}
+  path="/gallery"
+>
+  <main class="min-h-screen bg-background text-foreground" data-testid="gallery-page">
+    <section class="bg-muted py-16">
+      <div class="wrap mx-auto max-w-4xl text-center">
+        <h1 class="text-3xl font-bold text-foreground md:text-4xl">{title}</h1>
+        <p class="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+          {subtitle}
+        </p>
+      </div>
+    </section>
+
+    <section class="py-16">
+      <div class="wrap mx-auto max-w-6xl">
+        <GalleryBrowser
+          client:load
+          images={images}
+          collections={manifest.collections}
+          labels={{
+            filter: t("gallery.filter"),
+            all: t("gallery.all"),
+            imageCount: t("gallery.imageCount"),
+            noImages: t("gallery.noImages"),
+            lightbox: {
+              viewImage: t("gallery.viewImage"),
+              close: t("gallery.close"),
+              previous: t("gallery.previous"),
+              next: t("gallery.next"),
+              counter: t("gallery.counter"),
+            },
+          }}
+        />
+      </div>
+    </section>
+  </main>
+</BaseLayout>

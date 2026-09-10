@@ -1,0 +1,237 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://pitch.com/",
+    "capturedAt": "2026-09-06",
+    "method": "crawl",
+    "notes": "Colors: light body background kept; CTA fill → primary (Sign up). Font: Mark Pro Bold → Google Inter (nearest). Logo: transparent-mark lightFit=true alt=\"Pitch brand library interface\"",
+    "markDisambiguation": {
+      "used": false,
+      "reason": "skipped"
+    }
+  },
+  "identity": {
+    "name": "Pitch",
+    "siteUrl": "https://pitch.com/"
+  },
+  "tech": {
+    "cmp": {
+      "vendor": "trustarc",
+      "detected": false,
+      "closed": false,
+      "action": null,
+      "strategy": null
+    },
+    "platform": {
+      "id": "framer",
+      "label": "Framer",
+      "confidence": 0.92,
+      "signals": [
+        "generator",
+        "dom",
+        "asset-path"
+      ]
+    },
+    "platforms": [
+      {
+        "id": "framer",
+        "label": "Framer",
+        "confidence": 0.92,
+        "signals": [
+          "generator",
+          "dom",
+          "asset-path"
+        ]
+      }
+    ],
+    "generator": "Framer c88fd2c"
+  },
+  "colors": {
+    "background": "#ffffff",
+    "foreground": "#000000",
+    "primary": "#c4ee87",
+    "accent": "#c4ee87",
+    "provenance": {
+      "background": "body.backgroundColor",
+      "foreground": "body.color",
+      "primary": "cta.fill (Sign up)",
+      "accent": "same as primary (CTA)"
+    },
+    "observed": [
+      {
+        "role": "background",
+        "hex": "#ffffff",
+        "source": "body"
+      },
+      {
+        "role": "ink",
+        "hex": "#000000",
+        "source": "body"
+      },
+      {
+        "role": "cta",
+        "hex": "#c4ee87",
+        "source": "Sign up"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#c4ee87",
+        "source": "Sign up"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#5318eb",
+        "source": "Generate"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#c4ee87",
+        "source": "Sign up"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#c4ee87",
+        "source": "Get a demo"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#280f62",
+        "source": "Start creating"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#240c6c",
+        "source": "logo (transparent-mark)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#e4ccfc",
+        "source": "logo (transparent-mark)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#cce484",
+        "source": "logo (transparent-mark)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#5424e4",
+        "source": "logo (transparent-mark)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#cc9cfc",
+        "source": "logo (transparent-mark)"
+      }
+    ]
+  },
+  "typography": {
+    "fontFamily": "Inter",
+    "requestedFontFamily": "Mark Pro Bold",
+    "notes": "Nearest Google Font to \"Mark Pro Bold\""
+  },
+  "assets": {
+    "logo": "./assets/logo.png",
+    "favicon": "./assets/favicon.png",
+    "appleTouch": "./assets/apple-touch.png",
+    "ogImage": "./assets/og-image.jpg",
+    "screenshots": {
+      "viewport": "./assets/viewport.png",
+      "fullpage": "./assets/fullpage.png"
+    },
+    "logoAnalysis": {
+      "fitsLightBackground": true,
+      "fitsDarkBackground": false,
+      "solidPlate": false,
+      "plateHex": null,
+      "reason": "transparent-mark",
+      "palette": [
+        {
+          "hex": "#240c6c",
+          "share": 0.4557,
+          "luminance": 0.047,
+          "saturation": 0.376
+        },
+        {
+          "hex": "#e4ccfc",
+          "share": 0.2466,
+          "luminance": 0.787,
+          "saturation": 0.188
+        },
+        {
+          "hex": "#cce484",
+          "share": 0.1603,
+          "luminance": 0.8,
+          "saturation": 0.376
+        },
+        {
+          "hex": "#5424e4",
+          "share": 0.0595,
+          "luminance": 0.188,
+          "saturation": 0.753
+        },
+        {
+          "hex": "#cc9cfc",
+          "share": 0.0379,
+          "luminance": 0.632,
+          "saturation": 0.376
+        }
+      ]
+    },
+    "logoNav": "./assets/logo.png",
+    "candidates": [
+      {
+        "file": "./assets/logo.png",
+        "role": "logo",
+        "crawlScore": 130,
+        "packScore": 260,
+        "zone": "main",
+        "alt": "Pitch brand library interface",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/favicon.png",
+        "role": "favicon",
+        "crawlScore": 5,
+        "packScore": 80,
+        "zone": "meta",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "dark-mark-on-clear"
+      },
+      {
+        "file": "./assets/apple-touch.png",
+        "role": "apple-touch",
+        "crawlScore": 5,
+        "packScore": 0,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": true,
+        "solidPlate": true,
+        "plateHex": "#6534dd",
+        "reason": "dark-plate:#6534dd"
+      },
+      {
+        "file": "./assets/og-image.jpg",
+        "role": "og-image",
+        "crawlScore": 0,
+        "packScore": -85,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": true,
+        "solidPlate": true,
+        "plateHex": "#6b38e6",
+        "reason": "dark-plate:#6b38e6"
+      }
+    ]
+  },
+  "landing": {
+    "variant": "light-hero"
+  }
+}

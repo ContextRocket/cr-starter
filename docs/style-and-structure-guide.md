@@ -2,7 +2,7 @@
 
 This document is the engineering checkpoint for **`cr-starter` itself**. It
 translates the company-level brand and voice canon into rules for this public,
-Next.js/static-first starter. Each downstream repository has its own file with
+**Astro/static-first** starter. Each downstream repository has its own file with
 the same name and its own baseline. This file is not a parent-owned file that
 should be copied over a fork during synchronization.
 
@@ -27,23 +27,24 @@ decision in that fork; do not replace it with starter copy.
 
 ## This project's baseline
 
-- This is the public Next.js-only starter. It has no local backend, database,
+- This is the public **Astro** static starter. It has no local backend, database,
   auth, passwordless account flow, or dashboard.
 - It is static-first and must remain usable in canned/demo mode without a
-  network connection. Live AI connects directly from the browser to
-  ContextRocket A2A.
-- The reference configuration serves English, Spanish, and German, with
-  English as the default locale. Locale files are optional in downstream
-  projects; unused bundles must not be carried into a fork.
-- The reference site enables the Markdown blog and ChatFab, disables gallery
-  and testimonials, and uses system theme selection. These are demonstration
-  defaults, not requirements for every fork.
-- Shared UI, transport, i18n shared/app messages, the widget, gallery, and CLI
-  are the reusable surfaces being demonstrated here. Forks customize config,
-  site copy, Markdown, assets, theme, and narrow page composition.
-- The default home page is a small marketing/demo surface. Auth, dashboard,
-  healthcare, partner-port, and product-specific application pages do not
-  belong in this public starter.
+  network connection. Live AI connects from the browser via the embed widget
+  (publishable API key) to ContextRocket.
+- The reference configuration may serve multiple locales, with English as the
+  default. Locale files are optional in downstream projects; unused bundles must
+  not be carried into a fork (`locales: ["en"]` is valid).
+- The reference site enables the Markdown blog and the embed chat snippet
+  (`features.chatFab`), disables gallery and testimonials by default, and uses
+  system theme selection. These are demonstration defaults, not requirements
+  for every fork.
+- Shared layout, i18n shared/app messages, the widget, and CLI are the reusable
+  surfaces being demonstrated here. Forks customize config, site copy, Markdown,
+  assets, theme, and home composition.
+- The default surface is **home + blog + legal/hygiene**. FAQ / About / Features
+  pages are not required. Auth and dashboard shells belong in `cr-auth-starter`
+  / Luna, not here.
 
 ## Actual visual profile
 
@@ -79,13 +80,13 @@ product it was built for. A green typecheck does not prove this.
 Before changing a fork or its synchronization policy, inventory the current
 baseline:
 
-- `frontend/config/site.json`, including theme, chrome, navigation, routes, and
+- `config/site.json`, including theme, chrome, navigation, routes, and
   feature switches;
-- `frontend/blog.config.mjs`, the Markdown collection directory, and every
+- `blog.config.mjs`, the Markdown collection directory, and every
   authored Markdown file;
-- `frontend/i18n/messages/site/` and any fork-owned overrides;
-- `frontend/app/[locale]/`, fork-owned routes, and `components/custom/`;
-- `frontend/public/` assets, especially logos, fonts, favicons, profile images,
+- `src/i18n/messages/site/` and any fork-owned overrides;
+- `src/pages/[locale]/`, fork-owned routes, and `src/components/custom/`;
+- `public/` assets, especially logos, fonts, favicons, profile images,
   and images referenced by Markdown; and
 - a current design-review capture for representative mobile and desktop pages
   in each supported theme.
@@ -122,9 +123,9 @@ the real brand or source-site content.
 - Explain the next action and the result the user should expect.
 - Keep errors, loading states, permissions, and authentication language
   especially plain; trust surfaces are not places for playful claims.
-- The ChatFab should feel like a helpful site capability, not a repeated sales
+- The embed chat widget should feel like a helpful site capability, not a repeated sales
   banner. Its title, greeting, and icebreakers must come from configuration or
-  localized messages.
+  localized messages (script tag + `features.chatFab`).
 - Use the existing shared i18n seams. Do not hardcode UI copy in a shared
   component or add a new locale bundle to a fork that does not serve it.
 
@@ -170,16 +171,16 @@ fallback behavior, but static builds must remain deterministic.
 
 ### Use the seams
 
-Global visual identity belongs in `frontend/config/site.json`:
+Global visual identity belongs in `config/site.json`:
 
 - `theme.light` and `theme.dark` semantic tokens;
 - `theme.radius` and typography choices;
 - logos, favicons, and other assets;
 - `chrome.defaultTheme`, navigation, and visible feature switches; and
-- typed site configuration exposed by `frontend/config/site.config.ts`.
+- typed site configuration exposed by `src/config/site.config.ts`.
 
-Fork-specific composition belongs in `frontend/app/[locale]/page.tsx`, a
-fork-owned route, or `frontend/components/custom/`. General interaction and
+Fork-specific composition belongs in `src/pages/[locale]/index.astro`, a
+fork-owned route, or `src/components/custom/`. General interaction and
 layout behavior belongs in the starter's shared components. If a fork needs a
 different shared appearance, add a typed variant, slot, or wrapper to the
 parent and then use it from the fork; do not override shared internals with
@@ -236,21 +237,22 @@ Use this protocol for a starter change and for every propagated fork update.
 3. **Change one owner.** Do not solve a parent problem by editing the same
    shared component independently in every fork. Do not solve a fork problem by
    replacing its composition with the starter demo.
-4. **Check the policy.** Run `make sync-parent-check` from a clean worktree in
-   each affected repository. If ownership or a sync pattern must change, make
-   that a deliberate, reviewable change first.
-5. **Synchronize in order.** Use the documented chain in
+4. **Check the policy.** Brand forks may run `node scripts/sync-parent.mjs --check`
+   from a clean worktree. If ownership or a sync pattern must change, make
+   that a deliberate, reviewable change first. This Astro starter is not synced
+   into the auth / Luna line.
+5. **Synchronize brand forks deliberately.** Prefer pulling parent-owned paths
+   when needed rather than a repository-wide merge. See
    [`docs/fork-evolution.md`](fork-evolution.md). Review the staged diff and
    confirm that fork-owned content, assets, routes, theme, and custom
    composition are still present before committing.
-6. **Run the product checks.** At minimum run the repository's typecheck,
-   unit/build checks, content or static build where applicable, and accessibility
-   checks. The public starter is static-first; auth forks also run their
-   backend/frontend checks.
+6. **Run the product checks.** At minimum run `pnpm verify` (theme, i18n,
+   typecheck, tests, build, smoke). The public starter is static-first; auth
+   forks also run their backend/frontend checks.
 7. **Run a design review.** Capture representative mobile/desktop pages in
    light/dark mode. Review the screenshot metadata so each image is tied to a
-   route, viewport, and theme. Check the hero, navigation, ChatFab, content
-   pages, legal pages, and any changed surface.
+   route, viewport, and theme. Check the hero, navigation, embed chat launcher,
+   content pages, legal pages, and any changed surface.
 8. **Commit by intent.** Keep a reusable parent change, a synchronization
    commit, and a fork-specific content/design change distinguishable. This makes
    recovery and future history cleanup safe.

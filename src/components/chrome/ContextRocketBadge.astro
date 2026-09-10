@@ -1,0 +1,32 @@
+---
+interface Props {
+  className?: string;
+}
+const { className = "" } = Astro.props;
+---
+
+<a
+  href="https://www.contextrocket.ai"
+  target="_blank"
+  rel="noopener noreferrer"
+  class={`powered-by-badge group inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors ${className}`}
+  data-testid="powered-by-badge"
+>
+  <img
+    src="/brand/cr-icon-red.svg"
+    alt=""
+    width="14"
+    height="14"
+    aria-hidden="true"
+    class="h-3.5 w-3.5 opacity-70 transition-opacity group-hover:opacity-100 dark:hidden"
+  />
+  <img
+    src="/brand/cr-icon-white.svg"
+    alt=""
+    width="14"
+    height="14"
+    aria-hidden="true"
+    class="hidden h-3.5 w-3.5 opacity-70 transition-opacity group-hover:opacity-100 dark:block"
+  />
+  <span class="font-semibold">Powered by ContextRocket</span>
+</a>

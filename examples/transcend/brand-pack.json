@@ -1,0 +1,268 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://transcend.io/",
+    "capturedAt": "2026-09-06",
+    "method": "crawl",
+    "notes": "Colors: body bg transparent → assumed white canvas; CTA fill → primary (Get a demo). Font: GTPlanar → Google Inter (nearest). Logo: wordmark-paths lightFit=true",
+    "markDisambiguation": {
+      "used": false,
+      "reason": "skipped"
+    }
+  },
+  "identity": {
+    "name": "Transcend",
+    "siteUrl": "https://transcend.io/"
+  },
+  "tech": {
+    "cmp": {
+      "vendor": "transcend",
+      "detected": true,
+      "closed": false,
+      "action": null,
+      "strategy": null
+    },
+    "platform": {
+      "id": "nextjs",
+      "label": "Next.js",
+      "confidence": 0.88,
+      "signals": [
+        "dom",
+        "asset-path",
+        "runtime"
+      ]
+    },
+    "platforms": [
+      {
+        "id": "nextjs",
+        "label": "Next.js",
+        "confidence": 0.88,
+        "signals": [
+          "dom",
+          "asset-path",
+          "runtime"
+        ]
+      },
+      {
+        "id": "vercel",
+        "label": "Vercel hosting",
+        "confidence": 0.75,
+        "signals": [
+          "dom"
+        ]
+      },
+      {
+        "id": "sanity",
+        "label": "Sanity",
+        "confidence": 0.7,
+        "signals": [
+          "asset-path"
+        ]
+      }
+    ],
+    "generator": null
+  },
+  "colors": {
+    "background": "#ffffff",
+    "foreground": "#1c1c1e",
+    "primary": "#d8fb4b",
+    "accent": "#d8fb4b",
+    "provenance": {
+      "background": "assumed-light-canvas (body transparent)",
+      "foreground": "body.color",
+      "primary": "cta.fill (Get a demo)",
+      "accent": "same as primary (CTA)"
+    },
+    "observed": [
+      {
+        "role": "ink",
+        "hex": "#1c1c1e",
+        "source": "body"
+      },
+      {
+        "role": "cta",
+        "hex": "#d8fb4b",
+        "source": "Get a demo"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#d8fb4b",
+        "source": "Get a demo"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#d8fb4b",
+        "source": "Get a demo"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#d8fb4b",
+        "source": "Schedule a demo"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#d8fb4b",
+        "source": "Get the report"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#dfdefd",
+        "source": "IT & AI Infrastructure"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#d8fb4b",
+        "source": "Unlocking personalization and AI"
+      },
+      {
+        "role": "link",
+        "hex": "#bbbbc1",
+        "source": "ranked-links"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#5f5bf7",
+        "source": "logo (wordmark-paths)"
+      }
+    ]
+  },
+  "typography": {
+    "fontFamily": "Inter",
+    "requestedFontFamily": "GTPlanar",
+    "notes": "Nearest Google Font to \"GTPlanar\""
+  },
+  "assets": {
+    "logo": "./assets/logo.svg",
+    "favicon": "./assets/favicon.png",
+    "appleTouch": "./assets/apple-touch.png",
+    "ogImage": "./assets/og-image.jpg",
+    "screenshots": {
+      "viewport": "./assets/viewport.png",
+      "fullpage": "./assets/fullpage.png"
+    },
+    "logoAnalysis": {
+      "fitsLightBackground": true,
+      "fitsDarkBackground": false,
+      "solidPlate": false,
+      "plateHex": null,
+      "reason": "wordmark-paths",
+      "palette": [
+        {
+          "hex": "#5f5bf7",
+          "share": null,
+          "luminance": 0.404,
+          "saturation": 0.612
+        }
+      ]
+    },
+    "logoNav": "./assets/logo.svg",
+    "candidates": [
+      {
+        "file": "./assets/logo.svg",
+        "role": "logo",
+        "crawlScore": 51300,
+        "packScore": 51505,
+        "zone": "header",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 124×30 · aspect 4.13 · hues #5f5bf7",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": [
+            {
+              "hex": "#5f5bf7",
+              "count": 4,
+              "luminance": 0.404,
+              "saturation": 0.612
+            }
+          ]
+        }
+      },
+      {
+        "file": "./assets/candidate-header-logo.svg",
+        "role": "header-logo",
+        "crawlScore": 68,
+        "packScore": 218,
+        "zone": "page",
+        "alt": "A quadrant chart evaluating data governance platforms. The horizontal axis represents increasing scope from consent-only documentation to full-lifecycle activation. The vertical axis represents increasing platform coverage from documentation to full data decisioning. Transcend, described as 'runtime data decision infrastructure,' is in the top-right quadrant. Other vendors, Securiti, BigID, OneTrust, DataGrail, and Ketch, are positioned progressively lower and to the left.",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "unknown",
+        "svg": {
+          "roleGuess": "unknown",
+          "roleConfidence": 0.4,
+          "summary": "unknown · 1201×702 · aspect 1.71 · hues #5f5bf7, #7f7cf9, #343288",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": [
+            {
+              "hex": "#5f5bf7",
+              "count": 30,
+              "luminance": 0.404,
+              "saturation": 0.612
+            },
+            {
+              "hex": "#7f7cf9",
+              "count": 12,
+              "luminance": 0.524,
+              "saturation": 0.49
+            },
+            {
+              "hex": "#343288",
+              "count": 10,
+              "luminance": 0.222,
+              "saturation": 0.337
+            }
+          ]
+        }
+      },
+      {
+        "file": "./assets/apple-touch.png",
+        "role": "apple-touch",
+        "crawlScore": 5,
+        "packScore": 100,
+        "zone": "meta",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": true,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "default-ok"
+      },
+      {
+        "file": "./assets/favicon.png",
+        "role": "favicon",
+        "crawlScore": 5,
+        "packScore": 80,
+        "zone": "meta",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/og-image.jpg",
+        "role": "og-image",
+        "crawlScore": 0,
+        "packScore": -85,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": true,
+        "solidPlate": true,
+        "plateHex": "#000000",
+        "reason": "dark-plate:#000000"
+      }
+    ]
+  },
+  "landing": {
+    "variant": "light-hero"
+  }
+}

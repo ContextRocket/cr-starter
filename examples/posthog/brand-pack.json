@@ -1,0 +1,299 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://posthog.com/",
+    "capturedAt": "2026-09-06",
+    "method": "crawl",
+    "notes": "Colors: light body background kept; CTA fill → primary (Get started). Font: RoundHog → Google Inter (nearest). Logo: wordmark-paths lightFit=true alt=\"PostHog\"",
+    "markDisambiguation": {
+      "used": false,
+      "reason": "skipped"
+    }
+  },
+  "identity": {
+    "name": "posthog",
+    "siteUrl": "https://posthog.com/"
+  },
+  "tech": {
+    "cmp": null,
+    "platform": null,
+    "platforms": [],
+    "generator": null
+  },
+  "colors": {
+    "background": "#eeefe9",
+    "foreground": "#000000",
+    "primary": "#cd8407",
+    "accent": "#cd8407",
+    "provenance": {
+      "background": "body.backgroundColor",
+      "foreground": "body.color",
+      "primary": "cta.fill (Get started)",
+      "accent": "same as primary (CTA)"
+    },
+    "observed": [
+      {
+        "role": "background",
+        "hex": "#eeefe9",
+        "source": "body"
+      },
+      {
+        "role": "ink",
+        "hex": "#000000",
+        "source": "body"
+      },
+      {
+        "role": "cta",
+        "hex": "#cd8407",
+        "source": "Get started"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#cd8407",
+        "source": "Get started"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#cd8407",
+        "source": "Get started – free"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#cd8407",
+        "source": "Get started"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#eb9d2a",
+        "source": "Install with AI"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#eb9d2a",
+        "source": "Explore PostHog Slack"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#f54e00",
+        "source": "Fix bugs from Slack"
+      },
+      {
+        "role": "theme-color",
+        "hex": "#e5e7e0",
+        "source": "meta.theme-color"
+      },
+      {
+        "role": "h1",
+        "hex": "#111827",
+        "source": "h1.color"
+      },
+      {
+        "role": "link",
+        "hex": "#374151",
+        "source": "ranked-links"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#ffd849",
+        "source": "logo (wordmark-paths)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#fbae01",
+        "source": "logo (wordmark-paths)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#ffb700",
+        "source": "logo (wordmark-paths)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#f9aa01",
+        "source": "logo (wordmark-paths)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#ff9500",
+        "source": "logo (wordmark-paths)"
+      }
+    ]
+  },
+  "typography": {
+    "fontFamily": "Inter",
+    "requestedFontFamily": "RoundHog",
+    "notes": "Nearest Google Font to \"RoundHog\""
+  },
+  "assets": {
+    "logo": "./assets/logo.svg",
+    "favicon": "./assets/favicon.ico",
+    "appleTouch": "./assets/apple-touch.png",
+    "ogImage": "./assets/og-image.jpg",
+    "screenshots": {
+      "viewport": "./assets/viewport.png",
+      "fullpage": "./assets/fullpage.png"
+    },
+    "logoAnalysis": {
+      "fitsLightBackground": true,
+      "fitsDarkBackground": true,
+      "solidPlate": false,
+      "plateHex": null,
+      "reason": "wordmark-paths",
+      "palette": [
+        {
+          "hex": "#ffd849",
+          "share": null,
+          "luminance": 0.839,
+          "saturation": 0.714
+        },
+        {
+          "hex": "#fbae01",
+          "share": null,
+          "luminance": 0.698,
+          "saturation": 0.98
+        },
+        {
+          "hex": "#ffb700",
+          "share": null,
+          "luminance": 0.726,
+          "saturation": 1
+        },
+        {
+          "hex": "#f9aa01",
+          "share": null,
+          "luminance": 0.685,
+          "saturation": 0.973
+        },
+        {
+          "hex": "#ff9500",
+          "share": null,
+          "luminance": 0.631,
+          "saturation": 1
+        }
+      ]
+    },
+    "candidates": [
+      {
+        "file": "./assets/logo.svg",
+        "role": "logo",
+        "crawlScore": 138,
+        "packScore": 328,
+        "zone": "page",
+        "alt": "PostHog",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": true,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 160×28 · aspect 5.71 · gradient · hues #ffd849, #fbae01, #ffb700",
+          "texts": [],
+          "hasGradient": true,
+          "chromaticPalette": [
+            {
+              "hex": "#ffd849",
+              "count": 2,
+              "luminance": 0.839,
+              "saturation": 0.714
+            },
+            {
+              "hex": "#fbae01",
+              "count": 2,
+              "luminance": 0.698,
+              "saturation": 0.98
+            },
+            {
+              "hex": "#ffb700",
+              "count": 2,
+              "luminance": 0.726,
+              "saturation": 1
+            },
+            {
+              "hex": "#f9aa01",
+              "count": 2,
+              "luminance": 0.685,
+              "saturation": 0.973
+            },
+            {
+              "hex": "#ff9500",
+              "count": 2,
+              "luminance": 0.631,
+              "saturation": 1
+            },
+            {
+              "hex": "#f8aa00",
+              "count": 2,
+              "luminance": 0.684,
+              "saturation": 0.973
+            }
+          ]
+        }
+      },
+      {
+        "file": "./assets/candidate-header-logo.png",
+        "role": "header-logo",
+        "crawlScore": 125,
+        "packScore": 275,
+        "zone": "header",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "default-ok"
+      },
+      {
+        "file": "./assets/candidate-header-logo.png",
+        "role": "header-logo",
+        "crawlScore": 125,
+        "packScore": 275,
+        "zone": "header",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "dark-mark-on-clear"
+      },
+      {
+        "file": "./assets/apple-touch.png",
+        "role": "apple-touch",
+        "crawlScore": 5,
+        "packScore": 0,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": true,
+        "solidPlate": true,
+        "plateHex": "#000000",
+        "reason": "dark-plate:#000000"
+      },
+      {
+        "file": "./assets/favicon.ico",
+        "role": "favicon",
+        "crawlScore": 2,
+        "packScore": -23,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": true,
+        "solidPlate": true,
+        "plateHex": "#000000",
+        "reason": "dark-plate:#000000"
+      },
+      {
+        "file": "./assets/og-image.jpg",
+        "role": "og-image",
+        "crawlScore": 0,
+        "packScore": -85,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": true,
+        "solidPlate": true,
+        "plateHex": "#87a367",
+        "reason": "dark-plate:#87a367"
+      }
+    ]
+  },
+  "landing": {
+    "variant": "light-hero"
+  }
+}

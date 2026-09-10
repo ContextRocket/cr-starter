@@ -151,7 +151,7 @@ const matchesPolicy = (path) =>
  * healthy-looking config and a build that cannot discover its posts.
  */
 function validateBlogContentDirectory() {
-  const siteConfigPath = resolve(root, "frontend/config/site.json");
+  const siteConfigPath = resolve(root, "config/site.json");
   let siteData;
   try {
     siteData = JSON.parse(readFileSync(siteConfigPath, "utf8"));
@@ -161,7 +161,7 @@ function validateBlogContentDirectory() {
 
   if (siteData.features?.blog === false) return;
 
-  const blogConfigPath = resolve(root, "frontend/blog.config.mjs");
+  const blogConfigPath = resolve(root, "blog.config.mjs");
   if (!existsSync(blogConfigPath)) return;
 
   const source = readFileSync(blogConfigPath, "utf8");
@@ -173,7 +173,6 @@ function validateBlogContentDirectory() {
     .replace(/\\/g, "/")
     .replace(/^\/+|\/+$/g, "") || "content/posts";
   const candidates = [
-    resolve(root, "frontend", relativeDir),
     resolve(root, relativeDir),
     resolve(root, "..", relativeDir),
   ];

@@ -1,0 +1,14 @@
+---
+import AttributionPage from "@/components/pages/AttributionPage.astro";
+import { siteConfig } from "@/config/site.config";
+import { getActiveLocales, type SupportedLocale } from "@/i18n/locales";
+
+export function getStaticPaths() {
+  if (!siteConfig.features.attribution) return [];
+  return getActiveLocales().map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as SupportedLocale;
+---
+
+<AttributionPage locale={locale} />

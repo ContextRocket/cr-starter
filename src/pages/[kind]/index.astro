@@ -1,0 +1,19 @@
+---
+import LegalPage from "@/components/pages/LegalPage.astro";
+import { isSingleLocale, siteConfig } from "@/config/site.config";
+import { soleLocale } from "@/lib/routing";
+import { legalKinds, type LegalKind } from "@/lib/legal";
+
+export function getStaticPaths() {
+  if (!isSingleLocale()) return [];
+  return legalKinds(siteConfig.features.impressum).map((kind) => ({
+    params: { kind },
+  }));
+}
+
+// Multi-locale: these unprefixed legal URLs are not generated.
+const locale = soleLocale();
+const kind = Astro.params.kind as LegalKind;
+---
+
+<LegalPage locale={locale} kind={kind} />

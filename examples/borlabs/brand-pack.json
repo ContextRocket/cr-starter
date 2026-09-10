@@ -1,0 +1,286 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://borlabs.io/",
+    "capturedAt": "2026-09-06",
+    "method": "crawl",
+    "notes": "Colors: light body background kept; CTA fill → primary (Skip to content). Font: Roboto → Google Roboto. Logo: light-ink-on-transparent lightFit=false alt=\"Borlabs\"",
+    "markDisambiguation": {
+      "used": false,
+      "reason": "skipped"
+    }
+  },
+  "identity": {
+    "name": "Borlabs",
+    "siteUrl": "https://borlabs.io/"
+  },
+  "tech": {
+    "cmp": {
+      "vendor": "borlabs",
+      "detected": true,
+      "closed": true,
+      "action": null,
+      "strategy": "generic"
+    },
+    "platform": {
+      "id": "wordpress",
+      "label": "WordPress",
+      "confidence": 0.85,
+      "signals": [
+        "dom",
+        "asset-path"
+      ]
+    },
+    "platforms": [
+      {
+        "id": "wordpress",
+        "label": "WordPress",
+        "confidence": 0.85,
+        "signals": [
+          "dom",
+          "asset-path"
+        ]
+      }
+    ],
+    "generator": null
+  },
+  "colors": {
+    "background": "#f7f7f7",
+    "foreground": "#222222",
+    "primary": "#f1f1f1",
+    "accent": "#f1f1f1",
+    "provenance": {
+      "background": "body.backgroundColor",
+      "foreground": "body.color",
+      "primary": "cta.fill (Skip to content)",
+      "accent": "same as primary (CTA)"
+    },
+    "observed": [
+      {
+        "role": "background",
+        "hex": "#f7f7f7",
+        "source": "body"
+      },
+      {
+        "role": "ink",
+        "hex": "#222222",
+        "source": "body"
+      },
+      {
+        "role": "cta",
+        "hex": "#f1f1f1",
+        "source": "Skip to content"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#f1f1f1",
+        "source": "Skip to content"
+      },
+      {
+        "role": "theme-color",
+        "hex": "#222222",
+        "source": "meta.theme-color"
+      },
+      {
+        "role": "link",
+        "hex": "#5a61e8",
+        "source": "ranked-links"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#2484cc",
+        "source": "logo (light-ink-on-transparent)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#0cb4e4",
+        "source": "logo (light-ink-on-transparent)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#0ccce4",
+        "source": "logo (light-ink-on-transparent)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#246ccc",
+        "source": "logo (light-ink-on-transparent)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#3c54b4",
+        "source": "logo (light-ink-on-transparent)"
+      }
+    ]
+  },
+  "typography": {
+    "fontFamily": "Roboto",
+    "requestedFontFamily": "Roboto",
+    "notes": "Exact Google Font match"
+  },
+  "assets": {
+    "logo": "./assets/logo.png",
+    "favicon": "./assets/favicon.ico",
+    "ogImage": "./assets/og-image.jpg",
+    "screenshots": {
+      "viewport": "./assets/viewport.png",
+      "fullpage": "./assets/fullpage.png"
+    },
+    "logoAnalysis": {
+      "fitsLightBackground": false,
+      "fitsDarkBackground": true,
+      "solidPlate": false,
+      "plateHex": null,
+      "reason": "light-ink-on-transparent",
+      "palette": [
+        {
+          "hex": "#2484cc",
+          "share": 0.0472,
+          "luminance": 0.411,
+          "saturation": 0.659
+        },
+        {
+          "hex": "#0cb4e4",
+          "share": 0.0404,
+          "luminance": 0.532,
+          "saturation": 0.847
+        },
+        {
+          "hex": "#0ccce4",
+          "share": 0.0337,
+          "luminance": 0.6,
+          "saturation": 0.847
+        },
+        {
+          "hex": "#246ccc",
+          "share": 0.0292,
+          "luminance": 0.344,
+          "saturation": 0.659
+        },
+        {
+          "hex": "#3c54b4",
+          "share": 0.0258,
+          "luminance": 0.29,
+          "saturation": 0.471
+        }
+      ]
+    },
+    "logoLight": "./assets/logo-light.png",
+    "logoLightAnalysis": {
+      "fitsLightBackground": true,
+      "fitsDarkBackground": false,
+      "reason": "transparent-mark",
+      "ink": "#222222",
+      "adapt": {
+        "kind": null,
+        "remappedPixels": 1089,
+        "replacements": null,
+        "keptChromatic": 311
+      },
+      "palette": [
+        {
+          "hex": "#242424",
+          "share": 0.7461,
+          "luminance": 0.094,
+          "saturation": 0
+        },
+        {
+          "hex": "#2484cc",
+          "share": 0.0472,
+          "luminance": 0.411,
+          "saturation": 0.659
+        },
+        {
+          "hex": "#0cb4e4",
+          "share": 0.0404,
+          "luminance": 0.532,
+          "saturation": 0.847
+        },
+        {
+          "hex": "#0ccce4",
+          "share": 0.0337,
+          "luminance": 0.6,
+          "saturation": 0.847
+        },
+        {
+          "hex": "#246ccc",
+          "share": 0.0292,
+          "luminance": 0.344,
+          "saturation": 0.659
+        }
+      ]
+    },
+    "logoSymbol": "./assets/logo-symbol.png",
+    "logoWordmark": "./assets/logo-wordmark.png",
+    "logoWordmarkLight": "./assets/logo-wordmark-light.png",
+    "logoNav": "./assets/logo-wordmark-light.png",
+    "candidates": [
+      {
+        "file": "./assets/logo.png",
+        "role": "logo",
+        "crawlScore": 180,
+        "packScore": 340,
+        "zone": "header",
+        "alt": "Borlabs",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": true,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "light-ink-on-transparent"
+      },
+      {
+        "file": "./assets/candidate-logo-keyword.png",
+        "role": "logo-keyword",
+        "crawlScore": 80,
+        "packScore": 245,
+        "zone": "page",
+        "alt": "Borlabs Opt-In Logo",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": true,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/candidate-logo-keyword.png",
+        "role": "logo-keyword",
+        "crawlScore": 80,
+        "packScore": 210,
+        "zone": "page",
+        "alt": "Borlabs Cache Logo 2",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": true,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/favicon.ico",
+        "role": "favicon",
+        "crawlScore": 2,
+        "packScore": 77,
+        "zone": "meta",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "transparent-mark"
+      },
+      {
+        "file": "./assets/og-image.jpg",
+        "role": "og-image",
+        "crawlScore": 0,
+        "packScore": -85,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": true,
+        "solidPlate": true,
+        "plateHex": "#1a1a1a",
+        "reason": "dark-plate:#1a1a1a"
+      }
+    ]
+  },
+  "landing": {
+    "variant": "light-hero"
+  }
+}

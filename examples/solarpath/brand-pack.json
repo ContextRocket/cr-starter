@@ -1,0 +1,273 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://solarpath.ie/",
+    "capturedAt": "2026-09-06",
+    "method": "crawl",
+    "notes": "Colors: light body background kept; CTA fill → primary (Get a quote). Font: Inter → Google Inter. Logo: light-ink-on-transparent lightFit=false alt=\"Solar Path - Leading Solar Panel Installers Cork Ireland\"",
+    "markDisambiguation": {
+      "used": false,
+      "reason": "skipped"
+    }
+  },
+  "identity": {
+    "name": "Solar Path",
+    "siteUrl": "https://solarpath.ie/"
+  },
+  "tech": {
+    "cmp": {
+      "vendor": "cookieyes",
+      "detected": true,
+      "closed": true,
+      "action": "reject",
+      "strategy": "cookieyes"
+    },
+    "platform": {
+      "id": "webflow",
+      "label": "Webflow",
+      "confidence": 0.7,
+      "signals": [
+        "asset-path"
+      ]
+    },
+    "platforms": [
+      {
+        "id": "webflow",
+        "label": "Webflow",
+        "confidence": 0.7,
+        "signals": [
+          "asset-path"
+        ]
+      }
+    ],
+    "generator": null
+  },
+  "colors": {
+    "background": "#ffffff",
+    "foreground": "#333333",
+    "primary": "#eb433d",
+    "accent": "#eb433d",
+    "provenance": {
+      "background": "body.backgroundColor",
+      "foreground": "body.color",
+      "primary": "cta.fill (Get a quote)",
+      "accent": "same as primary (CTA)"
+    },
+    "observed": [
+      {
+        "role": "background",
+        "hex": "#ffffff",
+        "source": "body"
+      },
+      {
+        "role": "ink",
+        "hex": "#333333",
+        "source": "body"
+      },
+      {
+        "role": "cta",
+        "hex": "#eb433d",
+        "source": "Get a quote"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#eb433d",
+        "source": "Get a quote"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#eb433d",
+        "source": "Contact Us"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#eb433d",
+        "source": "Contact us"
+      },
+      {
+        "role": "cta-candidate",
+        "hex": "#eb433d",
+        "source": "Contact us"
+      },
+      {
+        "role": "h1",
+        "hex": "#ecf3f8",
+        "source": "h1.color"
+      },
+      {
+        "role": "link",
+        "hex": "#e2e2e2",
+        "source": "ranked-links"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#fcb40c",
+        "source": "logo (light-ink-on-transparent)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#fc8424",
+        "source": "logo (light-ink-on-transparent)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#fccc0c",
+        "source": "logo (light-ink-on-transparent)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#fc9c24",
+        "source": "logo (light-ink-on-transparent)"
+      },
+      {
+        "role": "logo-palette",
+        "hex": "#fc9c0c",
+        "source": "logo (light-ink-on-transparent)"
+      }
+    ]
+  },
+  "typography": {
+    "fontFamily": "Inter",
+    "requestedFontFamily": "Inter",
+    "notes": "Exact Google Font match"
+  },
+  "assets": {
+    "logo": "./assets/logo.png",
+    "favicon": "./assets/favicon.ico",
+    "appleTouch": "./assets/apple-touch.png",
+    "screenshots": {
+      "viewport": "./assets/viewport.png",
+      "fullpage": "./assets/fullpage.png"
+    },
+    "logoAnalysis": {
+      "fitsLightBackground": false,
+      "fitsDarkBackground": true,
+      "solidPlate": false,
+      "plateHex": null,
+      "reason": "light-ink-on-transparent",
+      "palette": [
+        {
+          "hex": "#fcb40c",
+          "share": 0.0664,
+          "luminance": 0.671,
+          "saturation": 0.941
+        },
+        {
+          "hex": "#fc8424",
+          "share": 0.0604,
+          "luminance": 0.543,
+          "saturation": 0.847
+        },
+        {
+          "hex": "#fccc0c",
+          "share": 0.0488,
+          "luminance": 0.739,
+          "saturation": 0.941
+        },
+        {
+          "hex": "#fc9c24",
+          "share": 0.0469,
+          "luminance": 0.611,
+          "saturation": 0.847
+        },
+        {
+          "hex": "#fc9c0c",
+          "share": 0.039,
+          "luminance": 0.604,
+          "saturation": 0.941
+        }
+      ]
+    },
+    "logoLight": "./assets/logo-light.png",
+    "logoLightAnalysis": {
+      "fitsLightBackground": true,
+      "fitsDarkBackground": false,
+      "reason": "transparent-mark",
+      "ink": "#333333",
+      "adapt": {
+        "kind": null,
+        "remappedPixels": 4307,
+        "replacements": null,
+        "keptChromatic": 3610
+      },
+      "palette": [
+        {
+          "hex": "#3c3c3c",
+          "share": 0.6569,
+          "luminance": 0.188,
+          "saturation": 0
+        },
+        {
+          "hex": "#fcb40c",
+          "share": 0.0664,
+          "luminance": 0.671,
+          "saturation": 0.941
+        },
+        {
+          "hex": "#fc8424",
+          "share": 0.0604,
+          "luminance": 0.543,
+          "saturation": 0.847
+        },
+        {
+          "hex": "#fccc0c",
+          "share": 0.0488,
+          "luminance": 0.739,
+          "saturation": 0.941
+        },
+        {
+          "hex": "#fc9c24",
+          "share": 0.0469,
+          "luminance": 0.611,
+          "saturation": 0.847
+        }
+      ]
+    },
+    "logoSymbol": "./assets/logo-symbol.png",
+    "logoWordmark": "./assets/logo-wordmark.png",
+    "logoWordmarkLight": "./assets/logo-wordmark-light.png",
+    "logoNav": "./assets/logo-wordmark-light.png",
+    "candidates": [
+      {
+        "file": "./assets/logo.png",
+        "role": "logo",
+        "crawlScore": 180,
+        "packScore": 280,
+        "zone": "header",
+        "alt": "Solar Path - Leading Solar Panel Installers Cork Ireland",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": true,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "light-ink-on-transparent"
+      },
+      {
+        "file": "./assets/apple-touch.png",
+        "role": "apple-touch",
+        "crawlScore": 5,
+        "packScore": 0,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": true,
+        "solidPlate": true,
+        "plateHex": "#08243c",
+        "reason": "dark-plate:#08243c"
+      },
+      {
+        "file": "./assets/favicon.ico",
+        "role": "favicon",
+        "crawlScore": 2,
+        "packScore": -23,
+        "zone": "meta",
+        "fitsLightBackground": false,
+        "fitsDarkBackground": true,
+        "solidPlate": true,
+        "plateHex": "#08243c",
+        "reason": "dark-plate:#08243c"
+      }
+    ]
+  },
+  "landing": {
+    "variant": "light-hero"
+  }
+}

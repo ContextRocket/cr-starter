@@ -1,0 +1,214 @@
+---
+/**
+ * Starter marketing home -- ported from the Next baseline composition.
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { createT } from "@/i18n/keys";
+import type { SupportedLocale } from "@/i18n/locales";
+import { siteConfig } from "@/config/site.config";
+import { listPosts } from "@/lib/blog";
+import { blogPostHref, blogIndexHref } from "@/lib/paths";
+
+interface Props {
+  locale: SupportedLocale;
+}
+
+const { locale } = Astro.props;
+const t = createT(locale);
+const posts = siteConfig.features.blog ? listPosts(locale).slice(0, 3) : [];
+const primaryCtaHref = blogIndexHref(locale);
+---
+
+<BaseLayout locale={locale} path="/">
+  <main>
+    <section
+      class="relative isolate overflow-hidden bg-slate-950 px-6 pb-24 pt-32 text-white sm:pb-32 sm:pt-40"
+    >
+      <img
+        src="/images/blog/default-post.jpg"
+        alt=""
+        class="absolute inset-0 -z-20 h-full w-full object-cover object-center grayscale brightness-70 dark:brightness-60"
+      />
+      <div
+        aria-hidden="true"
+        class="absolute inset-0 -z-10 bg-gradient-to-b from-black/70 via-black/35 to-black/85 dark:from-black/75 dark:via-black/25 dark:to-black/90"
+      >
+      </div>
+      <div class="relative z-10 mx-auto max-w-4xl text-center">
+        <h1 class="text-4xl font-bold tracking-tight sm:text-6xl">
+          {t("home.hero.headline")}
+        </h1>
+        <p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-white/80">
+          {t("home.hero.subhead")}
+        </p>
+        <div class="mt-10 flex items-center justify-center gap-x-6">
+          <a
+            href={primaryCtaHref}
+            class="rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+          >
+            {t("home.hero.primaryCta")}
+          </a>
+          <a
+            href="#features"
+            class="text-sm font-semibold leading-6 text-white transition-colors hover:text-white/80"
+          >
+            {t("home.hero.secondaryCta")}{" "}
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-muted/50 px-6 py-20">
+      <div id="features" class="mx-auto max-w-6xl scroll-mt-20">
+        <div class="text-center">
+          <p class="text-sm font-semibold text-primary">
+            {t("home.features.label")}
+          </p>
+          <h2
+            class="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl"
+          >
+            {t("home.features.title")}
+          </h2>
+          <p class="mt-4 text-lg text-muted-foreground">
+            {t("home.features.subtitle")}
+          </p>
+        </div>
+        <div class="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {
+            [1, 2, 3].map((n) => (
+              <div class="rounded-2xl border border-border bg-card p-6 transition-all hover:border-primary/20 hover:shadow-lg">
+                <h3 class="text-lg font-semibold text-foreground">
+                  {t(`home.features.item${n}.title`)}
+                </h3>
+                <p class="mt-2 text-sm text-muted-foreground">
+                  {t(`home.features.item${n}.description`)}
+                </p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-background px-6 py-20">
+      <div class="mx-auto max-w-4xl">
+        <div class="overflow-hidden rounded-2xl border border-border shadow-sm">
+          <img
+            src="/images/blog/ai-brain-future.jpg"
+            alt={t("home.carousel.alt1")}
+            class="aspect-[16/9] w-full object-cover"
+          />
+          <div class="bg-card p-6 sm:p-8">
+            <h2 class="text-2xl font-bold tracking-tight text-foreground">
+              {t("home.carousel.title")}
+            </h2>
+            <p class="mt-3 text-muted-foreground">
+              {t("home.carousel.description")}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-muted/50 px-6 py-20">
+      <div class="mx-auto max-w-6xl text-center">
+        <h2
+          class="text-3xl font-bold tracking-tight text-foreground sm:text-4xl"
+        >
+          {t("home.valueProps.title")}
+        </h2>
+        <p class="mt-4 text-lg text-muted-foreground">
+          {t("home.valueProps.subtitle")}
+        </p>
+        <div class="mt-12 grid gap-8 sm:grid-cols-3">
+          {
+            (["see", "fix", "stay"] as const).map((key) => (
+              <div class="rounded-2xl border border-border bg-card p-6 text-left">
+                <h3 class="text-lg font-semibold text-foreground">
+                  {t(`home.valueProps.${key}.title`)}
+                </h3>
+                <p class="mt-2 text-sm text-muted-foreground">
+                  {t(`home.valueProps.${key}.description`)}
+                </p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {
+      siteConfig.stats && siteConfig.stats.length > 0 && (
+        <section class="bg-background px-6 py-16">
+          <dl class="mx-auto grid max-w-5xl grid-cols-2 gap-8 sm:grid-cols-4">
+            {siteConfig.stats.map((stat) => (
+              <div class="text-center">
+                <dt class="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                  {stat.value}
+                </dt>
+                <dd class="mt-2 text-sm text-muted-foreground">
+                  {t(stat.labelKey)}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )
+    }
+
+    {
+      posts.length > 0 && (
+        <section class="bg-muted/50 px-6 py-20">
+          <div class="mx-auto max-w-6xl">
+            <div class="text-center">
+              <h2 class="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                {t("home.featured.title")}
+              </h2>
+              <p class="mt-4 text-lg text-muted-foreground">
+                {t("home.featured.subtitle")}
+              </p>
+            </div>
+            <ul class="mt-12 grid gap-8 md:grid-cols-3">
+              {posts.map((post) => (
+                <li>
+                  <a
+                    href={blogPostHref(locale, post.slug)}
+                    class="group block overflow-hidden rounded-2xl border border-border bg-card transition-shadow hover:shadow-lg"
+                  >
+                    {post.image && (
+                      <img
+                        src={post.image}
+                        alt=""
+                        class="aspect-video w-full object-cover transition-transform group-hover:scale-[1.02]"
+                      />
+                    )}
+                    <div class="p-5">
+                      <h3 class="font-semibold text-foreground">
+                        {post.title}
+                      </h3>
+                      <p class="mt-1 text-sm text-text-tertiary">{post.date}</p>
+                      {post.excerpt && (
+                        <p class="mt-2 text-sm text-muted-foreground">
+                          {post.excerpt}
+                        </p>
+                      )}
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <p class="mt-10 text-center">
+              <a
+                href={blogIndexHref(locale)}
+                class="text-sm font-semibold text-primary hover:underline"
+              >
+                {t("home.featured.viewAll")} →
+              </a>
+            </p>
+          </div>
+        </section>
+      )
+    }
+  </main>
+</BaseLayout>

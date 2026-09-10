@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://www.onetrust.com/",
+    "capturedAt": "2026-09-06",
+    "method": "crawl",
+    "notes": "Colors: light body background kept; no CTA fill → body ink as primary; no distinct accent → reuse primary. Font: Antique Legacy → Google Inter (nearest). Logo: wordmark-paths lightFit=true alt=\"OneTrust logo lockup, black\"",
+    "markDisambiguation": {
+      "used": false,
+      "reason": "skipped"
+    }
+  },
+  "identity": {
+    "name": "OneTrust",
+    "siteUrl": "https://www.onetrust.com/"
+  },
+  "tech": {
+    "cmp": {
+      "vendor": "usercentrics",
+      "detected": true,
+      "closed": true,
+      "action": "reject",
+      "strategy": "cmp-api"
+    },
+    "platform": null,
+    "platforms": [],
+    "generator": null
+  },
+  "colors": {
+    "background": "#ffffff",
+    "foreground": "#000000",
+    "primary": "#000000",
+    "accent": "#000000",
+    "provenance": {
+      "background": "body.backgroundColor",
+      "foreground": "body.color",
+      "primary": "body.color (ink fallback)",
+      "accent": "same as primary (no distinct accent observed)"
+    },
+    "observed": [
+      {
+        "role": "background",
+        "hex": "#ffffff",
+        "source": "body"
+      },
+      {
+        "role": "ink",
+        "hex": "#000000",
+        "source": "body"
+      }
+    ]
+  },
+  "typography": {
+    "fontFamily": "Inter",
+    "requestedFontFamily": "Antique Legacy",
+    "notes": "Nearest Google Font to \"Antique Legacy\""
+  },
+  "assets": {
+    "logo": "./assets/logo.svg",
+    "favicon": "./assets/favicon.ico",
+    "screenshots": {
+      "viewport": "./assets/viewport.png",
+      "fullpage": "./assets/fullpage.png"
+    },
+    "logoAnalysis": {
+      "fitsLightBackground": true,
+      "fitsDarkBackground": false,
+      "solidPlate": false,
+      "plateHex": null,
+      "reason": "wordmark-paths",
+      "palette": []
+    },
+    "candidates": [
+      {
+        "file": "./assets/logo.svg",
+        "role": "logo",
+        "crawlScore": 188,
+        "packScore": 353,
+        "zone": "header",
+        "alt": "OneTrust logo lockup, black",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": false,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "wordmark-paths",
+        "svg": {
+          "roleGuess": "wordmark-paths",
+          "roleConfidence": 0.62,
+          "summary": "wordmark-paths · 123×20 · aspect 6.15",
+          "texts": [],
+          "hasGradient": false,
+          "chromaticPalette": []
+        }
+      },
+      {
+        "file": "./assets/favicon.ico",
+        "role": "favicon",
+        "crawlScore": 2,
+        "packScore": 77,
+        "zone": "meta",
+        "fitsLightBackground": true,
+        "fitsDarkBackground": true,
+        "solidPlate": false,
+        "plateHex": null,
+        "reason": "default-ok"
+      }
+    ]
+  },
+  "landing": {
+    "variant": "light-hero"
+  }
+}
