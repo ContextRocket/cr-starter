@@ -50,11 +50,6 @@ export const siteEs: LocaleMessages<typeof siteEn> = {
         description: "Qué hace y por qué ayuda.",
       },
     },
-    stats: {
-      output: "Métrica de ejemplo",
-      integrations: "Integraciones",
-      uptime: "Disponibilidad",
-    },
     faq: {
       title: "Preguntas frecuentes",
       item1: {
@@ -143,14 +138,6 @@ export const siteEs: LocaleMessages<typeof siteEn> = {
       title: "Del blog",
       subtitle: "Artículos, notas y novedades de este sitio.",
       viewAll: "Ver todas las publicaciones",
-    },
-    testimonials: {
-      eyebrow: "Testimonios",
-      title: "Lo que dicen nuestros clientes",
-      subtitle:
-        "Resultados reales de equipos que construyen sobre la plataforma.",
-      regionLabel: "Testimonios de clientes",
-      ratingLabel: "Valorado con {rating} de 5",
     },
     integrations: {
       label: "Integraciones",

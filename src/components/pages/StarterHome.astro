@@ -139,25 +139,6 @@ const primaryCtaHref = blogIndexHref(locale);
     </section>
 
     {
-      siteConfig.stats && siteConfig.stats.length > 0 && (
-        <section class="bg-background px-6 py-16">
-          <dl class="mx-auto grid max-w-5xl grid-cols-2 gap-8 sm:grid-cols-4">
-            {siteConfig.stats.map((stat) => (
-              <div class="text-center">
-                <dt class="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-                  {stat.value}
-                </dt>
-                <dd class="mt-2 text-sm text-muted-foreground">
-                  {t(stat.labelKey)}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-      )
-    }
-
-    {
       posts.length > 0 && (
         <section class="bg-muted/50 px-6 py-20">
           <div class="mx-auto max-w-6xl">

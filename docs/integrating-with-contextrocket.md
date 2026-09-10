@@ -92,20 +92,3 @@ order is starter defaults, fork/siteConfig values, then validated installation
 attributes, with the handle/API key/API base supplied at runtime. Arbitrary
 CSS, HTML, JavaScript, custom endpoints, prompts, and model settings are not
 part of the widget contract.
-
-## Customer CLI
-
-The checked-in Node/TypeScript CLI in `cli/` handles OAuth login and content
-operations without adding Python or auth dependencies to the site. The
-repository is the distribution channel:
-
-```bash
-pnpm --dir cli dev -- auth login
-pnpm --dir cli dev -- content sync ./content cr://your-handle/content
-```
-
-For automation, set `CONTEXTROCKET_API_KEY` to an appropriately scoped org
-machine credential. This variable is for the CLI/CI environment only, never
-`NEXT_PUBLIC_*`. The `sources` commands remain available for explicit source
-record workflows; `content sync` is the predictable folder-based default for a
-starter fork.

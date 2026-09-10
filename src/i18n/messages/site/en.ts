@@ -49,11 +49,6 @@ export const siteEn = {
         description: "What it does and why it helps.",
       },
     },
-    stats: {
-      output: "Placeholder metric",
-      integrations: "Integrations",
-      uptime: "Uptime",
-    },
     faq: {
       title: "Frequently asked questions",
       item1: {
@@ -142,13 +137,6 @@ export const siteEn = {
       title: "From the blog",
       subtitle: "Articles, notes, and updates from this site.",
       viewAll: "View all posts",
-    },
-    testimonials: {
-      eyebrow: "Testimonials",
-      title: "What our customers say",
-      subtitle: "Real results from teams building on the platform.",
-      regionLabel: "Customer testimonials",
-      ratingLabel: "Rated {rating} out of 5",
     },
     integrations: {
       label: "Integrations",

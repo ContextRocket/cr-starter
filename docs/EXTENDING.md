@@ -17,12 +17,11 @@ The starter is intentionally small. General behavior belongs here; a fork should
 
 Pull these from `cr-starter` rather than copying fork logic into them (see `.fork-sync.json`):
 
-- `src/components/chrome/`, `src/components/gallery/`, shared page shells under `src/components/pages/`;
+- `src/components/chrome/`, shared page shells under `src/components/pages/`;
 - `src/lib/`;
 - `src/config/site.config.ts`;
 - `src/i18n/messages/shared/` and `src/i18n/messages/app/`;
-- public discovery routes (`sitemap`, `robots`, `llms`, `feed`, `.well-known`);
-- `cli/`.
+- public discovery routes (`sitemap`, `robots`, `llms`, `feed`, `.well-known`).
 
 Browser SDK and embeds live in the sibling public repo **`cr-sdk`**
 (`@contextrocket/sdk`, `@contextrocket/embed-chat`), not in this starter.

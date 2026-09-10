@@ -92,19 +92,6 @@ export const sharedEn = {
       results: "0 results",
     },
   },
-  gallery: {
-    title: "Gallery",
-    subtitle: "Browse images by collection.",
-    filter: "Filter by collection",
-    all: "All images",
-    imageCount: "{count} images",
-    noImages: "No images match this filter.",
-    viewImage: "View image: {alt}",
-    close: "Close image",
-    previous: "Previous image",
-    next: "Next image",
-    counter: "{current} of {total}",
-  },
   legal: {
     identity: {
       // Company (incorporated entity) fields.

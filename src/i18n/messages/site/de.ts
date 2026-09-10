@@ -50,11 +50,6 @@ export const siteDe: LocaleMessages<typeof siteEn> = {
         description: "Was sie tut und warum sie hilft.",
       },
     },
-    stats: {
-      output: "Beispiel-Metrik",
-      integrations: "Integrationen",
-      uptime: "Verfügbarkeit",
-    },
     faq: {
       title: "Häufig gestellte Fragen",
       item1: {
@@ -143,13 +138,6 @@ export const siteDe: LocaleMessages<typeof siteEn> = {
       title: "Aus dem Blog",
       subtitle: "Artikel, Notizen und Updates dieser Website.",
       viewAll: "Alle Beiträge ansehen",
-    },
-    testimonials: {
-      eyebrow: "Kundenstimmen",
-      title: "Was unsere Kunden sagen",
-      subtitle: "Echte Ergebnisse von Teams, die auf der Plattform aufbauen.",
-      regionLabel: "Kundenstimmen",
-      ratingLabel: "Mit {rating} von 5 bewertet",
     },
     integrations: {
       label: "Integrationen",

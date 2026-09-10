@@ -95,19 +95,6 @@ export const sharedEs: LocaleMessages<typeof sharedEn> = {
       results: "0 resultados",
     },
   },
-  gallery: {
-    title: "Galería",
-    subtitle: "Explora las imágenes por colección.",
-    filter: "Filtrar por colección",
-    all: "Todas las imágenes",
-    imageCount: "{count} imágenes",
-    noImages: "Ninguna imagen coincide con este filtro.",
-    viewImage: "Ver imagen: {alt}",
-    close: "Cerrar imagen",
-    previous: "Imagen anterior",
-    next: "Imagen siguiente",
-    counter: "{current} de {total}",
-  },
   legal: {
     identity: {
       // Empresa (entidad registrada).

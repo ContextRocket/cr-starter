@@ -27,11 +27,11 @@ PUBLIC_CONTEXTROCKET_API_KEY=your-publishable-api-key
 - `content/posts/` -- Markdown blog posts
 - `public/` -- assets
 
-Shared layout, i18n runtime, blog engine, hygiene routes, widget, and CLI are
+Shared layout, i18n runtime, blog engine, hygiene routes, and embed widget are
 starter-owned.
 
 **Default pages:** home + blog + legal/hygiene (privacy, terms, cookies,
-impressum). No FAQ / About / Features pages by default.
+impressum) + attribution. No FAQ / About / gallery / Features pages.
 
 ## Build and deploy
 

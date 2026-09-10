@@ -35,16 +35,16 @@ decision in that fork; do not replace it with starter copy.
 - The reference configuration may serve multiple locales, with English as the
   default. Locale files are optional in downstream projects; unused bundles must
   not be carried into a fork (`locales: ["en"]` is valid).
-- The reference site enables the Markdown blog and the embed chat snippet
-  (`features.chatFab`), disables gallery and testimonials by default, and uses
-  system theme selection. These are demonstration defaults, not requirements
-  for every fork.
-- Shared layout, i18n shared/app messages, the widget, and CLI are the reusable
+- The reference site enables the Markdown blog, attribution credits, and the
+  embed chat snippet (`features.chatFab`), and uses system theme selection.
+  These are demonstration defaults, not requirements for every fork.
+- Shared layout, i18n shared/app messages, and the embed widget are the reusable
   surfaces being demonstrated here. Forks customize config, site copy, Markdown,
   assets, theme, and home composition.
-- The default surface is **home + blog + legal/hygiene**. FAQ / About / Features
-  pages are not required. Auth and dashboard shells belong in `cr-auth-starter`
-  / Luna, not here.
+- The default surface is **home + blog + legal/hygiene (+ attribution)**. FAQ /
+  About / gallery / Features pages are not required. Auth and dashboard shells
+  belong in `cr-auth-starter` / Luna, not here. Brand scrape tooling lives in
+  `cr-labs`.
 
 ## Actual visual profile
 
@@ -145,7 +145,7 @@ fork. The reusable shape is:
 ```text
 clear hero
   -> a small number of benefit/proof sections
-  -> content-specific material (posts, gallery, podcast, or product detail)
+  -> content-specific material (posts, podcast, or product detail)
   -> an appropriate next action
 ```
 
@@ -210,7 +210,7 @@ may tune those tokens without copying the shared component implementation.
 
 | Surface | Owner | A fork may change | Required check |
 | --- | --- | --- | --- |
-| Shared components, `lib/`, widget, CLI | Starter (or auth starter for auth/backend behavior) | Nothing directly; propose a seam | Parent tests, typecheck, sync policy |
+| Shared components, `lib/`, embed widget | Starter (or auth starter for auth/backend behavior) | Nothing directly; propose a seam | Parent tests, typecheck, sync policy |
 | `site.json`, `blog.config.mjs`, env values | Fork | Identity, theme, chrome, routes, switches, collection name | Config validation and design review |
 | Site messages and Markdown | Fork | Served locales and authored copy | i18n generation, Markdown/content build |
 | Shared/app messages and generated wiring | Starter | Nothing directly; use site or override seams | i18n tests and bundle inventory |

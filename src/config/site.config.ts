@@ -28,16 +28,8 @@ function envEnum<T extends string>(key: string, fallback: T, options: T[]): T {
   return fallback;
 }
 
-const siteFeatures = siteData.features as typeof siteData.features & {
-  gallery?: boolean;
-};
-const siteGallery = siteData as typeof siteData & {
+const siteDataExt = siteData as typeof siteData & {
   defaultLocale?: string;
-  gallery?: {
-    manifestPath?: string;
-    assetBaseUrl?: string;
-    profileImageId?: string;
-  };
   chat?: { fullscreenOnLoad?: boolean };
 };
 const siteChrome = siteData.chrome as typeof siteData.chrome & {
@@ -67,7 +59,7 @@ export const siteConfig = {
 
   defaultLocale: env(
     "PUBLIC_DEFAULT_LOCALE",
-    siteGallery.defaultLocale ?? siteData.locales[0] ?? "en",
+    siteDataExt.defaultLocale ?? siteData.locales[0] ?? "en",
   ),
   locales: siteData.locales as readonly string[],
 
@@ -91,10 +83,6 @@ export const siteConfig = {
   features: {
     blog: envBool("PUBLIC_BLOG_ENABLED", siteData.features.blog),
     chatFab: envBool("PUBLIC_CHAT_FAB_ENABLED", siteData.features.chatFab),
-    gallery: envBool(
-      "PUBLIC_GALLERY_ENABLED",
-      siteFeatures.gallery ?? false,
-    ),
     languageSelector: envBool(
       "PUBLIC_LANGUAGE_SELECTOR_ENABLED",
       siteData.features.languageSelector,
@@ -106,10 +94,6 @@ export const siteConfig = {
     attribution: envBool(
       "PUBLIC_ATTRIBUTION_ENABLED",
       siteData.features.attribution,
-    ),
-    testimonials: envBool(
-      "PUBLIC_TESTIMONIALS_ENABLED",
-      siteData.features.testimonials,
     ),
     poweredByBadge: envBool(
       "PUBLIC_POWERED_BY_BADGE",
@@ -150,7 +134,6 @@ export const siteConfig = {
   },
 
   nav: siteData.nav,
-  stats: siteData.stats,
   legal: {
     entityType: (siteLegal.entityType ?? "company") as LegalEntityType,
     entity: siteLegal.entity,
@@ -163,18 +146,6 @@ export const siteConfig = {
   },
 
   publicRoutes: siteData.publicRoutes,
-
-  gallery: {
-    manifestPath: env(
-      "GALLERY_MANIFEST_PATH",
-      siteGallery.gallery?.manifestPath ?? "content/gallery.json",
-    ),
-    assetBaseUrl: env(
-      "PUBLIC_GALLERY_ASSET_BASE_URL",
-      siteGallery.gallery?.assetBaseUrl ?? "",
-    ),
-    profileImageId: siteGallery.gallery?.profileImageId || undefined,
-  },
 
   blog: {
     basePath: env("BLOG_BASE_PATH", blogConfig.basePath),

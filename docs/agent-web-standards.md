@@ -75,4 +75,3 @@ Never place a server-side machine key in a public page.
 | JSON-LD                 | fork pages / structured-data helpers where present                    |
 | Standalone widget       | `cr-sdk` → `@contextrocket/embed-chat` → public/embed/widget.js       |
 | Browser SDK             | `cr-sdk` → `@contextrocket/sdk`                                       |
-| Customer CLI            | cli/                                                                  |

@@ -22,14 +22,14 @@ Parent-owned:
 - `src/i18n/keys.ts`, `translator.ts`, `messages/shared/`, `messages/app/`
 - Hygiene endpoints (`sitemap.xml`, `robots.txt`, `llms.txt`, `feed.xml`,
   security.txt)
-- `cli/`
 
 Browser SDK and embeds: public sibling **`cr-sdk`** (pnpm `file:` dependency).
 
 ## Default surface
 
-Keep forks close to: **home + blog + legal/hygiene**. Do not require FAQ,
-About, or Features pages. Add brand pages only when the product needs them.
+Keep forks close to: **home + blog + legal/hygiene (+ attribution)**. Do not
+require FAQ, About, gallery, or Features pages. Add brand pages only when the
+product needs them.
 
 ## Locales
 

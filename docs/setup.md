@@ -30,12 +30,6 @@ make serve-static # http://localhost:3100
 
 Upload `dist/` to Cloudflare Pages, CloudFront, S3, or any static host.
 
-Optional ContextRocket content publish via the checked-in CLI:
-
-```bash
-pnpm --dir cli dev -- sites publish --org your-handle --dir dist
-```
-
 ## Embed widget
 
 ```bash

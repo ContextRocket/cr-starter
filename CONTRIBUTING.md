@@ -51,7 +51,7 @@ pnpm run verify
 
 Generic improvements are welcome as PRs:
 
-- Bug fixes in chrome, legal pages, blog, gallery, or embed widget wiring.
+- Bug fixes in chrome, legal pages, blog, attribution, or embed widget wiring.
 - SEO/AEO improvements to the public site surface.
 - Documentation fixes for the Astro flat layout.
 

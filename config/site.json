@@ -62,6 +62,15 @@
       "includeInLlms": true,
       "priority": 0.3,
       "changeFrequency": "monthly"
+    },
+    {
+      "key": "attribution",
+      "path": "attribution",
+      "feature": "attribution",
+      "indexable": true,
+      "includeInLlms": false,
+      "priority": 0.2,
+      "changeFrequency": "yearly"
     }
   ],
   "assets": {
@@ -104,25 +113,11 @@
         "href": "/cookies"
       },
       {
-        "labelKey": "gallery.title",
-        "href": "/gallery"
+        "labelKey": "attribution.title",
+        "href": "/attribution"
       }
     ]
   },
-  "stats": [
-    {
-      "value": "01",
-      "labelKey": "home.stats.output"
-    },
-    {
-      "value": "02",
-      "labelKey": "home.stats.integrations"
-    },
-    {
-      "value": "03",
-      "labelKey": "home.stats.uptime"
-    }
-  ],
   "chrome": {
     "header": "marketing",
     "footer": "full",
@@ -131,28 +126,19 @@
     "showThemeToggle": true,
     "defaultTheme": "system",
     "cookieBannerStyle": "bar",
-    "exemptPrefixes": [
-      "/terminal-demo"
-    ]
+    "exemptPrefixes": []
   },
   "features": {
     "blog": true,
     "chatFab": true,
-    "gallery": false,
     "languageSelector": true,
     "impressum": true,
-    "attribution": false,
-    "testimonials": false,
+    "attribution": true,
     "poweredByBadge": true,
     "cookieConsent": "auto"
   },
   "chat": {
     "fullscreenOnLoad": false
-  },
-  "gallery": {
-    "manifestPath": "content/gallery.json",
-    "assetBaseUrl": "",
-    "profileImageId": ""
   },
   "theme": {
     "radius": "0.5rem",

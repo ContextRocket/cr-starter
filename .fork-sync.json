@@ -5,15 +5,13 @@
     "cr-starter (Astro) is the ROOT of the public static brand-fork family.",
     "It has no parent. Auth-line repos (cr-auth-starter, Luna) are NOT sync",
     "children of this tree -- they remain on a separate Next + API line.",
-    "Brand forks (kleos, markmacmahon, gba, \u2026) customize config/content/home."
+    "Brand forks (kleos, markmacmahon, gba, …) customize config/content/home."
   ],
   "policy": {
     "sync": [
       "src/layouts/**",
       "src/components/chrome/**",
-      "src/components/gallery/**",
       "src/components/pages/LegalPage.astro",
-      "src/components/pages/GalleryPage.astro",
       "src/components/pages/AttributionPage.astro",
       "src/components/pages/BlogIndex.astro",
       "src/components/pages/BlogPost.astro",
@@ -34,18 +32,17 @@
       "src/pages/feed.xml.ts",
       "src/pages/manifest.webmanifest.ts",
       "src/pages/.well-known/**",
-      "src/pages/gallery/**",
-      "src/pages/[locale]/gallery/**",
       "src/pages/attribution/**",
       "src/pages/[locale]/attribution/**",
       "docs/fork-evolution.md",
       "docs/publish-contract.md",
       "scripts/alias-blog-path.mjs",
+      "scripts/blog-path-alias.mjs",
       "scripts/flatten-single-locale.mjs",
       "scripts/validate-theme.mjs",
       "scripts/check-i18n-parity.cjs",
+      "scripts/check-behavior-ids.mjs",
       "scripts/smoke-routes.mjs",
-      "cli/**",
       "astro.config.mjs",
       "blog.config.mjs"
     ],

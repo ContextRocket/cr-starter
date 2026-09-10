@@ -53,12 +53,6 @@ const footerLinks = ((siteConfig.nav.footerLinks ?? []) as NavLinkConfig[])
     (link) =>
       !link.href.includes("/faq") &&
       !link.labelKey?.includes("faq") &&
-      // Convention: Gallery is the last footer link when enabled; omit when off.
-      (siteConfig.features.gallery ||
-        !(
-          link.href.includes("/gallery") ||
-          link.labelKey?.startsWith("gallery.")
-        )) &&
       (siteConfig.features.attribution ||
         !(
           link.href.includes("/attribution") ||

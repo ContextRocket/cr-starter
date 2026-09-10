@@ -28,20 +28,21 @@ local demos. Typed browser access uses `@contextrocket/sdk` (A2A +
 - Home (landing) -- fork-owned composition under `src/pages/[locale]/index.astro`
 - Blog (path from `blog.config.mjs`)
 - Website hygiene: privacy, terms, cookies, impressum (feature-flagged),
-  cookie banner, `sitemap.xml`, `robots.txt`, `llms.txt`, `feed.xml`,
-  `.well-known/security.txt`
+  attribution (for stock image credits), cookie banner, `sitemap.xml`,
+  `robots.txt`, `llms.txt`, `feed.xml`, `.well-known/security.txt`
 - Multi-locale support (same convention as before). A fork may set
   `locales: ["en"]` only.
 
 **Out by default (do not reintroduce as required pages)**
 
-- FAQ, About, Features-as-a-page, gallery/portfolio demos, auth/dashboard
+- FAQ, About, Features-as-a-page, gallery/portfolio demos, auth/dashboard,
+  testimonials
 
 Forks add brand-specific pages under `src/pages/` or `src/components/custom/`
 when needed. Do not force FAQ/About onto every port.
 
 Brand crawl / Brand Lab tooling is **internal** and lives in the sibling
-`cr-labs` repo (`docs/brand-lab.md`), not in this public starter.
+`cr-labs` repo (`cr-labs/docs/brand-lab.md`), not in this public starter.
 
 ## Hard rules
 
