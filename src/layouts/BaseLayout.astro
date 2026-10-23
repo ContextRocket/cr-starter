@@ -90,7 +90,7 @@ const accent =
   (siteConfig.theme.light?.["--primary"] as string | undefined) ||
   "#c2185b";
 const widgetSnippet = showChat
-  ? `<script src="/embed/widget.js" defer data-contextrocket-handle="${siteConfig.chat.handle}" data-contextrocket-api-key="${siteConfig.chat.apiKey}" data-contextrocket-agent-url="${siteConfig.chat.agentUrl}" data-contextrocket-mode="${siteConfig.chat.mode}" data-contextrocket-accent="${accent}" data-contextrocket-theme="system"></script>`
+  ? `<script src="/embed/widget.js" defer data-contextrocket-handle="${siteConfig.chat.handle}" data-contextrocket-api-key="${siteConfig.chat.apiKey}" data-contextrocket-api-base="${siteConfig.chat.agentUrl}" data-contextrocket-mode="${siteConfig.chat.mode}" data-contextrocket-accent="${accent}" data-contextrocket-theme="system"></script>`
   : "";
 
 const homeJsonLd = includeSiteJsonLd ? buildHomeJsonLd() : [];
