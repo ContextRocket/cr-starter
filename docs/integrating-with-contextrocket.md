@@ -9,7 +9,7 @@ The starter has two chat modes:
 
 ```dotenv
 PUBLIC_CR_CHAT_MODE=live
-PUBLIC_CR_AGENT_URL=https://app-api.contextrocket.com
+PUBLIC_CR_AGENT_URL=https://api.contextrocket.com
 PUBLIC_CONTEXTROCKET_HANDLE=contextrocket
 PUBLIC_CONTEXTROCKET_API_KEY=your-publishable-api-key
 ```
@@ -55,7 +55,7 @@ Live:
 <script
   src="/embed/widget.js"
   data-contextrocket-mode="live"
-  data-contextrocket-api-base="https://app-api.contextrocket.com"
+  data-contextrocket-api-base="https://api.contextrocket.com"
   data-contextrocket-handle="your-organization-handle"
   data-contextrocket-api-key="your-publishable-api-key"
   defer
@@ -70,7 +70,7 @@ them; a production dashboard snippet is the authoritative supported example:
 <script
   src="https://cdn.contextrocket.com/widget/v<verified-version>/widget.js"
   data-contextrocket-mode="live"
-  data-contextrocket-api-base="https://app-api.contextrocket.com"
+  data-contextrocket-api-base="https://api.contextrocket.com"
   data-contextrocket-handle="your-organization-handle"
   data-contextrocket-api-key="your-publishable-api-key"
   data-contextrocket-theme="system"

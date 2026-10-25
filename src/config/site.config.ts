@@ -162,7 +162,7 @@ export const siteConfig = {
       "demo",
       "live",
     ]),
-    agentUrl: env("PUBLIC_CR_AGENT_URL", "https://app-api.contextrocket.com"),
+    agentUrl: env("PUBLIC_CR_AGENT_URL", "https://api.contextrocket.com"),
     handle: env("PUBLIC_CONTEXTROCKET_HANDLE", "contextrocket"),
     apiKey: env("PUBLIC_CONTEXTROCKET_API_KEY", ""),
   },

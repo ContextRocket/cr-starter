@@ -14,7 +14,7 @@ Demo chat mode is the default. For live chat, set in `.env`:
 
 ```bash
 PUBLIC_CR_CHAT_MODE=live
-PUBLIC_CR_AGENT_URL=https://app-api.contextrocket.com
+PUBLIC_CR_AGENT_URL=https://api.contextrocket.com
 PUBLIC_CONTEXTROCKET_HANDLE=your-handle
 PUBLIC_CONTEXTROCKET_API_KEY=your-publishable-api-key
 ```

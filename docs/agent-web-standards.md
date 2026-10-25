@@ -48,7 +48,7 @@ demos (`pnpm run build:widget`). Its canonical live snippet is:
     <script
       src="https://your-site.example/embed/widget.js"
       data-contextrocket-mode="live"
-      data-contextrocket-api-base="https://app-api.contextrocket.com"
+      data-contextrocket-api-base="https://api.contextrocket.com"
       data-contextrocket-handle="your-organization-handle"
       data-contextrocket-api-key="publishable-api-key"
       defer
