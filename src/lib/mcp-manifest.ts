@@ -14,7 +14,13 @@ export function buildMcpManifest(): Record<string, unknown> {
   const origin = siteConfig.siteUrl.replace(/\/$/, "");
   const crAgentUrl =
     env("PUBLIC_CR_AGENT_URL") || siteConfig.chat.agentUrl || null;
-  const mcpUrl = crAgentUrl ? `${crAgentUrl.replace(/\/$/, "")}/mcp` : null;
+  const handle =
+    env("PUBLIC_CONTEXTROCKET_HANDLE") || siteConfig.chat.handle || "";
+  // The Organization URL: signing in on it connects this organization.
+  const mcpPath = handle ? `/mcp/${encodeURIComponent(handle)}` : "/mcp";
+  const mcpUrl = crAgentUrl
+    ? `${crAgentUrl.replace(/\/$/, "")}${mcpPath}`
+    : null;
 
   return {
     schema: "mcp-manifest/0.1",
@@ -38,7 +44,7 @@ export function buildMcpManifest(): Record<string, unknown> {
     siteOrigin: origin,
     note:
       "This is a ContextRocket convenience manifest, not a standardized MCP " +
-      "well-known document. Use the hosted /mcp endpoint and its protected " +
+      "well-known document. Use the hosted /mcp/{handle} endpoint and its protected " +
       "resource metadata for protocol discovery. " +
       "Ref: https://github.com/modelcontextprotocol/specification/discussions/129",
   };
