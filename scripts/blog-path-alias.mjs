@@ -28,6 +28,10 @@ export function blogPathAlias() {
           entrypoint: "./src/pages/_blog/[slug].astro",
         });
         injectRoute({
+          pattern: `/${base}/llms.txt`,
+          entrypoint: "./src/pages/_blog/llms.txt.ts",
+        });
+        injectRoute({
           pattern: `/[locale]/${base}`,
           entrypoint: "./src/pages/[locale]/_blog/index.astro",
         });

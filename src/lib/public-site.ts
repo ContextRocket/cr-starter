@@ -156,6 +156,12 @@ export function buildLlmsTxt(): string {
       (route) =>
         `- [${route.key}](${absoluteUrl(routeHref(locale, route))}): Public ${route.key} page.`,
     );
+  const articles = siteConfig.features.blog
+    ? listPosts(locale).map(
+        (post) =>
+          `- [${post.title}](${absoluteUrl(blogPostHref(locale, post.slug))}): ${post.excerpt || post.title}`,
+      )
+    : [];
 
   const origin = siteConfig.siteUrl.replace(/\/$/, "");
   return [
@@ -169,10 +175,14 @@ export function buildLlmsTxt(): string {
     "## Core public pages",
     `- [home](${homeUrl}): ${siteConfig.tagline}`,
     ...pageLines,
+    ...(articles.length ? ["", "## Published articles", ...articles] : []),
     "",
     "## Machine-readable resources",
     `- [Sitemap](${absoluteUrl("/sitemap.xml")}): Full public page index.`,
     `- [Robots policy](${absoluteUrl("/robots.txt")}): Crawler access rules.`,
+    ...(siteConfig.features.blog
+      ? [`- [Blog discovery file](${absoluteUrl(`${siteConfig.blog.basePath}/llms.txt`)}): Article index and editorial context.`]
+      : []),
     `- [Agent card](${origin}/.well-known/agent-card.json): A2A discovery endpoint.`,
     `- [MCP manifest](${origin}/.well-known/mcp.json): ContextRocket MCP convenience manifest.`,
     "",

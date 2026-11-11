@@ -129,6 +129,10 @@ if (features.blog) {
   const label = `${blogSegments.join("/")}/index.html`;
   const blogIndexFile = pageExists(...blogSegments);
   requireFile(label, blogIndexFile);
+  requireFile(
+    `${blogBasePath}/llms.txt (blog content discovery)`,
+    staticPathExists(`${blogBasePath}/llms.txt`),
+  );
 
   if (blogIndexFile) {
     const localePrefix = multiLocale ? `/${defaultLocale}` : "";

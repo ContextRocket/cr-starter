@@ -10,6 +10,7 @@ surfaces.
 - robots.txt defines ordinary and AI-crawler policies.
 - sitemap.xml lists the generated public routes.
 - llms.txt provides a concise AI-readable site map.
+- The configured blog path also serves an editorial llms.txt with its published articles.
 - /.well-known/agent-card.json exposes the current A2A agent card contract.
 - /.well-known/mcp.json is a convenience manifest describing the hosted
   organization-scoped ContextRocket MCP surface when an API base and

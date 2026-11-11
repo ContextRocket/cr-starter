@@ -26,6 +26,7 @@
       "src/pages/sitemap.xml.ts",
       "src/pages/robots.txt.ts",
       "src/pages/llms.txt.ts",
+      "src/pages/_blog/llms.txt.ts",
       "src/pages/manifest.webmanifest.ts",
       "src/pages/.well-known/**",
       "docs/fork-evolution.md",
