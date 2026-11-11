@@ -120,7 +120,7 @@ local observations rather than a performance guarantee:
 
 | Site | `pnpm build` (approx) | Notes |
 | --- | --- | --- |
-| `cr-starter` | 9.8–11.1s warm; 59.2s first run | Multi-locale (`en`/`es`/`de`); first run included initial Vite compilation |
+| `cr-starter` | 3.03s warm rerun (2026-11-11); earlier sample 9.8–11.1s warm, 59.2s first run | Multi-locale (`en`/`es`/`de`); warm rerun built 22 pages in 2.15s Astro time; first run included initial Vite compilation |
 | `cr-kleos` | 10.6–18.0s | 52 static pages, including 30 blog posts and custom pages |
 | `cr-markmacmahon` | ~9.5s after header change | 22 static pages; 15 posts and `/posts` alias. The minimal header is emitted as static HTML at build time; homepage and `/posts/` emit no client islands. |
 
