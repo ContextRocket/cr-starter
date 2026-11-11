@@ -78,12 +78,12 @@ selected with `PUBLIC_CONTEXTROCKET_CONTACT_FORM_SCRIPT_URL` or
 local files, so offline demos continue to work. Keep external URLs pinned to a
 package version. Do not use a mutable `latest` URL.
 
-The proposed ContextRocket chat CDN route is
-`https://contextrocket.cdn.contextrocket.com/embeds/chat/v<package-version>/widget.js`.
-Neither artifact is published there yet. The contact-form bridge follows
-`https://contextrocket.cdn.contextrocket.com/embeds/contact-form/v<package-version>/contact-form.browser.js`.
-The operator can publish
-the built IIFE with the existing `contextrocket sites publish` command under
-the `contextrocket` organization and a version-specific prefix. Customers only
-load the public URL; they do not need an operator token. This is separate from
-the shared brand kit's `/brand/` assets.
+The published chat widget URL is
+`https://contextrocket.cdn.contextrocket.com/embeds/chat/v0.1.0/widget.js`.
+The contact-form browser bridge is at
+`https://contextrocket.cdn.contextrocket.com/embeds/contact-form/v0.1.0/contact-form.browser.js`.
+Both were published and verified on 2026-11-11. New releases use a unique
+version-specific prefix through the existing `contextrocket sites publish`
+operator command. Customers only load the public URL; they do not need an
+operator token. These browser bundles are separate from the shared brand kit's
+`/brand/` assets.
