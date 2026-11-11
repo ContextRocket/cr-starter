@@ -92,6 +92,14 @@ requireFile("manifest.webmanifest", fileExists("manifest.webmanifest"));
 
 if (features.blog) {
   requireFile("feed.xml", fileExists("feed.xml"));
+  requireFile(
+    `${blogFeedPath} (reverse-proxy feed alias)`,
+    staticPathExists(`/${blogFeedPath}`),
+  );
+  requireFile(
+    `${blogBasePath}/sitemap.xml (reverse-proxy sitemap alias)`,
+    staticPathExists(`${blogBasePath}/sitemap.xml`),
+  );
 }
 
 // Home is optional. Blog-only publications can omit it when the product owns
@@ -112,7 +120,42 @@ if (features.blog) {
     ...baseSegments,
   ];
   const label = `${blogSegments.join("/")}/index.html`;
-  requireFile(label, pageExists(...blogSegments));
+  const blogIndexFile = pageExists(...blogSegments);
+  requireFile(label, blogIndexFile);
+
+  if (blogIndexFile) {
+    const localePrefix = multiLocale ? `/${defaultLocale}` : "";
+    const routePath = `${localePrefix}${blogBasePath}`;
+    const canonicalPath = site.trailingSlash === "always"
+      ? `${routePath.replace(/\/+$/, "")}/`
+      : routePath.replace(/\/+$/, "");
+    const siteUrl = String(site.company?.siteUrl ?? "").replace(/\/$/, "");
+    const expectedCanonical = `${siteUrl}${canonicalPath}`;
+    const html = fs.readFileSync(blogIndexFile, "utf8");
+    const canonicalTag = html.match(/<link\b[^>]*\brel=["']canonical["'][^>]*>/i)?.[0];
+    const canonicalUrl = canonicalTag?.match(/\bhref=["']([^"']+)["']/i)?.[1];
+    if (canonicalUrl !== expectedCanonical) {
+      missing.push(
+        `blog index canonical URL (${canonicalUrl ?? "missing"}; expected ${expectedCanonical})`,
+      );
+    }
+
+    const sitemap = fs.readFileSync(path.join(dist, "sitemap.xml"), "utf8");
+    if (!sitemap.includes(`<loc>${expectedCanonical}</loc>`)) {
+      missing.push(`blog index canonical URL is absent from sitemap (${expectedCanonical})`);
+    }
+
+    const feed = fileExists("feed.xml");
+    if (feed) {
+      const feedXml = fs.readFileSync(feed, "utf8");
+      const channelLink = feedXml.match(/<channel>[\s\S]*?<link>(.*?)<\/link>/i)?.[1];
+      if (channelLink !== expectedCanonical) {
+        missing.push(
+          `blog feed channel URL (${channelLink ?? "missing"}; expected ${expectedCanonical})`,
+        );
+      }
+    }
+  }
 
   const contentDir = path.resolve(root, blogConfig.contentDir ?? "content/posts");
   if (fs.existsSync(contentDir)) {

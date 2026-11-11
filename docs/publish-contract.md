@@ -76,7 +76,10 @@ authored Markdown post exists in `dist/`. It also checks that same-origin links
 and assets resolve to generated files, and that local redirect targets resolve
 to a generated file or another configured redirect. Keep this check in the
 publish gate so broken links, missing source content, and stale redirect
-targets are caught before deployment.
+targets are caught before deployment. For a blog, it also checks that the
+configured public feed and sitemap paths resolve through the reverse-proxy
+aliases, and that the blog index canonical URL agrees with the configured site
+origin, blog path, feed channel link, and sitemap entry.
 
 Some source sites have a route whose slash convention differs from the rest of
 the site. Keep `path` as the route's logical path and set `canonicalPath` on its
