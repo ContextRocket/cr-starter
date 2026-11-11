@@ -11,6 +11,8 @@ export type BlogPostMeta = {
   date: string;
   publishedAt?: string;
   author?: string;
+  authorAffiliation?: string;
+  authorDetail?: string;
   image?: string;
   excerpt?: string;
   series?: number;
@@ -71,6 +73,18 @@ function optionalBoolean(
     );
   }
   return value;
+}
+
+function optionalText(
+  value: unknown,
+  field: string,
+  filePath: string,
+): string | undefined {
+  if (value === undefined || value === null) return undefined;
+  if (typeof value !== "string") {
+    throw new Error(`Blog post ${filePath} has invalid ${field}; use a string`);
+  }
+  return value.trim() || undefined;
 }
 
 function postDate(value: unknown, filePath: string): string {
@@ -145,6 +159,12 @@ function readPostFile(
     date,
     publishedAt,
     author: data.author ? String(data.author) : undefined,
+    authorAffiliation: optionalText(
+      data.authorAffiliation,
+      "authorAffiliation",
+      filePath,
+    ),
+    authorDetail: optionalText(data.authorDetail, "authorDetail", filePath),
     image: data.image ? String(data.image) : undefined,
     excerpt: data.excerpt ? String(data.excerpt) : undefined,
     series,

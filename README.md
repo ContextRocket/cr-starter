@@ -36,6 +36,12 @@ Use `date: "YYYY-MM-DD"` for the displayed publication date. Add an optional
 ISO `publishedAt` timestamp on that same date when several posts need a precise
 order; otherwise same-day posts use a stable slug order.
 
+Blog frontmatter also supports optional `author`, `authorAffiliation`, and
+`authorDetail` strings. Use the latter two for a company or other affiliation
+and a short role/byline, then render them in a fork's blog composition where
+they belong. The shared content loader validates and exposes them without
+forcing a particular author-card layout on every site.
+
 Evergreen topics are optional. Enable `features.topics` in `config/site.json`;
 published topic pages join the sitemap and `llms.txt`, but stay out of the dated
 post listing and RSS feed.
