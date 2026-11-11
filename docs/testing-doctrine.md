@@ -67,6 +67,6 @@ Network is forbidden in unit tests. Do not mock `fetch` per test; inject a port.
 
 ## 7. Verify gate
 
-`pnpm run verify` runs theme + i18n + typecheck + unit behavior tests + build +
-smoke routes. Keep the unit suite fast. No coverage-percentage gate. No
-snapshot files.
+`pnpm run verify` runs behavior IDs + theme + i18n + lint + typecheck + unit
+behavior tests + build + smoke routes. Keep the unit suite fast. No
+coverage-percentage gate. No snapshot files.

@@ -1,7 +1,7 @@
 /**
  * CHROME-001 — locale-aware public paths.
  */
-import { describe, expect, it } from "vitest";
+import { expect, it } from "vitest";
 import {
   blogIndexHref,
   blogPostHref,

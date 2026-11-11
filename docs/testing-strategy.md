@@ -27,6 +27,7 @@ LLM/A2A calls. Behavior-first rules live in
 
 ```bash
 pnpm run check:behavior-ids
+pnpm run lint
 pnpm test
 pnpm run verify   # full gate including build + smoke
 ```

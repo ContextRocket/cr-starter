@@ -1,7 +1,7 @@
 /**
  * BLOG-001 … BLOG-004 — Markdown post loading behaviors.
  */
-import { describe, expect, it } from "vitest";
+import { expect, it } from "vitest";
 import { getPost, listPosts } from "@/lib/blog";
 import { given, scenario, thenStep, when } from "../../support/bdd";
 

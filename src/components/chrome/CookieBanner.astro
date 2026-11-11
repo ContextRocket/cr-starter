@@ -159,7 +159,7 @@ const categories = ["functional", "analytics", "marketing"] as const;
                 marketing: accepted,
               };
             }
-          } catch (error) {
+          } catch {
             // Keep the banner visible when browser storage is unavailable.
           }
           return null;
@@ -203,7 +203,7 @@ const categories = ["functional", "analytics", "marketing"] as const;
                 at: new Date().toISOString(),
               }),
             );
-          } catch (error) {
+          } catch {
             // Consent still applies for this page view if storage is blocked.
           }
           emitConsent(preferences);

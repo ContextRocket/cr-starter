@@ -88,8 +88,8 @@ pnpm install
 pnpm dev   # http://localhost:3100
 ```
 
-In `cr-starter`, `pnpm run verify` checks behavior IDs, theme, i18n, types,
-unit behavior tests, the static build, and smoke routes. Brand forks have their
+In `cr-starter`, `pnpm run verify` checks behavior IDs, theme, i18n, lint,
+types, unit behavior tests, the static build, and smoke routes. Brand forks have their
 own `verify` scripts; check their `package.json` before relying on the same
 gates. For routine copy, config, or page regeneration, run `pnpm run build` and
 add only a focused check when the changed behavior needs it. Use `verify` for

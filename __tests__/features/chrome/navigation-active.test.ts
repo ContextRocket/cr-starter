@@ -1,7 +1,7 @@
 /**
  * CHROME-003 — current navigation follows route hierarchy.
  */
-import { describe, expect, it } from "vitest";
+import { expect, it } from "vitest";
 import { isCurrentNavigationLink } from "@/lib/navigation";
 import { scenario, thenStep } from "../../support/bdd";
 
