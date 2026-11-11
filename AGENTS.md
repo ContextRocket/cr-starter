@@ -146,6 +146,7 @@ loads `public/embed/contact-form.js`. The SDK build command also refreshes
 chat artifact can be selected with `PUBLIC_CONTEXTROCKET_CHAT_WIDGET_URL`; the
 contact-form bridge can use `PUBLIC_CONTEXTROCKET_CONTACT_FORM_SCRIPT_URL` or
 `contactForm.scriptSrc` in `config/site.json`. Both default to local files for
-offline demos. The versioned ContextRocket CDN URLs in
-`docs/embed-direction.md` are release conventions and must not be used before
-the corresponding artifacts are published.
+offline demos. The chat and contact-form bridge `v0.1.0` URLs in
+`docs/embed-direction.md` are published. Pin those URLs when a site should
+load the shared CDN artifact; keep the local default for offline demos. New
+releases use a new versioned prefix and the operator workflow in `cr-sdk`.

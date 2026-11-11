@@ -70,8 +70,10 @@ This optional contributor command rebuilds the widget from a sibling
 standalone builds and does not need to be rebuilt by a fork.
 Set `PUBLIC_CONTEXTROCKET_CHAT_WIDGET_URL` to a published, version-pinned CDN
 URL to load a shared widget instead; by default the site uses the checked-in
-local artifact. The proposed CDN route is documented in
-[`docs/embed-direction.md`](docs/embed-direction.md) and is not published yet.
+local artifact. The ContextRocket CDN currently serves chat `v0.1.0` and
+contact-form bridge `v0.1.0`; see
+[`docs/embed-direction.md`](docs/embed-direction.md) for their URLs and the
+operator release workflow. Keep the local artifacts for offline demos.
 
 ```html
 <script
