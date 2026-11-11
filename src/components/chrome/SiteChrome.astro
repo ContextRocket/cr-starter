@@ -133,7 +133,7 @@ const headerProps = {
     (useMinimal ? (
       <MinimalHeader {...headerProps} />
     ) : (
-      <Navbar client:load {...headerProps} />
+      <Navbar client:media="(max-width: 1023px)" {...headerProps} />
     ))
 }
 

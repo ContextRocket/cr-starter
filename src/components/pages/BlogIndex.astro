@@ -2,9 +2,10 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import type { SupportedLocale } from "@/i18n/locales";
 import { listPosts, blogPublicBasePath } from "@/lib/blog";
-import { absoluteUrl, blogPostHref, localizedHref } from "@/lib/paths";
+import { absoluteUrl, localizedHref } from "@/lib/paths";
 import { createT } from "@/i18n/keys";
 import { buildBreadcrumbListJsonLd } from "@/lib/structured-data";
+import BlogPostCard from "@/components/blog/BlogPostCard.astro";
 
 interface Props {
   locale: SupportedLocale;
@@ -35,14 +36,7 @@ const jsonLdExtra = [
       <ul class="mx-auto mt-12 grid max-w-6xl items-stretch gap-6 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
         {posts.map((post) => (
           <li class="min-w-0">
-            <a href={blogPostHref(locale, post.slug)} class="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-              {post.image ? <img src={post.image} alt="" loading="lazy" class="aspect-[16/9] w-full object-cover" /> : <div aria-hidden="true" class="aspect-[16/9] w-full bg-muted" />}
-              <div class="flex flex-1 flex-col p-5 sm:p-6">
-                <h2 class="line-clamp-2 min-h-14 text-xl font-semibold leading-7 tracking-tight text-card-foreground group-hover:underline">{post.title}</h2>
-                <time class="mt-2 text-sm text-text-tertiary" datetime={post.date}>{post.date}</time>
-                <p class="mt-4 line-clamp-3 min-h-[4.5rem] text-sm leading-6 text-text-secondary">{post.excerpt ?? ""}</p>
-              </div>
-            </a>
+            <BlogPostCard post={post} locale={locale} />
           </li>
         ))}
       </ul>
