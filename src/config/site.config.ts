@@ -73,6 +73,16 @@ const siteChrome = siteData.chrome as typeof siteData.chrome & {
   exemptPrefixes?: readonly string[];
   poweredByTone?: "ink" | "white";
 };
+type PublicRouteConfig = {
+  key: string;
+  path: string;
+  feature?: string;
+  indexable: boolean;
+  includeInLlms?: boolean;
+  canonicalPath?: string;
+  priority?: number;
+  changeFrequency?: string;
+};
 const contextRocketHandle = env(
   "PUBLIC_CONTEXTROCKET_HANDLE",
   siteDataExt.contextrocket?.handle ?? "",
@@ -183,7 +193,7 @@ export const siteConfig = {
   },
 
   nav: siteData.nav,
-  publicRoutes: siteData.publicRoutes,
+  publicRoutes: siteData.publicRoutes as PublicRouteConfig[],
 
   gallery: {
     manifestPath: env(
