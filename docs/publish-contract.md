@@ -114,15 +114,17 @@ Wall clock to measure when porting a brand (Kleos / Mark MacMahon class):
 4. Deploy `dist/`
 
 Measured on 2026-11-11 with dependencies installed, using
-`/usr/bin/time -p pnpm run build`. These are build-only wall times, excluding
-dependency installation and typechecking. Repeat runs varied, so use these as
-local observations rather than a performance guarantee:
+`/usr/bin/time -p pnpm run build` in the existing local checkouts. These are
+build-only wall times, excluding dependency installation and typechecking. The
+current samples ran sequentially with warm local caches; older, slower samples
+are retained in the notes to show observed variance. Treat these as local
+observations rather than a performance guarantee:
 
 | Site | `pnpm build` (approx) | Notes |
 | --- | --- | --- |
-| `cr-starter` | 3.03s warm rerun (2026-11-11); earlier sample 9.8–11.1s warm, 59.2s first run | Multi-locale (`en`/`es`/`de`); warm rerun built 22 pages in 2.15s Astro time; first run included initial Vite compilation |
-| `cr-kleos` | 10.6–18.0s | 52 static pages, including 30 blog posts and custom pages |
-| `cr-markmacmahon` | ~9.5s after header change | 22 static pages; 15 posts and `/posts` alias. The minimal header is emitted as static HTML at build time; homepage and `/posts/` emit no client islands. |
+| `cr-starter` | 3.03s | 22 static pages; multi-locale (`en`/`es`/`de`); Astro build: 2.15s. Earlier samples were 9.8–11.1s warm and 59.2s on the first run. |
+| `cr-kleos` | 3.62s | 52 static pages, including 30 blog posts and custom pages; 3 static redirect rules. Earlier samples were 10.6–18.0s. |
+| `cr-markmacmahon` | 3.91s | 22 static pages; 15 posts and `/posts` alias; Astro build: 2.76s. The minimal header is emitted as static HTML at build time; homepage and `/posts/` emit no client islands. An earlier sample was ~9.5s. |
 
 A build cannot run before dependencies are installed. For `cr-kleos`, a fresh
 project copy with an empty `node_modules` directory installed 566 packages in
