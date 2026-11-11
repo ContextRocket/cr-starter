@@ -12,8 +12,8 @@ customers can install, build, and use the starter without a package release.
 | `packages/sdk` | `@contextrocket/sdk` | A2A client + `createCRClient` |
 | `packages/embed-chat` | `@contextrocket/embed-chat` | Chat widget IIFE |
 
-The SDK also builds `dist/contact-form.browser.js`, a small browser bridge exposing
-the public lead API and attribution helpers to static forms. Its
+The SDK also builds `dist/contact-form.browser.js`, a small browser bridge
+exposing the public contact-form API and attribution helpers to static forms. Its
 `createContactFormController()` helper owns retry idempotency: unchanged
 retries reuse the same key, edits reset the attempt, and concurrent submissions
 of the same payload share one request. Forms keep their own fields and UI. The
