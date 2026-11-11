@@ -9,6 +9,7 @@ export type BlogPostMeta = {
   slug: string;
   title: string;
   date: string;
+  publishedAt?: string;
   author?: string;
   image?: string;
   excerpt?: string;
@@ -94,6 +95,25 @@ function postDate(value: unknown, filePath: string): string {
   return date;
 }
 
+function postPublishedAt(
+  value: unknown,
+  date: string,
+  filePath: string,
+): string | undefined {
+  if (value === undefined) return undefined;
+  if (
+    typeof value !== "string" ||
+    !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2})$/.test(value) ||
+    value.slice(0, 10) !== date ||
+    Number.isNaN(Date.parse(value))
+  ) {
+    throw new Error(
+      `Blog post ${filePath} has invalid publishedAt; use an ISO timestamp on the same calendar date as date`,
+    );
+  }
+  return value;
+}
+
 function readPostFile(
   filePath: string,
   slug: string,
@@ -107,6 +127,7 @@ function readPostFile(
     );
   }
   const date = postDate(data.date, filePath);
+  const publishedAt = postPublishedAt(data.publishedAt, date, filePath);
   const draft = optionalBoolean(data.draft, "draft", filePath);
   const featured = optionalBoolean(data.featured, "featured", filePath);
   const series = data.series;
@@ -122,6 +143,7 @@ function readPostFile(
     slug,
     title: data.title.trim(),
     date,
+    publishedAt,
     author: data.author ? String(data.author) : undefined,
     image: data.image ? String(data.image) : undefined,
     excerpt: data.excerpt ? String(data.excerpt) : undefined,
@@ -173,7 +195,11 @@ export function listPosts(locale: SupportedLocale): BlogPostMeta[] {
       (p.locale === "shared" || p.locale === locale) &&
       (!import.meta.env.PROD || !p.draft),
   );
-  return list.sort((a, b) => (a.date < b.date ? 1 : -1));
+  return list.sort((a, b) => {
+    const publishedAt = (post: BlogPostMeta) =>
+      Date.parse(post.publishedAt ?? `${post.date}T00:00:00.000Z`);
+    return publishedAt(b) - publishedAt(a) || a.slug.localeCompare(b.slug);
+  });
 }
 
 export function getPost(

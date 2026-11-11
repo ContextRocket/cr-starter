@@ -32,6 +32,10 @@ Use `draft: true` in a post's Markdown frontmatter while preparing it. Drafts
 appear in local development for review, but production builds omit their pages
 and exclude them from the blog listing, feed, and sitemap.
 
+Use `date: "YYYY-MM-DD"` for the displayed publication date. Add an optional
+ISO `publishedAt` timestamp on that same date when several posts need a precise
+order; otherwise same-day posts use a stable slug order.
+
 Evergreen topics are optional. Enable `features.topics` in `config/site.json`;
 published topic pages join the sitemap and `llms.txt`, but stay out of the dated
 post listing and RSS feed.
