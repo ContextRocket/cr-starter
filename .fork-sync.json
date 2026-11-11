@@ -12,6 +12,7 @@
       "src/layouts/**",
       "src/components/chrome/**",
       "src/components/pages/ContactPage.astro",
+      "src/scripts/**",
       "src/lib/**",
       "src/config/site.config.ts",
       "src/i18n/keys.ts",
