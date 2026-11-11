@@ -30,7 +30,9 @@ interface Props {
 const { locale, path = "/" } = Astro.props;
 const pageTitle = Astro.props.title;
 const title = pageTitle
-  ? `${pageTitle} · ${siteConfig.companyName}`
+  ? pageTitle === siteConfig.companyName
+    ? pageTitle
+    : `${pageTitle} · ${siteConfig.companyName}`
   : `${siteConfig.homeTitle || siteConfig.companyName} · ${siteConfig.tagline}`;
 const description = Astro.props.description ?? siteConfig.description;
 const ogType = Astro.props.ogType ?? "website";
