@@ -131,7 +131,11 @@ if (features.blog) {
   requireFile(label, blogIndexFile);
   requireFile(
     `${blogBasePath}/llms.txt (blog content discovery)`,
-    staticPathExists(`${blogBasePath}/llms.txt`),
+    staticPathExists(
+      containerPrefix
+        ? `${containerPrefix}${blogBasePath}/llms.txt`
+        : `${blogBasePath}/llms.txt`,
+    ),
   );
 
   if (blogIndexFile) {
