@@ -50,6 +50,24 @@ export function buildAgentCard(): Record<string, unknown> {
       extendedAgentCard: false,
     },
     securitySchemes: {
+      oauth2: {
+        oauth2SecurityScheme: {
+          description: "OAuth 2.1 authorization code with PKCE (S256).",
+          flows: {
+            authorizationCode: {
+              authorizationUrl: `${crAgentUrl}/oauth/authorize`,
+              tokenUrl: `${crAgentUrl}/oauth/token`,
+              refreshUrl: `${crAgentUrl}/oauth/token`,
+              scopes: {
+                "context_graph:read":
+                  "Read the organization's governed Context Graph.",
+              },
+              pkceRequired: true,
+            },
+          },
+          oauth2MetadataUrl: `${crAgentUrl}/.well-known/oauth-authorization-server`,
+        },
+      },
       bearer: {
         httpAuthSecurityScheme: {
           scheme: "Bearer",
@@ -68,8 +86,11 @@ export function buildAgentCard(): Record<string, unknown> {
       },
     },
     securityRequirements: [
+      { schemes: { oauth2: { list: ["context_graph:read"] } } },
       { schemes: { bearer: { list: [] } } },
       { schemes: { apiKey: { list: [] } } },
+      // Published public facts may be read anonymously using metadata.handle.
+      { schemes: {} },
     ],
     defaultInputModes: ["text/plain"],
     defaultOutputModes: ["text/plain"],

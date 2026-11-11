@@ -27,9 +27,11 @@ published public handle can serve anonymous guest questions from that
 organization's public-safe facts, subject to the configured demo origin and
 rate limits. An optional website key is sent as `X-Api-Key`; it is a public
 credential, not a secret, and must be origin-bound, scoped, rate-limited, and
-revocable. Neither path exposes member-only sources or the private context
-graph. Never put an administrative or source-management credential in the
-site.
+revocable. Both paths resolve to the public-read capability tier: neither
+exposes member-only sources or the private context graph. The handle selects
+an organization but is not authorization. Member A2A requires a verified
+signed-in session through the typed SDK; machine credentials stay server-side.
+Never put an administrative or source-management credential in the site.
 
 For a site to answer live questions, publish the organization's guest-safe
 context in ContextRocket and configure the deployed site origin there. Demo
