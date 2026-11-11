@@ -33,6 +33,14 @@ an organization but is not authorization. Member A2A requires a verified
 signed-in session through the typed SDK; machine credentials stay server-side.
 Never put an administrative or source-management credential in the site.
 
+ContextRocket resolves capability scopes from the authenticated principal and
+interface on the server. They are not client-supplied A2A metadata or OAuth
+scopes. The organization's Brand Agent policy gates which supported skills are
+advertised and which operations can execute; the API rechecks authorization
+when handling each turn. Treat Agent Card skills as discovery information, not
+as a permission grant. These policy checks do not change the A2A request or
+stream event contract used by the widget or SDK.
+
 For a site to answer live questions, publish the organization's guest-safe
 context in ContextRocket and configure the deployed site origin there. Demo
 mode remains the default so clean static builds can work offline.
