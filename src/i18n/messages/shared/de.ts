@@ -25,6 +25,7 @@ export const sharedDe: LocaleMessages<typeof sharedEn> = {
   nav: {
     blog: "Blog",
     contact: "Kontakt",
+    skipToContent: "Zum Inhalt springen",
     features: "Funktionen",
     about: "Über uns",
     pricing: "Preise",

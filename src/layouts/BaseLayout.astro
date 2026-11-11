@@ -10,6 +10,7 @@ import {
   type JsonLdNode,
 } from "@/lib/structured-data";
 import { absoluteUrl } from "@/lib/paths";
+import { createT } from "@/i18n/keys";
 import "../styles/global.css";
 
 interface Props {
@@ -32,6 +33,7 @@ interface Props {
 }
 
 const { locale, path = "/" } = Astro.props;
+const t = createT(locale);
 const pageTitle = Astro.props.title;
 const titleSeparator = ` ${siteConfig.titleSeparator} `;
 const configuredTitleSuffix = Astro.props.titleSuffix?.trim();
@@ -281,6 +283,10 @@ const jsonLdPayload = jsonLd.length > 0 ? jsonLd : null;
   <body
     class="flex min-h-screen flex-col bg-background font-sans text-foreground antialiased"
   >
+    <a
+      href="#main-content"
+      class="sr-only fixed left-4 top-4 z-[10000] rounded-lg bg-primary px-4 py-3 font-medium text-primary-foreground shadow-lg focus:not-sr-only focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+    >{t("nav.skipToContent")}</a>
     <SiteChrome locale={locale} path={path}>
       <div class="flex-1">
         <slot />

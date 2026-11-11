@@ -22,6 +22,7 @@ export const sharedEn = {
   nav: {
     blog: "Blog",
     contact: "Contact",
+    skipToContent: "Skip to content",
     features: "Features",
     about: "About",
     pricing: "Pricing",

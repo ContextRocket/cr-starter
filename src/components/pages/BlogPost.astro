@@ -42,7 +42,7 @@ const jsonLdExtra = [
 ---
 
 <BaseLayout locale={locale} title={post.title} description={post.excerpt} path={path} ogType="article" image={post.image} includeSiteJsonLd={false} jsonLdExtra={jsonLdExtra}>
-  <main class="px-5 py-12 sm:px-8 sm:py-20">
+  <main id="main-content" tabindex="-1" class="px-5 py-12 sm:px-8 sm:py-20">
     <article class="mx-auto max-w-3xl">
       <a href={blogIndexHref(locale)} class="text-sm font-medium text-text-secondary underline-offset-4 hover:text-foreground hover:underline">← {t("blog.title")}</a>
       <header class="mt-8">
