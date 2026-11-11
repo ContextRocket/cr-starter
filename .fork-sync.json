@@ -37,8 +37,12 @@
       "scripts/validate-theme.mjs",
       "scripts/check-i18n-parity.cjs",
       "scripts/check-behavior-ids.mjs",
+      "scripts/check-embed-artifacts.mjs",
       "scripts/smoke-routes.mjs",
       "scripts/sync-embed-artifact.mjs",
+      "public/embed/widget.js",
+      "public/embed/contact-form.js",
+      "public/embed/artifact-manifest.json",
       "scripts/emit-static-redirects.mjs",
       "scripts/containerize-dist.mjs",
       "AGENTS.md",
@@ -52,6 +56,11 @@
       "src/pages/[locale]/index.astro",
       "public/**",
       "content/**"
+    ],
+    "forceSync": [
+      "public/embed/widget.js",
+      "public/embed/contact-form.js",
+      "public/embed/artifact-manifest.json"
     ]
   }
 }

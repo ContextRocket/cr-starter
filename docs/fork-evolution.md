@@ -24,6 +24,15 @@ The embed chat is already a good example: its source and behavior tests live in
 `cr-sdk/packages/embed-chat`; the static site consumes its built widget. Forks
 do not carry another copy of the chat test suite.
 
+The checked-in bundles in `public/embed/` are generated SDK artifacts, even
+though they live under the site's public directory for offline demos. The
+artifact manifest records each SDK package version, byte length, and SHA-256.
+`pnpm run build:embeds` refreshes the bundles and manifest from a sibling SDK
+checkout; `pnpm run check:embed-artifacts` detects edited or mismatched copies
+without requiring the SDK checkout. Brand-fork sync force-refreshes these
+specific generated files while preserving the rest of each fork's `public/`
+directory.
+
 Contact forms use the same layered pattern. `@contextrocket/sdk/contact-form`
 owns the organization-scoped capture request, bounded attribution extraction,
 idempotent retry controller, and receipt validation. The starter and Kleos
