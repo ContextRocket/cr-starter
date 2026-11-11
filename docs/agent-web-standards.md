@@ -32,6 +32,8 @@ tagline. Page titles still append the site name unless the page title already
 is the site name.
 When a page already has a complete document title, pass `titleIsExact` to
 `BaseLayout` so the site name is not appended a second time.
+For section-specific title branding, pass `titleSuffix` to override the
+default site name for that page.
 
 The fork-owned `config/site.json` → `publicRoutes` list is the allowlist
 for those public surfaces. `src/lib/public-routes.ts` is the shared route

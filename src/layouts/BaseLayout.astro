@@ -16,6 +16,8 @@ interface Props {
   title?: string;
   /** Use the supplied title verbatim when it is already a complete document title. */
   titleIsExact?: boolean;
+  /** Override the default site-name suffix for this page. */
+  titleSuffix?: string;
   description?: string;
   locale: SupportedLocale;
   path?: string;
@@ -32,12 +34,14 @@ interface Props {
 const { locale, path = "/" } = Astro.props;
 const pageTitle = Astro.props.title;
 const titleSeparator = ` ${siteConfig.titleSeparator} `;
+const configuredTitleSuffix = Astro.props.titleSuffix?.trim();
+const titleSuffix = configuredTitleSuffix || siteConfig.companyName;
 const title = Astro.props.titleIsExact && pageTitle
   ? pageTitle
   : pageTitle
-  ? pageTitle === siteConfig.companyName
+  ? pageTitle === siteConfig.companyName && !configuredTitleSuffix
     ? pageTitle
-    : `${pageTitle}${titleSeparator}${siteConfig.companyName}`
+    : `${pageTitle}${titleSeparator}${titleSuffix}`
   : path === "/" && siteConfig.homeMetaTitle
     ? siteConfig.homeMetaTitle
     : `${siteConfig.homeTitle || siteConfig.companyName}${titleSeparator}${siteConfig.tagline}`;
