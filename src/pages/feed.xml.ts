@@ -5,12 +5,12 @@ import { absoluteUrl, blogPostHref, blogIndexHref } from "@/lib/paths";
 
 /** RSS feed for the blog — website hygiene for subscribers and aggregators. */
 export async function GET() {
-  if (!siteConfig.features.blog) {
-    return new Response("Blog disabled", { status: 404 });
-  }
   const locale = getDefaultLocale();
-  const posts = listPosts(locale).slice(0, 50);
-  const channelLink = absoluteUrl(blogIndexHref(locale));
+  const blogEnabled = siteConfig.features.blog;
+  const posts = blogEnabled ? listPosts(locale).slice(0, 50) : [];
+  const channelLink = absoluteUrl(
+    blogEnabled ? blogIndexHref(locale) : "/",
+  );
   const items = posts
     .map((post) => {
       const link = absoluteUrl(blogPostHref(locale, post.slug));
@@ -27,7 +27,7 @@ export async function GET() {
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title><![CDATA[${siteConfig.companyName} · ${siteConfig.blog.title}]]></title>
+    <title><![CDATA[${blogEnabled ? `${siteConfig.companyName} · ${siteConfig.blog.title}` : siteConfig.companyName}]]></title>
     <link>${channelLink}</link>
     <description><![CDATA[${siteConfig.description}]]></description>
 ${items}
