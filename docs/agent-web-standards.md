@@ -12,11 +12,15 @@ surfaces.
 - llms.txt provides a concise AI-readable site map.
 - The configured blog path also serves an editorial llms.txt with its published articles.
 - `/.well-known/agent-card.json` is a generic static A2A discovery fallback.
+  Its name, interface URL, and tenant are build-time values; the tenant handle
+  can exist in configuration before an organization has been provisioned. It
+  is not proof that the live organization or its capabilities are available.
   On a verified ContextRocket site origin, proxy this path to the API so the
   live, policy-filtered organization card takes precedence over the static file.
 - /.well-known/mcp.json is a convenience manifest describing the hosted
   organization-scoped ContextRocket MCP surface when an API base and
-  organization handle are configured.
+  organization handle are configured. As with the Agent Card, configuration
+  does not provision the organization or enable the advertised interface.
 
 The canonical AI-readable file is `/llms.txt`. The project does not publish
 `/llms-full.txt`: that filename is an optional convention used by some
@@ -55,8 +59,10 @@ description, social links, and contact details in `config/site.json`.
 
 The starter has canned demo mode for static deployments and live mode for
 direct browser A2A. A host does not need a Next.js proxy or a backend. The
-starter defaults to the `contextrocket` organization; each fork should use its
-own handle after creating its ContextRocket organization.
+starter defaults to the `contextrocket` handle as a target identifier; this
+does not provision an organization or enable its public A2A policy. Each fork
+should use its own handle after creating and configuring its ContextRocket
+organization.
 
 The standalone widget is built from the public **`cr-sdk`** package
 `@contextrocket/embed-chat` and copied to `public/embed/widget.js` for local
@@ -73,10 +79,12 @@ demos (`pnpm run build:widget`). Its canonical live snippet is:
 
 The widget sends the handle in A2A metadata to `/api/agent/a2a`; the manifest's
 `/mcp/{handle}` URL is a separate MCP surface. Without a key, live chat is
-available only for a published public handle from its configured demo origin;
-that guest tier is rate-limited and only receives the public-safe context. An
-optional publishable website key must be bound to the organization and allowed
-site origin. Never place a server-side machine key in a public page.
+available only when the target organization exists, its public A2A policy
+allows guest answering, and public-safe context is available. Configure the
+permitted site origin and rate limits as required by the organization policy;
+the guest tier receives only public-safe context. An optional publishable
+website key must be bound to the organization and allowed site origin. Never
+place a server-side machine key in a public page.
 
 ## Implementation map
 

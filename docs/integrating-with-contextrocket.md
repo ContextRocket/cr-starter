@@ -8,10 +8,12 @@ backend or server credential.
 
 Demo mode is the default and uses deterministic sample responses. Live mode
 connects the generated chat widget to ContextRocket over browser A2A.
-The starter's configured handle is `contextrocket`, so a live starter site is
-ready to address the default ContextRocket organization. Forks should set the
-handle for their own organization in `config/site.json` or override it with
-`PUBLIC_CONTEXTROCKET_HANDLE`.
+The starter's configured handle is `contextrocket`. This is only the target
+identifier: it does not create or provision an organization, enable its public
+A2A policy, or publish context. In a fresh or reset environment, verify that
+the organization exists and is configured before switching a site to live
+mode. Forks should set their own organization's handle in `config/site.json`
+or override it with `PUBLIC_CONTEXTROCKET_HANDLE`.
 
 ```dotenv
 PUBLIC_CR_CHAT_MODE=live
@@ -23,15 +25,17 @@ PUBLIC_CONTEXTROCKET_API_KEY=your-origin-bound-publishable-key
 
 The widget sends `SendStreamingMessage` to `/api/agent/a2a`, with the
 organization handle in A2A metadata. It does not use the MCP URL for chat. A
-published public handle can serve anonymous guest questions from that
-organization's public-safe facts, subject to the configured demo origin and
-rate limits. An optional website key is sent as `X-Api-Key`; it is a public
-credential, not a secret, and must be origin-bound, scoped, rate-limited, and
-revocable. Both paths resolve to the public-read capability tier: neither
-exposes member-only sources or the private context graph. The handle selects
-an organization but is not authorization. Member A2A requires a verified
-signed-in session through the typed SDK; machine credentials stay server-side.
-Never put an administrative or source-management credential in the site.
+handle can serve anonymous guest questions only when its organization exists,
+the organization's public A2A policy allows answering, and public-safe context
+is available. Configure the permitted site origin and rate limits in
+ContextRocket as required by that policy. An optional website key is sent as
+`X-Api-Key`; it is a public credential, not a secret, and must be origin-bound,
+scoped, rate-limited, and revocable. Both paths resolve to the public-read
+capability tier: neither exposes member-only sources or the private context
+graph. The handle selects an organization but is not authorization. Member A2A
+requires a verified signed-in session through the typed SDK; machine
+credentials stay server-side. Never put an administrative or source-management
+credential in the site.
 
 ContextRocket resolves capability scopes from the authenticated principal and
 interface on the server. They are not client-supplied A2A metadata or OAuth
@@ -48,9 +52,12 @@ select an organization. The embed widget reads the handle-specific card to
 populate its opening suggestions; A2A turns still go directly to
 `/api/agent/a2a`.
 
-For a site to answer live questions, publish the organization's guest-safe
-context in ContextRocket and configure the deployed site origin there. Demo
-mode remains the default so clean static builds can work offline.
+For a site to answer live questions, create the organization, enable its public
+A2A answering policy, make guest-safe context available in ContextRocket, and
+configure the deployed site origin there as required by the policy. The handle
+alone is never evidence that these steps have been completed. Demo mode remains
+the default so clean static builds can work offline, including when no
+ContextRocket organization has been provisioned.
 
 ### Agent Card on a verified site origin
 
@@ -106,12 +113,12 @@ If a live request fails, an unchanged retry reuses its idempotency key. Editing
 any form field starts a new submission and key. This lets the API safely
 deduplicate a request whose response was lost in transit.
 
-Before enabling live submission, configure the organization handle and add each
-exact deployed site origin in ContextRocket under **Settings → Organization →
-General → Contact form websites**. The public contact form endpoint supports
-custom-origin preflight and preserves the submitted intent. It resolves the
-organization from the handle and enforces that organization's contact-form
-origin policy. No browser API key is required or sent, so contact-only sites
+Before enabling live submission, create the organization, configure its handle,
+and add each exact deployed site origin in ContextRocket under **Settings →
+Organization → General → Contact form websites**. The public contact form
+endpoint supports custom-origin preflight and preserves the submitted intent.
+It resolves the organization from the handle and enforces that organization's
+contact-form origin policy. No browser API key is required or sent, so contact-only sites
 can use the form without creating a chat credential. Chat API-key rotation
 does not revoke a separately registered contact-form origin.
 
