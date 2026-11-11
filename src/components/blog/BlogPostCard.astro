@@ -8,9 +8,10 @@ interface Props {
   post: BlogPostMeta;
   locale: SupportedLocale;
   variant?: "featured" | "index";
+  priority?: boolean;
 }
 
-const { post, locale, variant = "index" } = Astro.props;
+const { post, locale, variant = "index", priority = false } = Astro.props;
 const featured = variant === "featured";
 ---
 
@@ -19,7 +20,14 @@ const featured = variant === "featured";
   class="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 >
   {post.image ? (
-    <img src={post.image} alt="" loading="lazy" class="aspect-[16/9] w-full object-cover" />
+    <img
+      src={post.image}
+      alt=""
+      loading={priority ? "eager" : "lazy"}
+      decoding="async"
+      fetchpriority={priority ? "high" : "auto"}
+      class="aspect-[16/9] w-full object-cover"
+    />
   ) : (
     <div aria-hidden="true" class="aspect-[16/9] w-full bg-muted" />
   )}
