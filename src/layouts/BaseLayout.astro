@@ -29,11 +29,14 @@ interface Props {
 
 const { locale, path = "/" } = Astro.props;
 const pageTitle = Astro.props.title;
+const titleSeparator = ` ${siteConfig.titleSeparator} `;
 const title = pageTitle
   ? pageTitle === siteConfig.companyName
     ? pageTitle
-    : `${pageTitle} · ${siteConfig.companyName}`
-  : `${siteConfig.homeTitle || siteConfig.companyName} · ${siteConfig.tagline}`;
+    : `${pageTitle}${titleSeparator}${siteConfig.companyName}`
+  : path === "/" && siteConfig.homeMetaTitle
+    ? siteConfig.homeMetaTitle
+    : `${siteConfig.homeTitle || siteConfig.companyName}${titleSeparator}${siteConfig.tagline}`;
 const description = Astro.props.description ?? siteConfig.description;
 const ogType = Astro.props.ogType ?? "website";
 const robots = Astro.props.robots ?? "index, follow";

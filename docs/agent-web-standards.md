@@ -25,6 +25,12 @@ These are generated from site configuration and the public route tree. Keep
 titles, descriptions, canonical URLs, and page content accurate in the fork's
 site data and site message files.
 
+Set `titleSeparator` in `config/site.json` to match the site's title style
+(`·` by default, `|` for some brands). Set `homeMetaTitle` when the homepage
+uses a deliberate title that should not be assembled from the site name and
+tagline. Page titles still append the site name unless the page title already
+is the site name.
+
 The fork-owned `config/site.json` → `publicRoutes` list is the allowlist
 for those public surfaces. `src/lib/public-routes.ts` is the shared route
 contract and `src/lib/public-site.ts` supplies the sitemap, robots, and llms
