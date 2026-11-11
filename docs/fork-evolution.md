@@ -24,20 +24,30 @@ The embed chat is already a good example: its source and behavior tests live in
 `cr-sdk/packages/embed-chat`; the static site consumes its built widget. Forks
 do not carry another copy of the chat test suite.
 
+Contact forms use the same layered pattern. `@contextrocket/sdk/contact-form`
+owns the organization-scoped capture request, bounded attribution extraction,
+idempotent retry controller, and receipt validation. The starter and Kleos
+form both use that controller. The starter owns a localized default form, while
+Kleos owns its own field set and copy; that presentation difference is
+intentional. Forks should keep their markup and brand copy, but should not
+reimplement the API request or retry behavior.
+
 ## Component package boundary
 
 Astro and browser components that need to be shared by multiple forks should
 move into a small `@contextrocket/astro` package in `cr-sdk`. Candidate modules
-include a branded **Powered by** badge, organization-scoped contact form, and
-cookie consent. The package should provide typed inputs, CSS-variable/slot
+include a branded **Powered by** badge, cookie consent, or a headless contact
+form presentation layer. The contact form transport is already in the browser
+SDK; a future UI package should compose that client instead of adding another
+submission path. Any package should provide typed inputs, CSS-variable/slot
 styling hooks, and browser-safe behavior. It should not own page routes, brand
 copy, site content, or a site's overall theme.
 
-Keep each capability in `cr-starter` until two concrete consumers establish
-the public inputs. Then move the implementation and its behavior tests into
-`cr-sdk`, publish it, and switch the starter and forks to the package. This
-avoids publishing speculative APIs and keeps the package's contract grounded
-in real customer sites.
+Keep a UI capability in `cr-starter` until at least two concrete consumers
+establish its public inputs. Then move the reusable behavior and its tests into
+`cr-sdk`, publish it, and switch the starter and forks to the package. Keep
+brand-specific fields, labels, and layout in each site. This avoids publishing
+speculative APIs and keeps package contracts grounded in real customer sites.
 
 ## Forking vs. consuming a package
 
