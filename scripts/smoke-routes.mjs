@@ -28,6 +28,14 @@ if (!fs.existsSync(dist)) {
 const site = JSON.parse(
   fs.readFileSync(path.join(root, "config/site.json"), "utf8"),
 );
+const blogBasePath = `/${String(blogConfig.basePath ?? "/blog")
+  .replace(/^\/+|\/+$/g, "")}`;
+const blogFeedPath = String(blogConfig.feedPath ?? "/feed.xml")
+  .replace(/^\/+|\/+$/g, "");
+const proxyPathAliases = new Map([
+  [`/${blogFeedPath}`, "/feed.xml"],
+  [`${blogBasePath}/sitemap.xml`, "/sitemap.xml"],
+]);
 const locales = site.locales ?? ["en"];
 const defaultLocale = site.defaultLocale ?? locales[0];
 const multiLocale = locales.length > 1;
@@ -57,6 +65,7 @@ function staticPathExists(pathname) {
       return false;
     }
   }
+  decoded = proxyPathAliases.get(decoded) ?? decoded;
   if (decoded.includes("\0") || decoded.split("/").includes("..")) return false;
   const segments = decoded.replace(/^\/+|\/+$/g, "").split("/").filter(Boolean);
   if (segments.length === 0) return fileExists("index.html");
