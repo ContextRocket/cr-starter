@@ -558,6 +558,11 @@
   text-align: center;
 }
 
+.cr-suggestion-items[data-view="cards"] .cr-suggestion:last-child:nth-child(2n) {
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
 @media (max-width: 30rem) {
   /* The centered empty state otherwise shrink-wraps this group on narrow phones. */
   .cr-empty {
