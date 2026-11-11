@@ -9,6 +9,7 @@ import { siteConfig, isSingleLocale, type NavLinkConfig } from "@/config/site.co
 import { createT } from "@/i18n/keys";
 import { getActiveLocales, type SupportedLocale } from "@/i18n/locales";
 import { homeHref, localizedHref } from "@/lib/paths";
+import { isCurrentNavigationLink } from "@/lib/navigation";
 import type { BrandLogoAsset } from "@/components/chrome/BrandLogo";
 import type { LocaleOption } from "@/components/chrome/LocaleSwitcher";
 
@@ -54,14 +55,11 @@ if (siteConfig.features.blog && !hasBlogInNav) {
   });
 }
 
-const currentPath = normalizePath(localizedHref(locale, path));
 for (const link of navLinks) {
-  const linkPath = normalizePath(link.href);
-  link.current =
-    link.href.startsWith("/") &&
-    !link.href.includes("#") &&
-    (currentPath === linkPath ||
-      (linkPath !== "/" && currentPath.startsWith(`${linkPath}/`)));
+  link.current = isCurrentNavigationLink(
+    localizedHref(locale, path),
+    link.href,
+  );
 }
 
 const footerLinks = ((siteConfig.nav.footerLinks ?? []) as NavLinkConfig[])

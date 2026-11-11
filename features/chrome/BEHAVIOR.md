@@ -17,3 +17,12 @@ When the footer renders,
 Then the copyright line includes a space between the year and the configured name.
 
 Never concatenate year and name without a separator.
+
+## CHROME-003: Current navigation follows route hierarchy
+
+Given a local navigation href and the current page path,
+When chrome determines the current section,
+Then an exact route or nested page marks that link as current,
+And in-page fragment links and external links are never marked current.
+
+Never mark the home link current on every route or treat an anchor CTA as a page.
