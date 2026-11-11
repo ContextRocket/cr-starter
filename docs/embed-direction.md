@@ -72,12 +72,17 @@ package at runtime; the checked-in widget bundle is built from `cr-sdk`.
 The checked-in `public/embed/widget.js` remains the standalone offline default.
 Set `PUBLIC_CONTEXTROCKET_CHAT_WIDGET_URL` to a full versioned HTTPS URL when a
 widget release is published; the site layout applies the configured widget
-theme and organization settings to that script. Keep demo/customer URLs pinned
-to a package version. Do not use a mutable `latest` URL.
+theme and organization settings to that script. The contact-form bridge can be
+selected with `PUBLIC_CONTEXTROCKET_CONTACT_FORM_SCRIPT_URL` or
+`contactForm.scriptSrc` in `config/site.json`. Both URLs default to checked-in
+local files, so offline demos continue to work. Keep external URLs pinned to a
+package version. Do not use a mutable `latest` URL.
 
-The proposed ContextRocket CDN route is
+The proposed ContextRocket chat CDN route is
 `https://contextrocket.cdn.contextrocket.com/embeds/chat/v<package-version>/widget.js`.
-The public artifact has not been released there yet. The operator can publish
+Neither artifact is published there yet. The contact-form bridge follows
+`https://contextrocket.cdn.contextrocket.com/embeds/contact-form/v<package-version>/contact-form.browser.js`.
+The operator can publish
 the built IIFE with the existing `contextrocket sites publish` command under
 the `contextrocket` organization and a version-specific prefix. Customers only
 load the public URL; they do not need an operator token. This is separate from

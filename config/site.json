@@ -99,7 +99,8 @@
     "fullscreenOnLoad": false
   },
   "contactForm": {
-    "mode": "demo"
+    "mode": "demo",
+    "scriptSrc": "/embed/contact-form.js"
   },
   "theme": {
     "radius": "0.5rem",

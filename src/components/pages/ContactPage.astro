@@ -72,7 +72,7 @@ const jsonLdExtra = [buildBreadcrumbListJsonLd([
     </section>
   </main>
 
-  <script is:inline src="/embed/contact-form.js" defer></script>
+  <script is:inline src={siteConfig.contactForm.scriptSrc} defer></script>
   <script is:inline define:vars={{ labels }}>
     (() => {
       const form = document.querySelector("[data-contact-form]");

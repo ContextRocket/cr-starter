@@ -39,7 +39,7 @@ const siteDataExt = siteData as typeof siteData & {
   homeMetaTitle?: string;
   titleSeparator?: string;
   chat?: { widgetSrc?: string; fullscreen?: boolean; fullscreenOnOpen?: boolean; fullscreenOnLoad?: boolean };
-  contactForm?: { mode?: "demo" | "live" };
+  contactForm?: { mode?: "demo" | "live"; scriptSrc?: string };
   integrations?: Record<string, SiteIntegrationConfig>;
   integrationConsentMode?: "auto" | "always" | "external";
 };
@@ -189,6 +189,10 @@ export const siteConfig = {
       "PUBLIC_CR_CONTACT_FORM_MODE",
       siteDataExt.contactForm?.mode ?? "demo",
       ["demo", "live"],
+    ),
+    scriptSrc: env(
+      "PUBLIC_CONTEXTROCKET_CONTACT_FORM_SCRIPT_URL",
+      siteDataExt.contactForm?.scriptSrc ?? "/embed/contact-form.js",
     ),
     handle: contextRocketHandle,
     apiBaseUrl: contextRocketApiBase,

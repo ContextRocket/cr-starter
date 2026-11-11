@@ -121,14 +121,14 @@ pnpm run build:embeds
 ```
 
 This optional contributor command expects a sibling `../cr-sdk` checkout and
-refreshes both the chat widget and lead-capture bridge. Normal starter builds
+refreshes both the chat widget and contact-form bridge. Normal starter builds
 use the checked-in assets and do not need that checkout.
 
-Install on any site:
+For a local or self-hosted install, use the checked-in artifact:
 
 ```html
 <script
-  src="https://your-cdn.example/embed/widget.js"
+  src="/embed/widget.js"
   defer
   data-contextrocket-handle="your-handle"
   data-contextrocket-api-key="your-publishable-key"
@@ -137,4 +137,10 @@ Install on any site:
 
 The chat script is served from `public/embed/widget.js`; the contact example
 loads `public/embed/contact-form.js`. The SDK build command also refreshes
-`src/types/contextrocket-contact-form.d.ts` from the SDK contract.
+`src/types/contextrocket-contact-form.d.ts` from the SDK contract. A published
+chat artifact can be selected with `PUBLIC_CONTEXTROCKET_CHAT_WIDGET_URL`; the
+contact-form bridge can use `PUBLIC_CONTEXTROCKET_CONTACT_FORM_SCRIPT_URL` or
+`contactForm.scriptSrc` in `config/site.json`. Both default to local files for
+offline demos. The versioned ContextRocket CDN URLs in
+`docs/embed-direction.md` are release conventions and must not be used before
+the corresponding artifacts are published.
