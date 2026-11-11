@@ -10,7 +10,7 @@ import {
   routeHref,
   type PublicRoute,
 } from "@/lib/public-routes";
-import { absoluteUrl, blogPostHref } from "@/lib/paths";
+import { absoluteUrl, blogPostHref, localizedHref } from "@/lib/paths";
 import { blogPublicBasePath, listPosts } from "@/lib/blog";
 import { listTopics } from "@/lib/topics";
 
@@ -87,6 +87,47 @@ const SOCIAL_CRAWLERS = [
   "Mastodon",
 ] as const;
 
+/** Locale-aware public URL for the topic index or a topic article. */
+export function topicHref(locale: ReturnType<typeof getDefaultLocale>, slug?: string): string {
+  const path = `${blogPublicBasePath()}/topics${slug ? `/${slug}` : ""}`;
+  return localizedHref(locale, path);
+}
+
+/** Build topic sitemap entries with the same locale/alternate contract as posts. */
+export function buildTopicSitemapEntries(
+  topics: readonly Pick<ReturnType<typeof listTopics>[number], "slug" | "updated">[],
+  locales: readonly ReturnType<typeof getActiveLocales>[number][],
+  defaultLocale: ReturnType<typeof getDefaultLocale>,
+  singleLocale = isSingleLocale(),
+): PublicSitemapEntry[] {
+  const alternatesFor = (slug?: string) => {
+    if (singleLocale || locales.length < 2) return undefined;
+    return {
+      ...Object.fromEntries(locales.map((locale) => [
+        locale,
+        absoluteUrl(topicHref(locale, slug)),
+      ])),
+      "x-default": absoluteUrl(topicHref(defaultLocale, slug)),
+    };
+  };
+
+  return [
+    {
+      loc: absoluteUrl(topicHref(defaultLocale)),
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: alternatesFor(),
+    },
+    ...topics.map((topic) => ({
+      loc: absoluteUrl(topicHref(defaultLocale, topic.slug)),
+      lastModified: topic.updated,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: alternatesFor(topic.slug),
+    })),
+  ];
+}
+
 function buildAiAllowList(): string[] {
   const locale = getDefaultLocale();
   const routePaths = enabledPublicRoutes()
@@ -95,10 +136,10 @@ function buildAiAllowList(): string[] {
     .map((route) => routeHref(locale, route));
   const topics = listTopics();
   const topicPaths = topics.length > 0
-    ? [
-        `${blogPublicBasePath()}/topics`,
-        ...topics.map((topic) => `${blogPublicBasePath()}/topics/${topic.slug}`),
-      ]
+    ? getActiveLocales().flatMap((locale) => [
+        topicHref(locale),
+        ...topics.map((topic) => topicHref(locale, topic.slug)),
+      ])
     : [];
   return [
     "/",
@@ -174,7 +215,7 @@ export function buildLlmsTxt(): string {
   const topics = siteConfig.features.topics
     ? listTopics().map(
         (topic) =>
-          `- [${topic.title}](${absoluteUrl(`${blogPublicBasePath()}/topics/${topic.slug}`)}): ${topic.description}`,
+          `- [${topic.title}](${absoluteUrl(topicHref(locale, topic.slug))}): ${topic.description}`,
       )
     : [];
 
@@ -273,20 +314,7 @@ export function buildSitemapEntries(): PublicSitemapEntry[] {
   if (siteConfig.features.blog && siteConfig.features.topics) {
     const topics = listTopics();
     if (topics.length > 0) {
-      const topicIndex = `${blogPublicBasePath()}/topics`;
-      entries.push({
-        loc: absoluteUrl(topicIndex),
-        changeFrequency: "monthly",
-        priority: 0.6,
-      });
-      for (const topic of topics) {
-        entries.push({
-          loc: absoluteUrl(`${topicIndex}/${topic.slug}`),
-          lastModified: topic.updated,
-          changeFrequency: "monthly",
-          priority: 0.6,
-        });
-      }
+      entries.push(...buildTopicSitemapEntries(topics, locales, getDefaultLocale()));
     }
   }
 

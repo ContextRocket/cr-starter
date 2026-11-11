@@ -38,7 +38,7 @@ const jsonLdExtra = [buildBreadcrumbListJsonLd([
         <p class="mt-4 leading-7 text-text-secondary">{t("contact.introduction")}</p>
       </header>
 
-      <form class="mt-8 space-y-5" data-contact-form data-mode={siteConfig.contactForm.mode} data-handle={siteConfig.contactForm.handle} data-api-base={siteConfig.contactForm.apiBaseUrl}>
+      <form class="mt-8 space-y-5" data-contact-form data-mode={siteConfig.contactForm.mode} data-handle={siteConfig.contactForm.handle} data-api-base={siteConfig.contactForm.apiBaseUrl} data-sdk-src={siteConfig.contactForm.scriptSrc} data-labels={JSON.stringify(labels)}>
         <div class="grid gap-5 sm:grid-cols-2">
           <label class="block text-sm font-medium" for="contact-name">{labels.name}<span aria-hidden="true"> *</span>
             <input class="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id="contact-name" name="name" autocomplete="name" required maxlength="160" />
@@ -72,75 +72,7 @@ const jsonLdExtra = [buildBreadcrumbListJsonLd([
     </section>
   </main>
 
-  <script is:inline src={siteConfig.contactForm.scriptSrc} defer></script>
-  <script is:inline define:vars={{ labels }}>
-    (() => {
-      const form = document.querySelector("[data-contact-form]");
-      if (!form) return;
-      const status = form.querySelector("[data-form-status]");
-      const submit = form.querySelector("[data-submit]");
-      const controls = Array.from(form.querySelectorAll("input, select, textarea"));
-      if (!status || !submit) return;
-      const t = (key) => labels[key] || "";
-      let submissionController = null;
-      let isSubmitting = false;
-      form.addEventListener("invalid", () => {
-        status.textContent = t("required");
-      }, true);
-      status.textContent = "";
-      form.addEventListener("input", () => {
-        submissionController?.reset();
-        status.textContent = "";
-      });
-      form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        if (isSubmitting) return;
-        if (!form.reportValidity()) return;
-        const values = new FormData(form);
-        const mode = form.dataset.mode;
-        if (mode === "demo") {
-          status.textContent = t("demoResult");
-          form.reset();
-          return;
-        }
-        const sdk = window.ContextRocketSDK;
-        if (!form.dataset.handle || !sdk || typeof sdk.createContactFormController !== "function") {
-          status.textContent = t("unavailable");
-          return;
-        }
-        submissionController ??= sdk.createContactFormController();
-        isSubmitting = true;
-        controls.forEach((control) => { control.disabled = true; });
-        submit.disabled = true;
-        submit.textContent = t("sending");
-        status.textContent = "";
-        try {
-          await submissionController.submit({
-            apiBaseUrl: form.dataset.apiBase,
-            orgHandle: form.dataset.handle,
-            pageUrl: window.location.href,
-            referrerUrl: document.referrer,
-            form: {
-              name: String(values.get("name") || "").trim(),
-              email: String(values.get("email") || "").trim(),
-              phone: String(values.get("phone") || "").trim() || undefined,
-              intent: values.get("intent"),
-              message: String(values.get("message") || "").trim() || undefined,
-              source_channel: "website",
-              consent: values.get("consent") === "on",
-            },
-          });
-          status.textContent = t("success");
-          form.reset();
-        } catch {
-          status.textContent = t("failure");
-        } finally {
-          isSubmitting = false;
-          controls.forEach((control) => { control.disabled = false; });
-          submit.disabled = false;
-          submit.textContent = t("submit");
-        }
-      });
-    })();
+  <script>
+    import "../../scripts/contact-form.ts";
   </script>
 </BaseLayout>
