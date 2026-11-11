@@ -6,6 +6,12 @@ The starter owns the default site shape and the shared static publishing
 contract. A fork should not copy the starter's test suite or demo-only pages
 when it does not use them.
 
+Keep brand values and optional capability settings in `config/site.json`. The
+typed `src/config/site.config.ts` seam is shared with the starter and should
+stay synchronized in forks; it normalizes common settings while preserving
+fork-specific fields from that JSON. A setting such as `gallery` does not add a
+page or dependency unless the fork composes one.
+
 ## Three ownership layers
 
 | Layer | Owns | Update path |
