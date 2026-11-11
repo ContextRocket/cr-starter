@@ -36,6 +36,26 @@ starter fonts use that same published kit. Internal operators publish updates
 from ContextRocket main; org container pages use the same URLs so every
 ContextRocket surface shares one release.
 
+Use these published assets directly; do not copy shared brand files into each
+site's `public/` directory:
+
+| Asset | URL | Use |
+| --- | --- | --- |
+| Ink horizontal wordmark | `https://contextrocket.cdn.contextrocket.com/brand/logo-h-spark-ink.svg` | Light backgrounds |
+| White horizontal wordmark | `https://contextrocket.cdn.contextrocket.com/brand/logo-h-spark-white.svg` | Dark backgrounds |
+| Ink vertical wordmark | `https://contextrocket.cdn.contextrocket.com/brand/logo-v-spark-ink.svg` | Narrow light surfaces |
+| White vertical wordmark | `https://contextrocket.cdn.contextrocket.com/brand/logo-v-spark-white.svg` | Narrow dark surfaces |
+| Ink icon | `https://contextrocket.cdn.contextrocket.com/brand/icon-spark-ink.svg` | Light-background icon |
+| White icon | `https://contextrocket.cdn.contextrocket.com/brand/icon-spark-white.svg` | Dark-background icon |
+| Ink icon tile | `https://contextrocket.cdn.contextrocket.com/brand/icon-tile-ink.svg` | Square logo, such as the header mark |
+| Inter Tight variable | `https://contextrocket.cdn.contextrocket.com/brand/fonts/InterTight-Variable.woff2` | Marketing sans |
+| Newsreader Italic | `https://contextrocket.cdn.contextrocket.com/brand/fonts/Newsreader-Italic.woff2` | Editorial emphasis |
+| Geist Mono variable | `https://contextrocket.cdn.contextrocket.com/brand/fonts/GeistMonoVF.woff` | Code and monospace text |
+
+The shared font paths return `Access-Control-Allow-Origin: *` for cross-origin
+font loading. Keep site-specific images and fonts local; only shared
+ContextRocket brand assets use this CDN kit.
+
 Site copy belongs in `src/i18n/messages/site/<locale>.ts` for the locales
 the fork serves. An English-only fork should keep only en.ts in each message
 slice. Shared and app messages are starter-owned. Keep all visible strings
