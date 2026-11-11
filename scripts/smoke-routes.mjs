@@ -92,6 +92,13 @@ requireFile("manifest.webmanifest", fileExists("manifest.webmanifest"));
 
 if (features.blog) {
   requireFile("feed.xml", fileExists("feed.xml"));
+}
+
+// Root deployments can be mounted by an external reverse proxy at the blog
+// path, so check those synthetic aliases against the static root files. A
+// ContextRocket container is a complete site mounted below its own prefix;
+// its publication routes expose the root feed and sitemap directly instead.
+if (features.blog && !containerPrefix) {
   requireFile(
     `${blogFeedPath} (reverse-proxy feed alias)`,
     staticPathExists(`/${blogFeedPath}`),
