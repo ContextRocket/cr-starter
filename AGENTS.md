@@ -32,7 +32,7 @@ the emitted Astro routes.
 
 - Home (landing) -- fork-owned composition under `src/pages/[locale]/index.astro`
 - Blog (path from `blog.config.mjs`)
-- Contact (localized SDK lead-capture example; demo mode by default)
+- Contact (localized SDK contact-form example; demo mode by default)
 - Website discovery: `sitemap.xml`, `robots.txt`, `llms.txt`, `feed.xml`,
   `.well-known/security.txt`
 - Optional cookie consent banner (off unless explicitly enabled)
