@@ -39,7 +39,7 @@ decision in that fork; do not replace it with starter copy.
   (`features.chatFab`) with one curated ink-and-paper theme. Cookie consent is
   optional and off by default.
   These are demonstration defaults, not requirements for every fork.
-- Shared layout, i18n shared/app messages, chat widget, and lead-capture example
+- Shared layout, i18n shared/app messages, chat widget, and contact-form example
   are the reusable surfaces being demonstrated here. Forks customize config,
   site copy, Markdown, assets, theme, and home composition.
 - The default surface is **home + configurable blog + contact example**. Legal

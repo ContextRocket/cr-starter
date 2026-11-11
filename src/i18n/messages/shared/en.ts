@@ -53,7 +53,7 @@ export const sharedEn = {
     demoResult: "Demo complete. No information was sent or stored.",
     success: "Thanks. Your message has been received.",
     failure: "We could not send your message. Please try again.",
-    liveUnavailable: "Live lead capture is not configured for this site.",
+    liveUnavailable: "Live contact form is not configured for this site.",
     javascriptRequired: "Enable JavaScript to send this message securely.",
     required: "Please complete the required fields and give consent.",
   },

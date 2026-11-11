@@ -38,28 +38,28 @@ const jsonLdExtra = [buildBreadcrumbListJsonLd([
         <p class="mt-4 leading-7 text-text-secondary">{t("contact.introduction")}</p>
       </header>
 
-      <form class="mt-8 space-y-5" data-lead-form data-mode={siteConfig.leadCapture.mode} data-handle={siteConfig.leadCapture.handle} data-api-base={siteConfig.leadCapture.apiBaseUrl}>
+      <form class="mt-8 space-y-5" data-contact-form data-mode={siteConfig.contactForm.mode} data-handle={siteConfig.contactForm.handle} data-api-base={siteConfig.contactForm.apiBaseUrl}>
         <div class="grid gap-5 sm:grid-cols-2">
-          <label class="block text-sm font-medium" for="lead-name">{labels.name}<span aria-hidden="true"> *</span>
-            <input class="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id="lead-name" name="name" autocomplete="name" required maxlength="160" />
+          <label class="block text-sm font-medium" for="contact-name">{labels.name}<span aria-hidden="true"> *</span>
+            <input class="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id="contact-name" name="name" autocomplete="name" required maxlength="160" />
           </label>
-          <label class="block text-sm font-medium" for="lead-email">{labels.email}<span aria-hidden="true"> *</span>
-            <input class="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id="lead-email" name="email" type="email" autocomplete="email" required maxlength="254" />
+          <label class="block text-sm font-medium" for="contact-email">{labels.email}<span aria-hidden="true"> *</span>
+            <input class="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id="contact-email" name="email" type="email" autocomplete="email" required maxlength="254" />
           </label>
         </div>
-        <label class="block text-sm font-medium" for="lead-phone">{labels.phone}
-          <input class="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id="lead-phone" name="phone" type="tel" autocomplete="tel" maxlength="40" />
+        <label class="block text-sm font-medium" for="contact-phone">{labels.phone}
+          <input class="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id="contact-phone" name="phone" type="tel" autocomplete="tel" maxlength="40" />
         </label>
-        <label class="block text-sm font-medium" for="lead-intent">{labels.intent}
-          <select class="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id="lead-intent" name="intent">
+        <label class="block text-sm font-medium" for="contact-intent">{labels.intent}
+          <select class="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id="contact-intent" name="intent">
             <option value="contact">{labels.contact}</option>
             <option value="demo">{labels.demo}</option>
             <option value="appointment">{labels.appointment}</option>
             <option value="support">{labels.support}</option>
           </select>
         </label>
-        <label class="block text-sm font-medium" for="lead-message">{labels.message}
-          <textarea class="mt-2 block min-h-36 w-full resize-y rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id="lead-message" name="message" rows="5" maxlength="5000"></textarea>
+        <label class="block text-sm font-medium" for="contact-message">{labels.message}
+          <textarea class="mt-2 block min-h-36 w-full resize-y rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id="contact-message" name="message" rows="5" maxlength="5000"></textarea>
         </label>
         <label class="flex items-start gap-3 text-sm leading-6 text-text-secondary">
           <input class="mt-1 size-4 shrink-0 accent-primary" type="checkbox" name="consent" required />
@@ -72,10 +72,10 @@ const jsonLdExtra = [buildBreadcrumbListJsonLd([
     </section>
   </main>
 
-  <script is:inline src="/embed/lead-capture.js" defer></script>
+  <script is:inline src="/embed/contact-form.js" defer></script>
   <script is:inline define:vars={{ labels }}>
     (() => {
-      const form = document.querySelector("[data-lead-form]");
+      const form = document.querySelector("[data-contact-form]");
       if (!form) return;
       const status = form.querySelector("[data-form-status]");
       const submit = form.querySelector("[data-submit]");
@@ -101,11 +101,11 @@ const jsonLdExtra = [buildBreadcrumbListJsonLd([
           return;
         }
         const sdk = window.ContextRocketSDK;
-        if (!form.dataset.handle || !sdk || typeof sdk.createPublicLeadSubmissionController !== "function") {
+        if (!form.dataset.handle || !sdk || typeof sdk.createContactFormController !== "function") {
           status.textContent = t("unavailable");
           return;
         }
-        submissionController ??= sdk.createPublicLeadSubmissionController();
+        submissionController ??= sdk.createContactFormController();
         isSubmitting = true;
         controls.forEach((control) => { control.disabled = true; });
         submit.disabled = true;
@@ -117,7 +117,7 @@ const jsonLdExtra = [buildBreadcrumbListJsonLd([
             orgHandle: form.dataset.handle,
             pageUrl: window.location.href,
             referrerUrl: document.referrer,
-            lead: {
+            form: {
               name: String(values.get("name") || "").trim(),
               email: String(values.get("email") || "").trim(),
               phone: String(values.get("phone") || "").trim() || undefined,

@@ -13,7 +13,7 @@ interface ImportMetaEnv {
   readonly PUBLIC_CR_AGENT_URL?: string;
   readonly PUBLIC_CONTEXTROCKET_HANDLE?: string;
   readonly PUBLIC_CONTEXTROCKET_API_KEY?: string;
-  readonly PUBLIC_CR_LEAD_CAPTURE_MODE?: "demo" | "live";
+  readonly PUBLIC_CR_CONTACT_FORM_MODE?: "demo" | "live";
   readonly PUBLIC_COOKIE_CONSENT?: "on" | "off";
   readonly PUBLIC_GA_MEASUREMENT_ID?: string;
   readonly PUBLIC_POSTHOG_KEY?: string;

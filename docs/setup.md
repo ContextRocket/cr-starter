@@ -34,7 +34,7 @@ Upload `dist/` to Cloudflare Pages, CloudFront, S3, or any static host.
 
 ```bash
 pnpm run build:embeds
-# artifacts: public/embed/widget.js and public/embed/lead-capture.js
+# artifacts: public/embed/widget.js and public/embed/contact-form.js
 ```
 
 This optional command expects the `cr-sdk` repository at `../cr-sdk`. A normal

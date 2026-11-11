@@ -36,7 +36,7 @@ const siteDataExt = siteData as typeof siteData & {
   defaultLocale?: string;
   contextrocket?: { handle?: string };
   chat?: { fullscreen?: boolean; fullscreenOnOpen?: boolean; fullscreenOnLoad?: boolean };
-  leadCapture?: { mode?: "demo" | "live" };
+  contactForm?: { mode?: "demo" | "live" };
   integrations?: Record<string, SiteIntegrationConfig>;
   integrationConsentMode?: "auto" | "always" | "external";
 };
@@ -172,10 +172,10 @@ export const siteConfig = {
     ),
   },
 
-  leadCapture: {
+  contactForm: {
     mode: envEnum<"demo" | "live">(
-      "PUBLIC_CR_LEAD_CAPTURE_MODE",
-      siteDataExt.leadCapture?.mode ?? "demo",
+      "PUBLIC_CR_CONTACT_FORM_MODE",
+      siteDataExt.contactForm?.mode ?? "demo",
       ["demo", "live"],
     ),
     handle: contextRocketHandle,

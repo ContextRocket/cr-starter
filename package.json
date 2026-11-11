@@ -18,8 +18,8 @@
     "verify": "pnpm run check:behavior-ids && pnpm run theme:check && pnpm run i18n:check && pnpm run typecheck && pnpm run test && pnpm run build && node scripts/smoke-routes.mjs",
     "smoke": "node scripts/smoke-routes.mjs",
     "build:widget": "pnpm --dir ../cr-sdk/packages/embed-chat build && node scripts/sync-embed-artifact.mjs widget",
-    "build:lead-sdk": "pnpm --dir ../cr-sdk/packages/sdk build && node scripts/sync-embed-artifact.mjs lead-capture",
-    "build:embeds": "pnpm run build:widget && pnpm run build:lead-sdk"
+    "build:contact-form": "pnpm --dir ../cr-sdk/packages/sdk build && node scripts/sync-embed-artifact.mjs contact-form",
+    "build:embeds": "pnpm run build:widget && pnpm run build:contact-form"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.10",

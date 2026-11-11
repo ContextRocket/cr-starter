@@ -1,7 +1,7 @@
 # Integrating with ContextRocket
 
 The starter demonstrates two independent browser capabilities: A2A chat and
-organization-scoped lead capture. Both run on a static site; there is no local
+organization-scoped contact form. Both run on a static site; there is no local
 backend or server credential.
 
 ## Chat
@@ -49,20 +49,20 @@ palette, suggestions, and optional full-screen behavior. Use
 The full-screen close control reveals the site; arbitrary CSS, HTML,
 JavaScript, prompts, or model settings are not part of the embed contract.
 
-## Contact and lead capture
+## Contact form integration
 
 `/contact/` is a reusable localized example. Demo mode is safe by default: it
 validates the form and reports that nothing was sent or stored. To submit to an
 organization:
 
 ```dotenv
-PUBLIC_CR_LEAD_CAPTURE_MODE=live
+PUBLIC_CR_CONTACT_FORM_MODE=live
 PUBLIC_CONTEXTROCKET_HANDLE=your-organization-handle
 PUBLIC_CR_AGENT_URL=https://api.contextrocket.com
 ```
 
 The page uses the checked-in browser bridge generated from
-`@contextrocket/sdk` and calls `submitPublicLeadWithAttribution`. It sends the selected intent,
+`@contextrocket/sdk` and calls `submitContactFormWithAttribution`. It sends the selected intent,
 name, email, optional phone, message, explicit consent, source URL, referrer
 origin, bounded UTM fields, and an idempotency key. Only the page origin and
 path are retained in `source_url`; query parameters other than the five UTM
@@ -75,10 +75,10 @@ any form field starts a new submission and key. This lets the API safely
 deduplicate a request whose response was lost in transit.
 
 Before enabling live submission, configure the organization handle and allow
-the deployed site origin in the ContextRocket lead-capture service. The service
-must support the public endpoint's custom-origin preflight and preserve the
-submitted intent. No browser API key is sent for lead capture; the API resolves
-the organization from the handle and enforces origin policy.
+the deployed site origin in ContextRocket. The public contact form endpoint
+supports the custom-origin preflight and preserves the submitted intent. No
+browser API key is sent; the API resolves the organization from the handle and
+enforces origin policy.
 
 The public npm packages are not yet available. The starter carries generated
 artifacts so the public clone remains installable; the canonical source, tests,

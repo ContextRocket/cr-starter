@@ -11,7 +11,7 @@ when it does not use them.
 | Layer | Owns | Update path |
 | --- | --- | --- |
 | `cr-starter` | Astro template, route/SEO contract, starter-owned components, core behavior tests | GitHub template at creation; curated `.fork-sync.json` for shared source during the transition |
-| `cr-sdk` | Browser SDK, A2A transport, chat widget, lead capture clients, reusable UI packages | Versioned `@contextrocket/*` releases |
+| `cr-sdk` | Browser SDK, A2A transport, chat widget, contact form clients, reusable UI packages | Versioned `@contextrocket/*` releases |
 | Brand fork | Site-specific copy, pages, assets, design tokens, configuration | Customer/site repository |
 
 The embed chat is already a good example: its source and behavior tests live in
@@ -22,7 +22,7 @@ do not carry another copy of the chat test suite.
 
 Astro and browser components that need to be shared by multiple forks should
 move into a small `@contextrocket/astro` package in `cr-sdk`. Candidate modules
-include a branded **Powered by** badge, organization-scoped lead capture, and
+include a branded **Powered by** badge, organization-scoped contact form, and
 cookie consent. The package should provide typed inputs, CSS-variable/slot
 styling hooks, and browser-safe behavior. It should not own page routes, brand
 copy, site content, or a site's overall theme.

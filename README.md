@@ -1,7 +1,7 @@
 # ContextRocket Starter
 
 Public **Astro** starter for branded static websites that connect to ContextRocket
-through embeddable chat and lead-capture SDK artifacts. Builds to `dist/` for any CDN.
+through embeddable chat and contact-form SDK artifacts. Builds to `dist/` for any CDN.
 
 ## Quick start
 
@@ -55,16 +55,16 @@ node scripts/flatten-single-locale.mjs
 pnpm run build:widget
 ```
 
-Refresh both the chat widget and the standalone SDK lead-capture bridge with:
+Refresh both the chat widget and the standalone SDK contact-form bridge with:
 
 ```bash
 pnpm run build:embeds
 ```
 
 The starter's `/contact/` example runs safely in demo mode by default. To send
-leads to an organization, set `PUBLIC_CR_LEAD_CAPTURE_MODE=live` and
-`PUBLIC_CONTEXTROCKET_HANDLE` after the ContextRocket lead endpoint is enabled
-for the deployment origin.
+contact form submissions to an organization, set
+`PUBLIC_CR_CONTACT_FORM_MODE=live` and `PUBLIC_CONTEXTROCKET_HANDLE` after the
+ContextRocket contact endpoint is enabled for the deployment origin.
 
 This optional contributor command rebuilds the widget from a sibling
 `../cr-sdk` checkout. The checked-in `public/embed/widget.js` is used by normal

@@ -1,8 +1,8 @@
 "use strict";
 (() => {
-  // src/lead-capture.ts
+  // src/contact-form.ts
   var UTM_KEYS = ["source", "medium", "campaign", "content", "term"];
-  function extractLeadAttribution(pageUrl, referrerUrl) {
+  function extractContactAttribution(pageUrl, referrerUrl) {
     let page;
     try {
       page = new URL(pageUrl);
@@ -28,30 +28,30 @@
     }
     return attribution;
   }
-  var LeadCaptureError = class extends Error {
+  var ContactFormError = class extends Error {
     constructor(message, status, code) {
       super(message);
       this.status = status;
       this.code = code;
-      this.name = "LeadCaptureError";
+      this.name = "ContactFormError";
     }
   };
-  function isPublicLeadReceipt(payload) {
+  function isContactFormReceipt(payload) {
     if (!payload || typeof payload !== "object") return false;
     const receipt = payload;
     return typeof receipt.lead_id === "string" && receipt.lead_id.trim().length > 0 && receipt.status === "captured" && (receipt.delivery_state === "queued" || receipt.delivery_state === "duplicate") && receipt.follow_up_state === "human_follow_up";
   }
-  async function submitPublicLead({
+  async function submitContactForm({
     apiBaseUrl,
     orgHandle,
-    lead,
+    form,
     idempotencyKey,
     signal,
     fetcher = fetch
   }) {
     const handle = orgHandle.trim().replace(/^@/, "").toLowerCase();
     if (!handle) throw new TypeError("An organization handle is required.");
-    if (!lead.consent) throw new TypeError("Explicit consent is required.");
+    if (!form.consent) throw new TypeError("Explicit consent is required.");
     const endpoint = new URL("/api/apps/leads/capture", apiBaseUrl);
     endpoint.searchParams.set("org_handle", handle);
     const headers = new Headers({
@@ -67,39 +67,39 @@
         credentials: "omit",
         cache: "no-store",
         headers,
-        body: JSON.stringify({ ...lead, org_handle: handle }),
+        body: JSON.stringify({ ...form, org_handle: handle }),
         signal
       });
     } catch (error) {
       if (error instanceof DOMException && error.name === "AbortError") throw error;
-      throw new LeadCaptureError("The lead could not be submitted.", 0, "NETWORK_ERROR");
+      throw new ContactFormError("The contact form could not be submitted.", 0, "NETWORK_ERROR");
     }
     const payload = await response.json().catch(() => null);
     if (!response.ok) {
       const detail = payload && typeof payload === "object" ? payload.detail : void 0;
       const code = typeof detail === "string" ? detail : detail && typeof detail === "object" && typeof detail.code === "string" ? String(detail.code) : "LEAD_CAPTURE_FAILED";
-      throw new LeadCaptureError("The lead could not be submitted.", response.status, code);
+      throw new ContactFormError("The contact form could not be submitted.", response.status, code);
     }
-    if (!isPublicLeadReceipt(payload)) {
-      throw new LeadCaptureError("The lead response was invalid.", response.status, "INVALID_RESPONSE");
+    if (!isContactFormReceipt(payload)) {
+      throw new ContactFormError("The contact form response was invalid.", response.status, "INVALID_RESPONSE");
     }
     return payload;
   }
-  function submitPublicLeadWithAttribution({
+  function submitContactFormWithAttribution({
     pageUrl,
     referrerUrl,
-    lead,
+    form,
     ...options
   }) {
-    return submitPublicLead({
+    return submitContactForm({
       ...options,
-      lead: {
-        ...lead,
-        ...extractLeadAttribution(pageUrl, referrerUrl)
+      form: {
+        ...form,
+        ...extractContactAttribution(pageUrl, referrerUrl)
       }
     });
   }
-  function createPublicLeadSubmissionController(submitter = submitPublicLeadWithAttribution, createKey = () => globalThis.crypto.randomUUID()) {
+  function createContactFormController(submitter = submitContactFormWithAttribution, createKey = () => globalThis.crypto.randomUUID()) {
     let pendingFingerprint;
     let pendingKey;
     let inFlight;
@@ -113,7 +113,7 @@
         const fingerprint = JSON.stringify({
           apiBaseUrl: options.apiBaseUrl,
           orgHandle: options.orgHandle.trim().replace(/^@/, "").toLowerCase(),
-          lead: options.lead,
+          form: options.form,
           pageUrl: String(options.pageUrl),
           referrerUrl: options.referrerUrl
         });
@@ -139,13 +139,13 @@
     };
   }
 
-  // src/browser-lead-capture.ts
+  // src/browser-contact-form.ts
   var browserSdk = Object.freeze({
-    createPublicLeadSubmissionController,
-    LeadCaptureError,
-    extractLeadAttribution,
-    submitPublicLead,
-    submitPublicLeadWithAttribution
+    createContactFormController,
+    ContactFormError,
+    extractContactAttribution,
+    submitContactForm,
+    submitContactFormWithAttribution
   });
   Object.defineProperty(globalThis, "ContextRocketSDK", {
     configurable: false,

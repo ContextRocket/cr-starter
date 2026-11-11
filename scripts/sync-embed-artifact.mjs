@@ -8,11 +8,11 @@ const artifacts = {
     source: "../cr-sdk/packages/embed-chat/dist/widget.js",
     target: "public/embed/widget.js",
   },
-  "lead-capture": {
-    source: "../cr-sdk/packages/sdk/dist/lead-capture.browser.js",
-    target: "public/embed/lead-capture.js",
-    declaration: "../cr-sdk/packages/sdk/dist/lead-capture.d.ts",
-    declarationTarget: "src/types/contextrocket-lead-capture.d.ts",
+  "contact-form": {
+    source: "../cr-sdk/packages/sdk/dist/contact-form.browser.js",
+    target: "public/embed/contact-form.js",
+    declaration: "../cr-sdk/packages/sdk/dist/contact-form.d.ts",
+    declarationTarget: "src/types/contextrocket-contact-form.d.ts",
   },
 };
 
