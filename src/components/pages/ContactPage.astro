@@ -84,6 +84,9 @@ const jsonLdExtra = [buildBreadcrumbListJsonLd([
       const t = (key) => labels[key] || "";
       let submissionController = null;
       let isSubmitting = false;
+      form.addEventListener("invalid", () => {
+        status.textContent = t("required");
+      }, true);
       status.textContent = "";
       form.addEventListener("input", () => {
         submissionController?.reset();
