@@ -4,29 +4,37 @@
 
 import { siteConfig } from "@/config/site.config";
 
+export interface McpManifestOptions {
+  siteUrl?: string;
+  companyName?: string;
+  agentUrl?: string | null;
+  handle?: string;
+}
+
 function env(name: string): string | undefined {
   const value = (import.meta as ImportMeta & { env?: Record<string, string> })
     .env?.[name];
   return value && value.trim() ? value.trim() : undefined;
 }
 
-export function buildMcpManifest(): Record<string, unknown> {
-  const origin = siteConfig.siteUrl.replace(/\/$/, "");
-  const crAgentUrl =
-    env("PUBLIC_CR_AGENT_URL") || siteConfig.chat.agentUrl || null;
-  const handle =
-    env("PUBLIC_CONTEXTROCKET_HANDLE") || siteConfig.chat.handle || "";
-  // The Organization URL: signing in on it connects this organization.
-  const mcpPath = handle ? `/mcp/${encodeURIComponent(handle)}` : "/mcp";
-  const mcpUrl = crAgentUrl
-    ? `${crAgentUrl.replace(/\/$/, "")}${mcpPath}`
+export function buildMcpManifest(
+  options: McpManifestOptions = {},
+): Record<string, unknown> {
+  const origin = (options.siteUrl ?? siteConfig.siteUrl).replace(/\/$/, "");
+  const companyName = options.companyName ?? siteConfig.companyName;
+  const crAgentUrl = options.agentUrl === undefined
+    ? env("PUBLIC_CR_AGENT_URL") || siteConfig.contextrocket.apiBaseUrl
+    : options.agentUrl;
+  const handle = options.handle ?? siteConfig.contextrocket.handle;
+  const mcpUrl = crAgentUrl && handle
+    ? `${crAgentUrl.replace(/\/$/, "")}/mcp/${encodeURIComponent(handle)}`
     : null;
 
   return {
     schema: "mcp-manifest/0.1",
-    name: `${siteConfig.companyName} MCP server`,
+    name: `${companyName} MCP server`,
     description:
-      `MCP endpoint for ${siteConfig.companyName} brand knowledge. ` +
+      `MCP endpoint for ${companyName} brand knowledge. ` +
       "Powered by ContextRocket -- your brand's verified context becomes " +
       "tools and resources for any MCP-compatible agent.",
     url: mcpUrl,
@@ -44,7 +52,8 @@ export function buildMcpManifest(): Record<string, unknown> {
     siteOrigin: origin,
     note:
       "This is a ContextRocket convenience manifest, not a standardized MCP " +
-      "well-known document. Use the hosted /mcp/{handle} endpoint and its protected " +
+      "well-known document. Use the hosted organization-scoped /mcp/{handle} endpoint " +
+      "and its protected " +
       "resource metadata for protocol discovery. " +
       "Ref: https://github.com/modelcontextprotocol/specification/discussions/129",
   };

@@ -3,6 +3,7 @@
  * Footer — Astro port of the previous shared FooterSection.
  */
 import ContextRocketBadge from "@/components/chrome/ContextRocketBadge.astro";
+import CookieSettingsLink from "@/components/chrome/CookieSettingsLink.astro";
 
 interface FooterLink {
   label: string;
@@ -16,6 +17,8 @@ interface Props {
   className?: string;
   containerClassName?: string;
   showPoweredByBadge?: boolean;
+  showCookieSettings?: boolean;
+  cookieSettingsLabel?: string;
 }
 
 const {
@@ -24,6 +27,8 @@ const {
   variant = "full",
   className = "",
   showPoweredByBadge = true,
+  showCookieSettings = false,
+  cookieSettingsLabel = "",
   containerClassName = "max-w-screen-md px-4 sm:px-6",
 } = Astro.props;
 const year = new Date().getFullYear();
@@ -50,9 +55,16 @@ const year = new Date().getFullYear();
                 {link.label}
               </a>
             ))}
+            {showCookieSettings && <CookieSettingsLink label={cookieSettingsLabel} />}
           </div>
         )}
+        {links.length === 0 && showCookieSettings && <CookieSettingsLink label={cookieSettingsLabel} />}
       </div>
+      {showPoweredByBadge !== false && (
+        <div class={`mx-auto flex justify-center px-4 pb-6 ${containerClassName}`}>
+          <ContextRocketBadge variant="inline" />
+        </div>
+      )}
     </footer>
   ) : (
     <footer
@@ -81,6 +93,16 @@ const year = new Date().getFullYear();
                   )}
                 </span>
               ))}
+              {showCookieSettings && (
+                <span class="flex items-center gap-x-2">
+                  {links.length > 0 && (
+                    <span class="text-muted-foreground/60" aria-hidden="true">
+                      |
+                    </span>
+                  )}
+                  <CookieSettingsLink label={cookieSettingsLabel} />
+                </span>
+              )}
             </div>
           </div>
           {showPoweredByBadge !== false && (

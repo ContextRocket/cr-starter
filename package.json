@@ -6,7 +6,8 @@
   "description": "ContextRocket public static starter (Astro + Tailwind)",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/alias-blog-path.mjs && node scripts/flatten-single-locale.mjs",
+    "build": "astro build && node scripts/flatten-single-locale.mjs && node scripts/emit-static-redirects.mjs",
+    "build:container": "CONTAINER_BASE=/site astro build && node scripts/flatten-single-locale.mjs && node scripts/emit-static-redirects.mjs && CONTAINER_BASE=/site node scripts/containerize-dist.mjs",
     "preview": "astro preview",
     "typecheck": "astro check",
     "i18n:check": "node scripts/check-i18n-parity.cjs",
@@ -16,17 +17,16 @@
     "test:watch": "vitest",
     "verify": "pnpm run check:behavior-ids && pnpm run theme:check && pnpm run i18n:check && pnpm run typecheck && pnpm run test && pnpm run build && node scripts/smoke-routes.mjs",
     "smoke": "node scripts/smoke-routes.mjs",
-    "build:widget": "pnpm --dir ../cr-sdk/packages/embed-chat build && mkdir -p public/embed && cp ../cr-sdk/packages/embed-chat/dist/widget.js public/embed/widget.js"
+    "build:widget": "pnpm --dir ../cr-sdk/packages/embed-chat build && node scripts/sync-embed-artifact.mjs widget",
+    "build:lead-sdk": "pnpm --dir ../cr-sdk/packages/sdk build && node scripts/sync-embed-artifact.mjs lead-capture",
+    "build:embeds": "pnpm run build:widget && pnpm run build:lead-sdk"
   },
   "dependencies": {
-    "@contextrocket/embed-chat": "file:../cr-sdk/packages/embed-chat",
-    "@contextrocket/sdk": "file:../cr-sdk/packages/sdk",
     "@headlessui/react": "^2.2.10",
     "@heroicons/react": "^2.2.0",
     "astro": "^5.13.2",
     "clsx": "^2.1.1",
     "gray-matter": "^4.0.3",
-    "lucide-react": "^1.41.0",
     "marked": "^15.0.12",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",

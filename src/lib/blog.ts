@@ -14,6 +14,7 @@ export type BlogPostMeta = {
   excerpt?: string;
   series?: number;
   featured?: boolean;
+  draft: boolean;
   songTitle?: string;
   songArtist?: string;
   songYear?: string;
@@ -69,6 +70,7 @@ function readPostFile(
           ? Number(data.series)
           : undefined,
     featured: Boolean(data.featured),
+    draft: data.draft === true,
     songTitle: data.songTitle ? String(data.songTitle) : undefined,
     songArtist: data.songArtist ? String(data.songArtist) : undefined,
     songYear: data.songYear ? String(data.songYear) : undefined,
@@ -108,7 +110,9 @@ export function listPosts(locale: SupportedLocale): BlogPostMeta[] {
 
   // Filter: keep posts that are shared or match locale
   const list = [...bySlug.values()].filter(
-    (p) => p.locale === "shared" || p.locale === locale,
+    (p) =>
+      (p.locale === "shared" || p.locale === locale) &&
+      (!import.meta.env.PROD || !p.draft),
   );
   return list.sort((a, b) => (a.date < b.date ? 1 : -1));
 }
@@ -121,10 +125,12 @@ export function getPost(
   const localeFile = path.join(dir, `${slug}.${locale}.md`);
   const sharedFile = path.join(dir, `${slug}.md`);
   if (fs.existsSync(localeFile)) {
-    return readPostFile(localeFile, slug, locale);
+    const post = readPostFile(localeFile, slug, locale);
+    return import.meta.env.PROD && post.draft ? null : post;
   }
   if (fs.existsSync(sharedFile)) {
-    return readPostFile(sharedFile, slug, "shared");
+    const post = readPostFile(sharedFile, slug, "shared");
+    return import.meta.env.PROD && post.draft ? null : post;
   }
   return null;
 }

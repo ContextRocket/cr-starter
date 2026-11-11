@@ -1,0 +1,125 @@
+---
+/** Compact header emitted as static HTML during the Astro build. */
+import type { BrandLogoAsset } from "@/components/chrome/BrandLogo";
+import type { LocaleOption } from "@/components/chrome/LocaleSwitcher";
+import type { NavLink } from "@/components/chrome/Navbar";
+
+interface Props {
+  links: NavLink[];
+  logo?: BrandLogoAsset;
+  brandName: string;
+  homeHref?: string;
+  navLabel: string;
+  openMenuLabel?: string;
+  closeMenuLabel?: string;
+  showLanguageSelector?: boolean;
+  locale?: string;
+  localeOptions?: LocaleOption[];
+  changeLanguageLabel: string;
+  className?: string;
+  containerClassName?: string;
+}
+
+const {
+  links,
+  logo,
+  brandName,
+  homeHref = "/",
+  navLabel,
+  showLanguageSelector = true,
+  locale = "en",
+  localeOptions = [],
+  changeLanguageLabel,
+  className = "",
+  containerClassName = "max-w-screen-md px-4 sm:px-6",
+} = Astro.props;
+const showLocale = showLanguageSelector && localeOptions.length > 1;
+const logoVariant = logo?.variant ?? "icon";
+const logoClass = logoVariant === "wordmark" ? "h-7 w-auto" : "h-7 w-7";
+---
+
+<header class={`w-full border-b border-border bg-background text-foreground ${className}`}>
+  <nav
+    aria-label={navLabel}
+    class={`mx-auto flex h-14 items-center justify-between ${containerClassName}`}
+  >
+    <a
+      href={homeHref}
+      class="shrink-0 text-base font-semibold tracking-tight transition-colors hover:text-primary"
+    >
+      {logo ? (
+        logoVariant === "wordmark" ? (
+          <span class="inline-flex items-center">
+            <img src={logo.src} alt={logo.alt} width={logo.width} height={logo.height} class={logoClass} />
+          </span>
+        ) : (
+          <span class="inline-flex items-center gap-2">
+            <img src={logo.src} alt={logo.alt} width={logo.width} height={logo.height} class={logoClass} />
+            {brandName && <span class="text-base font-semibold tracking-tight text-foreground">{brandName}</span>}
+          </span>
+        )
+      ) : (
+        brandName
+      )}
+    </a>
+
+    {(links.length > 0 || showLocale) && (
+      <div class="flex items-center gap-4 sm:gap-6">
+        {links.map((link) => (
+          link.variant === "primary" ? (
+            <a
+              href={link.href}
+              class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            >
+              {link.label}
+            </a>
+          ) : (
+            <a
+              href={link.href}
+              class="text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              {link.label}
+            </a>
+          )
+        ))}
+
+        {showLocale && (
+          <details class="relative z-[70]">
+            <summary
+              aria-label={changeLanguageLabel}
+              title={changeLanguageLabel}
+              class="flex h-9 min-w-[3rem] cursor-pointer list-none select-none items-center gap-1 rounded px-2 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden"
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="h-4 w-4 shrink-0">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M3 12h18M12 3a15 15 0 0 1 0 18m0-18a15 15 0 0 0 0 18" />
+              </svg>
+              <span class="text-xs font-medium uppercase">{locale}</span>
+            </summary>
+            <nav
+              aria-label={changeLanguageLabel}
+              class="absolute right-0 top-[calc(100%+4px)] z-[9999] w-40 rounded border border-border bg-card py-1 shadow-lg"
+            >
+              <ul>
+                {localeOptions.map((option) => (
+                  <li>
+                    <a
+                      href={option.href}
+                      aria-current={option.code === locale ? "page" : undefined}
+                      class:list={[
+                        "block w-full px-4 py-2 text-left text-sm text-foreground transition-colors hover:bg-foreground/5 focus-visible:outline-none focus-visible:bg-foreground/5",
+                        { "font-medium text-primary": option.code === locale },
+                      ]}
+                    >
+                      {option.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </details>
+        )}
+      </div>
+    )}
+  </nav>
+</header>

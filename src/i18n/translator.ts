@@ -1,21 +1,5 @@
-/**
- * i18n/translator.ts -- pure translation core (no React, no global state).
- *
- * The active locale's message tree is always passed in EXPLICITLY, and the
- * English tree is statically bundled as the fallback. This mirrors the
- * context-rocket frontend pattern (server passes translations explicitly;
- * client reads them from a provider) while keeping next-intl's `t("key")`
- * ergonomics -- and crucially it means the shared client bundle contains NO
- * locale strings except English: every other locale is loaded per-request on
- * the server and serialized to the client as a prop.
- *
- *   - Server: `const t = await getTranslations(ns?)` (i18n/server.ts).
- *   - Client: `const t = useTranslations(ns?)`        (i18n/client.tsx).
- *
- * next-intl compatibility: the richer, namespace-aware translator with
- * `.rich` / `.raw` / `.has` lives in i18n/intl.tsx and builds on the resolvers
- * and `formatMessage` exported here. This core stays React-free.
- */
+/** Pure translation core with no framework or global state. Callers supply
+ * the active locale's message tree explicitly; English is the fallback. */
 
 import { en } from "./messages/en";
 import type { SupportedLocale } from "./messages/registry";
@@ -210,7 +194,6 @@ export function createTranslator(
 }
 
 export function createArrayTranslator(
-  locale: SupportedLocale,
   messages: Messages,
   fallback: Messages = en,
 ): ArrayTranslator {

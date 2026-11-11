@@ -4,10 +4,7 @@
  * breadcrumb, pagination, cookie. Configured locale files must keep their
  * shared keys in parity.
  *
- * Auto-partitioned from the original de.ts tree (cr-x3j8). Copy is
- * verbatim from the pre-split source -- do not retype legal/marketing strings.
- * The merge barrel (../de.ts) re-merges shared+app+site into `de`,
- * so runtime key resolution is unchanged; this file only decides ownership.
+ * German translations for shared starter UI.
  */
 
 import type { sharedEn } from "./en";
@@ -27,17 +24,41 @@ export const sharedDe: LocaleMessages<typeof sharedEn> = {
   },
   nav: {
     blog: "Blog",
+    contact: "Kontakt",
     features: "Funktionen",
     about: "Über uns",
     pricing: "Preise",
     aria: {
       primary: "Hauptmenü",
+      openMenu: "Menü öffnen",
+      closeMenu: "Menü schließen",
     },
   },
-  theme: {
-    toggle: "Design wechseln",
-    light: "Hell",
-    dark: "Dunkel",
+  attribution: {
+    poweredBy: "Mit",
+  },
+  contact: {
+    title: "Lassen Sie uns sprechen",
+    introduction: "Erzählen Sie uns kurz, woran Sie arbeiten.",
+    directEmail: "Lieber per E-Mail?",
+    name: "Name",
+    email: "E-Mail",
+    phone: "Telefon (optional)",
+    intent: "Wobei können wir helfen?",
+    intentContact: "Allgemeine Anfrage",
+    intentDemo: "Demo anfragen",
+    intentAppointment: "Gespräch vereinbaren",
+    intentSupport: "Support",
+    message: "Wie können wir helfen?",
+    consent: "Ich bin einverstanden, zu dieser Anfrage kontaktiert zu werden.",
+    submit: "Nachricht senden",
+    sending: "Wird gesendet…",
+    demoResult: "Demo abgeschlossen. Es wurden keine Daten gesendet oder gespeichert.",
+    success: "Danke. Ihre Nachricht ist eingegangen.",
+    failure: "Ihre Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+    liveUnavailable: "Die Live-Erfassung ist für diese Website nicht konfiguriert.",
+    javascriptRequired: "Aktivieren Sie JavaScript, um diese Nachricht sicher zu senden.",
+    required: "Bitte füllen Sie die Pflichtfelder aus und stimmen Sie der Kontaktaufnahme zu.",
   },
   notifications: {
     region: "Website-Benachrichtigungen",
@@ -95,37 +116,18 @@ export const sharedDe: LocaleMessages<typeof sharedEn> = {
       results: "0 Ergebnisse",
     },
   },
-  legal: {
-    identity: {
-      // Unternehmen (eingetragene juristische Person).
-      entity: "Firma",
-      legalForm: "Rechtsform",
-      address: "Anschrift",
-      register: "Handelsregister",
-      vat: "USt-IdNr.",
-      representedBy: "Vertreten durch",
-      pendingRegistration: "Registrierung ausstehend",
-      // Einzelperson (natürliche Person).
-      responsiblePerson: "Verantwortliche Person",
-      // Nicht eingetragen (Handelsname + verantwortliche Person).
-      tradingName: "Handelsname",
-      notRegisteredCompany: "Dies ist kein eingetragenes Unternehmen.",
-      // Gemeinsame Kontaktzeile.
-      contact: "Kontakt",
-    },
-  },
   cookie: {
     consent: {
       aria: {
         label: "Cookie-Zustimmung",
       },
-      title: "Diese Website verwendet Cookies",
-      body: "Wir verwenden Analyse-Cookies. Siehe unsere",
+      title: "Cookie-Einstellungen",
+      body: "Diese Website verwendet optionale Cookies.",
       policy: {
         link: "Datenschutzerklärung",
       },
-      accept: "Alle akzeptieren",
-      decline: "Alle ablehnen",
+      accept: "Akzeptieren",
+      decline: "Ablehnen",
       manage: "Einstellungen verwalten",
       prefs: {
         description:

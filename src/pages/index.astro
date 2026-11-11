@@ -1,11 +1,13 @@
 ---
-import { isSingleLocale } from "@/config/site.config";
 import { getDefaultLocale } from "@/i18n/locales";
 import StarterHome from "@/components/pages/StarterHome.astro";
+import { redirectTargetForUnprefixedRoute } from "@/lib/routing";
 
-if (!isSingleLocale()) {
-  return Astro.redirect(`/${getDefaultLocale()}/`);
-}
+const redirectTarget = redirectTargetForUnprefixedRoute(
+  "/",
+  new URL(Astro.request.url).search,
+);
+if (redirectTarget) return Astro.redirect(redirectTarget);
 const locale = getDefaultLocale();
 ---
 

@@ -7,6 +7,10 @@
 
 import siteData from "../../config/site.json";
 import { blogConfig, blogContentDir } from "../../blog.config.mjs";
+import type { SiteIntegrationConfig } from "@/lib/integrations";
+
+const contextRocketBrandAssetsUrl =
+  "https://contextrocket.cdn.contextrocket.com/brand";
 
 function env(key: string, fallback: string = ""): string {
   const fromImport =
@@ -30,27 +34,31 @@ function envEnum<T extends string>(key: string, fallback: T, options: T[]): T {
 
 const siteDataExt = siteData as typeof siteData & {
   defaultLocale?: string;
-  chat?: { fullscreenOnLoad?: boolean };
+  contextrocket?: { handle?: string };
+  chat?: { fullscreen?: boolean; fullscreenOnOpen?: boolean; fullscreenOnLoad?: boolean };
+  leadCapture?: { mode?: "demo" | "live" };
+  integrations?: Record<string, SiteIntegrationConfig>;
+  integrationConsentMode?: "auto" | "always" | "external";
 };
 const siteChrome = siteData.chrome as typeof siteData.chrome & {
   exemptPrefixes?: readonly string[];
 };
-
-export type LegalEntityType = "company" | "individual" | "unincorporated";
-const siteLegal = siteData.legal as typeof siteData.legal & {
-  entityType?: LegalEntityType;
-  legalForm?: string;
-  register?: string;
-  vat?: string;
-  representedBy?: string;
-};
+const contextRocketHandle = env(
+  "PUBLIC_CONTEXTROCKET_HANDLE",
+  siteDataExt.contextrocket?.handle ?? "",
+);
+const contextRocketApiBase = env(
+  "PUBLIC_CR_AGENT_URL",
+  "https://api.contextrocket.com",
+).replace(/\/$/, "");
 
 export const siteConfig = {
+  trailingSlash: (siteData as typeof siteData & { trailingSlash?: "always" | "never" }).trailingSlash ?? "always",
   companyName: env("PUBLIC_SITE_NAME", siteData.company.name),
-  legalName: siteData.company.legalName,
   tagline: siteData.company.tagline,
   description: siteData.company.description,
   siteUrl: env("PUBLIC_SITE_URL", siteData.company.siteUrl).replace(/\/$/, ""),
+  contextRocketBrandAssetsUrl,
   contactEmail: env("PUBLIC_CONTACT_EMAIL", siteData.company.contactEmail),
   homeTitle: env("PUBLIC_HOME_TITLE", siteData.company.name),
   verification: {
@@ -71,12 +79,6 @@ export const siteConfig = {
     wordmark:
       (siteData.assets as { wordmark?: string }).wordmark ??
       siteData.assets.logo,
-    wordmarkDark:
-      (siteData.assets as { wordmarkDark?: string }).wordmarkDark ??
-      siteData.assets.logoDark,
-    chatFabIcon:
-      (siteData.assets as { chatFabIcon?: string }).chatFabIcon ??
-      siteData.assets.logo,
   },
   social: siteData.social,
 
@@ -87,22 +89,14 @@ export const siteConfig = {
       "PUBLIC_LANGUAGE_SELECTOR_ENABLED",
       siteData.features.languageSelector,
     ),
-    impressum: envBool(
-      "PUBLIC_IMPRESSUM_ENABLED",
-      siteData.features.impressum,
-    ),
-    attribution: envBool(
-      "PUBLIC_ATTRIBUTION_ENABLED",
-      siteData.features.attribution,
-    ),
     poweredByBadge: envBool(
       "PUBLIC_POWERED_BY_BADGE",
       siteData.features.poweredByBadge,
     ),
-    cookieConsent: envEnum<"auto" | "on" | "off">(
+    cookieConsent: envEnum<"on" | "off">(
       "PUBLIC_COOKIE_CONSENT",
-      siteData.features.cookieConsent as "auto" | "on" | "off",
-      ["auto", "on", "off"],
+      siteData.features.cookieConsent as "on" | "off",
+      ["on", "off"],
     ),
   },
 
@@ -119,12 +113,6 @@ export const siteConfig = {
     ),
     logoVariant: siteData.chrome.logoVariant as "icon" | "wordmark",
     showBrandLogo: siteData.chrome.showBrandLogo,
-    showThemeToggle: siteData.chrome.showThemeToggle,
-    defaultTheme: envEnum<"system" | "light" | "dark">(
-      "PUBLIC_DEFAULT_THEME",
-      (siteData.chrome.defaultTheme ?? "system") as "system" | "light" | "dark",
-      ["system", "light", "dark"],
-    ),
     cookieBannerStyle: envEnum<"bar" | "card" | "terminal">(
       "PUBLIC_COOKIE_BANNER_STYLE",
       siteData.chrome.cookieBannerStyle as "bar" | "card" | "terminal",
@@ -134,27 +122,32 @@ export const siteConfig = {
   },
 
   nav: siteData.nav,
-  legal: {
-    entityType: (siteLegal.entityType ?? "company") as LegalEntityType,
-    entity: siteLegal.entity,
-    legalForm: siteLegal.legalForm,
-    address: siteLegal.address,
-    register: siteLegal.register,
-    vat: siteLegal.vat,
-    representedBy: siteLegal.representedBy,
-    privacyContact: siteLegal.privacyContact,
-  },
-
   publicRoutes: siteData.publicRoutes,
 
   blog: {
-    basePath: env("BLOG_BASE_PATH", blogConfig.basePath),
-    title: env("BLOG_TITLE", blogConfig.title),
+    // Build-time route aliases are generated from blog.config.mjs. Keep these
+    // values tied to that source so runtime env overrides cannot point links at
+    // paths Astro did not emit.
+    basePath: blogConfig.basePath,
+    title: blogConfig.title,
     contentDir: blogContentDir(),
+    feedPath: blogConfig.feedPath ?? "/feed.xml",
   },
 
   analytics: {
     webVitalsEndpoint: env("PUBLIC_WEB_VITALS_ENDPOINT", ""),
+  },
+
+  integrations: siteDataExt.integrations ?? {},
+  integrationConsentMode:
+    siteDataExt.integrationConsentMode === "always" ||
+    siteDataExt.integrationConsentMode === "external"
+      ? siteDataExt.integrationConsentMode
+      : "auto",
+
+  contextrocket: {
+    apiBaseUrl: contextRocketApiBase,
+    handle: contextRocketHandle,
   },
 
   chat: {
@@ -162,9 +155,31 @@ export const siteConfig = {
       "demo",
       "live",
     ]),
-    agentUrl: env("PUBLIC_CR_AGENT_URL", "https://api.contextrocket.com"),
-    handle: env("PUBLIC_CONTEXTROCKET_HANDLE", "contextrocket"),
+    agentUrl: contextRocketApiBase,
+    handle: contextRocketHandle,
     apiKey: env("PUBLIC_CONTEXTROCKET_API_KEY", ""),
+    fullscreen: envBool(
+      "PUBLIC_CR_CHAT_FULLSCREEN",
+      siteDataExt.chat?.fullscreen ?? true,
+    ),
+    fullscreenOnOpen: envBool(
+      "PUBLIC_CR_CHAT_FULLSCREEN_ON_OPEN",
+      siteDataExt.chat?.fullscreenOnOpen ?? false,
+    ),
+    fullscreenOnLoad: envBool(
+      "PUBLIC_CR_CHAT_FULLSCREEN_ON_LOAD",
+      siteDataExt.chat?.fullscreenOnLoad ?? false,
+    ),
+  },
+
+  leadCapture: {
+    mode: envEnum<"demo" | "live">(
+      "PUBLIC_CR_LEAD_CAPTURE_MODE",
+      siteDataExt.leadCapture?.mode ?? "demo",
+      ["demo", "live"],
+    ),
+    handle: contextRocketHandle,
+    apiBaseUrl: contextRocketApiBase,
   },
 
   allowAiCrawlers: true,

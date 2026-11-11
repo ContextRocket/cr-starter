@@ -35,35 +35,32 @@ decision in that fork; do not replace it with starter copy.
 - The reference configuration may serve multiple locales, with English as the
   default. Locale files are optional in downstream projects; unused bundles must
   not be carried into a fork (`locales: ["en"]` is valid).
-- The reference site enables the Markdown blog, attribution credits, and the
-  embed chat snippet (`features.chatFab`), and uses system theme selection.
+- The reference site enables the Markdown blog and embed chat snippet
+  (`features.chatFab`) with one curated ink-and-paper theme. Cookie consent is
+  optional and off by default.
   These are demonstration defaults, not requirements for every fork.
-- Shared layout, i18n shared/app messages, and the embed widget are the reusable
-  surfaces being demonstrated here. Forks customize config, site copy, Markdown,
-  assets, theme, and home composition.
-- The default surface is **home + blog + legal/hygiene (+ attribution)**. FAQ /
-  About / gallery / Features pages are not required. Auth and dashboard shells
+- Shared layout, i18n shared/app messages, chat widget, and lead-capture example
+  are the reusable surfaces being demonstrated here. Forks customize config,
+  site copy, Markdown, assets, theme, and home composition.
+- The default surface is **home + configurable blog + contact example**. Legal
+  and attribution pages are site-owned additions. FAQ / About / gallery /
+  Features pages are not required. Auth and dashboard shells
   belong in `cr-auth-starter` / Luna, not here. Brand scrape tooling lives in
   `cr-labs`.
 
 ## Actual visual profile
 
-The checked-in starter reference is intentionally neutral with a restrained
-pink action color:
+The checked-in reference uses one ink-and-paper palette selected in
+`config/site.json`: a warm paper background (`#FAF9F6`), ink foreground and
+primary (`#0E0F13`), white cards, and restrained neutral surfaces. Semantic
+status colors remain separate from the brand palette. The reference radius is
+`0.5rem`, with a marketing header, full footer, and ink ContextRocket wordmark.
 
-- light mode uses `#ffffff` background, `#0a0a0a` foreground, `#c2185b`
-  primary, `#880e4f` hover, and `#f5f5f5` muted surfaces;
-- dark mode uses `#0a0a0a` background, `#fafafa` foreground, white primary
-  controls, and `#ff3d75` as the brand accent with `#ff5c8c` hover;
-- status colors are semantic green `#10b981`, amber `#fbbf24`, and red
-  `#ef4444`; and
-- the reference radius is `0.5rem`, with a marketing header, full footer, icon
-  logo, system theme default, and theme toggle.
-
-This is a starter baseline, not a requirement that every fork use pink. A fork
-must record its own palette below in its own checkpoint and must not inherit the
-starter palette accidentally. Every palette change needs light/dark contrast,
-focus-ring, hover, disabled, and screenshot checks.
+This is a starter baseline, not a requirement that every fork use the same
+palette. A fork selects one complete theme that suits its brand; it does not
+need paired light and dark modes or a theme toggle. Check contrast, focus rings,
+hover and disabled states, and representative screenshots after a palette
+change.
 
 ## The stability rule for downstream forks
 
@@ -89,7 +86,7 @@ baseline:
 - `public/` assets, especially logos, fonts, favicons, profile images,
   and images referenced by Markdown; and
 - a current design-review capture for representative mobile and desktop pages
-  in each supported theme.
+  using the selected theme.
 
 Do not replace a ported or branded fork with the starter placeholder page while
 “syncing.” If a design disappears, stop the synchronization, inspect the diff,
@@ -124,7 +121,7 @@ the real brand or source-site content.
 - Keep errors, loading states, permissions, and authentication language
   especially plain; trust surfaces are not places for playful claims.
 - The embed chat widget should feel like a helpful site capability, not a repeated sales
-  banner. Its title, greeting, and icebreakers must come from configuration or
+  banner. Its title, greeting, and opening suggestions must come from configuration or
   localized messages (script tag + `features.chatFab`).
 - Use the existing shared i18n seams. Do not hardcode UI copy in a shared
   component or add a new locale bundle to a fork that does not serve it.
@@ -160,6 +157,8 @@ Stable URLs are part of structure. When a fork ports an existing site, preserve
 its public paths unless there is an explicit migration decision. Configure
 public discovery through `site.json.publicRoutes`; do not hand-maintain a fork
 copy of sitemap, robots, or `llms.txt`.
+For the blog entry, keep the route in that list to control publication and
+sitemap metadata; `blog.config.mjs` is the single source for its public path.
 
 Blog and post content is Markdown, one file per locale when translations are
 needed. It is not an i18n message bundle. Keep the collection path, configured
@@ -173,10 +172,10 @@ fallback behavior, but static builds must remain deterministic.
 
 Global visual identity belongs in `config/site.json`:
 
-- `theme.light` and `theme.dark` semantic tokens;
+- `theme.tokens` semantic palette;
 - `theme.radius` and typography choices;
 - logos, favicons, and other assets;
-- `chrome.defaultTheme`, navigation, and visible feature switches; and
+- navigation and visible feature switches; and
 - typed site configuration exposed by `src/config/site.config.ts`.
 
 Fork-specific composition belongs in `src/pages/[locale]/index.astro`, a
@@ -190,8 +189,8 @@ fragile selectors.
 
 - Use semantic theme tokens and the configured palette; do not scatter raw
   colors or one-off Tailwind values through pages.
-- Keep light and dark themes intentional and complete. A fork may default to
-  either theme, but both modes must remain legible and branded.
+- Keep the selected theme intentional and complete across every page and
+  interaction state.
 - Preserve logo treatment, transparent backgrounds, favicon choice, image
   crops, and font loading when synchronizing.
 - Follow the Tailwind spacing/type scale unless the fork's established brand
@@ -249,10 +248,10 @@ Use this protocol for a starter change and for every propagated fork update.
 6. **Run the product checks.** At minimum run `pnpm verify` (theme, i18n,
    typecheck, tests, build, smoke). The public starter is static-first; auth
    forks also run their backend/frontend checks.
-7. **Run a design review.** Capture representative mobile/desktop pages in
-   light/dark mode. Review the screenshot metadata so each image is tied to a
-   route, viewport, and theme. Check the hero, navigation, embed chat launcher,
-   content pages, legal pages, and any changed surface.
+7. **Run a design review.** Capture representative mobile and desktop pages in
+   the selected theme. Review the screenshot metadata so each image is tied to
+   a route and viewport. Check the hero, navigation, embed chat launcher, blog,
+   and any changed surface.
 8. **Commit by intent.** Keep a reusable parent change, a synchronization
    commit, and a fork-specific content/design change distinguishable. This makes
    recovery and future history cleanup safe.

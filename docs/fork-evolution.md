@@ -1,52 +1,79 @@
-# Fork customization (Astro static starter)
+# Fork and package model
 
-Forks change data, copy, theme, assets, and home composition. Shared behavior
-stays in the parent starter.
+Use `cr-starter` as the source template for a new branded Astro site. A fork
+owns its routes, content, assets, locale selection, theme, and page composition.
+The starter owns the default site shape and the shared static publishing
+contract. A fork should not copy the starter's test suite or demo-only pages
+when it does not use them.
 
-## Ownership
+## Three ownership layers
 
-Fork-owned:
+| Layer | Owns | Update path |
+| --- | --- | --- |
+| `cr-starter` | Astro template, route/SEO contract, starter-owned components, core behavior tests | GitHub template at creation; curated `.fork-sync.json` for shared source during the transition |
+| `cr-sdk` | Browser SDK, A2A transport, chat widget, lead capture clients, reusable UI packages | Versioned `@contextrocket/*` releases |
+| Brand fork | Site-specific copy, pages, assets, design tokens, configuration | Customer/site repository |
 
-- `config/site.json` (including `publicRoutes` and `locales`)
-- `blog.config.mjs`
-- `src/i18n/messages/site/<locale>.ts`
-- Markdown under `content/`
-- `src/pages/[locale]/index.astro` and other product-specific routes
-- `src/components/custom/`
-- `public/` assets
+The embed chat is already a good example: its source and behavior tests live in
+`cr-sdk/packages/embed-chat`; the static site consumes its built widget. Forks
+do not carry another copy of the chat test suite.
 
-Parent-owned:
+## Component package boundary
 
-- `src/layouts/`, `src/components/chrome/`, `src/lib/`
-- `src/config/site.config.ts`
-- `src/i18n/keys.ts`, `translator.ts`, `messages/shared/`, `messages/app/`
-- Hygiene endpoints (`sitemap.xml`, `robots.txt`, `llms.txt`, `feed.xml`,
-  security.txt)
+Astro and browser components that need to be shared by multiple forks should
+move into a small `@contextrocket/astro` package in `cr-sdk`. Candidate modules
+include a branded **Powered by** badge, organization-scoped lead capture, and
+cookie consent. The package should provide typed inputs, CSS-variable/slot
+styling hooks, and browser-safe behavior. It should not own page routes, brand
+copy, site content, or a site's overall theme.
 
-Browser SDK and embeds: public sibling **`cr-sdk`** (pnpm `file:` dependency).
+Keep each capability in `cr-starter` until two concrete consumers establish
+the public inputs. Then move the implementation and its behavior tests into
+`cr-sdk`, publish it, and switch the starter and forks to the package. This
+avoids publishing speculative APIs and keeps the package's contract grounded
+in real customer sites.
 
-## Default surface
+## Forking vs. consuming a package
 
-Keep forks close to: **home + blog + legal/hygiene (+ attribution)**. Do not
-require FAQ, About, gallery, or Features pages. Add brand pages only when the
-product needs them.
+Use a template copy for the whole website because customers need independent
+ownership of routes and visual composition. Use published SDK packages for
+capabilities that should evolve in place across websites. This gives customers
+a normal source repository to customize with Claude Code or Codex while shared
+chat/form behavior gets one tested implementation.
 
-## Locales
+During the transition, `.fork-sync.json` can copy selected production source
+paths from the starter. It should exclude the starter's test suite and preserve
+fork-owned configuration, pages, messages, content, and assets. Retire a sync
+path when its capability becomes a versioned package.
 
-The starter supports multiple locales. An English-only fork sets
-`locales: ["en"]` and keeps only `en.ts` in each message slice. After build,
-`scripts/flatten-single-locale.mjs` promotes `/en/` to `/` for clean URLs.
+## Test ownership
 
-## Sync note
+- `cr-starter` tests starter contracts and Astro component behavior.
+- `cr-sdk` tests published package contracts and browser behavior.
+- A fork checks its route allowlist, localization parity, static build, and
+  product-specific behavior. It should not rerun the starter or SDK suites.
 
-This Astro starter is **not** synchronized into `cr-auth-starter` or Luna.
-Those remain on a separate Next + API line. Brand forks of this starter may
-use a future copy-policy if needed; prefer pulling parent-owned paths
-deliberately rather than a repository-wide merge.
+## Current sync workflow
 
-## Promoting reusable behavior
+Inspect drift against a sibling checkout:
 
-1. Prototype in the fork.
-2. Move generic behavior into this parent.
-3. Add a typed config/variant seam and a test when practical.
-4. Update the fork to consume the seam; delete the duplicate.
+```bash
+node scripts/sync-parent.mjs --check --from-local=../cr-starter
+```
+
+The local mode fetches the configured parent branch from that checkout. It
+includes committed changes even if they have not been pushed; uncommitted
+working-tree changes are not Git fetch sources. If the parent checkout is
+dirty, the command warns that it will compare against committed changes only.
+Commit the parent-owned changes before applying the sync when those changes
+need to reach the fork.
+
+To apply the curated paths, make the fork worktree clean, then:
+
+```bash
+node scripts/sync-parent.mjs --apply --from-local=../cr-starter
+```
+
+Review the staged diff and verify the site before committing. The sync policy
+is transitional and should remain narrow; it must never replace the fork's
+brand composition or bring the starter's tests into a customer repository.

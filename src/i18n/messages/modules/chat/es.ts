@@ -46,7 +46,7 @@ export const chatEs = {
     connect: {
       required: {
         title: "Conecta ContextRocket",
-        body: "Establece NEXT_PUBLIC_CR_CHAT_MODE=live, NEXT_PUBLIC_CR_AGENT_URL y NEXT_PUBLIC_CONTEXTROCKET_HANDLE para activar A2A en vivo.",
+        body: "Establece PUBLIC_CR_CHAT_MODE=live, PUBLIC_CR_AGENT_URL y PUBLIC_CONTEXTROCKET_HANDLE para activar A2A en vivo.",
       },
     },
     stream: {

@@ -7,7 +7,7 @@ excerpt: "Site einrichten, Marke anpassen und den ersten Markdown-Beitrag veröf
 featured: true
 ---
 
-Der Starter ist eine statische Astro-Site mit Markdown-Blog, rechtlichen Seiten und optionalem ContextRocket-Chat-Widget. Konfiguration und Inhalte bearbeiten, neu bauen, veröffentlichen.
+Der Starter ist eine statische Astro-Site mit konfigurierbarem Markdown-Blog und optionalem ContextRocket-Chat-Widget. Konfiguration und Inhalte bearbeiten, neu bauen, veröffentlichen.
 
 ## Schnellstart
 
@@ -23,10 +23,8 @@ pnpm dev
 Bearbeite `config/site.json`:
 
 - `company.name` — Anzeigename in der Navigation
-- `company.legalName` — Footer und Rechtstexte
 - `company.tagline` / `company.description` — Startseite und SEO
 - `company.siteUrl` — kanonische URLs und Structured Data
-- `legal` — Firma, Adresse, Register, USt-IdNr., Datenschutzkontakt
 - `theme` — Farbtokens für Hell- und Dunkelmodus
 
 Marketingtexte liegen in `src/i18n/messages/site/`.

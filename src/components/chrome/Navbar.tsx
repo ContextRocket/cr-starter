@@ -1,11 +1,9 @@
 "use client";
 
-import React from "react";
 import { useState } from "react";
-import { Dialog, DialogPanel } from "@headlessui/react";
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { BrandLogo, type BrandLogoAsset } from "./BrandLogo";
-import { ThemeToggle } from "./ThemeToggle";
 import { LocaleSwitcher, type LocaleOption } from "./LocaleSwitcher";
 
 export interface NavLink {
@@ -19,17 +17,13 @@ export interface NavbarProps {
   logo?: BrandLogoAsset;
   brandName?: string;
   homeHref?: string;
-  navLabel?: string;
-  showThemeToggle?: boolean;
+  navLabel: string;
+  openMenuLabel: string;
+  closeMenuLabel: string;
   showLanguageSelector?: boolean;
   locale?: string;
   localeOptions?: LocaleOption[];
-  changeLanguageLabel?: string;
-  themeLabels?: {
-    toggle: string;
-    light: string;
-    dark: string;
-  };
+  changeLanguageLabel: string;
   className?: string;
 }
 
@@ -38,13 +32,13 @@ export function Navbar({
   logo,
   brandName = "",
   homeHref = "/",
-  navLabel = "Global",
-  showThemeToggle = true,
+  navLabel,
+  openMenuLabel,
+  closeMenuLabel,
   showLanguageSelector = true,
   locale = "en",
   localeOptions = [],
   changeLanguageLabel,
-  themeLabels,
   className = "",
 }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -97,13 +91,6 @@ export function Navbar({
                 changeLanguageLabel={changeLanguageLabel}
               />
             )}
-            {showThemeToggle && (
-              <ThemeToggle
-                labelToggle={themeLabels?.toggle}
-                labelLight={themeLabels?.light}
-                labelDark={themeLabels?.dark}
-              />
-            )}
           </div>
         </div>
 
@@ -115,18 +102,13 @@ export function Navbar({
               changeLanguageLabel={changeLanguageLabel}
             />
           )}
-          {showThemeToggle && (
-            <ThemeToggle
-              labelToggle={themeLabels?.toggle}
-              labelLight={themeLabels?.light}
-              labelDark={themeLabels?.dark}
-            />
-          )}
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-muted-foreground"
-            aria-label="Open menu"
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            aria-label={openMenuLabel}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-navigation-panel"
           >
             <Bars3Icon aria-hidden="true" className="size-6" />
           </button>
@@ -139,7 +121,8 @@ export function Navbar({
         className="lg:hidden"
       >
         <div className="fixed inset-0 z-50" />
-        <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-background px-6 py-6 text-foreground sm:max-w-sm sm:ring-1 sm:ring-border">
+        <DialogPanel id="mobile-navigation-panel" className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-background px-6 py-6 text-foreground sm:max-w-sm sm:ring-1 sm:ring-border">
+          <DialogTitle className="sr-only">{navLabel}</DialogTitle>
           <div className="flex items-center justify-between">
             <a
               href={homeHref}
@@ -157,8 +140,8 @@ export function Navbar({
             <button
               type="button"
               onClick={() => setMobileMenuOpen(false)}
-              className="-m-2.5 rounded-md p-2.5 text-muted-foreground"
-              aria-label="Close menu"
+              className="-m-2.5 rounded-md p-2.5 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              aria-label={closeMenuLabel}
             >
               <XMarkIcon aria-hidden="true" className="size-6" />
             </button>

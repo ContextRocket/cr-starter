@@ -11,8 +11,9 @@ local demos. Typed browser access uses `@contextrocket/sdk` (A2A +
 
 ## Configuration ownership
 
-1. `config/site.json` -- fork-owned identity, navigation, theme, assets, legal
-   data, chrome, feature switches, locales, and `publicRoutes`.
+1. `config/site.json` -- fork-owned identity, navigation, one semantic theme,
+   assets, chrome,
+   feature switches, locales, and `publicRoutes`.
 2. `src/i18n/messages/site/*.ts` -- fork-owned copy for the locales the site
    serves.
 3. `blog.config.mjs` -- public blog path/title and Markdown collection directory.
@@ -20,6 +21,9 @@ local demos. Typed browser access uses `@contextrocket/sdk` (A2A +
 5. `.env` / `PUBLIC_*` variables -- optional overrides (see `.env.example`).
 
 `publicRoutes` is the explicit allowlist for sitemap, robots, and llms.txt.
+For the `blog` entry, it controls publication and sitemap metadata; the public
+URL itself comes from `blog.config.mjs` so generated links cannot drift from
+the emitted Astro routes.
 
 ## Default surface (keep minimal)
 
@@ -27,16 +31,21 @@ local demos. Typed browser access uses `@contextrocket/sdk` (A2A +
 
 - Home (landing) -- fork-owned composition under `src/pages/[locale]/index.astro`
 - Blog (path from `blog.config.mjs`)
-- Website hygiene: privacy, terms, cookies, impressum (feature-flagged),
-  attribution (for stock image credits), cookie banner, `sitemap.xml`,
-  `robots.txt`, `llms.txt`, `feed.xml`, `.well-known/security.txt`
+- Contact (localized SDK lead-capture example; demo mode by default)
+- Website discovery: `sitemap.xml`, `robots.txt`, `llms.txt`, `feed.xml`,
+  `.well-known/security.txt`
+- Optional cookie consent banner (off unless explicitly enabled)
 - Multi-locale support (same convention as before). A fork may set
   `locales: ["en"]` only.
 
+Theme tokens define one brand palette in `theme.tokens`; use semantic roles for
+different page surfaces. The starter does not require paired light/dark themes
+or an appearance toggle.
+
 **Out by default (do not reintroduce as required pages)**
 
-- FAQ, About, Features-as-a-page, gallery/portfolio demos, auth/dashboard,
-  testimonials
+- Privacy, terms, cookies, impressum, attribution, FAQ, About,
+  Features-as-a-page, gallery/portfolio demos, auth/dashboard, testimonials
 
 Forks add brand-specific pages under `src/pages/` or `src/components/custom/`
 when needed. Do not force FAQ/About onto every port.
@@ -76,16 +85,19 @@ pnpm install
 pnpm dev   # http://localhost:3100
 ```
 
-Before committing: `pnpm run verify` (behavior IDs, theme, i18n, typecheck,
-unit behavior tests, build, smoke routes).
+In `cr-starter`, `pnpm run verify` checks behavior IDs, theme, i18n, types,
+unit behavior tests, the static build, and smoke routes. Brand forks have their
+own `verify` scripts; check their `package.json` before relying on the same
+gates. Do not run the test suite unless asked.
 
 ## Architecture and testing
 
 - `src/ARCHITECTURE.md` — state kinds and ownership seams for this static site.
 - `docs/testing-doctrine.md` — behavior-first Vitest rules (from cr-landing,
   adapted; no Cucumber).
-- `features/*/BEHAVIOR.md` — owner-readable contracts with stable IDs.
-- `__tests__/features/` — Given/When/Then tests via `__tests__/support/bdd.ts`.
+- `features/*/BEHAVIOR.md` — starter contracts with stable IDs.
+- `__tests__/features/` — starter Given/When/Then tests via
+  `__tests__/support/bdd.ts`. Forks can add checks for their own behavior.
 
 Do not assert exact marketing copy. Prefer pure helpers and observable outcomes.
 Product-app state (Query / Zustand / nuqs / XState) belongs in `cr-auth-starter`
@@ -104,8 +116,12 @@ Product-app state (Query / Zustand / nuqs / XState) belongs in `cr-auth-starter`
 ## Embed widget
 
 ```bash
-pnpm run build:widget
+pnpm run build:embeds
 ```
+
+This optional contributor command expects a sibling `../cr-sdk` checkout and
+refreshes both the chat widget and lead-capture bridge. Normal starter builds
+use the checked-in assets and do not need that checkout.
 
 Install on any site:
 
@@ -118,4 +134,5 @@ Install on any site:
 ></script>
 ```
 
-Local builds copy the script to `public/embed/widget.js`.
+The chat script is served from `public/embed/widget.js`; the contact example
+loads `public/embed/lead-capture.js`.

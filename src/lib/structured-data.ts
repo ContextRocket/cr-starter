@@ -50,7 +50,6 @@ function buildOrganization(origin: string): JsonLdNode {
     "@type": "Organization",
     "@id": `${origin}/#organization`,
     name: siteConfig.companyName,
-    legalName: siteConfig.legalName,
     url: origin,
   };
 

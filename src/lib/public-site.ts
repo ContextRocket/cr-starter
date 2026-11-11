@@ -179,8 +179,6 @@ export function buildLlmsTxt(): string {
     "## Scope",
     "This is the only root public-site LLM context file. Product/API discovery remains separate.",
     "",
-    `- Email: ${siteConfig.contactEmail}`,
-    `- Legal entity: ${siteConfig.legalName}`,
     "",
   ].join("\n");
 }
@@ -199,14 +197,12 @@ function routeAlternates(route: PublicRoute): Record<string, string> | undefined
 export function buildSitemapEntries(): PublicSitemapEntry[] {
   const locales = getActiveLocales();
   const routes = enabledPublicRoutes().filter((r) => r.indexable !== false);
-  const lastModified = new Date().toISOString();
   const entries: PublicSitemapEntry[] = [];
 
   for (const route of routes) {
     const defaultLocale = getDefaultLocale();
     entries.push({
       loc: absoluteUrl(routeHref(defaultLocale, route)),
-      lastModified,
       changeFrequency: route.changeFrequency,
       priority: route.priority,
       alternates: routeAlternates(route),
@@ -237,9 +233,6 @@ export function buildSitemapEntries(): PublicSitemapEntry[] {
             : undefined;
         entries.push({
           loc: absoluteUrl(blogPostHref(defaultLocale, post.slug)),
-          lastModified: post.date
-            ? new Date(post.date).toISOString()
-            : lastModified,
           changeFrequency: "monthly",
           priority: postPriority,
           alternates: languages as Record<string, string> | undefined,

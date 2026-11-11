@@ -10,10 +10,10 @@ And single-locale forks may use unprefixed paths per site config.
 Never emit a bare locale with a missing trailing slash where the static export
 contract requires directories.
 
-## CHROME-002: Footer shows legal name and year
+## CHROME-002: Footer shows configured name and year
 
-Given `company.legalName` and the current calendar year,
+Given the configured company name and the current calendar year,
 When the footer renders,
-Then the copyright line includes a space between the year and the legal name.
+Then the copyright line includes a space between the year and the configured name.
 
 Never concatenate year and name without a separator.

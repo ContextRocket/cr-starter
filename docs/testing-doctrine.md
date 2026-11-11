@@ -43,7 +43,7 @@ slug, a path). Message files change constantly; copy-bound tests are brittle.
 ## 4. Tiered rigor
 
 - Tier 0: pure presentational chrome with no branches
-- Tier 1: pure helpers, path builders, legal completeness, blog locale resolution
+- Tier 1: pure helpers, path builders, blog locale resolution
 - Tier 2: multi-step journeys (cookie consent → analytics gate; widget open →
   send) — prefer Playwright when a real browser is required
 

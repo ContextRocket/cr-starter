@@ -1,0 +1,15 @@
+---
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<button
+  type="button"
+  data-open-cookie-settings
+  class="text-inherit underline underline-offset-4 transition-colors hover:text-foreground"
+>
+  {label}
+</button>
