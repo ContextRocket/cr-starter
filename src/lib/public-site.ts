@@ -221,7 +221,10 @@ export function buildSitemapEntries(): PublicSitemapEntry[] {
 
   if (siteConfig.features.blog) {
     const blogRoute = routes.find((r) => r.key === "blog");
-    const postPriority = Math.max(0.1, (blogRoute?.priority ?? 0.7) - 0.1);
+    const postPriority = Math.max(
+      0.1,
+      Number(((blogRoute?.priority ?? 0.7) - 0.1).toFixed(2)),
+    );
     const defaultLocale = getDefaultLocale();
     const seen = new Set<string>();
     for (const locale of locales) {
