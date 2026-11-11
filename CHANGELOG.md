@@ -14,7 +14,8 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Reusable site integration settings for Google Tag Manager, Google Analytics,
   PostHog, and additional key-value integrations.
 - Shared ContextRocket branding components, optional cookie consent, and
-  generated redirect files for static hosts.
+  generated redirect files for static hosts. Shared brand fonts and logos load
+  from the ContextRocket CDN instead of shipping duplicate files with each site.
 
 ### Changed
 
