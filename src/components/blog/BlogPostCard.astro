@@ -2,6 +2,7 @@
 import type { SupportedLocale } from "@/i18n/locales";
 import type { BlogPostMeta } from "@/lib/blog";
 import { blogPostHref } from "@/lib/paths";
+import { formatBlogDate } from "@/lib/formatting";
 
 interface Props {
   post: BlogPostMeta;
@@ -32,7 +33,7 @@ const featured = variant === "featured";
         {post.title}
       </h2>
     )}
-    <time class="mt-2 text-sm text-text-tertiary" datetime={post.date}>{post.date}</time>
+    <time class="mt-2 text-sm text-text-tertiary" datetime={post.date}>{formatBlogDate(post.date, locale)}</time>
     <p class:list={["h-[4.5rem] shrink-0 line-clamp-3 text-sm leading-6 text-text-secondary", featured ? "mt-3" : "mt-4"]}>
       {post.excerpt ?? ""}
     </p>
