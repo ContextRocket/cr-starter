@@ -89,7 +89,12 @@ pnpm dev   # http://localhost:3100
 In `cr-starter`, `pnpm run verify` checks behavior IDs, theme, i18n, types,
 unit behavior tests, the static build, and smoke routes. Brand forks have their
 own `verify` scripts; check their `package.json` before relying on the same
-gates. Do not run the test suite unless asked.
+gates. For routine copy, config, or page regeneration, run `pnpm run build` and
+add only a focused check when the changed behavior needs it. Use `verify` for
+shared starter contracts or release checks, not every fork edit. Keep shared
+components and their broad validation in `cr-sdk` or `cr-starter`; keep brand
+fork changes small. Playwright belongs to ContextRocket's browser crawl/probe
+worker, not the Astro build path. Do not run the test suite unless asked.
 
 ## Architecture and testing
 
