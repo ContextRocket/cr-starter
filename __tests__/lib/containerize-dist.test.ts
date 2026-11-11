@@ -14,6 +14,7 @@ import { it } from "vitest";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 
 it("rewrites meta refresh targets along with links for a mounted container build", () => {
+  mkdirSync(path.join(root, "scratchpad"), { recursive: true });
   const scratch = mkdtempSync(path.join(root, "scratchpad/containerize-dist-"));
   const dist = path.join(scratch, "dist");
   mkdirSync(dist);
