@@ -27,10 +27,14 @@ S3, or any static host -- without forking a full Next app shell.
 - Hygiene files: sitemap, robots, llms.txt, feed.xml, security.txt
 
 Use `pnpm run build` for a customer deployment to Cloudflare Pages, CloudFront,
-S3, Netlify, or another static host. ContextRocket-hosted forks use a separate
-container build and operator publishing workflow; it does not change the
-public site's canonical paths. Publishing to ContextRocket's CDN is not needed
-to connect a site to the ContextRocket API.
+S3, Netlify, or another static host. An organization may also publish a built
+site to its ContextRocket CDN using the Node-only
+`@contextrocket/site-publisher` package from `cr-sdk`; that path needs a private
+admin-scoped organization machine token and does not change canonical paths.
+The package is not yet released on npm. Platform-operator tasks such as
+publishing shared brand assets remain in the ContextRocket operator CLI.
+Publishing to ContextRocket's CDN is not needed to connect a site to the
+ContextRocket API.
 
 ## Blog-only mounting
 

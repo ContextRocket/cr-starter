@@ -90,9 +90,30 @@ and build process live in `cr-sdk`.
 
 ## Publishing to the ContextRocket CDN
 
-Publishing a site to an organization's CDN is a CLI operation, separate from
-the browser credentials above. Each customer must use a machine credential
-minted for their own organization. Keep it in the local CLI environment or
-their deployment secret store; never put it in `PUBLIC_*` variables or the
-generated site. The shared `contextrocket` operator token is not a customer
-credential.
+Publishing a site to an organization's CDN is separate from browser
+integration. The Node-only `@contextrocket/site-publisher` package is being
+prepared in `cr-sdk`; it is not available from npm yet. It calls the existing
+org-scoped publish and release-status APIs, so static sites can use TypeScript
+and Node without depending on Python or GitHub Actions.
+
+For local development while the package is unpublished, build it from an
+adjacent `cr-sdk` checkout and run its CLI directly:
+
+```bash
+pnpm --dir ../cr-sdk install
+pnpm --dir ../cr-sdk/packages/site-publisher run build
+node ../cr-sdk/packages/site-publisher/dist/cli.js ./dist \
+  --prefix blog \
+  --env-file ../cr-vault/.env.prod
+```
+
+The CLI resolves the handle from `config/site.json` (`contextrocket.handle`),
+or from `CR_ORG_HANDLE` / `PUBLIC_CONTEXTROCKET_HANDLE`; `--org` can override
+it. The handle selects the organization but does not authorize publishing.
+The CLI currently requires a private, admin-scoped machine token minted for
+that organization. Keep it in the local CLI environment or a deployment secret
+store; never put it in `PUBLIC_*` variables or the generated site. The shared
+`contextrocket` operator token is not a customer credential. A narrower
+site-publish credential and Node/TypeScript issuance flow are product follow-
+ups. Until the package is published, customers can deploy the same static
+`dist/` tree with their own CDN tooling.
