@@ -130,10 +130,14 @@ deduplicate a request whose response was lost in transit.
 
 Before enabling live submission, create the organization, configure its handle,
 and add each exact deployed site origin in ContextRocket under **Settings →
-Organization → General → Contact form websites**. The public contact form
-endpoint supports custom-origin preflight and preserves the submitted intent.
-It resolves the organization from the handle and enforces that organization's
-contact-form origin policy. No browser API key is required or sent, so contact-only sites
+Organization → General → Contact form websites**. Include each hostname visitors
+use, such as the apex and `www` origins when both are active. The public contact
+form endpoint supports custom-origin preflight and preserves the submitted
+intent. It resolves the organization from the handle and enforces that
+organization's contact-form origin policy. No browser API key is required or
+sent, so contact-only sites can use the form without creating a chat credential.
+Chat API-key rotation does not revoke a separately registered contact-form
+origin.
 can use the form without creating a chat credential. Chat API-key rotation
 does not revoke a separately registered contact-form origin.
 
