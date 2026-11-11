@@ -1,5 +1,9 @@
 /**
- * Current A2A Agent Card builder -- pure utility for /.well-known/agent-card.json.
+ * Static A2A discovery fallback for /.well-known/agent-card.json.
+ *
+ * This build-time card cannot include current organization policy, skills, or
+ * optional signed trust metadata. Verified ContextRocket origins should proxy
+ * this path to the API; see docs/integrating-with-contextrocket.md.
  */
 
 import { siteConfig } from "@/config/site.config";

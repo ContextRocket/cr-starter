@@ -11,7 +11,9 @@ surfaces.
 - sitemap.xml lists the generated public routes.
 - llms.txt provides a concise AI-readable site map.
 - The configured blog path also serves an editorial llms.txt with its published articles.
-- /.well-known/agent-card.json exposes the current A2A agent card contract.
+- `/.well-known/agent-card.json` is a generic static A2A discovery fallback.
+  On a verified ContextRocket site origin, proxy this path to the API so the
+  live, policy-filtered organization card takes precedence over the static file.
 - /.well-known/mcp.json is a convenience manifest describing the hosted
   organization-scoped ContextRocket MCP surface when an API base and
   organization handle are configured.
