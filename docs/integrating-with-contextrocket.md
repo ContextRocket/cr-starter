@@ -75,10 +75,14 @@ any form field starts a new submission and key. This lets the API safely
 deduplicate a request whose response was lost in transit.
 
 Before enabling live submission, configure the organization handle and allow
-the deployed site origin in ContextRocket. The public contact form endpoint
-supports the custom-origin preflight and preserves the submitted intent. No
-browser API key is sent; the API resolves the organization from the handle and
-enforces origin policy.
+the exact deployed site origin in ContextRocket. The public contact form
+endpoint supports the custom-origin preflight and preserves the submitted
+intent. No browser API key is sent; the API resolves the organization from the
+handle and enforces origin policy. Today, ContextRocket reads that origin list
+from an active website API key for the organization, even when the site uses
+contact capture without chat. The API key is configuration for origin
+admission; it is not sent with the contact request. This coupling is a product
+seam being tracked for org-level site-origin settings.
 
 The public npm packages are not yet available. The starter carries generated
 artifacts so the public clone remains installable; the canonical source, tests,
