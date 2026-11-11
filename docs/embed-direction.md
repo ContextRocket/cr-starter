@@ -59,7 +59,14 @@ copied into `public/embed/`.
 
 ```ts
 import { createCRClient, resolveCRConfig, streamTask } from "@contextrocket/sdk";
+import { parseAgentResponsePart } from "@contextrocket/sdk/json-render";
 ```
+
+The SDK owns the bounded JSON Render v2 contract and validator used by the
+chat widget. `createCRClient()` preserves validated `agent_ui` cards on typed
+A2A artifact events; site renderers can bind those cards to their own UI while
+the standalone widget uses the same validator and catalog. Unknown or malformed
+data parts are omitted.
 
 Future widgets are additional `packages/embed-*` in `cr-sdk`.
 
