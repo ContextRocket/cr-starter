@@ -27,6 +27,20 @@ export type BlogPost = BlogPostMeta & {
   bodyMarkdown: string;
 };
 
+function addDeferredImageHints(html: string): string {
+  return html.replace(/<img\b[^>]*>/gi, (tag) => {
+    let next = tag;
+    const hasExplicitPriority = /\bfetchpriority\s*=\s*["']?high\b/i.test(next);
+    if (!/\bloading\s*=/i.test(next) && !hasExplicitPriority) {
+      next = next.replace(/^<img\b/i, '<img loading="lazy"');
+    }
+    if (!/\bdecoding\s*=/i.test(next)) {
+      next = next.replace(/^<img\b/i, '<img decoding="async"');
+    }
+    return next;
+  });
+}
+
 function contentRoot(): string {
   return path.join(process.cwd(), siteConfig.blog.contentDir);
 }
@@ -77,7 +91,9 @@ function readPostFile(
     songUrl: data.songUrl ? String(data.songUrl) : undefined,
     locale,
     bodyMarkdown: content,
-    bodyHtml: marked.parse(content, { async: false }) as string,
+    bodyHtml: addDeferredImageHints(
+      marked.parse(content, { async: false }) as string,
+    ),
   };
 }
 
