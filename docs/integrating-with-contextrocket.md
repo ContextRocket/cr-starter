@@ -41,6 +41,13 @@ when handling each turn. Treat Agent Card skills as discovery information, not
 as a permission grant. These policy checks do not change the A2A request or
 stream event contract used by the widget or SDK.
 
+Use `GET https://api.contextrocket.com/agent-card/{handle}.json` for a
+handle-specific public organization card. The API's generic
+`/.well-known/agent-card.json` describes ContextRocket itself and does not
+select an organization. The embed widget reads the handle-specific card to
+populate its opening suggestions; A2A turns still go directly to
+`/api/agent/a2a`.
+
 For a site to answer live questions, publish the organization's guest-safe
 context in ContextRocket and configure the deployed site origin there. Demo
 mode remains the default so clean static builds can work offline.
@@ -51,10 +58,10 @@ The static build also emits `/.well-known/agent-card.json` as a standalone
 fallback. It points to the ContextRocket A2A endpoint but cannot reflect the
 organization's current policy-filtered skills or optional signed trust
 metadata on the live organization card. When a site origin is verified in
-ContextRocket, route `/.well-known/agent-card.json` through the CDN/reverse proxy to the API
-before the static file is considered, preserving the original host in `Host`
-or `X-Forwarded-Host`. The API then returns the authoritative organization
-card for that verified origin. Route `/api/agent/a2a` and
+ContextRocket, route `/.well-known/agent-card.json` through the CDN/reverse
+proxy to the API before the static file is considered, preserving the original
+host in `Host` or `X-Forwarded-Host`. The API then returns the authoritative
+organization card for that verified origin. Route `/api/agent/a2a` and
 `/.well-known/oauth-protected-resource/api/agent/a2a` to the API as well. Do not
 cache A2A requests or streaming responses. Without this proxy, the static card
 is only a generic discovery fallback and must not be treated as proof of the
