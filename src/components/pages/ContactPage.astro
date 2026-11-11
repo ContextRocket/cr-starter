@@ -18,6 +18,7 @@ const labels = {
   name: t("contact.name"), email: t("contact.email"), phone: t("contact.phone"),
   intent: t("contact.intent"), contact: t("contact.intentContact"), demo: t("contact.intentDemo"),
   appointment: t("contact.intentAppointment"), support: t("contact.intentSupport"),
+  other: t("contact.intentOther"),
   message: t("contact.message"), consent: t("contact.consent"), submit: t("contact.submit"),
   sending: t("contact.sending"), demoResult: t("contact.demoResult"), success: t("contact.success"),
   failure: t("contact.failure"), unavailable: t("contact.liveUnavailable"),
@@ -56,6 +57,7 @@ const jsonLdExtra = [buildBreadcrumbListJsonLd([
             <option value="demo">{labels.demo}</option>
             <option value="appointment">{labels.appointment}</option>
             <option value="support">{labels.support}</option>
+            <option value="other">{labels.other}</option>
           </select>
         </label>
         <label class="block text-sm font-medium" for="contact-message">{labels.message}

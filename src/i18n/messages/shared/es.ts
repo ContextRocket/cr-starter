@@ -50,6 +50,7 @@ export const sharedEs: LocaleMessages<typeof sharedEn> = {
     intentDemo: "Solicitar una demostración",
     intentAppointment: "Concertar una conversación",
     intentSupport: "Soporte",
+    intentOther: "Otro asunto",
     message: "¿Cómo podemos ayudarte?",
     consent: "Acepto que contacten conmigo sobre esta solicitud.",
     submit: "Enviar mensaje",

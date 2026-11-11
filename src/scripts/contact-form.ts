@@ -8,7 +8,7 @@ type ContactFormLabels = {
   submit: string;
 };
 
-type ContactIntent = "contact" | "appointment" | "demo" | "support";
+type ContactIntent = "contact" | "appointment" | "demo" | "support" | "other";
 
 function loadContactSdk(src: string): Promise<NonNullable<Window["ContextRocketSDK"]>> {
   if (window.ContextRocketSDK) return Promise.resolve(window.ContextRocketSDK);

@@ -47,6 +47,7 @@ export const sharedEn = {
     intentDemo: "Request a demo",
     intentAppointment: "Book a conversation",
     intentSupport: "Support",
+    intentOther: "Something else",
     message: "How can we help?",
     consent: "I agree to be contacted about this request.",
     submit: "Send message",
