@@ -28,6 +28,7 @@ export function blogPathAlias() {
     name: "blog-path-alias",
     hooks: {
       "astro:config:setup": ({ injectRoute, logger }) => {
+        if (siteConfig.features?.blog !== true) return;
         const base = blogBasePath().replace(/^\//, "").replace(/\/+$/, "");
         if (!base) return;
         logger.info(`Registering blog at /${base}`);
