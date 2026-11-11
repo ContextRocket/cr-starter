@@ -17,6 +17,7 @@ interface Props {
   className?: string;
   containerClassName?: string;
   showPoweredByBadge?: boolean;
+  poweredByTone?: "ink" | "white";
   showCookieSettings?: boolean;
   cookieSettingsLabel?: string;
 }
@@ -27,6 +28,7 @@ const {
   variant = "full",
   className = "",
   showPoweredByBadge = true,
+  poweredByTone = "ink",
   showCookieSettings = false,
   cookieSettingsLabel = "",
   containerClassName = "max-w-screen-md px-4 sm:px-6",
@@ -62,7 +64,7 @@ const year = new Date().getFullYear();
       </div>
       {showPoweredByBadge !== false && (
         <div class={`mx-auto flex justify-center px-4 pb-6 ${containerClassName}`}>
-          <ContextRocketBadge variant="inline" />
+          <ContextRocketBadge variant="inline" tone={poweredByTone} />
         </div>
       )}
     </footer>
@@ -107,7 +109,7 @@ const year = new Date().getFullYear();
           </div>
           {showPoweredByBadge !== false && (
             <div class="mt-6">
-              <ContextRocketBadge />
+            <ContextRocketBadge tone={poweredByTone} />
             </div>
           )}
         </div>

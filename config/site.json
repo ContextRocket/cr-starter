@@ -79,6 +79,7 @@
     "header": "marketing",
     "footer": "full",
     "logoVariant": "wordmark",
+    "poweredByTone": "ink",
     "showBrandLogo": true,
     "cookieBannerStyle": "bar",
     "exemptPrefixes": []

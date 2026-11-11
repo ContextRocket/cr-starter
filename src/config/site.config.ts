@@ -42,6 +42,7 @@ const siteDataExt = siteData as typeof siteData & {
 };
 const siteChrome = siteData.chrome as typeof siteData.chrome & {
   exemptPrefixes?: readonly string[];
+  poweredByTone?: "ink" | "white";
 };
 const contextRocketHandle = env(
   "PUBLIC_CONTEXTROCKET_HANDLE",
@@ -112,6 +113,7 @@ export const siteConfig = {
       ["full", "minimal", "none"],
     ),
     logoVariant: siteData.chrome.logoVariant as "icon" | "wordmark",
+    poweredByTone: (siteChrome.poweredByTone === "white" ? "white" : "ink") as "ink" | "white",
     showBrandLogo: siteData.chrome.showBrandLogo,
     cookieBannerStyle: envEnum<"bar" | "card" | "terminal">(
       "PUBLIC_COOKIE_BANNER_STYLE",

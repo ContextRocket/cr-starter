@@ -14,7 +14,8 @@ Fork design is data-first. Start with `config/site.json`:
   brand. Use semantic roles consistently across page surfaces;
 - `theme.radius` controls the component radius system;
 - `assets` points at fork-owned logos and images;
-- `chrome` controls the header/footer presentation; and
+- `chrome` controls the header/footer presentation, including
+  `poweredByTone` (`ink` for light surfaces, `white` for dark surfaces); and
 - `nav` controls links and public feature flags.
 
 Typography uses the same theme seam: set `--font-sans`, `--font-mono`, or
