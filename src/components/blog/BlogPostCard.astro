@@ -24,16 +24,16 @@ const featured = variant === "featured";
   )}
   <div class:list={["flex flex-1 flex-col", featured ? "p-5" : "p-5 sm:p-6"]}>
     {featured ? (
-      <h3 class="line-clamp-2 min-h-14 text-lg font-semibold leading-7 tracking-tight text-card-foreground group-hover:underline">
+      <h3 class="h-14 shrink-0 line-clamp-2 text-lg font-semibold leading-7 tracking-tight text-card-foreground group-hover:underline">
         {post.title}
       </h3>
     ) : (
-      <h2 class="line-clamp-2 min-h-14 text-xl font-semibold leading-7 tracking-tight text-card-foreground group-hover:underline">
+      <h2 class="h-14 shrink-0 line-clamp-2 text-xl font-semibold leading-7 tracking-tight text-card-foreground group-hover:underline">
         {post.title}
       </h2>
     )}
     <time class="mt-2 text-sm text-text-tertiary" datetime={post.date}>{post.date}</time>
-    <p class:list={["line-clamp-3 text-sm leading-6 text-text-secondary", featured ? "mt-3" : "mt-4", "min-h-[4.5rem]"]}>
+    <p class:list={["h-[4.5rem] shrink-0 line-clamp-3 text-sm leading-6 text-text-secondary", featured ? "mt-3" : "mt-4"]}>
       {post.excerpt ?? ""}
     </p>
   </div>
