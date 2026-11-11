@@ -14,6 +14,8 @@ import "../styles/global.css";
 
 interface Props {
   title?: string;
+  /** Use the supplied title verbatim when it is already a complete document title. */
+  titleIsExact?: boolean;
   description?: string;
   locale: SupportedLocale;
   path?: string;
@@ -30,7 +32,9 @@ interface Props {
 const { locale, path = "/" } = Astro.props;
 const pageTitle = Astro.props.title;
 const titleSeparator = ` ${siteConfig.titleSeparator} `;
-const title = pageTitle
+const title = Astro.props.titleIsExact && pageTitle
+  ? pageTitle
+  : pageTitle
   ? pageTitle === siteConfig.companyName
     ? pageTitle
     : `${pageTitle}${titleSeparator}${siteConfig.companyName}`
