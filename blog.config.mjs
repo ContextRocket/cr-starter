@@ -19,9 +19,11 @@
  *                the public URL.
  *   feedPath — public URL for the RSS feed. Default "/feed.xml"; set this
  *              when the blog is mounted below a product-owned public origin.
+ *   postTitleSuffix — optional brand-specific suffix for article page titles.
+ *                     Omit it to use the site's company name.
  */
 
-/** @typedef {{ basePath: string, title: string, contentDir: string, feedPath?: string }} BlogConfig */
+/** @typedef {{ basePath: string, title: string, contentDir: string, feedPath?: string, postTitleSuffix?: string }} BlogConfig */
 
 /**
  * Raw blog settings. EDIT HERE to publish the blog under a custom path/name.

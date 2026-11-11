@@ -138,6 +138,7 @@ export const siteConfig = {
     // paths Astro did not emit.
     basePath: blogConfig.basePath,
     title: blogConfig.title,
+    postTitleSuffix: blogConfig.postTitleSuffix,
     contentDir: blogContentDir(),
     feedPath: blogConfig.feedPath ?? "/feed.xml",
   },
