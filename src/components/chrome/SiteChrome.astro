@@ -33,6 +33,7 @@ const navLinks = ((siteConfig.nav.links ?? []) as NavLinkConfig[])
       label: t(link.labelKey),
       href,
       variant: (link.variant as "default" | "primary" | undefined) ?? "default",
+      current: false,
     };
   });
 
@@ -49,7 +50,18 @@ if (siteConfig.features.blog && !hasBlogInNav) {
     label: siteConfig.blog.title,
     href: blogHref,
     variant: "default",
+    current: false,
   });
+}
+
+const currentPath = normalizePath(localizedHref(locale, path));
+for (const link of navLinks) {
+  const linkPath = normalizePath(link.href);
+  link.current =
+    link.href.startsWith("/") &&
+    !link.href.includes("#") &&
+    (currentPath === linkPath ||
+      (linkPath !== "/" && currentPath.startsWith(`${linkPath}/`)));
 }
 
 const footerLinks = ((siteConfig.nav.footerLinks ?? []) as NavLinkConfig[])

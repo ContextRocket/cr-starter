@@ -69,6 +69,7 @@ const logoClass = logoVariant === "wordmark" ? "h-7 w-auto" : "h-7 w-7";
           link.variant === "primary" ? (
             <a
               href={link.href}
+              aria-current={link.current ? "page" : undefined}
               class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             >
               {link.label}
@@ -76,7 +77,11 @@ const logoClass = logoVariant === "wordmark" ? "h-7 w-auto" : "h-7 w-7";
           ) : (
             <a
               href={link.href}
-              class="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              aria-current={link.current ? "page" : undefined}
+              class:list={[
+                "text-sm transition-colors hover:text-foreground",
+                link.current ? "font-medium text-foreground" : "text-muted-foreground",
+              ]}
             >
               {link.label}
             </a>
