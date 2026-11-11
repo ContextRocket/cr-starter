@@ -66,9 +66,12 @@ pnpm run build:embeds
 ```
 
 The starter's `/contact/` example runs safely in demo mode by default. To send
-contact form submissions to an organization, set
-`PUBLIC_CR_CONTACT_FORM_MODE=live` and `PUBLIC_CONTEXTROCKET_HANDLE` after the
-ContextRocket contact endpoint is enabled for the deployment origin.
+contact form submissions to an organization, add the exact deployed website
+origins in ContextRocket under **Settings → Organization → General → Contact
+form websites**, then set `PUBLIC_CR_CONTACT_FORM_MODE=live` and
+`PUBLIC_CONTEXTROCKET_HANDLE`. Add each hostname visitors use, including both
+the apex and `www` versions when both are active. Contact submissions resolve
+the organization from its handle and do not require a chat API key.
 
 This optional contributor command rebuilds the widget from a sibling
 `../cr-sdk` checkout. The checked-in `public/embed/widget.js` is used by normal
