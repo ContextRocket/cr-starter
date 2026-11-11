@@ -33,6 +33,17 @@ function envEnum<T extends string>(key: string, fallback: T, options: T[]): T {
 }
 
 const siteDataExt = siteData as typeof siteData & {
+  company: typeof siteData.company & { legalName?: string };
+  assets: typeof siteData.assets & {
+    wordmarkDark?: string;
+    logoDark?: string;
+  };
+  features: typeof siteData.features & {
+    gallery?: boolean;
+    attribution?: boolean;
+    testimonials?: boolean;
+    cookieConsent?: "auto" | "on" | "off";
+  };
   defaultLocale?: string;
   contextrocket?: { handle?: string };
   homeMetaDescription?: string;
@@ -42,6 +53,11 @@ const siteDataExt = siteData as typeof siteData & {
   contactForm?: { mode?: "demo" | "live"; scriptSrc?: string };
   integrations?: Record<string, SiteIntegrationConfig>;
   integrationConsentMode?: "auto" | "always" | "external";
+  gallery?: {
+    manifestPath?: string;
+    assetBaseUrl?: string;
+    profileImageId?: string;
+  };
 };
 const siteChrome = siteData.chrome as typeof siteData.chrome & {
   exemptPrefixes?: readonly string[];
@@ -59,6 +75,7 @@ const contextRocketApiBase = env(
 export const siteConfig = {
   trailingSlash: (siteData as typeof siteData & { trailingSlash?: "always" | "never" }).trailingSlash ?? "always",
   companyName: env("PUBLIC_SITE_NAME", siteData.company.name),
+  legalName: siteDataExt.company.legalName,
   tagline: siteData.company.tagline,
   description: siteData.company.description,
   siteUrl: env("PUBLIC_SITE_URL", siteData.company.siteUrl).replace(/\/$/, ""),
@@ -86,12 +103,23 @@ export const siteConfig = {
     wordmark:
       (siteData.assets as { wordmark?: string }).wordmark ??
       siteData.assets.logo,
+    wordmarkDark:
+      siteDataExt.assets.wordmarkDark ?? siteDataExt.assets.logoDark,
   },
   social: siteData.social,
 
   features: {
     blog: envBool("PUBLIC_BLOG_ENABLED", siteData.features.blog),
     chatFab: envBool("PUBLIC_CHAT_FAB_ENABLED", siteData.features.chatFab),
+    gallery: envBool("PUBLIC_GALLERY_ENABLED", siteDataExt.features.gallery ?? false),
+    attribution: envBool(
+      "PUBLIC_ATTRIBUTION_ENABLED",
+      siteDataExt.features.attribution ?? false,
+    ),
+    testimonials: envBool(
+      "PUBLIC_TESTIMONIALS_ENABLED",
+      siteDataExt.features.testimonials ?? false,
+    ),
     languageSelector: envBool(
       "PUBLIC_LANGUAGE_SELECTOR_ENABLED",
       siteData.features.languageSelector,
@@ -100,10 +128,10 @@ export const siteConfig = {
       "PUBLIC_POWERED_BY_BADGE",
       siteData.features.poweredByBadge,
     ),
-    cookieConsent: envEnum<"on" | "off">(
+    cookieConsent: envEnum<"auto" | "on" | "off">(
       "PUBLIC_COOKIE_CONSENT",
-      siteData.features.cookieConsent as "on" | "off",
-      ["on", "off"],
+      siteDataExt.features.cookieConsent ?? "off",
+      ["auto", "on", "off"],
     ),
   },
 
@@ -131,6 +159,18 @@ export const siteConfig = {
 
   nav: siteData.nav,
   publicRoutes: siteData.publicRoutes,
+
+  gallery: {
+    manifestPath: env(
+      "GALLERY_MANIFEST_PATH",
+      siteDataExt.gallery?.manifestPath ?? "content/gallery.json",
+    ),
+    assetBaseUrl: env(
+      "PUBLIC_GALLERY_ASSET_BASE_URL",
+      siteDataExt.gallery?.assetBaseUrl ?? "",
+    ),
+    profileImageId: siteDataExt.gallery?.profileImageId || undefined,
+  },
 
   blog: {
     // Build-time route aliases are generated from blog.config.mjs. Keep these
