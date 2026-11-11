@@ -1,0 +1,13 @@
+---
+import ContactPage from "@/components/pages/ContactPage.astro";
+import type { SupportedLocale } from "@/i18n/locales";
+import { multiLocalePaths } from "@/lib/routing";
+
+export function getStaticPaths() {
+  return multiLocalePaths();
+}
+
+const locale = Astro.params.locale as SupportedLocale;
+---
+
+<ContactPage locale={locale} />

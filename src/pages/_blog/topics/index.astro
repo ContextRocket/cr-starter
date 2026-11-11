@@ -1,0 +1,14 @@
+---
+import TopicIndex from "@/components/pages/TopicIndex.astro";
+import { blogPublicBasePath } from "@/lib/blog";
+import { redirectTargetForUnprefixedRoute, soleLocale } from "@/lib/routing";
+
+const redirectTarget = redirectTargetForUnprefixedRoute(
+  `${blogPublicBasePath()}/topics/`,
+  new URL(Astro.request.url).search,
+);
+if (redirectTarget) return Astro.redirect(redirectTarget);
+const locale = soleLocale();
+---
+
+<TopicIndex locale={locale} />

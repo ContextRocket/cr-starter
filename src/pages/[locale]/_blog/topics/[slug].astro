@@ -1,0 +1,16 @@
+---
+import TopicArticle from "@/components/pages/TopicArticle.astro";
+import { getActiveLocales, type SupportedLocale } from "@/i18n/locales";
+import { listTopics } from "@/lib/topics";
+
+export function getStaticPaths() {
+  return getActiveLocales().flatMap((locale) =>
+    listTopics().map((topic) => ({ params: { locale, slug: topic.slug } })),
+  );
+}
+
+const locale = Astro.params.locale as SupportedLocale;
+const slug = Astro.params.slug as string;
+---
+
+<TopicArticle locale={locale} slug={slug} />

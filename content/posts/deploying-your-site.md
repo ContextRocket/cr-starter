@@ -18,11 +18,11 @@ Astro writes a fully static `dist/`. There is no app server to run — upload th
 
 Before you ship:
 
-1. Replace brand fields in `config/site.json` with your real details.
+1. Replace the site identity in `config/site.json` with your brand details.
 2. Set `company.siteUrl` so canonical links, sitemap, and structured data point at production.
 3. Swap logos and favicons under `public/`.
-4. Review privacy, terms, cookies, and impressum — several are expected in the EU.
-5. Confirm blog covers and attributions if you use stock photography.
+4. Confirm your blog path, title, and Markdown content directory in `blog.config.mjs`.
+5. Use images you own or are licensed to publish.
 
 ## Publish the output
 

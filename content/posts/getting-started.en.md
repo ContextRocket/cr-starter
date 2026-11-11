@@ -7,7 +7,7 @@ excerpt: "Set up the site, customize brand identity, and publish your first Mark
 featured: true
 ---
 
-The starter is a static Astro site with a Markdown blog, legal pages, and an optional ContextRocket chat widget. Edit configuration and content; rebuild to publish.
+The starter is a static Astro site with a configurable Markdown blog and an optional ContextRocket chat widget. Edit configuration and content; rebuild to publish.
 
 ## Quick start
 
@@ -23,11 +23,9 @@ Open `http://localhost:3100` (this starter). Forks often use nearby ports such a
 Edit `config/site.json`:
 
 - `company.name` — display name in the chrome
-- `company.legalName` — footer and legal pages
 - `company.tagline` / `company.description` — home and SEO
 - `company.siteUrl` — canonical URLs and structured data
-- `legal` — entity, address, register, VAT, privacy contact
-- `theme` — color tokens for light and dark mode
+- `theme` — one set of color tokens for your brand
 
 Site copy for marketing pages lives in `src/i18n/messages/site/`.
 
@@ -67,6 +65,6 @@ For live chat, set the public ContextRocket env vars in `.env` (see `.env.exampl
 
 - Astro static export with locale-aware routes
 - Markdown blog with cover images, excerpts, and featured posts
-- Privacy, terms, cookies, and impressum from site config
+- Optional cookie consent banner, disabled by default
 - SEO helpers: sitemap, robots, feed, Open Graph, JSON-LD
 - Embeddable chat widget under `public/embed/`

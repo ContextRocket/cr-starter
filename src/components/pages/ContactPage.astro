@@ -1,0 +1,146 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { siteConfig } from "@/config/site.config";
+import { createT } from "@/i18n/keys";
+import type { SupportedLocale } from "@/i18n/locales";
+import { absoluteUrl, localizedHref } from "@/lib/paths";
+import { buildBreadcrumbListJsonLd } from "@/lib/structured-data";
+
+interface Props {
+  locale: SupportedLocale;
+}
+
+const { locale } = Astro.props;
+const t = createT(locale);
+const path = "/contact";
+const title = t("contact.title");
+const labels = {
+  name: t("contact.name"), email: t("contact.email"), phone: t("contact.phone"),
+  intent: t("contact.intent"), contact: t("contact.intentContact"), demo: t("contact.intentDemo"),
+  appointment: t("contact.intentAppointment"), support: t("contact.intentSupport"),
+  message: t("contact.message"), consent: t("contact.consent"), submit: t("contact.submit"),
+  sending: t("contact.sending"), demoResult: t("contact.demoResult"), success: t("contact.success"),
+  failure: t("contact.failure"), unavailable: t("contact.liveUnavailable"),
+  required: t("contact.required"),
+};
+const jsonLdExtra = [buildBreadcrumbListJsonLd([
+  { name: t("breadcrumb.home"), url: absoluteUrl(localizedHref(locale, "/")) },
+  { name: title, url: absoluteUrl(localizedHref(locale, path)) },
+])];
+---
+
+<BaseLayout locale={locale} title={title} description={t("contact.introduction")} path={path} includeSiteJsonLd={false} jsonLdExtra={jsonLdExtra}>
+  <main id="main-content" tabindex="-1" class="px-5 py-14 sm:px-8 sm:py-20">
+    <section class="mx-auto max-w-2xl rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-10">
+      <header>
+        <p class="text-sm font-medium uppercase tracking-[0.16em] text-text-secondary">{siteConfig.companyName}</p>
+        <h1 class="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h1>
+        <p class="mt-4 leading-7 text-text-secondary">{t("contact.introduction")}</p>
+      </header>
+
+      <form class="mt-8 space-y-5" data-contact-form data-mode={siteConfig.contactForm.mode} data-handle={siteConfig.contactForm.handle} data-api-base={siteConfig.contactForm.apiBaseUrl}>
+        <div class="grid gap-5 sm:grid-cols-2">
+          <label class="block text-sm font-medium" for="contact-name">{labels.name}<span aria-hidden="true"> *</span>
+            <input class="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id="contact-name" name="name" autocomplete="name" required maxlength="160" />
+          </label>
+          <label class="block text-sm font-medium" for="contact-email">{labels.email}<span aria-hidden="true"> *</span>
+            <input class="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id="contact-email" name="email" type="email" autocomplete="email" required maxlength="254" />
+          </label>
+        </div>
+        <label class="block text-sm font-medium" for="contact-phone">{labels.phone}
+          <input class="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id="contact-phone" name="phone" type="tel" autocomplete="tel" maxlength="40" />
+        </label>
+        <label class="block text-sm font-medium" for="contact-intent">{labels.intent}
+          <select class="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id="contact-intent" name="intent">
+            <option value="contact">{labels.contact}</option>
+            <option value="demo">{labels.demo}</option>
+            <option value="appointment">{labels.appointment}</option>
+            <option value="support">{labels.support}</option>
+          </select>
+        </label>
+        <label class="block text-sm font-medium" for="contact-message">{labels.message}
+          <textarea class="mt-2 block min-h-36 w-full resize-y rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id="contact-message" name="message" rows="5" maxlength="5000"></textarea>
+        </label>
+        <label class="flex items-start gap-3 text-sm leading-6 text-text-secondary">
+          <input class="mt-1 size-4 shrink-0 accent-primary" type="checkbox" name="consent" required />
+          <span>{labels.consent}<span aria-hidden="true"> *</span></span>
+        </label>
+        <p data-form-status class="min-h-6 text-sm text-text-secondary" aria-live="polite" role="status">{t("contact.javascriptRequired")}</p>
+        <button data-submit class="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-60" type="submit">{labels.submit}</button>
+      </form>
+      {siteConfig.contactEmail && <p class="mt-6 text-sm text-text-secondary">{t("contact.directEmail")} <a class="font-medium text-foreground underline underline-offset-4" href={`mailto:${siteConfig.contactEmail}`}>{siteConfig.contactEmail}</a></p>}
+    </section>
+  </main>
+
+  <script is:inline src={siteConfig.contactForm.scriptSrc} defer></script>
+  <script is:inline define:vars={{ labels }}>
+    (() => {
+      const form = document.querySelector("[data-contact-form]");
+      if (!form) return;
+      const status = form.querySelector("[data-form-status]");
+      const submit = form.querySelector("[data-submit]");
+      const controls = Array.from(form.querySelectorAll("input, select, textarea"));
+      if (!status || !submit) return;
+      const t = (key) => labels[key] || "";
+      let submissionController = null;
+      let isSubmitting = false;
+      form.addEventListener("invalid", () => {
+        status.textContent = t("required");
+      }, true);
+      status.textContent = "";
+      form.addEventListener("input", () => {
+        submissionController?.reset();
+        status.textContent = "";
+      });
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (isSubmitting) return;
+        if (!form.reportValidity()) return;
+        const values = new FormData(form);
+        const mode = form.dataset.mode;
+        if (mode === "demo") {
+          status.textContent = t("demoResult");
+          form.reset();
+          return;
+        }
+        const sdk = window.ContextRocketSDK;
+        if (!form.dataset.handle || !sdk || typeof sdk.createContactFormController !== "function") {
+          status.textContent = t("unavailable");
+          return;
+        }
+        submissionController ??= sdk.createContactFormController();
+        isSubmitting = true;
+        controls.forEach((control) => { control.disabled = true; });
+        submit.disabled = true;
+        submit.textContent = t("sending");
+        status.textContent = "";
+        try {
+          await submissionController.submit({
+            apiBaseUrl: form.dataset.apiBase,
+            orgHandle: form.dataset.handle,
+            pageUrl: window.location.href,
+            referrerUrl: document.referrer,
+            form: {
+              name: String(values.get("name") || "").trim(),
+              email: String(values.get("email") || "").trim(),
+              phone: String(values.get("phone") || "").trim() || undefined,
+              intent: values.get("intent"),
+              message: String(values.get("message") || "").trim() || undefined,
+              source_channel: "website",
+              consent: values.get("consent") === "on",
+            },
+          });
+          status.textContent = t("success");
+          form.reset();
+        } catch {
+          status.textContent = t("failure");
+        } finally {
+          isSubmitting = false;
+          controls.forEach((control) => { control.disabled = false; });
+          submit.disabled = false;
+          submit.textContent = t("submit");
+        }
+      });
+    })();
+  </script>
+</BaseLayout>

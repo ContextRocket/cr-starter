@@ -3,16 +3,22 @@ import { siteConfig, isSingleLocale } from "@/config/site.config";
 import type { SupportedLocale } from "@/i18n/locales";
 import SiteChrome from "@/components/chrome/SiteChrome.astro";
 import CookieBanner from "@/components/chrome/CookieBanner.astro";
+import SiteIntegrations from "@/components/chrome/SiteIntegrations.astro";
 import {
   buildHomeJsonLd,
   serializeJsonLd,
   type JsonLdNode,
 } from "@/lib/structured-data";
 import { absoluteUrl } from "@/lib/paths";
+import { createT } from "@/i18n/keys";
 import "../styles/global.css";
 
 interface Props {
   title?: string;
+  /** Use the supplied title verbatim when it is already a complete document title. */
+  titleIsExact?: boolean;
+  /** Override the default site-name suffix for this page. */
+  titleSuffix?: string;
   description?: string;
   locale: SupportedLocale;
   path?: string;
@@ -23,25 +29,37 @@ interface Props {
   /** Extra JSON-LD nodes merged after the optional home Organization/WebSite. */
   jsonLdExtra?: unknown[];
   ogType?: "website" | "article";
+  robots?: "index, follow" | "noindex, follow";
 }
 
 const { locale, path = "/" } = Astro.props;
+const t = createT(locale);
 const pageTitle = Astro.props.title;
-const title = pageTitle
-  ? `${pageTitle} · ${siteConfig.companyName}`
-  : `${siteConfig.homeTitle || siteConfig.companyName} · ${siteConfig.tagline}`;
-const description = Astro.props.description ?? siteConfig.description;
+const titleSeparator = ` ${siteConfig.titleSeparator} `;
+const configuredTitleSuffix = Astro.props.titleSuffix?.trim();
+const titleSuffix = configuredTitleSuffix || siteConfig.companyName;
+const title = Astro.props.titleIsExact && pageTitle
+  ? pageTitle
+  : pageTitle
+  ? pageTitle === siteConfig.companyName && !configuredTitleSuffix
+    ? pageTitle
+    : `${pageTitle}${titleSeparator}${titleSuffix}`
+  : path === "/" && siteConfig.homeMetaTitle
+    ? siteConfig.homeMetaTitle
+    : `${siteConfig.homeTitle || siteConfig.companyName}${titleSeparator}${siteConfig.tagline}`;
+const description = Astro.props.description ?? (
+  path === "/" && siteConfig.homeMetaDescription
+    ? siteConfig.homeMetaDescription
+    : siteConfig.description
+);
 const ogType = Astro.props.ogType ?? "website";
+const robots = Astro.props.robots ?? "index, follow";
 const includeSiteJsonLd = Astro.props.includeSiteJsonLd ?? path === "/";
 
-const pathPart =
-  path === "/" ? "/" : path.endsWith("/") ? path : `${path}/`;
 const origin = siteConfig.siteUrl.replace(/\/$/, "");
 const canonical = isSingleLocale()
-  ? `${origin}${pathPart}`
-  : path === "/"
-    ? `${origin}/${locale}/`
-    : `${origin}/${locale}${pathPart}`;
+  ? absoluteUrl(path)
+  : absoluteUrl(`/${locale}${path.startsWith("/") ? path : `/${path}`}`);
 
 const rawImage =
   Astro.props.image ||
@@ -65,32 +83,40 @@ const defaultHreflangLocale = hreflangLocales.includes(siteConfig.defaultLocale)
   : (hreflangLocales[0] ?? siteConfig.defaultLocale);
 
 function hreflangHref(forLocale: string): string {
-  if (path === "/") return `${origin}/${forLocale}/`;
-  return `${origin}/${forLocale}${pathPart}`;
+  return absoluteUrl(`/${forLocale}${path.startsWith("/") ? path : `/${path}`}`);
 }
 
 const theme = siteConfig.theme;
-const lightEntries = Object.entries(theme.light ?? {});
-const darkEntries = Object.entries(theme.dark ?? {});
+const themeTokenMap = theme.tokens as Record<string, string> | undefined;
+const configuredSans = themeTokenMap?.["--font-sans"];
+const preloadInterTight =
+  typeof configuredSans !== "string" || configuredSans.includes("Inter Tight");
+const fontRoot = `${siteConfig.contextRocketBrandAssetsUrl}/fonts`;
+const interTightFont = `${fontRoot}/InterTight-Variable.woff2`;
+const newsreaderFont = `${fontRoot}/Newsreader-Italic.woff2`;
+const geistMonoFont = `${fontRoot}/GeistMonoVF.woff`;
+const fontFaceCss = `@font-face{font-family:"Inter Tight";src:url(${JSON.stringify(interTightFont)}) format("woff2");font-weight:100 900;font-display:swap}@font-face{font-family:"Newsreader";src:url(${JSON.stringify(newsreaderFont)}) format("woff2");font-style:italic;font-weight:400;font-display:swap}@font-face{font-family:"Geist Mono";src:url(${JSON.stringify(geistMonoFont)}) format("woff");font-weight:100 900;font-display:swap}`;
+const themeEntries = Object.entries(theme.tokens ?? {}).filter(
+  ([key, value]) => /^--[a-zA-Z0-9_-]+$/.test(key) &&
+    typeof value === "string" && !/[<>;{}]/.test(value),
+);
 const radius = theme.radius ?? "0.5rem";
-const defaultTheme = siteConfig.chrome.defaultTheme;
-const themeColorLight = theme.light?.["--primary"] as string | undefined;
-const themeColorDark = theme.dark?.["--primary"] as string | undefined;
-
-const themeInit = `(function(){try{var d=${JSON.stringify(defaultTheme)};var s=localStorage.getItem("theme");var t=s||d;var dark=t==="dark"||(t==="system"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.classList.toggle("dark",dark);}catch(e){}})();`;
-
-const themeCss = `html:root{--radius:${radius};${lightEntries
+const themeColor = theme.tokens?.["--background"] as string | undefined;
+const themeCss = `html:root{--radius:${radius};--font-sans:"Inter Tight",system-ui,sans-serif;--font-mono:"Geist Mono",ui-monospace,monospace;--font-editorial:"Newsreader",Georgia,serif;${themeEntries
   .map(([k, v]) => `${k}:${v}`)
-  .join(";")}}html.dark{${darkEntries.map(([k, v]) => `${k}:${v}`).join(";")}}`;
+  .join(";")}}`;
 
 const showChat = siteConfig.features.chatFab;
 const accent =
-  (siteConfig.theme.light?.["--brand-accent"] as string | undefined) ||
-  (siteConfig.theme.dark?.["--brand-accent"] as string | undefined) ||
-  (siteConfig.theme.light?.["--primary"] as string | undefined) ||
-  "#c2185b";
+  (siteConfig.theme.tokens?.["--brand-accent"] as string | undefined) ||
+  (siteConfig.theme.tokens?.["--primary"] as string | undefined) ||
+  "#0E0F13";
+const widgetColor = (name: string, fallback: string) =>
+  ((siteConfig.theme.tokens as Record<string, string>)?.[name] as string | undefined) || fallback;
+const attr = (value: string) =>
+  value.replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 const widgetSnippet = showChat
-  ? `<script src="/embed/widget.js" defer data-contextrocket-handle="${siteConfig.chat.handle}" data-contextrocket-api-key="${siteConfig.chat.apiKey}" data-contextrocket-api-base="${siteConfig.chat.agentUrl}" data-contextrocket-mode="${siteConfig.chat.mode}" data-contextrocket-accent="${accent}" data-contextrocket-theme="system"></script>`
+  ? `<script src="${attr(siteConfig.chat.widgetSrc)}" defer data-contextrocket-handle="${attr(siteConfig.chat.handle)}" data-contextrocket-api-key="${attr(siteConfig.chat.apiKey)}" data-contextrocket-api-base="${attr(siteConfig.chat.agentUrl)}" data-contextrocket-mode="${siteConfig.chat.mode}" data-contextrocket-accent="${attr(accent)}" data-contextrocket-background="${attr(widgetColor("--background", "#FAF9F6"))}" data-contextrocket-foreground="${attr(widgetColor("--foreground", "#0E0F13"))}" data-contextrocket-surface="${attr(widgetColor("--card", "#FFFFFF"))}" data-contextrocket-muted="${attr(widgetColor("--muted-foreground", "#5E616B"))}" data-contextrocket-border="${attr(widgetColor("--border", "#E3E0D9"))}" data-contextrocket-fullscreen="${siteConfig.chat.fullscreen}" data-contextrocket-fullscreen-on-open="${siteConfig.chat.fullscreenOnOpen}" data-contextrocket-fullscreen-on-load="${siteConfig.chat.fullscreenOnLoad}" data-contextrocket-powered-by-logo="${siteConfig.chrome.poweredByTone}"></script>`
   : "";
 
 const homeJsonLd = includeSiteJsonLd ? buildHomeJsonLd() : [];
@@ -103,7 +129,7 @@ const jsonLdPayload = jsonLd.length > 0 ? jsonLd : null;
 ---
 
 <!doctype html>
-<html lang={locale} translate="no" class="notranslate" data-surface="marketing">
+<html lang={locale} translate="no" class="notranslate">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -111,8 +137,8 @@ const jsonLdPayload = jsonLd.length > 0 ? jsonLd : null;
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="application-name" content={siteConfig.companyName} />
-    <meta name="author" content={siteConfig.legalName} />
-    <meta name="robots" content="index, follow" />
+    <meta name="author" content={siteConfig.companyName} />
+    <meta name="robots" content={robots} />
     {
       siteConfig.verification?.google && (
         <meta
@@ -121,30 +147,7 @@ const jsonLdPayload = jsonLd.length > 0 ? jsonLd : null;
         />
       )
     }
-    {
-      defaultTheme === "dark" && themeColorDark ? (
-        <meta name="theme-color" content={themeColorDark} />
-      ) : defaultTheme === "light" && themeColorLight ? (
-        <meta name="theme-color" content={themeColorLight} />
-      ) : (
-        <>
-          {themeColorLight && (
-            <meta
-              name="theme-color"
-              media="(prefers-color-scheme: light)"
-              content={themeColorLight}
-            />
-          )}
-          {themeColorDark && (
-            <meta
-              name="theme-color"
-              media="(prefers-color-scheme: dark)"
-              content={themeColorDark}
-            />
-          )}
-        </>
-      )
-    }
+    {themeColor && <meta name="theme-color" content={themeColor} />}
     <link rel="canonical" href={canonical} />
     {
       multiLocale &&
@@ -238,7 +241,7 @@ const jsonLdPayload = jsonLd.length > 0 ? jsonLd : null;
           rel="alternate"
           type="application/rss+xml"
           title="RSS"
-          href={absoluteUrl("/feed.xml")}
+          href={absoluteUrl(siteConfig.blog.feedPath)}
         />
       )
     }
@@ -246,35 +249,22 @@ const jsonLdPayload = jsonLd.length > 0 ? jsonLd : null;
       jsonLdPayload && (
         <script
           type="application/ld+json"
+          is:inline
           set:html={serializeJsonLd(jsonLdPayload)}
         />
       )
     }
-    <link
-      rel="preload"
-      href="/fonts/GeistVF.woff"
-      as="font"
-      type="font/woff"
-      crossorigin
-    />
-    <style is:global>
-      @font-face {
-        font-family: "Geist";
-        src: url("/fonts/GeistVF.woff") format("woff");
-        font-weight: 100 900;
-        font-display: swap;
-      }
-      @font-face {
-        font-family: "Geist Mono";
-        src: url("/fonts/GeistMonoVF.woff") format("woff");
-        font-weight: 100 900;
-        font-display: swap;
-      }
-      :root {
-        --font-sans: "Geist", system-ui, sans-serif;
-        --font-mono: "Geist Mono", ui-monospace, monospace;
-        --font-active: var(--font-sans);
-      }
+    {preloadInterTight && (
+      <link
+        rel="preload"
+        href={interTightFont}
+        as="font"
+        type="font/woff2"
+        crossorigin
+      />
+    )}
+    <style is:inline set:html={fontFaceCss}></style>
+    <style is:inline>
       .sr-only {
         position: absolute;
         width: 1px;
@@ -288,17 +278,21 @@ const jsonLdPayload = jsonLd.length > 0 ? jsonLd : null;
       }
     </style>
     <style set:html={themeCss}></style>
-    <script is:inline set:html={themeInit}></script>
     {widgetSnippet && <Fragment set:html={widgetSnippet} />}
   </head>
   <body
     class="flex min-h-screen flex-col bg-background font-sans text-foreground antialiased"
   >
+    <a
+      href="#main-content"
+      class="sr-only fixed left-4 top-4 z-[10000] rounded-lg bg-primary px-4 py-3 font-medium text-primary-foreground shadow-lg focus:not-sr-only focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+    >{t("nav.skipToContent")}</a>
     <SiteChrome locale={locale} path={path}>
       <div class="flex-1">
         <slot />
       </div>
     </SiteChrome>
+    <SiteIntegrations />
     <CookieBanner locale={locale} />
   </body>
 </html>

@@ -4,10 +4,7 @@
  * breadcrumb, pagination, cookie. Configured locale files must keep their
  * shared keys in parity.
  *
- * Auto-partitioned from the original es.ts tree (cr-x3j8). Copy is
- * verbatim from the pre-split source -- do not retype legal/marketing strings.
- * The merge barrel (../es.ts) re-merges shared+app+site into `es`,
- * so runtime key resolution is unchanged; this file only decides ownership.
+ * Spanish translations for shared starter UI.
  */
 
 import type { sharedEn } from "./en";
@@ -27,17 +24,42 @@ export const sharedEs: LocaleMessages<typeof sharedEn> = {
   },
   nav: {
     blog: "Blog",
+    contact: "Contacto",
+    skipToContent: "Saltar al contenido",
     features: "Funciones",
     about: "Acerca de",
     pricing: "Precios",
     aria: {
       primary: "Principal",
+      openMenu: "Abrir menú",
+      closeMenu: "Cerrar menú",
     },
   },
-  theme: {
-    toggle: "Cambiar tema",
-    light: "Claro",
-    dark: "Oscuro",
+  attribution: {
+    poweredBy: "Con tecnología de",
+  },
+  contact: {
+    title: "Inicia una conversación",
+    introduction: "Cuéntanos brevemente en qué estás trabajando.",
+    directEmail: "¿Prefieres el correo electrónico?",
+    name: "Nombre",
+    email: "Correo electrónico",
+    phone: "Teléfono (opcional)",
+    intent: "¿En qué podemos ayudarte?",
+    intentContact: "Consulta general",
+    intentDemo: "Solicitar una demostración",
+    intentAppointment: "Concertar una conversación",
+    intentSupport: "Soporte",
+    message: "¿Cómo podemos ayudarte?",
+    consent: "Acepto que contacten conmigo sobre esta solicitud.",
+    submit: "Enviar mensaje",
+    sending: "Enviando…",
+    demoResult: "Demostración completada. No se envió ni guardó información.",
+    success: "Gracias. Hemos recibido tu mensaje.",
+    failure: "No hemos podido enviar tu mensaje. Inténtalo de nuevo.",
+    liveUnavailable: "La captura de contactos no está configurada en este sitio.",
+    javascriptRequired: "Activa JavaScript para enviar este mensaje de forma segura.",
+    required: "Completa los campos obligatorios y acepta el consentimiento.",
   },
   notifications: {
     region: "Notificaciones del sitio",
@@ -95,37 +117,18 @@ export const sharedEs: LocaleMessages<typeof sharedEn> = {
       results: "0 resultados",
     },
   },
-  legal: {
-    identity: {
-      // Empresa (entidad registrada).
-      entity: "Entidad",
-      legalForm: "Forma jurídica",
-      address: "Dirección",
-      register: "Registro mercantil",
-      vat: "NIF/IVA",
-      representedBy: "Representada por",
-      pendingRegistration: "Registro pendiente",
-      // Persona física.
-      responsiblePerson: "Persona responsable",
-      // No registrada (nombre comercial + persona responsable).
-      tradingName: "Nombre comercial",
-      notRegisteredCompany: "No es una empresa registrada.",
-      // Fila de contacto compartida.
-      contact: "Contacto",
-    },
-  },
   cookie: {
     consent: {
       aria: {
         label: "Consentimiento de cookies",
       },
-      title: "Este sitio utiliza cookies",
-      body: "Usamos cookies analíticas. Consulta nuestra",
+      title: "Preferencias de cookies",
+      body: "Este sitio utiliza cookies opcionales.",
       policy: {
         link: "Política de privacidad",
       },
-      accept: "Aceptar todo",
-      decline: "Rechazar todo",
+      accept: "Aceptar",
+      decline: "Rechazar",
       manage: "Gestionar preferencias",
       prefs: {
         description:

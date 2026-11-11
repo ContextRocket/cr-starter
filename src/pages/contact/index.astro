@@ -1,0 +1,13 @@
+---
+import ContactPage from "@/components/pages/ContactPage.astro";
+import { redirectTargetForUnprefixedRoute, soleLocale } from "@/lib/routing";
+
+const redirectTarget = redirectTargetForUnprefixedRoute(
+  "/contact/",
+  new URL(Astro.request.url).search,
+);
+if (redirectTarget) return Astro.redirect(redirectTarget);
+const locale = soleLocale();
+---
+
+<ContactPage locale={locale} />

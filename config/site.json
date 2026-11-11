@@ -1,13 +1,20 @@
 {
   "company": {
-    "name": "Your Brand",
-    "legalName": "ContextRocket SL",
+    "name": "ContextRocket",
     "tagline": "A clear place to start.",
     "description": "A simple, flexible starting point for a clear and maintainable website.",
-    "siteUrl": "https://contextrocket.com",
-    "contactEmail": "hello@example.com"
+    "siteUrl": "https://example.com",
+    "contactEmail": ""
   },
+  "contextrocket": {
+    "handle": "contextrocket"
+  },
+  "integrations": {},
+  "integrationConsentMode": "auto",
+  "titleSeparator": "·",
   "defaultLocale": "en",
+  "trailingSlash": "always",
+  "redirects": [],
   "locales": [
     "en",
     "es",
@@ -31,53 +38,16 @@
       "changeFrequency": "daily"
     },
     {
-      "key": "privacy",
-      "path": "privacy",
+      "key": "contact",
+      "path": "contact",
       "indexable": true,
-      "includeInLlms": true,
-      "priority": 0.3,
-      "changeFrequency": "monthly"
-    },
-    {
-      "key": "terms",
-      "path": "terms",
-      "indexable": true,
-      "includeInLlms": true,
-      "priority": 0.3,
-      "changeFrequency": "monthly"
-    },
-    {
-      "key": "cookies",
-      "path": "cookies",
-      "indexable": true,
-      "includeInLlms": true,
-      "priority": 0.3,
-      "changeFrequency": "monthly"
-    },
-    {
-      "key": "impressum",
-      "path": "impressum",
-      "feature": "impressum",
-      "indexable": true,
-      "includeInLlms": true,
-      "priority": 0.3,
-      "changeFrequency": "monthly"
-    },
-    {
-      "key": "attribution",
-      "path": "attribution",
-      "feature": "attribution",
-      "indexable": true,
-      "includeInLlms": false,
-      "priority": 0.2,
+      "priority": 0.5,
       "changeFrequency": "yearly"
     }
   ],
   "assets": {
-    "logo": "/brand/cr-icon-red.svg",
-    "logoDark": "/brand/cr-icon-red.svg",
-    "wordmark": "/cr-logo.svg",
-    "wordmarkDark": "/cr-logo.svg",
+    "logo": "https://contextrocket.cdn.contextrocket.com/brand/icon-tile-ink.svg",
+    "wordmark": "https://contextrocket.cdn.contextrocket.com/brand/logo-h-spark-ink.svg",
     "faviconIco": "/favicon.ico",
     "icon16": "/favicon-16x16.png",
     "icon32": "/favicon-32x32.png",
@@ -93,89 +63,82 @@
       {
         "labelKey": "nav.blog",
         "href": "/blog"
+      },
+      {
+        "labelKey": "nav.contact",
+        "href": "/contact"
       }
     ],
     "footerLinks": [
       {
-        "labelKey": "footer.impressum",
-        "href": "/impressum"
-      },
-      {
-        "labelKey": "footer.privacy",
-        "href": "/privacy"
-      },
-      {
-        "labelKey": "footer.terms",
-        "href": "/terms"
-      },
-      {
-        "labelKey": "footer.cookies",
-        "href": "/cookies"
-      },
-      {
-        "labelKey": "attribution.title",
-        "href": "/attribution"
+        "labelKey": "nav.contact",
+        "href": "/contact"
       }
     ]
   },
   "chrome": {
     "header": "marketing",
     "footer": "full",
-    "logoVariant": "icon",
+    "logoVariant": "wordmark",
+    "poweredByTone": "ink",
     "showBrandLogo": true,
-    "showThemeToggle": true,
-    "defaultTheme": "system",
     "cookieBannerStyle": "bar",
     "exemptPrefixes": []
   },
   "features": {
     "blog": true,
+    "topics": false,
     "chatFab": true,
     "languageSelector": true,
-    "impressum": true,
-    "attribution": true,
     "poweredByBadge": true,
-    "cookieConsent": "auto"
+    "cookieConsent": "off"
   },
   "chat": {
+    "widgetSrc": "/embed/widget.js",
+    "fullscreen": true,
+    "fullscreenOnOpen": false,
     "fullscreenOnLoad": false
+  },
+  "contactForm": {
+    "mode": "demo",
+    "scriptSrc": "/embed/contact-form.js"
   },
   "theme": {
     "radius": "0.5rem",
-    "light": {
-      "--background": "#ffffff",
-      "--foreground": "#0a0a0a",
-      "--card": "#ffffff",
-      "--card-foreground": "#0a0a0a",
-      "--popover": "#ffffff",
-      "--popover-foreground": "#0a0a0a",
-      "--primary": "#c2185b",
-      "--primary-foreground": "#ffffff",
-      "--primary-hover": "#880e4f",
-      "--primary-soft": "#c2185b14",
-      "--brand-accent": "#c2185b",
-      "--brand-accent-foreground": "#ffffff",
-      "--brand-accent-hover": "#880e4f",
-      "--secondary": "#f5f5f5",
-      "--secondary-foreground": "#171717",
-      "--secondary-hover": "#e5e5e5",
+    "tokens": {
+      "--background": "#FAF9F6",
+      "--foreground": "#0E0F13",
+      "--card": "#FFFFFF",
+      "--card-foreground": "#0E0F13",
+      "--popover": "#FFFFFF",
+      "--popover-foreground": "#0E0F13",
+      "--primary": "#0E0F13",
+      "--primary-foreground": "#FFFFFF",
+      "--primary-hover": "#292A2F",
+      "--primary-soft": "rgba(14,15,19,0.08)",
+      "--brand-accent": "#0E0F13",
+      "--brand-accent-foreground": "#FFFFFF",
+      "--brand-accent-hover": "#292A2F",
+      "--secondary": "#F4F2ED",
+      "--secondary-foreground": "#0E0F13",
+      "--secondary-hover": "#ECE9E2",
       "--secondary-soft": "rgba(0,0,0,0.05)",
-      "--tertiary": "#e5e5e5",
-      "--tertiary-foreground": "#171717",
+      "--tertiary": "#ECE9E2",
+      "--tertiary-foreground": "#0E0F13",
       "--tertiary-hover": "#d4d4d4",
       "--tertiary-soft": "rgba(0,0,0,0.05)",
-      "--muted": "#f5f5f5",
-      "--muted-foreground": "#6e6e6e",
-      "--accent": "#f5f5f5",
-      "--accent-foreground": "#171717",
+      "--muted": "#F4F2ED",
+      "--muted-foreground": "#5E616B",
+      "--accent": "#F4F2ED",
+      "--accent-foreground": "#0E0F13",
       "--destructive": "#ef4444",
       "--destructive-foreground": "#fafafa",
-      "--border": "#e5e5e5",
-      "--input": "#e5e5e5",
-      "--ring": "#0a0a0a",
-      "--text-secondary": "#6b7280",
-      "--text-tertiary": "#9ca3af",
-      "--card-border": "#e5e5e5",
+      "--border": "#E3E0D9",
+      "--input": "#E3E0D9",
+      "--ring": "#0E0F13",
+      "--text-secondary": "#5E616B",
+      "--text-tertiary": "#777A83",
+      "--card-border": "#E3E0D9",
       "--success": "#10b981",
       "--success-foreground": "#ffffff",
       "--warning": "#fbbf24",
@@ -186,65 +149,11 @@
       "--error-foreground": "#ffffff",
       "--disabled": "#e5e7eb",
       "--disabled-foreground": "#9ca3af"
-    },
-    "dark": {
-      "--background": "#0a0a0a",
-      "--foreground": "#fafafa",
-      "--card": "#121212",
-      "--card-foreground": "#fafafa",
-      "--popover": "#121212",
-      "--popover-foreground": "#fafafa",
-      "--primary": "#ff3d75",
-      "--primary-foreground": "#ffffff",
-      "--primary-hover": "#ff5c8c",
-      "--primary-soft": "rgba(255,61,117,0.12)",
-      "--brand-accent": "#ff3d75",
-      "--brand-accent-foreground": "#ffffff",
-      "--brand-accent-hover": "#ff5c8c",
-      "--secondary": "#262626",
-      "--secondary-foreground": "#fafafa",
-      "--secondary-hover": "#404040",
-      "--secondary-soft": "rgba(255,255,255,0.08)",
-      "--tertiary": "#262626",
-      "--tertiary-foreground": "#fafafa",
-      "--tertiary-hover": "#404040",
-      "--tertiary-soft": "rgba(255,255,255,0.08)",
-      "--muted": "#262626",
-      "--muted-foreground": "#a3a3a3",
-      "--accent": "#262626",
-      "--accent-foreground": "#fafafa",
-      "--destructive": "#7f1d1d",
-      "--destructive-foreground": "#fafafa",
-      "--border": "#292929",
-      "--input": "#292929",
-      "--card-border": "#3d3d3d",
-      "--ring": "#d4d4d4",
-      "--text-secondary": "#bdbdbd",
-      "--text-tertiary": "#a3a3a3",
-      "--success": "#22c55e",
-      "--success-foreground": "#052e16",
-      "--warning": "#fbbf24",
-      "--warning-foreground": "#1c1400",
-      "--info": "#60a5fa",
-      "--info-foreground": "#0a1a33",
-      "--error": "#f87171",
-      "--error-foreground": "#2a0606",
-      "--disabled": "#333333",
-      "--disabled-foreground": "#737373"
     }
   },
   "social": {
     "twitter": "",
     "linkedin": "",
     "github": ""
-  },
-  "legal": {
-    "entityType": "company",
-    "entity": "ContextRocket SL",
-    "address": "Calle de Serrano 41, 28001 Madrid, Spain",
-    "register": "Registro Mercantil de Madrid, Tomo 00000, Folio 00, Hoja M-000000",
-    "vat": "ESB00000000",
-    "representedBy": "Jane Doe",
-    "privacyContact": "privacy@example.com"
   }
 }

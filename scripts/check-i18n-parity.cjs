@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 /**
- * check-i18n-parity.js
+ * check-i18n-parity.cjs
  *
- * AST-based parity check between en.ts and every other locale (es.ts, de.ts).
- *
- * Adapted from context-rocket/frontend/scripts/check-i18n-parity.js.
+ * AST-based parity check between en.ts and every configured locale.
  *
  * For every non-English locale the check:
  *   1. Walks the locale's `export const <locale> = { ... }` object literal
@@ -19,11 +17,8 @@
  *   - All message categories (app, shared, site) have files for each locale
  *
  * Usage:
- *   node frontend/scripts/check-i18n-parity.js            (all/merged -- default)
- *   node frontend/scripts/check-i18n-parity.js --domain app
- *   node frontend/scripts/check-i18n-parity.js --domain shared
- *   node frontend/scripts/check-i18n-parity.js --domain site
- *   (or from inside frontend/): node scripts/check-i18n-parity.js [...]
+ *   node scripts/check-i18n-parity.cjs
+ *   node scripts/check-i18n-parity.cjs --domain app|shared|site
  *
  * OWNERSHIP DOMAINS (cr-x3j8): the tree is partitioned into shared/app/site
  * slices behind a merge barrel. --domain scopes the check to one slice:
@@ -53,24 +48,19 @@ const DOMAIN_NAMESPACES = {
   shared: [
     "form",
     "nav",
-    "theme",
+    "attribution",
+    "contact",
     "error",
     "locale",
     "breadcrumb",
     "pagination",
     "cookie",
-    "gallery",
   ],
   app: ["dev", "chat", "embed"],
   site: [
     "home",
     "blog",
-    "faq",
-    "footer",
-    "impressum",
-    "privacy",
-    "preview",
-    "attribution",
+    "gba",
   ],
 };
 // Domains whose non-en locales MAY be an incomplete subset (missing -> warn).
@@ -107,16 +97,7 @@ function inDomain(leafPath) {
   return DOMAIN_PREFIXES.includes(top);
 }
 
-// Resolve messages dir relative to this script, supporting both
-// `node frontend/scripts/...` (from repo root) and
-// `node scripts/...` (from inside frontend/).
-const MESSAGES_DIR = (() => {
-  const candidate1 = path.resolve(__dirname, "../src/i18n/messages");
-  const candidate2 = path.resolve(__dirname, "../i18n/messages");
-  if (fs.existsSync(candidate1)) return candidate1;
-  if (fs.existsSync(candidate2)) return candidate2;
-  return candidate1; // will fail gracefully below
-})();
+const MESSAGES_DIR = path.resolve(__dirname, "../src/i18n/messages");
 
 const REFERENCE_LOCALE = "en";
 
@@ -136,14 +117,7 @@ const SUPPORTED_LOCALES = fs
  * @returns {string[]} The locales defined for this site
  */
 function getSiteConfigLocales() {
-  const candidates = [
-    // Astro flat layout: config/ at repo root (scripts/ -> ../config)
-    path.resolve(__dirname, "../config/site.json"),
-    // From messages dir: src/i18n/messages -> ../../../config
-    path.resolve(MESSAGES_DIR, "../../../config/site.json"),
-    // Legacy Next layout: frontend/config
-    path.resolve(MESSAGES_DIR, "../../config/site.json"),
-  ];
+  const candidates = [path.resolve(__dirname, "../config/site.json")];
   for (const siteJsonPath of candidates) {
     if (!fs.existsSync(siteJsonPath)) continue;
     try {
@@ -154,10 +128,7 @@ function getSiteConfigLocales() {
     }
   }
 
-  const siteConfigCandidates = [
-    path.resolve(__dirname, "../src/config/site.config.ts"),
-    path.resolve(MESSAGES_DIR, "../../config/site.config.ts"),
-  ];
+  const siteConfigCandidates = [path.resolve(__dirname, "../src/config/site.config.ts")];
   const siteConfigPath = siteConfigCandidates.find((p) => fs.existsSync(p));
   if (!siteConfigPath) {
     console.warn(

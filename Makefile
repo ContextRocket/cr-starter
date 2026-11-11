@@ -28,3 +28,9 @@ build-widget: ## Build embed widget into public/embed/ (needs sibling cr-sdk)
 
 serve-static: ## Serve dist/ locally after build (port 3100)
 	pnpm exec serve dist -p 3100
+
+sync-parent-check: ## Review drift in shared Astro template files
+	node scripts/sync-parent.mjs --check
+
+sync-parent: ## Apply the curated Astro template update
+	node scripts/sync-parent.mjs --apply

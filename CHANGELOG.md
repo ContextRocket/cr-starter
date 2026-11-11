@@ -7,28 +7,29 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- A focused Astro starter that builds static HTML and assets for CDN hosting,
+  with home, blog, and localized contact examples.
+- Reusable site integration settings for Google Tag Manager, Google Analytics,
+  PostHog, and additional key-value integrations.
+- Shared ContextRocket branding components, optional cookie consent, and
+  generated redirect files for static hosts. Shared brand fonts and logos load
+  from the ContextRocket CDN instead of shipping duplicate files with each site.
+
 ### Changed
 
-- `site.json` is now data-only (identity, nav, stat values, social, legal);
-  all marketing/legal copy moved to `i18n/messages/site/*.ts`. Removed the dead
-  `company` export and the `MarketingSections` config bridge.
-- Stats are data-driven: values live in `site.json`, labels resolve via
-  semantic i18n keys (`home.stats.output` etc.) instead of value-in-key names.
-- `.env.local` is now optional: sensible defaults ship in `site.config.ts`, so a
-  clone runs out of the box. `config/.env.example` is a reference only.
-
-### Fixed
-
-- 44 unit-test failures: stale `@/site.config` / `components/actions` /
-  `components/chat` mock paths, `server-only` import, missing
-  `IntersectionObserver`/`matchMedia` polyfills, and stale assertions.
-- ESLint errors (unused imports/vars) and the `openapi-ts` `lint` post-processor
-  conflict that broke `pnpm build`.
+- Site identity, semantic theme, assets, feature switches, locales, and
+  publication routes are configured in `config/site.json`; blog path and
+  content location are configured in `blog.config.mjs`.
+- Browser chat and contact capture consume build artifacts from the sibling
+  `cr-sdk` repository. Normal static builds use the checked-in artifacts and
+  work in demo mode without API credentials.
 
 ### Removed
 
-- Internal tooling: Beads work-graph (`CONTRIBUTING.md` section, `.beads/`) and
-  the `.agents/SESSION-HANDOFF.md` session notes.
+- Required privacy, terms, cookies, impressum, attribution, FAQ, About, and
+  feature pages. Forks add only the brand-specific pages they need.
 
 ## [0.1.0] - 2026-08-01
 

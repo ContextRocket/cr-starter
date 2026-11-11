@@ -1,6 +1,6 @@
 /**
  * i18n/keys.ts -- build-time / Astro translation entry point.
- * Pattern: const t = createT(locale); t("home.hero.headline")
+ * Pattern: const t = createT(locale); t("blog.title")
  */
 
 import { en } from "./messages/en";
@@ -41,5 +41,5 @@ export function createT(locale: SupportedLocale): Translator {
 }
 
 export function createTArray(locale: SupportedLocale): ArrayTranslator {
-  return createArrayTranslator(locale, getMessages(locale));
+  return createArrayTranslator(getMessages(locale));
 }

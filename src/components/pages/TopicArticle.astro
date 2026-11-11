@@ -1,0 +1,56 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import type { SupportedLocale } from "@/i18n/locales";
+import { blogPublicBasePath } from "@/lib/blog";
+import { getTopic } from "@/lib/topics";
+import { absoluteUrl, localizedHref } from "@/lib/paths";
+import { createT } from "@/i18n/keys";
+import { siteConfig } from "@/config/site.config";
+import { buildBreadcrumbListJsonLd } from "@/lib/structured-data";
+
+interface Props {
+  locale: SupportedLocale;
+  slug: string;
+}
+
+const { locale, slug } = Astro.props;
+const t = createT(locale);
+const topic = getTopic(slug);
+if (!topic) throw new Error(`Missing topic ${slug}`);
+const path = `${blogPublicBasePath()}/topics/${slug}`;
+const url = absoluteUrl(localizedHref(locale, path));
+const jsonLdExtra = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "@id": `${url}#article`,
+    headline: topic.title,
+    description: topic.description,
+    dateModified: topic.updated,
+    mainEntityOfPage: url,
+    author: { "@type": "Organization", name: siteConfig.companyName },
+    publisher: { "@type": "Organization", name: siteConfig.companyName },
+  },
+  buildBreadcrumbListJsonLd([
+    { name: t("breadcrumb.home"), url: absoluteUrl(localizedHref(locale, "/")) },
+    { name: t("blog.title"), url: absoluteUrl(localizedHref(locale, blogPublicBasePath())) },
+    { name: t("blog.topics"), url: absoluteUrl(localizedHref(locale, `${blogPublicBasePath()}/topics`)) },
+    { name: topic.title, url },
+  ]),
+];
+---
+
+<BaseLayout locale={locale} title={topic.title} description={topic.description} path={path} ogType="article" image={topic.image} includeSiteJsonLd={false} jsonLdExtra={jsonLdExtra}>
+  <main id="main-content" tabindex="-1" class="px-5 py-12 sm:px-8 sm:py-20">
+    <article class="mx-auto max-w-3xl">
+      <a href={localizedHref(locale, `${blogPublicBasePath()}/topics`)} class="text-sm font-medium text-text-secondary underline-offset-4 hover:text-foreground hover:underline">← {t("blog.topics")}</a>
+      <header class="mt-8">
+        <p class="text-sm text-text-tertiary">{t("blog.updated")} <time datetime={topic.updated}>{topic.updated}</time></p>
+        <h1 class="mt-4 text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">{topic.title}</h1>
+        <p class="mt-5 text-xl leading-8 text-text-secondary">{topic.description}</p>
+      </header>
+      {topic.image && <img src={topic.image} alt="" fetchpriority="high" class="mt-9 aspect-[16/9] w-full rounded-2xl object-cover" />}
+      <div class="prose prose-neutral mt-10 max-w-none" set:html={topic.bodyHtml} />
+    </article>
+  </main>
+</BaseLayout>

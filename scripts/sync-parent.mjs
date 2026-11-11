@@ -8,10 +8,9 @@
  *
  * Two sources for the parent tree:
  *   - default: fetch from the configured GitHub remote (parent.remote/url).
- *   - --from-local[=<path>]: fetch from a LOCAL sibling parent checkout, so a
- *     change made locally in the parent propagates without pushing to GitHub
- *     first. Git accepts a filesystem path as a fetch source and fetches the
- *     objects with no network.
+ *   - --from-local[=<path>]: fetch committed changes from a LOCAL sibling
+ *     parent checkout without pushing them to GitHub first. Git fetches the
+ *     branch commit; uncommitted working-tree changes are not included.
  */
 
 import { execFileSync } from "node:child_process";
@@ -46,7 +45,7 @@ if (args.has("--help") || args.has("-h")) {
   console.log("  --apply              restore parent-owned files and stage the result");
   console.log("                       (requires a clean worktree unless --stash is used)");
   console.log("  --from-local[=<path>]  fetch the parent tree from a LOCAL sibling checkout");
-  console.log("                       instead of the GitHub remote (no push needed).");
+  console.log("                       instead of GitHub (parent changes must be committed).");
   console.log("                       Path resolves in order: the --from-local value,");
   console.log("                       parent.localPath in .fork-sync.json, else a sibling");
   console.log("                       directory derived from parent.url.");
@@ -227,8 +226,25 @@ if (fromLocal) {
     );
   }
   console.log(`sync-parent: using LOCAL parent checkout ${localParentPath}`);
-  // Git accepts a filesystem path as a fetch source; this fetches objects with
-  // no network, so a change made locally in the parent needs no push first.
+  let parentDirty = "";
+  try {
+    parentDirty = execFileSync("git", ["status", "--porcelain"], {
+      cwd: localParentPath,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+    }).trim();
+  } catch {
+    // The fetch below reports a useful error if the local path is not a Git repo.
+  }
+  if (parentDirty) {
+    console.warn(
+      "sync-parent: local parent worktree is dirty; only committed branch " +
+        "changes will be used. Commit the parent changes first if they should " +
+        "be included.",
+    );
+  }
+  // Git accepts a filesystem path as a fetch source and fetches committed
+  // objects with no network, so the parent does not need to be pushed first.
   git("fetch", localParentPath, branch);
   parentRef = "FETCH_HEAD";
   parentDescription = `${localParentPath} (${branch}, local)`;

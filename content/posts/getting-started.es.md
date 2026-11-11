@@ -7,7 +7,7 @@ excerpt: "Configura el sitio, personaliza la marca y publica tu primer artículo
 featured: true
 ---
 
-El starter es un sitio estático en Astro con blog Markdown, páginas legales y un widget de chat ContextRocket opcional. Edita configuración y contenido; vuelve a construir para publicar.
+El starter es un sitio estático en Astro con un blog Markdown configurable y un widget de chat ContextRocket opcional. Edita la configuración y el contenido; vuelve a construir para publicar.
 
 ## Inicio rápido
 
@@ -23,10 +23,8 @@ Abre `http://localhost:3100` (este starter). Los forks suelen usar puertos cerca
 Edita `config/site.json`:
 
 - `company.name` — nombre en la cabecera
-- `company.legalName` — pie y páginas legales
 - `company.tagline` / `company.description` — inicio y SEO
 - `company.siteUrl` — URLs canónicas y datos estructurados
-- `legal` — entidad, dirección, registro, IVA, contacto de privacidad
 - `theme` — tokens de color para modo claro y oscuro
 
 Los textos de marketing viven en `src/i18n/messages/site/`.

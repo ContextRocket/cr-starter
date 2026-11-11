@@ -24,8 +24,8 @@ body:
       description: Minimal steps to reproduce the issue.
       placeholder: |
         1. Clone the repo
-        2. Run `make start-next-only`
-        3. Navigate to /dashboard
+        2. Run `pnpm dev`
+        3. Open the affected page
         4. See error
     validations:
       required: true
@@ -44,8 +44,8 @@ body:
       label: Setup path
       description: Which setup path are you using?
       options:
-        - "Path A: Next only (no local backend)"
-        - "Path B: Full stack (with backend)"
+        - "Astro static site"
+        - "CLI or SDK integration"
     validations:
       required: true
 

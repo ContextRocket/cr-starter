@@ -33,8 +33,12 @@ Upload `dist/` to Cloudflare Pages, CloudFront, S3, or any static host.
 ## Embed widget
 
 ```bash
-pnpm run build:widget
-# artifact: public/embed/widget.js
+pnpm run build:embeds
+# artifacts: public/embed/widget.js and public/embed/contact-form.js
 ```
+
+This optional command expects the `cr-sdk` repository at `../cr-sdk`. A normal
+starter clone builds with its checked-in artifacts and does not need that
+checkout.
 
 Direction for a future shared embed repo: [embed-direction.md](embed-direction.md).

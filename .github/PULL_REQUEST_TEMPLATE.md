@@ -1,25 +1,17 @@
 ## Summary
 
-<!-- What does this PR do and why? One to three bullet points. -->
+<!-- What changed and why? -->
 
 -
 
-## Type of change
+## Validation
 
-- [ ] Bug fix (non-breaking)
-- [ ] New feature (non-breaking)
-- [ ] Breaking change (existing functionality changes)
-- [ ] Documentation update
-- [ ] Refactor (behavior-preserving)
+- [ ] `pnpm run verify` passes.
+- [ ] Public routes, redirects, and static output were reviewed if affected.
+- [ ] User-facing copy uses the i18n message system.
+- [ ] No secrets or LLM provider keys were added.
+- [ ] `CHANGELOG.md` has an entry for a user-visible change.
 
-## Checklist
+## UI review
 
-- [ ] Tests pass: `make test-frontend` and `make test-backend` green.
-- [ ] No hardcoded English strings: all user-facing text uses `t("KEY")`.
-- [ ] No LLM provider keys introduced.
-- [ ] No imports from sibling repos (see `AGENTS.md` hard rules).
-- [ ] `CHANGELOG.md` updated under `## [Unreleased]`.
-
-## Screenshots
-
-<!-- If this changes any UI, attach screenshots at 375px, 768px, and 1440px. -->
+<!-- If the UI changed, include screenshots at 375px, 768px, and 1440px. -->

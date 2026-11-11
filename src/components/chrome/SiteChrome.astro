@@ -3,12 +3,13 @@
  * Site chrome -- marketing / minimal header + footer.
  */
 import { Navbar } from "@/components/chrome/Navbar";
-import { MinimalHeader } from "@/components/chrome/MinimalHeader";
+import MinimalHeader from "@/components/chrome/MinimalHeader.astro";
 import FooterSection from "@/components/chrome/FooterSection.astro";
 import { siteConfig, isSingleLocale, type NavLinkConfig } from "@/config/site.config";
 import { createT } from "@/i18n/keys";
 import { getActiveLocales, type SupportedLocale } from "@/i18n/locales";
 import { homeHref, localizedHref } from "@/lib/paths";
+import { isCurrentNavigationLink } from "@/lib/navigation";
 import type { BrandLogoAsset } from "@/components/chrome/BrandLogo";
 import type { LocaleOption } from "@/components/chrome/LocaleSwitcher";
 
@@ -21,7 +22,6 @@ const { locale, path = "/" } = Astro.props;
 const t = createT(locale);
 
 const navLinks = ((siteConfig.nav.links ?? []) as NavLinkConfig[])
-  .filter((link) => !link.href.includes("/faq"))
   .map((link) => {
     const href =
       link.href.startsWith("http") || link.href.startsWith("mailto:")
@@ -34,31 +34,35 @@ const navLinks = ((siteConfig.nav.links ?? []) as NavLinkConfig[])
       label: t(link.labelKey),
       href,
       variant: (link.variant as "default" | "primary" | undefined) ?? "default",
+      current: false,
     };
   });
 
-const hasBlogInNav = navLinks.some((l) =>
-  l.href.includes(siteConfig.blog.basePath.replace(/^\//, "")),
+const normalizePath = (value: string) => {
+  const pathname = value.split(/[?#]/, 1)[0];
+  return pathname === "/" ? pathname : pathname.replace(/\/+$/, "");
+};
+const blogHref = localizedHref(locale, siteConfig.blog.basePath);
+const hasBlogInNav = navLinks.some(
+  (link) => normalizePath(link.href) === normalizePath(blogHref),
 );
 if (siteConfig.features.blog && !hasBlogInNav) {
   navLinks.push({
     label: siteConfig.blog.title,
-    href: localizedHref(locale, siteConfig.blog.basePath),
+    href: blogHref,
     variant: "default",
+    current: false,
   });
 }
 
+for (const link of navLinks) {
+  link.current = isCurrentNavigationLink(
+    localizedHref(locale, path),
+    link.href,
+  );
+}
+
 const footerLinks = ((siteConfig.nav.footerLinks ?? []) as NavLinkConfig[])
-  .filter(
-    (link) =>
-      !link.href.includes("/faq") &&
-      !link.labelKey?.includes("faq") &&
-      (siteConfig.features.attribution ||
-        !(
-          link.href.includes("/attribution") ||
-          link.labelKey?.includes("attribution")
-        )),
-  )
   .map((link) => {
     const href =
       link.href.startsWith("http") || link.href.startsWith("mailto:")
@@ -95,13 +99,10 @@ const localeOptions: LocaleOption[] = showLang
   : [];
 
 const logoVariant = siteConfig.chrome.logoVariant ?? "icon";
-// Forks may omit wordmark keys in site.json; site.config normalizes at runtime,
-// but TypeScript still sees the JSON shape, so read through a widened view.
+// Forks may omit the optional wordmark; site.config normalizes it at runtime.
 const brandAssets = siteConfig.assets as {
   logo: string;
-  logoDark: string;
   wordmark?: string;
-  wordmarkDark?: string;
 };
 const logo: BrandLogoAsset | undefined = siteConfig.chrome.showBrandLogo
   ? {
@@ -109,10 +110,6 @@ const logo: BrandLogoAsset | undefined = siteConfig.chrome.showBrandLogo
         logoVariant === "wordmark"
           ? (brandAssets.wordmark ?? brandAssets.logo)
           : brandAssets.logo,
-      srcDark:
-        logoVariant === "wordmark"
-          ? (brandAssets.wordmarkDark ?? brandAssets.logoDark)
-          : brandAssets.logoDark,
       alt: siteConfig.companyName,
       variant: logoVariant,
       width: logoVariant === "wordmark" ? 160 : 28,
@@ -126,32 +123,27 @@ const showFooter = siteConfig.chrome.footer !== "none";
 const footerVariant =
   siteConfig.chrome.footer === "minimal" ? "minimal" : "full";
 
-const themeLabels = {
-  toggle: t("theme.toggle"),
-  light: t("theme.light"),
-  dark: t("theme.dark"),
-};
 const headerProps = {
   links: navLinks,
   logo,
   brandName: siteConfig.companyName,
   homeHref: homeHref(locale),
   navLabel: t("nav.aria.primary"),
-  showThemeToggle: siteConfig.chrome.showThemeToggle ?? true,
+  openMenuLabel: t("nav.aria.openMenu"),
+  closeMenuLabel: t("nav.aria.closeMenu"),
   showLanguageSelector: showLang,
   locale,
   localeOptions,
   changeLanguageLabel: t("locale.changeLanguage"),
-  themeLabels,
 };
 ---
 
 {
   showHeader &&
     (useMinimal ? (
-      <MinimalHeader client:load {...headerProps} />
+      <MinimalHeader {...headerProps} />
     ) : (
-      <Navbar client:load {...headerProps} />
+      <Navbar client:media="(max-width: 1023px)" {...headerProps} />
     ))
 }
 
@@ -161,9 +153,15 @@ const headerProps = {
   showFooter && (
     <FooterSection
       links={footerLinks}
-      companyName={siteConfig.legalName}
+      companyName={siteConfig.companyName}
       variant={footerVariant}
       showPoweredByBadge={siteConfig.features.poweredByBadge}
+      poweredByTone={siteConfig.chrome.poweredByTone}
+      showCookieSettings={
+        siteConfig.features.cookieConsent === "on" &&
+        siteConfig.integrationConsentMode === "auto"
+      }
+      cookieSettingsLabel={t("cookie.consent.manage")}
     />
   )
 }

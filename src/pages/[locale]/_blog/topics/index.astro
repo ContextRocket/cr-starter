@@ -1,0 +1,12 @@
+---
+import TopicIndex from "@/components/pages/TopicIndex.astro";
+import { getActiveLocales, type SupportedLocale } from "@/i18n/locales";
+
+export function getStaticPaths() {
+  return getActiveLocales().map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as SupportedLocale;
+---
+
+<TopicIndex locale={locale} />

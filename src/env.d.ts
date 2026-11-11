@@ -7,11 +7,14 @@ interface ImportMetaEnv {
   readonly PUBLIC_CONTACT_EMAIL?: string;
   readonly PUBLIC_DEFAULT_LOCALE?: string;
   readonly PUBLIC_CR_CHAT_MODE?: "demo" | "live";
+  readonly PUBLIC_CR_CHAT_FULLSCREEN?: "true" | "false" | "1" | "0";
+  readonly PUBLIC_CR_CHAT_FULLSCREEN_ON_OPEN?: "true" | "false" | "1" | "0";
+  readonly PUBLIC_CR_CHAT_FULLSCREEN_ON_LOAD?: "true" | "false" | "1" | "0";
   readonly PUBLIC_CR_AGENT_URL?: string;
   readonly PUBLIC_CONTEXTROCKET_HANDLE?: string;
   readonly PUBLIC_CONTEXTROCKET_API_KEY?: string;
-  readonly PUBLIC_COOKIE_CONSENT?: "auto" | "on" | "off";
-  readonly PUBLIC_DEFAULT_THEME?: "system" | "light" | "dark";
+  readonly PUBLIC_CR_CONTACT_FORM_MODE?: "demo" | "live";
+  readonly PUBLIC_COOKIE_CONSENT?: "on" | "off";
   readonly PUBLIC_GA_MEASUREMENT_ID?: string;
   readonly PUBLIC_POSTHOG_KEY?: string;
 }

@@ -6,7 +6,7 @@ The starter is intentionally small. General behavior belongs here; a fork should
 
 | Area | Location |
 |---|---|
-| Brand identity, navigation, theme, assets, legal data | `config/site.json` |
+| Brand identity, navigation, theme, and assets | `config/site.json` |
 | Site language and content | `src/i18n/messages/site/*.ts` |
 | Home page composition | `src/pages/[locale]/index.astro` (and flat `src/pages/index.astro` for single-locale) |
 | Optional site-specific pages | `src/pages/` and `src/components/custom/` |

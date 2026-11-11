@@ -2,22 +2,39 @@ import { siteConfig, isSingleLocale } from "@/config/site.config";
 import { getDefaultLocale, type SupportedLocale } from "@/i18n/locales";
 import { blogPublicBasePath } from "@/lib/blog";
 
+function formatRoutePath(path: string): string {
+  const suffixIndex = [path.indexOf("?"), path.indexOf("#")]
+    .filter((index) => index >= 0)
+    .reduce((smallest, index) => Math.min(smallest, index), path.length);
+  const pathname = path.slice(0, suffixIndex);
+  const suffix = path.slice(suffixIndex);
+  if (pathname === "/") return `/${suffix}`;
+  const withoutTrailing = pathname.replace(/\/+$/, "");
+  // An explicit trailing slash in a route path overrides the site default.
+  // Clones can preserve exceptional source URLs without changing every route.
+  const explicitTrailingSlash = pathname.endsWith("/");
+  const formatted = siteConfig.trailingSlash === "always" || explicitTrailingSlash
+    ? `${withoutTrailing}/`
+    : withoutTrailing;
+  return `${formatted}${suffix}`;
+}
+
 /**
  * Build a site-relative href for a path, respecting single vs multi locale.
  * `path` should start with "/" and not include a locale prefix
- * (e.g. "/", "/faq", "/privacy").
+ * (e.g. "/", "/contact", "/blog"). An explicit trailing slash is preserved
+ * as a per-route canonical override.
  */
 export function localizedHref(
   locale: SupportedLocale,
   path: string = "/",
 ): string {
-  const normalized =
-    path === "/" ? "/" : path.startsWith("/") ? path : `/${path}`;
+  const normalized = formatRoutePath(path.startsWith("/") ? path : `/${path}`);
   if (isSingleLocale()) {
-    return normalized === "/" ? "/" : `${normalized.replace(/\/?$/, "/")}`;
+    return normalized;
   }
-  if (normalized === "/") return `/${locale}/`;
-  return `/${locale}${normalized.endsWith("/") ? normalized : `${normalized}/`}`;
+  if (normalized === "/") return formatRoutePath(`/${locale}`);
+  return formatRoutePath(`/${locale}${normalized}`);
 }
 
 export function homeHref(locale: SupportedLocale): string {
@@ -35,12 +52,6 @@ export function blogPostHref(locale: SupportedLocale, slug: string): string {
 /** Physical Astro route segment for blog (always "blog" on disk). */
 export const BLOG_ROUTE_SEGMENT = "blog";
 
-export function withTrailingSlash(url: string): string {
-  if (url.endsWith("/")) return url;
-  if (url.includes("?") || url.includes("#")) return url;
-  return `${url}/`;
-}
-
 /** Paths that are files, not directory pages -- do not force a trailing slash. */
 const FILE_PATH_RE =
   /\.(xml|txt|json|webmanifest|ico|png|jpg|jpeg|gif|svg|webp|css|js|map)$/i;
@@ -48,12 +59,16 @@ const FILE_PATH_RE =
 export function absoluteUrl(pathname: string): string {
   const base = siteConfig.siteUrl.replace(/\/$/, "");
   const path = pathname.startsWith("/") ? pathname : `/${pathname}`;
-  if (FILE_PATH_RE.test(path)) {
+  const pathnameOnly = path.split(/[?#]/, 1)[0];
+  if (pathnameOnly === "/" && siteConfig.trailingSlash === "never") {
+    return `${base}${path.slice(pathnameOnly.length)}`;
+  }
+  if (FILE_PATH_RE.test(pathnameOnly)) {
     return `${base}${path}`;
   }
-  return `${base}${withTrailingSlash(path)}`;
+  return `${base}${formatRoutePath(path)}`;
 }
 
 export function defaultLocaleRedirectTarget(): string {
-  return `/${getDefaultLocale()}/`;
+  return formatRoutePath(`/${getDefaultLocale()}`);
 }

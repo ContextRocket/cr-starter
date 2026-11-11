@@ -6,7 +6,11 @@
  */
 
 import siteData from "../../config/site.json";
-import { blogConfig, blogContentDir } from "../../blog.config.mjs";
+import { blogConfig, blogContentDir, blogTopicsDir } from "../../blog.config.mjs";
+import type { SiteIntegrationConfig } from "@/lib/integrations";
+
+const contextRocketBrandAssetsUrl =
+  "https://contextrocket.cdn.contextrocket.com/brand";
 
 function env(key: string, fallback: string = ""): string {
   const fromImport =
@@ -29,30 +33,59 @@ function envEnum<T extends string>(key: string, fallback: T, options: T[]): T {
 }
 
 const siteDataExt = siteData as typeof siteData & {
+  company: typeof siteData.company & { legalName?: string };
+  assets: typeof siteData.assets & {
+    wordmarkDark?: string;
+    logoDark?: string;
+  };
+  features: typeof siteData.features & {
+    gallery?: boolean;
+    attribution?: boolean;
+    testimonials?: boolean;
+    topics?: boolean;
+    cookieConsent?: "auto" | "on" | "off";
+  };
   defaultLocale?: string;
-  chat?: { fullscreenOnLoad?: boolean };
+  contextrocket?: { handle?: string };
+  homeMetaDescription?: string;
+  homeMetaTitle?: string;
+  titleSeparator?: string;
+  chat?: { widgetSrc?: string; fullscreen?: boolean; fullscreenOnOpen?: boolean; fullscreenOnLoad?: boolean };
+  contactForm?: { mode?: "demo" | "live"; scriptSrc?: string };
+  integrations?: Record<string, SiteIntegrationConfig>;
+  integrationConsentMode?: "auto" | "always" | "external";
+  gallery?: {
+    manifestPath?: string;
+    assetBaseUrl?: string;
+    profileImageId?: string;
+  };
 };
 const siteChrome = siteData.chrome as typeof siteData.chrome & {
   exemptPrefixes?: readonly string[];
+  poweredByTone?: "ink" | "white";
 };
-
-export type LegalEntityType = "company" | "individual" | "unincorporated";
-const siteLegal = siteData.legal as typeof siteData.legal & {
-  entityType?: LegalEntityType;
-  legalForm?: string;
-  register?: string;
-  vat?: string;
-  representedBy?: string;
-};
+const contextRocketHandle = env(
+  "PUBLIC_CONTEXTROCKET_HANDLE",
+  siteDataExt.contextrocket?.handle ?? "",
+);
+const contextRocketApiBase = env(
+  "PUBLIC_CR_AGENT_URL",
+  "https://api.contextrocket.com",
+).replace(/\/$/, "");
 
 export const siteConfig = {
+  trailingSlash: (siteData as typeof siteData & { trailingSlash?: "always" | "never" }).trailingSlash ?? "always",
   companyName: env("PUBLIC_SITE_NAME", siteData.company.name),
-  legalName: siteData.company.legalName,
+  legalName: siteDataExt.company.legalName,
   tagline: siteData.company.tagline,
   description: siteData.company.description,
   siteUrl: env("PUBLIC_SITE_URL", siteData.company.siteUrl).replace(/\/$/, ""),
+  contextRocketBrandAssetsUrl,
   contactEmail: env("PUBLIC_CONTACT_EMAIL", siteData.company.contactEmail),
   homeTitle: env("PUBLIC_HOME_TITLE", siteData.company.name),
+  homeMetaDescription: env("PUBLIC_HOME_META_DESCRIPTION", siteDataExt.homeMetaDescription ?? ""),
+  homeMetaTitle: env("PUBLIC_HOME_META_TITLE", siteDataExt.homeMetaTitle ?? ""),
+  titleSeparator: siteDataExt.titleSeparator?.trim() || "·",
   verification: {
     google: env("PUBLIC_GOOGLE_VERIFICATION", ""),
   },
@@ -72,28 +105,26 @@ export const siteConfig = {
       (siteData.assets as { wordmark?: string }).wordmark ??
       siteData.assets.logo,
     wordmarkDark:
-      (siteData.assets as { wordmarkDark?: string }).wordmarkDark ??
-      siteData.assets.logoDark,
-    chatFabIcon:
-      (siteData.assets as { chatFabIcon?: string }).chatFabIcon ??
-      siteData.assets.logo,
+      siteDataExt.assets.wordmarkDark ?? siteDataExt.assets.logoDark,
   },
   social: siteData.social,
 
   features: {
     blog: envBool("PUBLIC_BLOG_ENABLED", siteData.features.blog),
     chatFab: envBool("PUBLIC_CHAT_FAB_ENABLED", siteData.features.chatFab),
+    gallery: envBool("PUBLIC_GALLERY_ENABLED", siteDataExt.features.gallery ?? false),
+    attribution: envBool(
+      "PUBLIC_ATTRIBUTION_ENABLED",
+      siteDataExt.features.attribution ?? false,
+    ),
+    testimonials: envBool(
+      "PUBLIC_TESTIMONIALS_ENABLED",
+      siteDataExt.features.testimonials ?? false,
+    ),
+    topics: siteDataExt.features.topics ?? false,
     languageSelector: envBool(
       "PUBLIC_LANGUAGE_SELECTOR_ENABLED",
       siteData.features.languageSelector,
-    ),
-    impressum: envBool(
-      "PUBLIC_IMPRESSUM_ENABLED",
-      siteData.features.impressum,
-    ),
-    attribution: envBool(
-      "PUBLIC_ATTRIBUTION_ENABLED",
-      siteData.features.attribution,
     ),
     poweredByBadge: envBool(
       "PUBLIC_POWERED_BY_BADGE",
@@ -101,7 +132,7 @@ export const siteConfig = {
     ),
     cookieConsent: envEnum<"auto" | "on" | "off">(
       "PUBLIC_COOKIE_CONSENT",
-      siteData.features.cookieConsent as "auto" | "on" | "off",
+      siteDataExt.features.cookieConsent ?? "off",
       ["auto", "on", "off"],
     ),
   },
@@ -118,13 +149,8 @@ export const siteConfig = {
       ["full", "minimal", "none"],
     ),
     logoVariant: siteData.chrome.logoVariant as "icon" | "wordmark",
+    poweredByTone: (siteChrome.poweredByTone === "white" ? "white" : "ink") as "ink" | "white",
     showBrandLogo: siteData.chrome.showBrandLogo,
-    showThemeToggle: siteData.chrome.showThemeToggle,
-    defaultTheme: envEnum<"system" | "light" | "dark">(
-      "PUBLIC_DEFAULT_THEME",
-      (siteData.chrome.defaultTheme ?? "system") as "system" | "light" | "dark",
-      ["system", "light", "dark"],
-    ),
     cookieBannerStyle: envEnum<"bar" | "card" | "terminal">(
       "PUBLIC_COOKIE_BANNER_STYLE",
       siteData.chrome.cookieBannerStyle as "bar" | "card" | "terminal",
@@ -134,37 +160,86 @@ export const siteConfig = {
   },
 
   nav: siteData.nav,
-  legal: {
-    entityType: (siteLegal.entityType ?? "company") as LegalEntityType,
-    entity: siteLegal.entity,
-    legalForm: siteLegal.legalForm,
-    address: siteLegal.address,
-    register: siteLegal.register,
-    vat: siteLegal.vat,
-    representedBy: siteLegal.representedBy,
-    privacyContact: siteLegal.privacyContact,
-  },
-
   publicRoutes: siteData.publicRoutes,
 
+  gallery: {
+    manifestPath: env(
+      "GALLERY_MANIFEST_PATH",
+      siteDataExt.gallery?.manifestPath ?? "content/gallery.json",
+    ),
+    assetBaseUrl: env(
+      "PUBLIC_GALLERY_ASSET_BASE_URL",
+      siteDataExt.gallery?.assetBaseUrl ?? "",
+    ),
+    profileImageId: siteDataExt.gallery?.profileImageId || undefined,
+  },
+
   blog: {
-    basePath: env("BLOG_BASE_PATH", blogConfig.basePath),
-    title: env("BLOG_TITLE", blogConfig.title),
+    // Build-time route aliases are generated from blog.config.mjs. Keep these
+    // values tied to that source so runtime env overrides cannot point links at
+    // paths Astro did not emit.
+    basePath: blogConfig.basePath,
+    title: blogConfig.title,
+    postTitleSuffix: blogConfig.postTitleSuffix,
     contentDir: blogContentDir(),
+    topicsDir: blogTopicsDir(),
+    feedPath: blogConfig.feedPath ?? "/feed.xml",
   },
 
   analytics: {
     webVitalsEndpoint: env("PUBLIC_WEB_VITALS_ENDPOINT", ""),
   },
 
+  integrations: siteDataExt.integrations ?? {},
+  integrationConsentMode:
+    siteDataExt.integrationConsentMode === "always" ||
+    siteDataExt.integrationConsentMode === "external"
+      ? siteDataExt.integrationConsentMode
+      : "auto",
+
+  contextrocket: {
+    apiBaseUrl: contextRocketApiBase,
+    handle: contextRocketHandle,
+  },
+
   chat: {
+    widgetSrc: env(
+      "PUBLIC_CONTEXTROCKET_CHAT_WIDGET_URL",
+      siteDataExt.chat?.widgetSrc ?? "/embed/widget.js",
+    ),
     mode: envEnum<"demo" | "live">("PUBLIC_CR_CHAT_MODE", "demo", [
       "demo",
       "live",
     ]),
-    agentUrl: env("PUBLIC_CR_AGENT_URL", "https://api.contextrocket.com"),
-    handle: env("PUBLIC_CONTEXTROCKET_HANDLE", "contextrocket"),
+    agentUrl: contextRocketApiBase,
+    handle: contextRocketHandle,
     apiKey: env("PUBLIC_CONTEXTROCKET_API_KEY", ""),
+    fullscreen: envBool(
+      "PUBLIC_CR_CHAT_FULLSCREEN",
+      siteDataExt.chat?.fullscreen ?? true,
+    ),
+    fullscreenOnOpen: envBool(
+      "PUBLIC_CR_CHAT_FULLSCREEN_ON_OPEN",
+      siteDataExt.chat?.fullscreenOnOpen ?? false,
+    ),
+    fullscreenOnLoad: envBool(
+      "PUBLIC_CR_CHAT_FULLSCREEN_ON_LOAD",
+      siteDataExt.chat?.fullscreenOnLoad ?? false,
+    ),
+  },
+
+  contactForm: {
+    mode: envEnum<"demo" | "live">(
+      "PUBLIC_CR_CONTACT_FORM_MODE",
+      siteDataExt.contactForm?.mode ?? "demo",
+      ["demo", "live"],
+    ),
+    scriptSrc: env(
+      "PUBLIC_CONTEXTROCKET_CONTACT_FORM_SCRIPT_URL",
+      siteDataExt.contactForm?.scriptSrc ?? "/embed/contact-form.js",
+    ),
+    handle: contextRocketHandle,
+    apiBaseUrl: contextRocketApiBase,
   },
 
   allowAiCrawlers: true,

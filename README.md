@@ -1,7 +1,7 @@
 # ContextRocket Starter
 
 Public **Astro** starter for branded static websites that connect to ContextRocket
-via an embeddable chat snippet. Builds to `dist/` for any CDN.
+through embeddable chat and contact-form SDK artifacts. Builds to `dist/` for any CDN.
 
 ## Quick start
 
@@ -25,21 +25,32 @@ PUBLIC_CONTEXTROCKET_API_KEY=your-publishable-api-key
 - `src/i18n/messages/site/` -- site copy
 - `src/pages/[locale]/index.astro` -- home / landing composition
 - `content/posts/` -- Markdown blog posts
+- `content/topics/` -- optional evergreen references when `features.topics` is enabled
 - `public/` -- assets
 
-Shared layout, i18n runtime, blog engine, hygiene routes, and embed widget are
-starter-owned.
+Use `draft: true` in a post's Markdown frontmatter while preparing it. Drafts
+appear in local development for review, but production builds omit their pages
+and exclude them from the blog listing, feed, and sitemap.
 
-**Default pages:** home + blog + legal/hygiene (privacy, terms, cookies,
-impressum) + attribution. No FAQ / About / gallery / Features pages.
+Evergreen topics are optional. Enable `features.topics` in `config/site.json`;
+published topic pages join the sitemap and `llms.txt`, but stay out of the dated
+post listing and RSS feed.
+
+Shared layout, i18n runtime, blog engine, discovery routes, and the built embed
+widget are starter-owned. The checked-in widget keeps a standalone clone
+installable without sibling repositories.
+
+**Default surface:** home, configurable Markdown blog, and a localized
+contact-form example that runs in safe demo mode by default. There are no generated
+legal pages; add the pages your site needs. Cookie consent is optional and off
+by default. No FAQ / About / gallery / Features pages are required.
 
 ## Build and deploy
 
 ```bash
 pnpm run build
-# optional: single-locale URL flatten
-node scripts/flatten-single-locale.mjs
-# upload dist/ to Cloudflare Pages, CloudFront, S3, …
+# The build runs single-locale URL flattening and emits static redirects.
+# Upload dist/ to Cloudflare Pages, CloudFront, S3, …
 ```
 
 ## Embed widget
@@ -47,6 +58,27 @@ node scripts/flatten-single-locale.mjs
 ```bash
 pnpm run build:widget
 ```
+
+Refresh both the chat widget and the standalone SDK contact-form bridge with:
+
+```bash
+pnpm run build:embeds
+```
+
+The starter's `/contact/` example runs safely in demo mode by default. To send
+contact form submissions to an organization, set
+`PUBLIC_CR_CONTACT_FORM_MODE=live` and `PUBLIC_CONTEXTROCKET_HANDLE` after the
+ContextRocket contact endpoint is enabled for the deployment origin.
+
+This optional contributor command rebuilds the widget from a sibling
+`../cr-sdk` checkout. The checked-in `public/embed/widget.js` is used by normal
+standalone builds and does not need to be rebuilt by a fork.
+Set `PUBLIC_CONTEXTROCKET_CHAT_WIDGET_URL` to a published, version-pinned CDN
+URL to load a shared widget instead; by default the site uses the checked-in
+local artifact. The ContextRocket CDN currently serves chat `v0.1.0` and
+contact-form bridge `v0.1.0`; see
+[`docs/embed-direction.md`](docs/embed-direction.md) for their URLs and the
+operator release workflow. Keep the local artifacts for offline demos.
 
 ```html
 <script
@@ -59,4 +91,5 @@ pnpm run build:widget
 
 ## More
 
-See [AGENTS.md](AGENTS.md) and [docs/fork-evolution.md](docs/fork-evolution.md).
+See [AGENTS.md](AGENTS.md), [docs/fork-evolution.md](docs/fork-evolution.md),
+and [docs/site-integrations.md](docs/site-integrations.md).

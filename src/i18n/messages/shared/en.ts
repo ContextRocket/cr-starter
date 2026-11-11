@@ -4,10 +4,7 @@
  * breadcrumb, pagination, cookie. Configured locale files must keep their
  * shared keys in parity.
  *
- * Auto-partitioned from the original en.ts tree (cr-x3j8). Copy is
- * verbatim from the pre-split source -- do not retype legal/marketing strings.
- * The merge barrel (../en.ts) re-merges shared+app+site into `en`,
- * so runtime key resolution is unchanged; this file only decides ownership.
+ * Shared UI copy used by starter-owned forms, navigation, status, and consent.
  */
 
 export const sharedEn = {
@@ -24,17 +21,42 @@ export const sharedEn = {
   },
   nav: {
     blog: "Blog",
+    contact: "Contact",
+    skipToContent: "Skip to content",
     features: "Features",
     about: "About",
     pricing: "Pricing",
     aria: {
       primary: "Primary",
+      openMenu: "Open menu",
+      closeMenu: "Close menu",
     },
   },
-  theme: {
-    toggle: "Toggle theme",
-    light: "Light",
-    dark: "Dark",
+  attribution: {
+    poweredBy: "Powered by",
+  },
+  contact: {
+    title: "Start a conversation",
+    introduction: "Tell us a little about what you are working on.",
+    directEmail: "Prefer email?",
+    name: "Name",
+    email: "Email",
+    phone: "Phone (optional)",
+    intent: "What can we help with?",
+    intentContact: "General question",
+    intentDemo: "Request a demo",
+    intentAppointment: "Book a conversation",
+    intentSupport: "Support",
+    message: "How can we help?",
+    consent: "I agree to be contacted about this request.",
+    submit: "Send message",
+    sending: "Sending…",
+    demoResult: "Demo complete. No information was sent or stored.",
+    success: "Thanks. Your message has been received.",
+    failure: "We could not send your message. Please try again.",
+    liveUnavailable: "Live contact form is not configured for this site.",
+    javascriptRequired: "Enable JavaScript to send this message securely.",
+    required: "Please complete the required fields and give consent.",
   },
   notifications: {
     region: "Site notifications",
@@ -92,37 +114,18 @@ export const sharedEn = {
       results: "0 results",
     },
   },
-  legal: {
-    identity: {
-      // Company (incorporated entity) fields.
-      entity: "Entity",
-      legalForm: "Legal form",
-      address: "Address",
-      register: "Company register",
-      vat: "VAT ID",
-      representedBy: "Represented by",
-      pendingRegistration: "Registration pending",
-      // Individual (natural person) fields.
-      responsiblePerson: "Responsible person",
-      // Unincorporated (trading name + responsible person) fields.
-      tradingName: "Trading name",
-      notRegisteredCompany: "This is not a registered company.",
-      // Shared contact row.
-      contact: "Contact",
-    },
-  },
   cookie: {
     consent: {
       aria: {
         label: "Cookie consent",
       },
-      title: "This site uses cookies",
-      body: "We use analytics cookies. See our",
+      title: "Cookie preferences",
+      body: "This site uses optional cookies.",
       policy: {
         link: "Privacy Policy",
       },
-      accept: "Accept all",
-      decline: "Reject all",
+      accept: "Accept",
+      decline: "Decline",
       manage: "Manage settings",
       prefs: {
         description:

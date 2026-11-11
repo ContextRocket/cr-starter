@@ -28,6 +28,6 @@ Cover images belong in frontmatter (`image: "/images/..."`). In-post figures use
 
 ![Desk setup illustrating an in-article figure](/images/blog/programming-setup.jpg)
 
-Credit Unsplash photographers via `content/attributions.json` when you ship third-party photos.
+Use images you own or are licensed to publish. Store site assets under `public/` and reference them with a root-relative URL.
 
 That loop — page, config, translation, navigation, media — is how the starter stays small while still looking finished.

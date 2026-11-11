@@ -12,6 +12,13 @@ export function soleLocale(): SupportedLocale {
   return getDefaultLocale();
 }
 
-export function assertSingleLocalePages(): boolean {
-  return isSingleLocale();
+/** Return a locale-prefixed target, preserving query strings on static aliases. */
+export function redirectTargetForUnprefixedRoute(
+  path: string,
+  search = "",
+): string | null {
+  if (isSingleLocale()) return null;
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  const normalizedSearch = search && !search.startsWith("?") ? `?${search}` : search;
+  return `/${getDefaultLocale()}${normalizedPath}${normalizedSearch}`;
 }

@@ -1,12 +1,24 @@
 /**
- * Astro integration: expose the configured public blog basePath in both
- * `astro dev` and `astro build` (alias-blog-path.mjs only patches dist/).
+ * Astro integration: expose exactly the configured public blog basePath in
+ * both `astro dev` and `astro build`.
  *
- * Physical pages stay under /blog; when blog.config basePath is e.g. /posts
- * or /the-creator-economy-for-b2b, inject matching routes that reuse those
- * entrypoints so links and nav resolve without a post-build copy step.
+ * Route entrypoints live in underscore-prefixed directories under src/pages,
+ * which Astro does not expose as routes. Injecting the configured path avoids
+ * publishing a duplicate `/blog` tree when a fork uses a custom path.
  */
 import { blogBasePath } from "../blog.config.mjs";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const siteConfig = JSON.parse(
+  fs.readFileSync(path.join(projectRoot, "config/site.json"), "utf8"),
+);
+
+function topicsEnabled() {
+  return siteConfig.features?.blog === true && siteConfig.features?.topics === true;
+}
 
 /**
  * @returns {import('astro').AstroIntegration}
@@ -17,25 +29,45 @@ export function blogPathAlias() {
     hooks: {
       "astro:config:setup": ({ injectRoute, logger }) => {
         const base = blogBasePath().replace(/^\//, "").replace(/\/+$/, "");
-        if (!base || base === "blog") {
-          return;
-        }
-        logger.info(`Aliasing /blog → /${base}`);
+        if (!base) return;
+        logger.info(`Registering blog at /${base}`);
         injectRoute({
           pattern: `/${base}`,
-          entrypoint: "./src/pages/blog/index.astro",
+          entrypoint: "./src/pages/_blog/index.astro",
         });
         injectRoute({
           pattern: `/${base}/[slug]`,
-          entrypoint: "./src/pages/blog/[slug].astro",
+          entrypoint: "./src/pages/_blog/[slug].astro",
         });
         injectRoute({
+          pattern: `/${base}/llms.txt`,
+          entrypoint: "./src/pages/_blog/llms.txt.ts",
+        });
+        if (topicsEnabled()) {
+          injectRoute({
+            pattern: `/${base}/topics`,
+            entrypoint: "./src/pages/_blog/topics/index.astro",
+          });
+          injectRoute({
+            pattern: `/${base}/topics/[slug]`,
+            entrypoint: "./src/pages/_blog/topics/[slug].astro",
+          });
+          injectRoute({
+            pattern: `/[locale]/${base}/topics`,
+            entrypoint: "./src/pages/[locale]/_blog/topics/index.astro",
+          });
+          injectRoute({
+            pattern: `/[locale]/${base}/topics/[slug]`,
+            entrypoint: "./src/pages/[locale]/_blog/topics/[slug].astro",
+          });
+        }
+        injectRoute({
           pattern: `/[locale]/${base}`,
-          entrypoint: "./src/pages/[locale]/blog/index.astro",
+          entrypoint: "./src/pages/[locale]/_blog/index.astro",
         });
         injectRoute({
           pattern: `/[locale]/${base}/[slug]`,
-          entrypoint: "./src/pages/[locale]/blog/[slug].astro",
+          entrypoint: "./src/pages/[locale]/_blog/[slug].astro",
         });
       },
     },

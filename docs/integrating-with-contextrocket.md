@@ -1,94 +1,119 @@
 # Integrating with ContextRocket
 
-The starter has two chat modes:
+The starter demonstrates two independent browser capabilities: A2A chat and
+organization-scoped contact form. Both run on a static site; there is no local
+backend or server credential.
 
-- `demo` (default): deterministic canned data, suitable for static hosting and design demos;
-- `live`: direct browser A2A to the configured ContextRocket API base.
+## Chat
 
-## Configuration
+Demo mode is the default and uses deterministic sample responses. Live mode
+connects the generated chat widget to ContextRocket over browser A2A.
+The starter's configured handle is `contextrocket`, so a live starter site is
+ready to address the default ContextRocket organization. Forks should set the
+handle for their own organization in `config/site.json` or override it with
+`PUBLIC_CONTEXTROCKET_HANDLE`.
 
 ```dotenv
 PUBLIC_CR_CHAT_MODE=live
 PUBLIC_CR_AGENT_URL=https://api.contextrocket.com
 PUBLIC_CONTEXTROCKET_HANDLE=contextrocket
-PUBLIC_CONTEXTROCKET_API_KEY=your-publishable-api-key
+# Optional: an origin-bound website key for the deployed site.
+PUBLIC_CONTEXTROCKET_API_KEY=your-origin-bound-publishable-key
 ```
 
-The starter showcase uses ContextRocket's `contextrocket` organization handle.
-Forks should replace it with their own published handle. The default site mode
-is still `demo`, so no API request occurs until live mode is enabled.
+The widget sends `SendStreamingMessage` to `/api/agent/a2a`, with the
+organization handle in A2A metadata. It does not use the MCP URL for chat. A
+published public handle can serve anonymous guest questions from that
+organization's public-safe facts, subject to the configured demo origin and
+rate limits. An optional website key is sent as `X-Api-Key`; it is a public
+credential, not a secret, and must be origin-bound, scoped, rate-limited, and
+revocable. Neither path exposes member-only sources or the private context
+graph. Never put an administrative or source-management credential in the
+site.
 
-The organization handle is the public identity of the published agent and is sent as `metadata.handle`. The website API key is sent as `X-Api-Key`; it is named `apiKey` in TypeScript and `api-key` / `data-contextrocket-api-key` in the widget contract.
+For a site to answer live questions, publish the organization's guest-safe
+context in ContextRocket and configure the deployed site origin there. Demo
+mode remains the default so clean static builds can work offline.
 
-ContextRocket must bind that credential to the published agent and validate the request `Origin` against its configured origin allowlist before executing A2A. Keys should be scoped, rate-limited, revocable, and unsuitable for administrative or source-management operations.
+The starter uses the checked-in build of `@contextrocket/embed-chat` at
+`public/embed/widget.js`, so cloning and building does not require a sibling
+repository. To refresh SDK-generated assets from a local `cr-sdk` checkout, run
+`pnpm run build:embeds`.
 
-## Embed widget (primary integration)
+The widget supports one configured brand palette, opening and follow-up
+suggestions, and the bounded JSON Render response catalog described in the
+SDK's README. Its installation attributes can set organization, key, mode,
+palette, suggestions, and optional full-screen behavior. Use
+`PUBLIC_CR_CHAT_FULLSCREEN=true` to show the expand control and
+`PUBLIC_CR_CHAT_FULLSCREEN_ON_LOAD=true` for a chat-first site such as GBA.
+The full-screen close control reveals the site; arbitrary CSS, HTML,
+JavaScript, prompts, or model settings are not part of the embed contract.
 
-Customer sites use `@contextrocket/embed-chat` from the public `cr-sdk` repo
-(copied to `public/embed/widget.js` for local demos, or loaded from CDN later).
-The widget talks to ContextRocket over browser A2A. There is no API proxy and
-no in-repo chat page required for production embeds.
+## Contact form integration
 
-The public integration sends only an organization handle and website API key. It does not create a local user, mint a local token, or expose a server credential.
+`/contact/` is a reusable localized example. Demo mode is safe by default: it
+validates the form and reports that nothing was sent or stored. To submit to an
+organization:
 
-## Standalone widget
+```dotenv
+PUBLIC_CR_CONTACT_FORM_MODE=live
+PUBLIC_CONTEXTROCKET_HANDLE=your-organization-handle
+PUBLIC_CR_AGENT_URL=https://api.contextrocket.com
+```
 
-The widget is built and released from **`cr-sdk`** (`packages/embed-chat`).
-This starter consumes it via pnpm `file:` (or CDN later). Use
-`pnpm run build:widget` to refresh `public/embed/widget.js`.
+The page uses the checked-in browser bridge generated from
+`@contextrocket/sdk` and calls `submitContactFormWithAttribution`. It sends the selected intent,
+name, email, optional phone, message, explicit consent, source URL, referrer
+origin, bounded UTM fields, and an idempotency key. Only the page origin and
+path are retained in `source_url`; query parameters other than the five UTM
+fields and all fragments are omitted. The API owns the lead ID, capture status,
+delivery state, and authoritative timestamps. The browser does not invent or
+overwrite those values.
 
-Build it with:
+If a live request fails, an unchanged retry reuses its idempotency key. Editing
+any form field starts a new submission and key. This lets the API safely
+deduplicate a request whose response was lost in transit.
+
+Before enabling live submission, configure the organization handle and allow
+the exact deployed site origin in ContextRocket. The public contact form
+endpoint supports the custom-origin preflight and preserves the submitted
+intent. No browser API key is sent; the API resolves the organization from the
+handle and enforces origin policy. Today, ContextRocket reads that origin list
+from an active website API key for the organization, even when the site uses
+contact capture without chat. The API key is configuration for origin
+admission; it is not sent with the contact request. This coupling is a product
+seam being tracked for org-level site-origin settings.
+
+The public npm packages are not yet available. The starter carries generated
+artifacts so the public clone remains installable; the canonical source, tests,
+and build process live in `cr-sdk`.
+
+## Publishing to the ContextRocket CDN
+
+Publishing a site to an organization's CDN is separate from browser
+integration. The Node-only `@contextrocket/site-publisher` package is being
+prepared in `cr-sdk`; it is not available from npm yet. It calls the existing
+org-scoped publish and release-status APIs, so static sites can use TypeScript
+and Node without depending on Python or GitHub Actions.
+
+For local development while the package is unpublished, build it from an
+adjacent `cr-sdk` checkout and run its CLI directly:
 
 ```bash
-make build-widget
+pnpm --dir ../cr-sdk install
+pnpm --dir ../cr-sdk/packages/site-publisher run build
+node ../cr-sdk/packages/site-publisher/dist/cli.js ./dist \
+  --prefix blog \
+  --env-file ../cr-vault/.env.prod
 ```
 
-Demo:
-
-```html
-<script src="/embed/widget.js" data-contextrocket-mode="demo" defer></script>
-```
-
-Live:
-
-```html
-<script
-  src="/embed/widget.js"
-  data-contextrocket-mode="live"
-  data-contextrocket-api-base="https://api.contextrocket.com"
-  data-contextrocket-handle="your-organization-handle"
-  data-contextrocket-api-key="your-publishable-api-key"
-  defer
-></script>
-```
-
-The V1 hosted scalar appearance contract is deliberately small and typed. Use
-these values once the starter customization lane has implemented and tested
-them; a production dashboard snippet is the authoritative supported example:
-
-```html
-<script
-  src="https://cdn.contextrocket.com/widget/v<verified-version>/widget.js"
-  data-contextrocket-mode="live"
-  data-contextrocket-api-base="https://api.contextrocket.com"
-  data-contextrocket-handle="your-organization-handle"
-  data-contextrocket-api-key="your-publishable-api-key"
-  data-contextrocket-theme="system"
-  data-contextrocket-accent="#ff2b67"
-  data-contextrocket-position="bottom-right"
-  defer
-></script>
-```
-
-The dashboard supplies the exact versioned URL only after a starter release is
-published and smoke-tested. For WordPress, paste the generated block into a
-Custom HTML block or site-wide footer. For Next.js, use `next/script` with
-`strategy="afterInteractive"` and the same `data-contextrocket-*` attributes.
-Never put a server credential in either integration.
-
-For a forked starter site, keep the richer configuration in typed
-`siteConfig`/environment values and build the local bundle. The configuration
-order is starter defaults, fork/siteConfig values, then validated installation
-attributes, with the handle/API key/API base supplied at runtime. Arbitrary
-CSS, HTML, JavaScript, custom endpoints, prompts, and model settings are not
-part of the widget contract.
+The CLI resolves the handle from `config/site.json` (`contextrocket.handle`),
+or from `CR_ORG_HANDLE` / `PUBLIC_CONTEXTROCKET_HANDLE`; `--org` can override
+it. The handle selects the organization but does not authorize publishing.
+The CLI currently requires a private, admin-scoped machine token minted for
+that organization. Keep it in the local CLI environment or a deployment secret
+store; never put it in `PUBLIC_*` variables or the generated site. The shared
+`contextrocket` operator token is not a customer credential. A narrower
+site-publish credential and Node/TypeScript issuance flow are product follow-
+ups. Until the package is published, customers can deploy the same static
+`dist/` tree with their own CDN tooling.

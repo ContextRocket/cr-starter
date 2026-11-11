@@ -1,0 +1,14 @@
+---
+import BlogIndex from "@/components/pages/BlogIndex.astro";
+import { blogPublicBasePath } from "@/lib/blog";
+import { redirectTargetForUnprefixedRoute, soleLocale } from "@/lib/routing";
+
+const redirectTarget = redirectTargetForUnprefixedRoute(
+  `${blogPublicBasePath()}/`,
+  new URL(Astro.request.url).search,
+);
+if (redirectTarget) return Astro.redirect(redirectTarget);
+const locale = soleLocale();
+---
+
+<BlogIndex locale={locale} />

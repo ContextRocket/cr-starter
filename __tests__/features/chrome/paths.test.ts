@@ -7,7 +7,6 @@ import {
   blogPostHref,
   homeHref,
   localizedHref,
-  withTrailingSlash,
 } from "@/lib/paths";
 import { scenario, thenStep } from "../../support/bdd";
 
@@ -22,9 +21,7 @@ scenario("CHROME-001 locale-aware public paths", () => {
       expect(blogPostHref("en", "getting-started")).toContain(
         "getting-started",
       );
-      expect(withTrailingSlash(localizedHref("de", "/privacy"))).toMatch(
-        /\/$/,
-      );
+      expect(localizedHref("de", "/contact")).toBe("/de/contact/");
     });
   });
 });
