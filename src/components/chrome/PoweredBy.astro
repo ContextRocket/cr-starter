@@ -35,7 +35,7 @@ const logo = tone === "white"
   data-testid="powered-by-badge"
 >
   {variant !== "logo" && <span class="powered-by-label">{t("attribution.poweredBy")}</span>}
-  <img src={logo} alt="ContextRocket" width="149" height="20" loading="lazy" />
+  <img src={logo} alt="ContextRocket" width="149" height="20" decoding="async" />
 </a>
 
 <style is:global>
