@@ -58,6 +58,42 @@ function parseFilename(file: string): {
   return { slug: base, locale: "shared" };
 }
 
+function optionalBoolean(
+  value: unknown,
+  field: "draft" | "featured",
+  filePath: string,
+): boolean {
+  if (value === undefined) return false;
+  if (typeof value !== "boolean") {
+    throw new Error(
+      `Blog post ${filePath} has invalid ${field}; use true or false without quotes`,
+    );
+  }
+  return value;
+}
+
+function postDate(value: unknown, filePath: string): string {
+  const date =
+    value instanceof Date
+      ? Number.isNaN(value.getTime())
+        ? ""
+        : value.toISOString().slice(0, 10)
+      : typeof value === "string"
+        ? value.trim()
+        : "";
+  const parsed = /^\d{4}-\d{2}-\d{2}$/.test(date)
+    ? new Date(`${date}T00:00:00.000Z`)
+    : null;
+  if (
+    !parsed ||
+    Number.isNaN(parsed.getTime()) ||
+    parsed.toISOString().slice(0, 10) !== date
+  ) {
+    throw new Error(`Blog post ${filePath} requires a valid YYYY-MM-DD date`);
+  }
+  return date;
+}
+
 function readPostFile(
   filePath: string,
   slug: string,
@@ -65,26 +101,33 @@ function readPostFile(
 ): BlogPost {
   const raw = fs.readFileSync(filePath, "utf8");
   const { data, content } = matter(raw);
-  if (!data.title || !data.date) {
+  if (typeof data.title !== "string" || !data.title.trim()) {
     throw new Error(
-      `Blog post ${filePath} requires frontmatter title and date`,
+      `Blog post ${filePath} requires a non-empty string title`,
+    );
+  }
+  const date = postDate(data.date, filePath);
+  const draft = optionalBoolean(data.draft, "draft", filePath);
+  const featured = optionalBoolean(data.featured, "featured", filePath);
+  const series = data.series;
+  if (
+    series !== undefined &&
+    (typeof series !== "number" || !Number.isSafeInteger(series) || series < 1)
+  ) {
+    throw new Error(
+      `Blog post ${filePath} has invalid series; use a positive integer`,
     );
   }
   return {
     slug,
-    title: String(data.title),
-    date: String(data.date),
+    title: data.title.trim(),
+    date,
     author: data.author ? String(data.author) : undefined,
     image: data.image ? String(data.image) : undefined,
     excerpt: data.excerpt ? String(data.excerpt) : undefined,
-    series:
-      typeof data.series === "number"
-        ? data.series
-        : data.series
-          ? Number(data.series)
-          : undefined,
-    featured: Boolean(data.featured),
-    draft: data.draft === true,
+    series,
+    featured,
+    draft,
     songTitle: data.songTitle ? String(data.songTitle) : undefined,
     songArtist: data.songArtist ? String(data.songArtist) : undefined,
     songYear: data.songYear ? String(data.songYear) : undefined,
