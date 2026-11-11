@@ -1,0 +1,22 @@
+---
+import TopicArticle from "@/components/pages/TopicArticle.astro";
+import { isSingleLocale } from "@/config/site.config";
+import { listTopics } from "@/lib/topics";
+import { blogPublicBasePath } from "@/lib/blog";
+import { redirectTargetForUnprefixedRoute, soleLocale } from "@/lib/routing";
+
+export function getStaticPaths() {
+  if (!isSingleLocale()) return [];
+  return listTopics().map((topic) => ({ params: { slug: topic.slug } }));
+}
+
+const redirectTarget = redirectTargetForUnprefixedRoute(
+  `${blogPublicBasePath()}/topics/${Astro.params.slug}/`,
+  new URL(Astro.request.url).search,
+);
+if (redirectTarget) return Astro.redirect(redirectTarget);
+const locale = soleLocale();
+const slug = Astro.params.slug as string;
+---
+
+<TopicArticle locale={locale} slug={slug} />

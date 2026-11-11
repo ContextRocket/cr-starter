@@ -14,6 +14,10 @@ export const siteEn = {
     description: "Articles, guides, and updates.",
     featured: "Featured",
     all_posts: "All posts",
+    topics: "Topics",
+    topics_description: "Evergreen guides and reference articles.",
+    topics_empty: "No published topics yet.",
+    updated: "Updated",
     empty: "No posts yet. Check back soon.",
     back: {
       home: "Back to home",

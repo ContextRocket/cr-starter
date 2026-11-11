@@ -17,13 +17,16 @@
  *                Default "content/posts". A fork can retain "content/blog"
  *                or use another descriptive collection name without changing
  *                the public URL.
+ *   topicsDir — optional evergreen Markdown collection. Enable it in
+ *               config/site.json → features.topics. Topics share blog chrome
+ *               and discovery, but are excluded from the dated feed.
  *   feedPath — public URL for the RSS feed. Default "/feed.xml"; set this
  *              when the blog is mounted below a product-owned public origin.
  *   postTitleSuffix — optional brand-specific suffix for article page titles.
  *                     Omit it to use the site's company name.
  */
 
-/** @typedef {{ basePath: string, title: string, contentDir: string, feedPath?: string, postTitleSuffix?: string }} BlogConfig */
+/** @typedef {{ basePath: string, title: string, contentDir: string, topicsDir?: string, feedPath?: string, postTitleSuffix?: string }} BlogConfig */
 
 /**
  * Raw blog settings. EDIT HERE to publish the blog under a custom path/name.
@@ -33,6 +36,7 @@ export const blogConfig = {
   basePath: "/blog",
   title: "Blog",
   contentDir: "content/posts",
+  topicsDir: "content/topics",
   // Keep the root feed as the default for standalone brand sites. A blog that
   // is mounted beneath a product-owned origin can set /blog/feed.xml.
   feedPath: "/feed.xml",
@@ -53,6 +57,11 @@ export function normalizeBlogContentDir(raw) {
 /** The normalized frontend-relative Markdown content directory. */
 export function blogContentDir() {
   return normalizeBlogContentDir(blogConfig.contentDir);
+}
+
+/** The normalized frontend-relative Markdown topics directory. */
+export function blogTopicsDir() {
+  return normalizeBlogContentDir(blogConfig.topicsDir ?? "content/topics");
 }
 
 /**

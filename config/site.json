@@ -87,6 +87,7 @@
   },
   "features": {
     "blog": true,
+    "topics": false,
     "chatFab": true,
     "languageSelector": true,
     "poweredByBadge": true,

@@ -17,6 +17,10 @@ export const siteDe: LocaleMessages<typeof siteEn> = {
     description: "Artikel, Anleitungen und Neuigkeiten.",
     featured: "Empfohlen",
     all_posts: "Alle Beiträge",
+    topics: "Themen",
+    topics_description: "Zeitlose Leitfäden und Referenzartikel.",
+    topics_empty: "Noch keine Themen veröffentlicht.",
+    updated: "Aktualisiert",
     empty: "Noch keine Beiträge. Schauen Sie bald wieder vorbei.",
     back: {
       home: "Zurück zur Startseite",

@@ -25,11 +25,16 @@ PUBLIC_CONTEXTROCKET_API_KEY=your-publishable-api-key
 - `src/i18n/messages/site/` -- site copy
 - `src/pages/[locale]/index.astro` -- home / landing composition
 - `content/posts/` -- Markdown blog posts
+- `content/topics/` -- optional evergreen references when `features.topics` is enabled
 - `public/` -- assets
 
 Use `draft: true` in a post's Markdown frontmatter while preparing it. Drafts
 appear in local development for review, but production builds omit their pages
 and exclude them from the blog listing, feed, and sitemap.
+
+Evergreen topics are optional. Enable `features.topics` in `config/site.json`;
+published topic pages join the sitemap and `llms.txt`, but stay out of the dated
+post listing and RSS feed.
 
 Shared layout, i18n runtime, blog engine, discovery routes, and the built embed
 widget are starter-owned. The checked-in widget keeps a standalone clone

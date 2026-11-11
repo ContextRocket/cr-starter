@@ -17,6 +17,10 @@ export const siteEs: LocaleMessages<typeof siteEn> = {
     description: "Artículos, guías y novedades.",
     featured: "Destacado",
     all_posts: "Todas las publicaciones",
+    topics: "Temas",
+    topics_description: "Guías permanentes y artículos de referencia.",
+    topics_empty: "Todavía no hay temas publicados.",
+    updated: "Actualizado",
     empty: "Aún no hay publicaciones. Vuelve pronto.",
     back: {
       home: "Volver al inicio",

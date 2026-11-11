@@ -226,6 +226,43 @@ if (features.blog) {
     }
   }
 
+  if (features.topics === true) {
+    const topicsDir = path.resolve(root, blogConfig.topicsDir ?? "content/topics");
+    const topics = fs.existsSync(topicsDir)
+      ? fs.readdirSync(topicsDir)
+          .filter((file) => /^[a-z0-9]+(?:-[a-z0-9]+)*\.md$/.test(file))
+          .map((file) => ({
+            slug: file.slice(0, -3),
+            ...matter(fs.readFileSync(path.join(topicsDir, file), "utf8")).data,
+          }))
+      : [];
+    const published = topics.filter((topic) => topic.draft !== true);
+    const topicIndexSegments = [...blogSegments, "topics"];
+    if (published.length > 0) {
+      requireFile("published topic index", pageExists(...topicIndexSegments));
+    }
+    const sitemap = fs.readFileSync(path.join(dist, "sitemap.xml"), "utf8");
+    const llms = fs.readFileSync(path.join(dist, "llms.txt"), "utf8");
+    const feed = fileExists("feed.xml");
+    const feedXml = feed ? fs.readFileSync(feed, "utf8") : "";
+    const siteUrl = String(site.company?.siteUrl ?? "").replace(/\/+$/, "");
+    for (const topic of topics) {
+      const segments = [...topicIndexSegments, topic.slug];
+      const topicPath = `/${segments.join("/")}`;
+      const canonical = `${siteUrl}${topicPath}/`;
+      if (topic.draft === true) {
+        if (pageExists(...segments)) missing.push(`draft topic was published (${topicPath})`);
+        if (sitemap.includes(`<loc>${canonical}</loc>`)) missing.push(`draft topic appears in sitemap (${canonical})`);
+        if (llms.includes(`](${canonical})`)) missing.push(`draft topic appears in llms.txt (${canonical})`);
+        continue;
+      }
+      requireFile(`published topic (${topicPath})`, pageExists(...segments));
+      if (!sitemap.includes(`<loc>${canonical}</loc>`)) missing.push(`published topic is missing from sitemap (${canonical})`);
+      if (!llms.includes(`](${canonical})`)) missing.push(`published topic is missing from llms.txt (${canonical})`);
+      if (feedXml.includes(canonical)) missing.push(`topic must not appear in dated RSS feed (${canonical})`);
+    }
+  }
+
   if (baseSegments.join("/") !== "blog") {
     const legacyIndex = [
       ...(multiLocale ? [defaultLocale] : []),

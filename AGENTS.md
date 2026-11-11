@@ -17,7 +17,8 @@ local demos. Typed browser access uses `@contextrocket/sdk` (A2A +
    feature switches, locales, and `publicRoutes`.
 2. `src/i18n/messages/site/*.ts` -- fork-owned copy for the locales the site
    serves.
-3. `blog.config.mjs` -- public blog path/title and Markdown collection directory.
+3. `blog.config.mjs` -- public blog path/title, Markdown post directory, and
+   optional topic directory.
 4. `src/config/site.config.ts` -- starter-owned typed seam and defaults.
 5. `.env` / `PUBLIC_*` variables -- optional overrides (see `.env.example`).
 
@@ -32,6 +33,7 @@ the emitted Astro routes.
 
 - Home (landing) -- fork-owned composition under `src/pages/[locale]/index.astro`
 - Blog (path from `blog.config.mjs`)
+- Optional evergreen topics (only when `features.topics` is enabled)
 - Contact (localized SDK contact-form example; demo mode by default)
 - Website discovery: `sitemap.xml`, `robots.txt`, `llms.txt`, `feed.xml`,
   `.well-known/security.txt`

@@ -36,3 +36,20 @@ When home or featured surfaces ask for featured posts,
 Then that post is marked featured.
 
 Never treat “has an image” or “is first in the folder” as featured.
+
+## BLOG-005: Evergreen topics are optional and separately indexed
+
+Given `features.topics` is enabled and a topic has valid title, description,
+and `updated` frontmatter,
+When the site is built,
+Then its topic index and article route are emitted and listed in the sitemap
+and `llms.txt`,
+And it is excluded from the dated post listing and RSS feed.
+
+Given a topic is marked `draft: true`,
+When a production build runs,
+Then its article route and discovery entries are omitted.
+
+Given `features.topics` is disabled,
+When the site is built,
+Then no topic routes are emitted.

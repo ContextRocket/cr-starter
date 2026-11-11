@@ -15,6 +15,7 @@ S3, or any static host -- without forking a full Next app shell.
 | Copy | `src/i18n/messages/site/en.ts` (+ other locales if needed) |
 | Home composition | `src/pages/[locale]/index.astro` |
 | Posts | `content/posts/*.md` |
+| Optional evergreen topics | `content/topics/*.md` with `features.topics: true` |
 | Assets | `public/` |
 | Chat | Embed snippet + handle + publishable API key |
 

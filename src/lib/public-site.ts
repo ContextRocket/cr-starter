@@ -11,7 +11,8 @@ import {
   type PublicRoute,
 } from "@/lib/public-routes";
 import { absoluteUrl, blogPostHref } from "@/lib/paths";
-import { listPosts } from "@/lib/blog";
+import { blogPublicBasePath, listPosts } from "@/lib/blog";
+import { listTopics } from "@/lib/topics";
 
 export interface PublicSitemapEntry {
   loc: string;
@@ -92,12 +93,20 @@ function buildAiAllowList(): string[] {
     .filter((route) => route.indexable !== false)
     .filter((route) => route.path)
     .map((route) => routeHref(locale, route));
+  const topics = listTopics();
+  const topicPaths = topics.length > 0
+    ? [
+        `${blogPublicBasePath()}/topics`,
+        ...topics.map((topic) => `${blogPublicBasePath()}/topics/${topic.slug}`),
+      ]
+    : [];
   return [
     "/",
     "/llms.txt",
     "/.well-known/agent-card.json",
     "/sitemap.xml",
     ...routePaths,
+    ...topicPaths,
   ];
 }
 
@@ -162,6 +171,12 @@ export function buildLlmsTxt(): string {
           `- [${post.title}](${absoluteUrl(blogPostHref(locale, post.slug))}): ${post.excerpt || post.title}`,
       )
     : [];
+  const topics = siteConfig.features.topics
+    ? listTopics().map(
+        (topic) =>
+          `- [${topic.title}](${absoluteUrl(`${blogPublicBasePath()}/topics/${topic.slug}`)}): ${topic.description}`,
+      )
+    : [];
 
   const origin = siteConfig.siteUrl.replace(/\/$/, "");
   return [
@@ -176,6 +191,7 @@ export function buildLlmsTxt(): string {
     `- [home](${homeUrl}): ${siteConfig.tagline}`,
     ...pageLines,
     ...(articles.length ? ["", "## Published articles", ...articles] : []),
+    ...(topics.length ? ["", "## Evergreen topics", ...topics] : []),
     "",
     "## Machine-readable resources",
     `- [Sitemap](${absoluteUrl("/sitemap.xml")}): Full public page index.`,
@@ -249,6 +265,26 @@ export function buildSitemapEntries(): PublicSitemapEntry[] {
           changeFrequency: "monthly",
           priority: postPriority,
           alternates: languages as Record<string, string> | undefined,
+        });
+      }
+    }
+  }
+
+  if (siteConfig.features.blog && siteConfig.features.topics) {
+    const topics = listTopics();
+    if (topics.length > 0) {
+      const topicIndex = `${blogPublicBasePath()}/topics`;
+      entries.push({
+        loc: absoluteUrl(topicIndex),
+        changeFrequency: "monthly",
+        priority: 0.6,
+      });
+      for (const topic of topics) {
+        entries.push({
+          loc: absoluteUrl(`${topicIndex}/${topic.slug}`),
+          lastModified: topic.updated,
+          changeFrequency: "monthly",
+          priority: 0.6,
         });
       }
     }

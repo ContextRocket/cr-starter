@@ -6,6 +6,7 @@ import { absoluteUrl, localizedHref } from "@/lib/paths";
 import { createT } from "@/i18n/keys";
 import { buildBreadcrumbListJsonLd } from "@/lib/structured-data";
 import BlogPostCard from "@/components/blog/BlogPostCard.astro";
+import { listTopics } from "@/lib/topics";
 
 interface Props {
   locale: SupportedLocale;
@@ -14,6 +15,7 @@ interface Props {
 const { locale } = Astro.props;
 const t = createT(locale);
 const posts = listPosts(locale);
+const topics = listTopics();
 const title = t("blog.title");
 const description = t("blog.subtitle");
 const path = blogPublicBasePath();
@@ -30,6 +32,7 @@ const jsonLdExtra = [
     <header class="mx-auto max-w-3xl text-center">
       <h1 class="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">{title}</h1>
       {description && <p class="mt-4 text-lg leading-8 text-text-secondary sm:text-xl">{description}</p>}
+      {topics.length > 0 && <a href={localizedHref(locale, `${path}/topics`)} class="mt-5 inline-flex text-sm font-medium text-text-secondary underline-offset-4 hover:text-foreground hover:underline">{t("blog.topics")} <span class="ml-2" aria-hidden="true">→</span></a>}
     </header>
 
     {posts.length > 0 ? (

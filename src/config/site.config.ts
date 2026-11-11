@@ -6,7 +6,7 @@
  */
 
 import siteData from "../../config/site.json";
-import { blogConfig, blogContentDir } from "../../blog.config.mjs";
+import { blogConfig, blogContentDir, blogTopicsDir } from "../../blog.config.mjs";
 import type { SiteIntegrationConfig } from "@/lib/integrations";
 
 const contextRocketBrandAssetsUrl =
@@ -42,6 +42,7 @@ const siteDataExt = siteData as typeof siteData & {
     gallery?: boolean;
     attribution?: boolean;
     testimonials?: boolean;
+    topics?: boolean;
     cookieConsent?: "auto" | "on" | "off";
   };
   defaultLocale?: string;
@@ -120,6 +121,7 @@ export const siteConfig = {
       "PUBLIC_TESTIMONIALS_ENABLED",
       siteDataExt.features.testimonials ?? false,
     ),
+    topics: siteDataExt.features.topics ?? false,
     languageSelector: envBool(
       "PUBLIC_LANGUAGE_SELECTOR_ENABLED",
       siteData.features.languageSelector,
@@ -180,6 +182,7 @@ export const siteConfig = {
     title: blogConfig.title,
     postTitleSuffix: blogConfig.postTitleSuffix,
     contentDir: blogContentDir(),
+    topicsDir: blogTopicsDir(),
     feedPath: blogConfig.feedPath ?? "/feed.xml",
   },
 
