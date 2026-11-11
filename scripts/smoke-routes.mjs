@@ -94,13 +94,15 @@ if (features.blog) {
   requireFile("feed.xml", fileExists("feed.xml"));
 }
 
-// The home route stays available for reverse-proxy deployments; the blog path
-// is configurable and can be the only public surface exposed by the host.
-const homeSegments = multiLocale ? [defaultLocale] : [];
-requireFile(
-  multiLocale ? `${defaultLocale}/index.html` : "index.html",
-  pageExists(...homeSegments) || fileExists(...homeSegments, "index.html"),
-);
+// Home is optional. Blog-only publications can omit it when the product owns
+// the public root and the reverse proxy exposes only the configured blog path.
+if ((site.publicRoutes ?? []).some((route) => route.key === "home")) {
+  const homeSegments = multiLocale ? [defaultLocale] : [];
+  requireFile(
+    multiLocale ? `${defaultLocale}/index.html` : "index.html",
+    pageExists(...homeSegments) || fileExists(...homeSegments, "index.html"),
+  );
+}
 
 if (features.blog) {
   const basePath = (blogConfig.basePath ?? "/blog").replace(/^\/+|\/+$/g, "");
@@ -327,6 +329,15 @@ for (const htmlFile of htmlFiles) {
     }
 
     let exists = false;
+    // A reverse-proxy publication can intentionally omit its root route when
+    // the parent product owns `/` (for example, a blog mounted at `/blog/`).
+    // Let links to that product-owned root resolve outside this static tree.
+    if (
+      target.pathname === "/" &&
+      !(site.publicRoutes ?? []).some((route) => route.key === "home")
+    ) {
+      continue;
+    }
     try {
       exists = staticPathExists(target.pathname);
     } catch {
