@@ -99,9 +99,49 @@
       }
     });
   }
+  function createPublicLeadSubmissionController(submitter = submitPublicLeadWithAttribution, createKey = () => globalThis.crypto.randomUUID()) {
+    let pendingFingerprint;
+    let pendingKey;
+    let inFlight;
+    const reset = () => {
+      pendingFingerprint = void 0;
+      pendingKey = void 0;
+    };
+    return {
+      reset,
+      submit(options) {
+        const fingerprint = JSON.stringify({
+          apiBaseUrl: options.apiBaseUrl,
+          orgHandle: options.orgHandle.trim().replace(/^@/, "").toLowerCase(),
+          lead: options.lead,
+          pageUrl: String(options.pageUrl),
+          referrerUrl: options.referrerUrl
+        });
+        if (inFlight?.fingerprint === fingerprint) return inFlight.promise;
+        if (pendingFingerprint !== fingerprint || !pendingKey) {
+          pendingFingerprint = fingerprint;
+          pendingKey = createKey();
+        }
+        const requestKey = pendingKey;
+        const request = submitter({ ...options, idempotencyKey: requestKey }).then(
+          (receipt) => {
+            if (pendingKey === requestKey) reset();
+            return receipt;
+          }
+        );
+        const current = { fingerprint, promise: request };
+        inFlight = current;
+        void request.finally(() => {
+          if (inFlight === current) inFlight = void 0;
+        }).catch(() => void 0);
+        return request;
+      }
+    };
+  }
 
   // src/browser-lead-capture.ts
   var browserSdk = Object.freeze({
+    createPublicLeadSubmissionController,
     LeadCaptureError,
     extractLeadAttribution,
     submitPublicLead,

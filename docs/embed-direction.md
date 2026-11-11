@@ -13,11 +13,13 @@ customers can install, build, and use the starter without a package release.
 | `packages/embed-chat` | `@contextrocket/embed-chat` | Chat widget IIFE |
 
 The SDK also builds `dist/lead-capture.browser.js`, a small browser bridge exposing
-`ContextRocketSDK.submitPublicLead` and `ContextRocketSDK.extractLeadAttribution`
-for static forms. The attribution helper keeps the page origin/path, referrer
-origin, and bounded UTM values while omitting unrelated query parameters and
-fragments. The starter checks in the generated artifact at
-`public/embed/lead-capture.js`; refresh the local copies with
+the public lead API and attribution helpers to static forms. Its
+`createPublicLeadSubmissionController()` helper owns retry idempotency: unchanged
+retries reuse the same key, edits reset the attempt, and concurrent submissions
+of the same payload share one request. Forms keep their own fields and UI. The
+attribution helper keeps the page origin/path, referrer origin, and bounded UTM
+values while omitting unrelated query parameters and fragments. The starter
+checks in the generated artifact at `public/embed/lead-capture.js`; refresh the local copies with
 `pnpm run build:embeds` from a sibling `cr-sdk` checkout.
 
 The package names are defined in `cr-sdk`, but the packages are not currently

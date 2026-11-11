@@ -82,13 +82,11 @@ const jsonLdExtra = [buildBreadcrumbListJsonLd([
       const controls = Array.from(form.querySelectorAll("input, select, textarea"));
       if (!status || !submit) return;
       const t = (key) => labels[key] || "";
-      let pendingIdempotencyKey = null;
+      let submissionController = null;
       let isSubmitting = false;
       status.textContent = "";
       form.addEventListener("input", () => {
-        // A changed payload is a new lead attempt; unchanged retries reuse the
-        // same key so a lost response cannot create a duplicate lead.
-        pendingIdempotencyKey = null;
+        submissionController?.reset();
         status.textContent = "";
       });
       form.addEventListener("submit", async (event) => {
@@ -103,21 +101,20 @@ const jsonLdExtra = [buildBreadcrumbListJsonLd([
           return;
         }
         const sdk = window.ContextRocketSDK;
-        if (!form.dataset.handle || !sdk || typeof sdk.submitPublicLeadWithAttribution !== "function") {
+        if (!form.dataset.handle || !sdk || typeof sdk.createPublicLeadSubmissionController !== "function") {
           status.textContent = t("unavailable");
           return;
         }
+        submissionController ??= sdk.createPublicLeadSubmissionController();
         isSubmitting = true;
         controls.forEach((control) => { control.disabled = true; });
         submit.disabled = true;
         submit.textContent = t("sending");
         status.textContent = "";
         try {
-          pendingIdempotencyKey ??= crypto.randomUUID();
-          await sdk.submitPublicLeadWithAttribution({
+          await submissionController.submit({
             apiBaseUrl: form.dataset.apiBase,
             orgHandle: form.dataset.handle,
-            idempotencyKey: pendingIdempotencyKey,
             pageUrl: window.location.href,
             referrerUrl: document.referrer,
             lead: {
@@ -131,7 +128,6 @@ const jsonLdExtra = [buildBreadcrumbListJsonLd([
             },
           });
           status.textContent = t("success");
-          pendingIdempotencyKey = null;
           form.reset();
         } catch {
           status.textContent = t("failure");
