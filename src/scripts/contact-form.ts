@@ -35,6 +35,10 @@ export function initializeContactForm(form: HTMLFormElement): void {
 
   const labels = JSON.parse(form.dataset.labels ?? "{}") as ContactFormLabels;
   const label = (key: keyof ContactFormLabels) => labels[key] ?? "";
+  const setStatus = (message: string) => {
+    status.textContent = message;
+    status.hidden = !message;
+  };
   const controls = Array.from(
     form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
       "input, select, textarea",
@@ -43,20 +47,22 @@ export function initializeContactForm(form: HTMLFormElement): void {
   let submissionController: ReturnType<NonNullable<Window["ContextRocketSDK"]>["createContactFormController"]> | undefined;
   let isSubmitting = false;
 
-  status.textContent = "";
+  // Keep the server-rendered no-JavaScript notice visible until this module
+  // initializes; then remove the empty status row so it does not leave a gap.
+  setStatus("");
   form.addEventListener("invalid", () => {
-    status.textContent = label("required");
+    setStatus(label("required"));
   }, true);
   form.addEventListener("input", () => {
     submissionController?.reset();
-    status.textContent = "";
+    setStatus("");
   });
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (isSubmitting || !form.reportValidity()) return;
 
     if (form.dataset.mode === "demo") {
-      status.textContent = label("demoResult");
+      setStatus(label("demoResult"));
       form.reset();
       return;
     }
@@ -65,7 +71,7 @@ export function initializeContactForm(form: HTMLFormElement): void {
     const apiBaseUrl = form.dataset.apiBase;
     const sdkSrc = form.dataset.sdkSrc;
     if (!handle || !apiBaseUrl || !sdkSrc) {
-      status.textContent = label("unavailable");
+      setStatus(label("unavailable"));
       return;
     }
 
@@ -75,7 +81,7 @@ export function initializeContactForm(form: HTMLFormElement): void {
     controls.forEach((control) => { control.disabled = true; });
     submit.disabled = true;
     submit.textContent = label("sending");
-    status.textContent = "";
+    setStatus("");
 
     try {
       const sdk = await loadContactSdk(sdkSrc);
@@ -95,10 +101,10 @@ export function initializeContactForm(form: HTMLFormElement): void {
           consent: true,
         },
       });
-      status.textContent = label("success");
+      setStatus(label("success"));
       form.reset();
     } catch {
-      status.textContent = label("failure");
+      setStatus(label("failure"));
     } finally {
       isSubmitting = false;
       controls.forEach((control) => { control.disabled = false; });
