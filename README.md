@@ -16,6 +16,8 @@ Demo chat mode is the default. For live chat, set in `.env`:
 PUBLIC_CR_CHAT_MODE=live
 PUBLIC_CR_AGENT_URL=https://api.contextrocket.com
 PUBLIC_CONTEXTROCKET_HANDLE=your-handle
+# Optional: choose "person" for a Personal Brand identity (defaults to company).
+PUBLIC_CONTEXTROCKET_SUBJECT_KIND=company
 PUBLIC_CONTEXTROCKET_API_KEY=your-publishable-api-key
 ```
 
@@ -98,6 +100,7 @@ operator release workflow. Keep the local artifacts for offline demos.
   src="/embed/widget.js"
   defer
   data-contextrocket-handle="your-handle"
+  data-contextrocket-subject-kind="company"
   data-contextrocket-api-key="your-publishable-key"
 ></script>
 ```

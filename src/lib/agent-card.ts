@@ -7,6 +7,16 @@
  */
 
 import { siteConfig } from "@/config/site.config";
+import {
+  contextRocketIdentityUrl,
+  type ContextRocketSubjectKind,
+} from "@/lib/contextrocket-urls";
+
+export interface AgentCardOptions {
+  agentUrl?: string;
+  handle?: string;
+  subjectKind?: ContextRocketSubjectKind;
+}
 
 const A2A_PROTOCOL_VERSION = "1.0";
 const A2A_PROTOCOL_BINDING = "JSONRPC";
@@ -21,19 +31,35 @@ function env(name: string): string | undefined {
   return value && value.trim() ? value.trim() : undefined;
 }
 
-export function buildAgentCard(): Record<string, unknown> {
+export function buildAgentCard(
+  options: AgentCardOptions = {},
+): Record<string, unknown> {
   const crAgentUrl = trimTrailingSlash(
-    env("PUBLIC_CR_AGENT_URL") || siteConfig.chat.agentUrl,
+    options.agentUrl || env("PUBLIC_CR_AGENT_URL") || siteConfig.chat.agentUrl,
   );
   const handle =
+    options.handle ||
     env("PUBLIC_CONTEXTROCKET_HANDLE") ||
     siteConfig.chat.handle ||
     "contextrocket";
-  const interfaceUrl = `${crAgentUrl}/api/agent/a2a`;
+  const subjectKind = options.subjectKind ?? siteConfig.chat.subjectKind;
+  const interfaceUrl = contextRocketIdentityUrl(
+    crAgentUrl,
+    subjectKind,
+    handle,
+    "a2a",
+  );
+  const agentCardUrl = contextRocketIdentityUrl(
+    crAgentUrl,
+    subjectKind,
+    handle,
+    "agent-card.json",
+  );
 
   return {
     name: `${siteConfig.companyName} Agent`,
     description: siteConfig.description,
+    url: agentCardUrl,
     supportedInterfaces: [
       {
         url: interfaceUrl,

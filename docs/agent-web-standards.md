@@ -11,14 +11,14 @@ surfaces.
 - sitemap.xml lists the generated public routes.
 - llms.txt provides a concise AI-readable site map.
 - The configured blog path also serves an editorial llms.txt with its published articles.
-- `/.well-known/agent-card.json` is a generic static A2A discovery fallback.
-  Its name, interface URL, and tenant are build-time values; the tenant handle
-  can exist in configuration before an organization has been provisioned. It
+- `/.well-known/agent-card.json` is a static A2A discovery fallback for the
+  configured identity. Its name, typed interface URL, and tenant are build-time
+  values; the tenant handle can exist in configuration before an organization has been provisioned. It
   is not proof that the live organization or its capabilities are available.
-  On a verified ContextRocket site origin, proxy this path to the API so the
-  live, policy-filtered organization card takes precedence over the static file.
-- /.well-known/mcp.json is a convenience manifest describing the hosted
-  organization-scoped ContextRocket MCP surface when an API base and
+  Use the typed `/company/{handle}/agent-card.json` or
+  `/person/{handle}/agent-card.json` API endpoint for the live public card.
+- `/.well-known/mcp.json` is a convenience manifest describing the hosted
+  typed ContextRocket MCP surface when an API base and
   organization handle are configured. As with the Agent Card, configuration
   does not provision the organization or enable the advertised interface.
 
@@ -73,12 +73,14 @@ demos (`pnpm run build:widget`). Its canonical live snippet is:
       data-contextrocket-mode="live"
       data-contextrocket-api-base="https://api.contextrocket.com"
       data-contextrocket-handle="contextrocket"
+      data-contextrocket-subject-kind="company"
       data-contextrocket-api-key="optional-origin-bound-publishable-key"
       defer
     ></script>
 
-The widget sends the handle in A2A metadata to `/api/agent/a2a`; the manifest's
-`/mcp/{handle}` URL is a separate MCP surface. Without a key, live chat is
+The widget sends A2A requests to the typed `/company/{handle}/a2a` or
+`/person/{handle}/a2a` endpoint. The manifest points to the matching
+`/company/{handle}/mcp` or `/person/{handle}/mcp` endpoint. Without a key, live chat is
 available only when the target organization exists, its public A2A policy
 allows guest answering, and public-safe context is available. Configure the
 permitted site origin and rate limits as required by the organization policy;
@@ -88,16 +90,16 @@ place a server-side machine key in a public page.
 
 ## Implementation map
 
-| Surface                 | Implementation                                                        |
-| ----------------------- | --------------------------------------------------------------------- |
-| robots.txt              | src/pages/robots.txt.ts (+ src/lib/public-site.ts)                    |
-| sitemap.xml             | src/pages/sitemap.xml.ts (+ src/lib/public-site.ts)                   |
-| llms.txt                | src/pages/llms.txt.ts (+ src/lib/public-site.ts)                      |
-| Route allowlist         | config/site.json `publicRoutes` + src/lib/public-routes.ts            |
-| Agent card              | src/pages/.well-known/agent-card.json.ts (+ src/lib/agent-card.ts)    |
-| MCP manifest            | src/pages/.well-known/mcp.json.ts (+ src/lib/mcp-manifest.ts)         |
-| security.txt            | src/pages/.well-known/security.txt.ts                                 |
-| Web app manifest        | src/pages/manifest.webmanifest.ts                                     |
-| JSON-LD                 | fork pages / structured-data helpers where present                    |
-| Standalone widget       | `cr-sdk` → `@contextrocket/embed-chat` → public/embed/widget.js       |
-| Browser SDK             | `cr-sdk` → `@contextrocket/sdk`                                       |
+| Surface           | Implementation                                                     |
+| ----------------- | ------------------------------------------------------------------ |
+| robots.txt        | src/pages/robots.txt.ts (+ src/lib/public-site.ts)                 |
+| sitemap.xml       | src/pages/sitemap.xml.ts (+ src/lib/public-site.ts)                |
+| llms.txt          | src/pages/llms.txt.ts (+ src/lib/public-site.ts)                   |
+| Route allowlist   | config/site.json `publicRoutes` + src/lib/public-routes.ts         |
+| Agent card        | src/pages/.well-known/agent-card.json.ts (+ src/lib/agent-card.ts) |
+| MCP manifest      | src/pages/.well-known/mcp.json.ts (+ src/lib/mcp-manifest.ts)      |
+| security.txt      | src/pages/.well-known/security.txt.ts                              |
+| Web app manifest  | src/pages/manifest.webmanifest.ts                                  |
+| JSON-LD           | fork pages / structured-data helpers where present                 |
+| Standalone widget | `cr-sdk` → `@contextrocket/embed-chat` → public/embed/widget.js    |
+| Browser SDK       | `cr-sdk` → `@contextrocket/sdk`                                    |

@@ -3,12 +3,17 @@
  */
 
 import { siteConfig } from "@/config/site.config";
+import {
+  contextRocketIdentityUrl,
+  type ContextRocketSubjectKind,
+} from "@/lib/contextrocket-urls";
 
 export interface McpManifestOptions {
   siteUrl?: string;
   companyName?: string;
   agentUrl?: string | null;
   handle?: string;
+  subjectKind?: ContextRocketSubjectKind;
 }
 
 function env(name: string): string | undefined {
@@ -22,13 +27,17 @@ export function buildMcpManifest(
 ): Record<string, unknown> {
   const origin = (options.siteUrl ?? siteConfig.siteUrl).replace(/\/$/, "");
   const companyName = options.companyName ?? siteConfig.companyName;
-  const crAgentUrl = options.agentUrl === undefined
-    ? env("PUBLIC_CR_AGENT_URL") || siteConfig.contextrocket.apiBaseUrl
-    : options.agentUrl;
+  const crAgentUrl =
+    options.agentUrl === undefined
+      ? env("PUBLIC_CR_AGENT_URL") || siteConfig.contextrocket.apiBaseUrl
+      : options.agentUrl;
   const handle = options.handle ?? siteConfig.contextrocket.handle;
-  const mcpUrl = crAgentUrl && handle
-    ? `${crAgentUrl.replace(/\/$/, "")}/mcp/${encodeURIComponent(handle)}`
-    : null;
+  const subjectKind =
+    options.subjectKind ?? siteConfig.contextrocket.subjectKind;
+  const mcpUrl =
+    crAgentUrl && handle
+      ? contextRocketIdentityUrl(crAgentUrl, subjectKind, handle, "mcp")
+      : null;
 
   return {
     schema: "mcp-manifest/0.1",
@@ -52,7 +61,8 @@ export function buildMcpManifest(
     siteOrigin: origin,
     note:
       "This is a ContextRocket convenience manifest, not a standardized MCP " +
-      "well-known document. Use the hosted organization-scoped /mcp/{handle} endpoint " +
+      "well-known document. Use the typed organization endpoint /company/{handle}/mcp " +
+      "or /person/{handle}/mcp " +
       "and its protected " +
       "resource metadata for protocol discovery. " +
       "Ref: https://github.com/modelcontextprotocol/specification/discussions/129",

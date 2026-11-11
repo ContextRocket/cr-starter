@@ -18,6 +18,8 @@ Demo chat is the default. Copy `.env.example` to `.env` for live embed settings:
 PUBLIC_CR_CHAT_MODE=live
 PUBLIC_CR_AGENT_URL=https://api.contextrocket.com
 PUBLIC_CONTEXTROCKET_HANDLE=your-handle
+# Optional; defaults to company. Use person for a Personal Brand identity.
+PUBLIC_CONTEXTROCKET_SUBJECT_KIND=company
 PUBLIC_CONTEXTROCKET_API_KEY=your-publishable-api-key
 ```
 

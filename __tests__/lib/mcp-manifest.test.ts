@@ -8,7 +8,20 @@ describe("MCP manifest", () => {
       handle: "starter-demo",
     });
 
-    expect(manifest.url).toBe("https://api.contextrocket.com/mcp/starter-demo");
+    expect(manifest.url).toBe(
+      "https://api.contextrocket.com/company/starter-demo/mcp",
+    );
+  });
+
+  it("builds the person identity endpoint when configured", () => {
+    const manifest = buildMcpManifest({
+      agentUrl: "https://api.contextrocket.com/",
+      handle: "mark macmahon",
+      subjectKind: "person",
+    });
+    expect(manifest.url).toBe(
+      "https://api.contextrocket.com/person/mark%20macmahon/mcp",
+    );
   });
 
   it("does not advertise the shared MCP directory without an organization handle", () => {

@@ -6,7 +6,11 @@
  */
 
 import siteData from "../../config/site.json";
-import { blogConfig, blogContentDir, blogTopicsDir } from "../../blog.config.mjs";
+import {
+  blogConfig,
+  blogContentDir,
+  blogTopicsDir,
+} from "../../blog.config.mjs";
 import type { SiteIntegrationConfig } from "@/lib/integrations";
 
 const contextRocketBrandAssetsUrl =
@@ -46,11 +50,16 @@ const siteDataExt = siteData as typeof siteData & {
     cookieConsent?: "auto" | "on" | "off";
   };
   defaultLocale?: string;
-  contextrocket?: { handle?: string };
+  contextrocket?: { handle?: string; subjectKind?: "company" | "person" };
   homeMetaDescription?: string;
   homeMetaTitle?: string;
   titleSeparator?: string;
-  chat?: { widgetSrc?: string; fullscreen?: boolean; fullscreenOnOpen?: boolean; fullscreenOnLoad?: boolean };
+  chat?: {
+    widgetSrc?: string;
+    fullscreen?: boolean;
+    fullscreenOnOpen?: boolean;
+    fullscreenOnLoad?: boolean;
+  };
   contactForm?: { mode?: "demo" | "live"; scriptSrc?: string };
   integrations?: Record<string, SiteIntegrationConfig>;
   integrationConsentMode?: "auto" | "always" | "external";
@@ -72,9 +81,16 @@ const contextRocketApiBase = env(
   "PUBLIC_CR_AGENT_URL",
   "https://api.contextrocket.com",
 ).replace(/\/$/, "");
+const contextRocketSubjectKind = envEnum<"company" | "person">(
+  "PUBLIC_CONTEXTROCKET_SUBJECT_KIND",
+  siteDataExt.contextrocket?.subjectKind ?? "company",
+  ["company", "person"],
+);
 
 export const siteConfig = {
-  trailingSlash: (siteData as typeof siteData & { trailingSlash?: "always" | "never" }).trailingSlash ?? "always",
+  trailingSlash:
+    (siteData as typeof siteData & { trailingSlash?: "always" | "never" })
+      .trailingSlash ?? "always",
   companyName: env("PUBLIC_SITE_NAME", siteData.company.name),
   legalName: siteDataExt.company.legalName,
   tagline: siteData.company.tagline,
@@ -83,7 +99,10 @@ export const siteConfig = {
   contextRocketBrandAssetsUrl,
   contactEmail: env("PUBLIC_CONTACT_EMAIL", siteData.company.contactEmail),
   homeTitle: env("PUBLIC_HOME_TITLE", siteData.company.name),
-  homeMetaDescription: env("PUBLIC_HOME_META_DESCRIPTION", siteDataExt.homeMetaDescription ?? ""),
+  homeMetaDescription: env(
+    "PUBLIC_HOME_META_DESCRIPTION",
+    siteDataExt.homeMetaDescription ?? "",
+  ),
   homeMetaTitle: env("PUBLIC_HOME_META_TITLE", siteDataExt.homeMetaTitle ?? ""),
   titleSeparator: siteDataExt.titleSeparator?.trim() || "·",
   verification: {
@@ -112,7 +131,10 @@ export const siteConfig = {
   features: {
     blog: envBool("PUBLIC_BLOG_ENABLED", siteData.features.blog),
     chatFab: envBool("PUBLIC_CHAT_FAB_ENABLED", siteData.features.chatFab),
-    gallery: envBool("PUBLIC_GALLERY_ENABLED", siteDataExt.features.gallery ?? false),
+    gallery: envBool(
+      "PUBLIC_GALLERY_ENABLED",
+      siteDataExt.features.gallery ?? false,
+    ),
     attribution: envBool(
       "PUBLIC_ATTRIBUTION_ENABLED",
       siteDataExt.features.attribution ?? false,
@@ -149,7 +171,8 @@ export const siteConfig = {
       ["full", "minimal", "none"],
     ),
     logoVariant: siteData.chrome.logoVariant as "icon" | "wordmark",
-    poweredByTone: (siteChrome.poweredByTone === "white" ? "white" : "ink") as "ink" | "white",
+    poweredByTone: (siteChrome.poweredByTone === "white" ? "white" : "ink") as
+      "ink" | "white",
     showBrandLogo: siteData.chrome.showBrandLogo,
     cookieBannerStyle: envEnum<"bar" | "card" | "terminal">(
       "PUBLIC_COOKIE_BANNER_STYLE",
@@ -200,6 +223,7 @@ export const siteConfig = {
   contextrocket: {
     apiBaseUrl: contextRocketApiBase,
     handle: contextRocketHandle,
+    subjectKind: contextRocketSubjectKind,
   },
 
   chat: {
@@ -213,6 +237,7 @@ export const siteConfig = {
     ]),
     agentUrl: contextRocketApiBase,
     handle: contextRocketHandle,
+    subjectKind: contextRocketSubjectKind,
     apiKey: env("PUBLIC_CONTEXTROCKET_API_KEY", ""),
     fullscreen: envBool(
       "PUBLIC_CR_CHAT_FULLSCREEN",

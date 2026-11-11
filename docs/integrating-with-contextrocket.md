@@ -19,12 +19,20 @@ or override it with `PUBLIC_CONTEXTROCKET_HANDLE`.
 PUBLIC_CR_CHAT_MODE=live
 PUBLIC_CR_AGENT_URL=https://api.contextrocket.com
 PUBLIC_CONTEXTROCKET_HANDLE=contextrocket
+# Optional; defaults to company. Use person for a Personal Brand identity.
+PUBLIC_CONTEXTROCKET_SUBJECT_KIND=company
 # Optional: an origin-bound website key for the deployed site.
 PUBLIC_CONTEXTROCKET_API_KEY=your-origin-bound-publishable-key
 ```
 
-The widget sends `SendStreamingMessage` to `/api/agent/a2a`, with the
-organization handle in A2A metadata. It does not use the MCP URL for chat. A
+The corresponding human-facing identity card uses the same typed identity:
+`https://contextrocket.com/company/{handle}` or
+`https://contextrocket.com/person/{handle}`. The API endpoints below share
+that identity prefix.
+
+The widget sends `SendStreamingMessage` to the configured typed endpoint:
+`/company/{handle}/a2a` or `/person/{handle}/a2a`. The handle and identity kind
+select the organization on the server. It does not use the MCP URL for chat. A
 handle can serve anonymous guest questions only when its organization exists,
 the organization's public A2A policy allows answering, and public-safe context
 is available. Configure the permitted site origin and rate limits in
@@ -45,12 +53,13 @@ when handling each turn. Treat Agent Card skills as discovery information, not
 as a permission grant. These policy checks do not change the A2A request or
 stream event contract used by the widget or SDK.
 
-Use `GET https://api.contextrocket.com/agent-card/{handle}.json` for a
-handle-specific public organization card. The API's generic
+Use `GET https://api.contextrocket.com/company/{handle}/agent-card.json` or
+`GET https://api.contextrocket.com/person/{handle}/agent-card.json` for a
+handle-specific public card. The API's generic
 `/.well-known/agent-card.json` describes ContextRocket itself and does not
 select an organization. The embed widget reads the handle-specific card to
-populate its opening suggestions; A2A turns still go directly to
-`/api/agent/a2a`.
+populate its opening suggestions; A2A turns go directly to the matching typed
+`/company/{handle}/a2a` or `/person/{handle}/a2a` endpoint.
 
 For a site to answer live questions, create the organization, enable its public
 A2A answering policy, make guest-safe context available in ContextRocket, and
@@ -65,14 +74,12 @@ The static build also emits `/.well-known/agent-card.json` as a standalone
 fallback. It points to the ContextRocket A2A endpoint but cannot reflect the
 organization's current policy-filtered skills or optional signed trust
 metadata on the live organization card. When a site origin is verified in
-ContextRocket, route `/.well-known/agent-card.json` through the CDN/reverse
-proxy to the API before the static file is considered, preserving the original
-host in `Host` or `X-Forwarded-Host`. The API then returns the authoritative
-organization card for that verified origin. Route `/api/agent/a2a` and
-`/.well-known/oauth-protected-resource/api/agent/a2a` to the API as well. Do not
-cache A2A requests or streaming responses. Without this proxy, the static card
-is only a generic discovery fallback and must not be treated as proof of the
-organization's current enabled capabilities.
+ContextRocket, expose the matching typed card and A2A URLs through the CDN or
+reverse proxy, preserving the original host in `Host` or `X-Forwarded-Host`.
+The API returns the authoritative organization card for that verified origin.
+Do not cache A2A requests or streaming responses. The static
+`/.well-known/agent-card.json` remains a build-time fallback and must not be
+treated as proof of the organization's current enabled capabilities.
 
 The starter uses the checked-in build of `@contextrocket/embed-chat` at
 `public/embed/widget.js`, so cloning and building does not require a sibling

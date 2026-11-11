@@ -58,15 +58,16 @@ Brand crawl / Brand Lab tooling is **internal** and lives in the sibling
 
 ## Hard rules
 
-1. Self-contained product code; do not import from sibling *app* repos.
+1. Self-contained product code; do not import from sibling _app_ repos.
    Browser SDK/embeds come only from published `@contextrocket/*` packages
    (local `file:` checkout of `cr-sdk` during development).
 2. Temporary files only in `scratchpad/` (git-ignored).
 3. Never add LLM keys. Live chat uses the embed widget + publishable API key.
 4. Static builds must work offline in demo mode.
 5. No hardcoded UI copy; use `src/i18n/keys.ts` (`createT(locale)`) and `t()`.
-6. Organization handle: `handle`, `PUBLIC_CONTEXTROCKET_HANDLE`,
-   `data-contextrocket-handle`.
+6. ContextRocket identity: `handle` and `subjectKind` in `config/site.json`,
+   `PUBLIC_CONTEXTROCKET_HANDLE` and `PUBLIC_CONTEXTROCKET_SUBJECT_KIND`,
+   `data-contextrocket-handle` and `data-contextrocket-subject-kind`.
 7. Browser credentials: `apiKey`, `PUBLIC_CONTEXTROCKET_API_KEY`,
    `data-contextrocket-api-key` (origin-bound, not server secrets).
 
@@ -74,10 +75,10 @@ Brand crawl / Brand Lab tooling is **internal** and lives in the sibling
 
 Dev / preview ports (avoid ContextRocket on 3000 / 3003):
 
-| Site | Port |
-| --- | --- |
-| `cr-starter` | 3100 |
-| `cr-kleos` | 3101 |
+| Site              | Port |
+| ----------------- | ---- |
+| `cr-starter`      | 3100 |
+| `cr-kleos`        | 3101 |
 | `cr-markmacmahon` | 3102 |
 
 New brand forks should take the next free `31xx` port in `astro.config.mjs`.
@@ -115,7 +116,7 @@ Product-app state (Query / Zustand / nuqs / XState) belongs in `cr-auth-starter`
 
 - **cr-auth-starter / Luna** -- Next.js + API line. Tracks `cr-landing`
   architecture (Query / Zustand / nuqs / XState, behavior contracts). This
-  Astro starter shares testing *ideas*, not that state stack.
+  Astro starter shares testing _ideas_, not that state stack.
 - **ContextRocket product / cr-landing** -- separate. Learn from this starter's
   publish contract; do not fork or depend on this repo from the product.
 - **Brand forks (kleos, markmacmahon, …)** -- Astro config + content + home
@@ -138,6 +139,7 @@ For a local or self-hosted install, use the checked-in artifact:
   src="/embed/widget.js"
   defer
   data-contextrocket-handle="your-handle"
+  data-contextrocket-subject-kind="company"
   data-contextrocket-api-key="your-publishable-key"
 ></script>
 ```
