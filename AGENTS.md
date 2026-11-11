@@ -1,8 +1,9 @@
 # ContextRocket Starter -- Developer Guide
 
-This is the public, **Astro/static-first** starter. The product is a branded
-website that builds to a flat `dist/` tree for any CDN (Cloudflare Pages,
-CloudFront, S3, Netlify, etc.). There is no local backend, database, or auth.
+This is the public, **Astro/static-first** starter. Astro generates the pages
+at build time into a `dist/` tree for any CDN (Cloudflare Pages, CloudFront,
+S3, Netlify, etc.). Generated sites do not require server-side rendering, a
+local backend, a database, or auth.
 
 AI chat for customer sites is the **embed widget** from the public `cr-sdk`
 repo (`@contextrocket/embed-chat`), copied to `public/embed/widget.js` for
@@ -135,5 +136,5 @@ Install on any site:
 ```
 
 The chat script is served from `public/embed/widget.js`; the contact example
-loads `public/embed/lead-capture.js`. The lead SDK build command also refreshes
-`src/types/contextrocket-lead-capture.d.ts`, generated from the SDK contract.
+loads `public/embed/contact-form.js`. The SDK build command also refreshes
+`src/types/contextrocket-contact-form.d.ts` from the SDK contract.

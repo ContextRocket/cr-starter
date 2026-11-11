@@ -44,9 +44,8 @@ by default. No FAQ / About / gallery / Features pages are required.
 
 ```bash
 pnpm run build
-# optional: single-locale URL flatten
-node scripts/flatten-single-locale.mjs
-# upload dist/ to Cloudflare Pages, CloudFront, S3, …
+# The build runs single-locale URL flattening and emits static redirects.
+# Upload dist/ to Cloudflare Pages, CloudFront, S3, …
 ```
 
 ## Embed widget
