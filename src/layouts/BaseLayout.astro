@@ -22,6 +22,9 @@ interface Props {
   description?: string;
   locale: SupportedLocale;
   path?: string;
+  /** Override the page's RSS discovery link when it has its own feed. */
+  feedHref?: string;
+  feedTitle?: string;
   /** Absolute or site-relative image for Open Graph / Twitter cards. */
   image?: string;
   /** When true (default on home), emit Organization + WebSite JSON-LD. */
@@ -240,8 +243,8 @@ const jsonLdPayload = jsonLd.length > 0 ? jsonLd : null;
         <link
           rel="alternate"
           type="application/rss+xml"
-          title="RSS"
-          href={absoluteUrl(siteConfig.blog.feedPath)}
+          title={Astro.props.feedTitle ?? "RSS"}
+          href={absoluteUrl(Astro.props.feedHref ?? siteConfig.blog.feedPath)}
         />
       )
     }

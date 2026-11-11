@@ -2,8 +2,10 @@
 
 Browser integration source, tests, and package builds live in the public
 [`cr-sdk`](https://github.com/ContextRocket/cr-sdk) repository. Its npm packages
-are not published yet. This starter includes generated browser artifacts, so
-customers can install, build, and use the starter without a package release.
+are not published yet. Separately, versioned browser bundles have been
+published to the ContextRocket CDN; sites can load those bundles directly
+without installing the npm packages. The starter checks in generated local
+artifacts, so it can also build and demo offline.
 
 ## Packages
 
@@ -82,15 +84,19 @@ widget release is published; the site layout applies the configured widget
 theme and organization settings to that script. The contact-form bridge can be
 selected with `PUBLIC_CONTEXTROCKET_CONTACT_FORM_SCRIPT_URL` or
 `contactForm.scriptSrc` in `config/site.json`. Both URLs default to checked-in
-local files, so offline demos continue to work. Keep external URLs pinned to a
-package version. Do not use a mutable `latest` URL.
+local files, so offline demos continue to work. Keep external URLs pinned to an
+artifact version. Do not use a mutable `latest` URL.
 
-The published chat widget URL is
+The published chat widget bundle URL is
 `https://contextrocket.cdn.contextrocket.com/embeds/chat/v0.1.0/widget.js`.
-The contact-form browser bridge is at
+The published contact-form browser bridge URL is
 `https://contextrocket.cdn.contextrocket.com/embeds/contact-form/v0.1.0/contact-form.browser.js`.
 Both were published and verified on 2026-11-11. New releases use a unique
 version-specific prefix through the existing `contextrocket sites publish`
-operator command. Customers only load the public URL; they do not need an
-operator token. These browser bundles are separate from the shared brand kit's
+operator command. Customers can load these public URLs without an operator
+token. Publishing a bundle is independent of creating an organization or
+enabling live chat/form handling for a handle. A configured demo handle is only
+a default value; after a production reset, a matching organization, public
+policy, allowed origin, and any required publishable key must exist before the
+live path can work. These browser bundles are separate from the shared brand kit's
 `/brand/` assets.
