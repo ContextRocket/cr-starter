@@ -19,8 +19,11 @@ retries reuse the same key, edits reset the attempt, and concurrent submissions
 of the same payload share one request. Forms keep their own fields and UI. The
 attribution helper keeps the page origin/path, referrer origin, and bounded UTM
 values while omitting unrelated query parameters and fragments. The starter
-checks in the generated artifact at `public/embed/lead-capture.js`; refresh the local copies with
-`pnpm run build:embeds` from a sibling `cr-sdk` checkout.
+checks in the generated artifact at `public/embed/lead-capture.js`; refresh the
+local copies with `pnpm run build:embeds` from a sibling `cr-sdk` checkout.
+`pnpm run build:lead-sdk` also copies the generated browser type declaration to
+`src/types/contextrocket-lead-capture.d.ts`, so sites use the SDK's current
+`window.ContextRocketSDK` type instead of maintaining a local approximation.
 
 The package names are defined in `cr-sdk`, but the packages are not currently
 available from the public npm registry. The starter therefore keeps its built

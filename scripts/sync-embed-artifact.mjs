@@ -1,4 +1,4 @@
-import { copyFileSync, existsSync, mkdirSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -11,6 +11,8 @@ const artifacts = {
   "lead-capture": {
     source: "../cr-sdk/packages/sdk/dist/lead-capture.browser.js",
     target: "public/embed/lead-capture.js",
+    declaration: "../cr-sdk/packages/sdk/dist/lead-capture.d.ts",
+    declarationTarget: "src/types/contextrocket-lead-capture.d.ts",
   },
 };
 
@@ -33,3 +35,16 @@ if (!existsSync(source)) {
 mkdirSync(dirname(target), { recursive: true });
 copyFileSync(source, target);
 console.log(`Copied ${source} -> ${target}`);
+
+if (artifact.declaration) {
+  const declarationSource = resolve(root, artifact.declaration);
+  const declarationTarget = resolve(root, artifact.declarationTarget);
+  if (!existsSync(declarationSource)) {
+    throw new Error(`Missing ${declarationSource}. Build the SDK package first.`);
+  }
+  mkdirSync(dirname(declarationTarget), { recursive: true });
+  const declaration = readFileSync(declarationSource, "utf8")
+    .replace(/\n?\/\/# sourceMappingURL=.*\n?$/, "\n");
+  writeFileSync(declarationTarget, declaration);
+  console.log(`Copied ${declarationSource} -> ${declarationTarget}`);
+}

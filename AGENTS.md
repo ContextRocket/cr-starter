@@ -135,4 +135,5 @@ Install on any site:
 ```
 
 The chat script is served from `public/embed/widget.js`; the contact example
-loads `public/embed/lead-capture.js`.
+loads `public/embed/lead-capture.js`. The lead SDK build command also refreshes
+`src/types/contextrocket-lead-capture.d.ts`, generated from the SDK contract.
