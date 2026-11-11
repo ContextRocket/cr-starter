@@ -41,11 +41,19 @@ exists.
 
 (Auth/Luna use `file:../../cr-sdk/packages/...` from `frontend/`.)
 
+Run these commands from the starter checkout. Install the sibling SDK
+dependencies, then let the starter command build each package and sync its
+artifact into the directory that owns `public/embed/`:
+
 ```bash
-cd ../cr-sdk && pnpm install && pnpm build
-pnpm run build:widget   # copies chat IIFE into public/embed/widget.js
-pnpm run build:contact-form # copies the contact-form bridge into public/embed/
+pnpm --dir ../cr-sdk install
+pnpm run build:embeds
 ```
+
+To refresh just one artifact, use `pnpm run build:widget` or
+`pnpm run build:contact-form` from the starter checkout. The corresponding
+SDK package is built by each command before its generated browser artifact is
+copied into `public/embed/`.
 
 ## Import rule
 
