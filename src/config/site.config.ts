@@ -35,6 +35,7 @@ function envEnum<T extends string>(key: string, fallback: T, options: T[]): T {
 const siteDataExt = siteData as typeof siteData & {
   defaultLocale?: string;
   contextrocket?: { handle?: string };
+  homeMetaDescription?: string;
   homeMetaTitle?: string;
   titleSeparator?: string;
   chat?: { fullscreen?: boolean; fullscreenOnOpen?: boolean; fullscreenOnLoad?: boolean };
@@ -64,6 +65,7 @@ export const siteConfig = {
   contextRocketBrandAssetsUrl,
   contactEmail: env("PUBLIC_CONTACT_EMAIL", siteData.company.contactEmail),
   homeTitle: env("PUBLIC_HOME_TITLE", siteData.company.name),
+  homeMetaDescription: env("PUBLIC_HOME_META_DESCRIPTION", siteDataExt.homeMetaDescription ?? ""),
   homeMetaTitle: env("PUBLIC_HOME_META_TITLE", siteDataExt.homeMetaTitle ?? ""),
   titleSeparator: siteDataExt.titleSeparator?.trim() || "·",
   verification: {

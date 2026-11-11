@@ -45,7 +45,11 @@ const title = Astro.props.titleIsExact && pageTitle
   : path === "/" && siteConfig.homeMetaTitle
     ? siteConfig.homeMetaTitle
     : `${siteConfig.homeTitle || siteConfig.companyName}${titleSeparator}${siteConfig.tagline}`;
-const description = Astro.props.description ?? siteConfig.description;
+const description = Astro.props.description ?? (
+  path === "/" && siteConfig.homeMetaDescription
+    ? siteConfig.homeMetaDescription
+    : siteConfig.description
+);
 const ogType = Astro.props.ogType ?? "website";
 const robots = Astro.props.robots ?? "index, follow";
 const includeSiteJsonLd = Astro.props.includeSiteJsonLd ?? path === "/";

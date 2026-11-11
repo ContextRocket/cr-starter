@@ -60,6 +60,9 @@ export function absoluteUrl(pathname: string): string {
   const base = siteConfig.siteUrl.replace(/\/$/, "");
   const path = pathname.startsWith("/") ? pathname : `/${pathname}`;
   const pathnameOnly = path.split(/[?#]/, 1)[0];
+  if (pathnameOnly === "/" && siteConfig.trailingSlash === "never") {
+    return `${base}${path.slice(pathnameOnly.length)}`;
+  }
   if (FILE_PATH_RE.test(pathnameOnly)) {
     return `${base}${path}`;
   }

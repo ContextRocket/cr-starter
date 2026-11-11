@@ -28,8 +28,9 @@ site data and site message files.
 Set `titleSeparator` in `config/site.json` to match the site's title style
 (`·` by default, `|` for some brands). Set `homeMetaTitle` when the homepage
 uses a deliberate title that should not be assembled from the site name and
-tagline. Page titles still append the site name unless the page title already
-is the site name.
+tagline. Set `homeMetaDescription` for homepage-specific SEO copy while keeping
+the company description available as the default on interior pages. Page titles
+still append the site name unless the page title already is the site name.
 When a page already has a complete document title, pass `titleIsExact` to
 `BaseLayout` so the site name is not appended a second time.
 For section-specific title branding, pass `titleSuffix` to override the
