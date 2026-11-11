@@ -61,11 +61,16 @@ package at runtime; the checked-in widget bundle is built from `cr-sdk`.
 
 ## CDN distribution
 
-The browser artifacts do not yet have a published CDN release path. Until an
-operator CLI workflow publishes and verifies one, serve the checked-in
-`public/embed/widget.js` and `public/embed/contact-form.js` from the site. The
-ContextRocket CDN origin is `https://contextrocket.cdn.contextrocket.com`, but
-do not construct an embed URL from the origin alone. The existing ContextRocket
-site publisher supports prefixed static files; a versioned embed prefix and
-release convention still need to be selected. Brand assets already use the
-separate, stable `/brand/` namespace.
+The checked-in `public/embed/widget.js` remains the standalone offline default.
+Set `PUBLIC_CONTEXTROCKET_CHAT_WIDGET_URL` to a full versioned HTTPS URL when a
+widget release is published; the site layout applies the configured widget
+theme and organization settings to that script. Keep demo/customer URLs pinned
+to a package version. Do not use a mutable `latest` URL.
+
+The proposed ContextRocket CDN route is
+`https://contextrocket.cdn.contextrocket.com/embeds/chat/v<package-version>/widget.js`.
+The public artifact has not been released there yet. The operator can publish
+the built IIFE with the existing `contextrocket sites publish` command under
+the `contextrocket` organization and a version-specific prefix. Customers only
+load the public URL; they do not need an operator token. This is separate from
+the shared brand kit's `/brand/` assets.

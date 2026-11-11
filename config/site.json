@@ -93,6 +93,7 @@
     "cookieConsent": "off"
   },
   "chat": {
+    "widgetSrc": "/embed/widget.js",
     "fullscreen": true,
     "fullscreenOnOpen": false,
     "fullscreenOnLoad": false

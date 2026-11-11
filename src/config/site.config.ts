@@ -38,7 +38,7 @@ const siteDataExt = siteData as typeof siteData & {
   homeMetaDescription?: string;
   homeMetaTitle?: string;
   titleSeparator?: string;
-  chat?: { fullscreen?: boolean; fullscreenOnOpen?: boolean; fullscreenOnLoad?: boolean };
+  chat?: { widgetSrc?: string; fullscreen?: boolean; fullscreenOnOpen?: boolean; fullscreenOnLoad?: boolean };
   contactForm?: { mode?: "demo" | "live" };
   integrations?: Record<string, SiteIntegrationConfig>;
   integrationConsentMode?: "auto" | "always" | "external";
@@ -159,6 +159,10 @@ export const siteConfig = {
   },
 
   chat: {
+    widgetSrc: env(
+      "PUBLIC_CONTEXTROCKET_CHAT_WIDGET_URL",
+      siteDataExt.chat?.widgetSrc ?? "/embed/widget.js",
+    ),
     mode: envEnum<"demo" | "live">("PUBLIC_CR_CHAT_MODE", "demo", [
       "demo",
       "live",

@@ -68,6 +68,10 @@ ContextRocket contact endpoint is enabled for the deployment origin.
 This optional contributor command rebuilds the widget from a sibling
 `../cr-sdk` checkout. The checked-in `public/embed/widget.js` is used by normal
 standalone builds and does not need to be rebuilt by a fork.
+Set `PUBLIC_CONTEXTROCKET_CHAT_WIDGET_URL` to a published, version-pinned CDN
+URL to load a shared widget instead; by default the site uses the checked-in
+local artifact. The proposed CDN route is documented in
+[`docs/embed-direction.md`](docs/embed-direction.md) and is not published yet.
 
 ```html
 <script
