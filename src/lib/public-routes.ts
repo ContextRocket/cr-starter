@@ -7,7 +7,14 @@ export type PublicRoute = (typeof siteConfig.publicRoutes)[number];
 export function enabledPublicRoutes(): PublicRoute[] {
   return siteConfig.publicRoutes.filter((route) => {
     if (!route.feature) return true;
-    const flag = siteConfig.features[route.feature as keyof typeof siteConfig.features];
+    if (!Object.hasOwn(siteConfig.features, route.feature)) {
+      throw new Error(
+        `Unknown feature "${route.feature}" in public route "${route.key}". ` +
+          "Use a feature declared in config/site.json.",
+      );
+    }
+    const flag =
+      siteConfig.features[route.feature as keyof typeof siteConfig.features];
     return flag !== false;
   });
 }
