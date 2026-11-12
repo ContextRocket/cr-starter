@@ -47,6 +47,18 @@ forcing a particular author-card layout on every site.
 Evergreen topics are optional. Enable `features.topics` in `config/site.json`;
 published topic pages join the sitemap and `llms.txt`, but stay out of the dated
 post listing and RSS feed.
+Topic frontmatter may also include up to five `chatSuggestions`. The topic page
+passes those prompts to the shared chat widget, so its opening questions can
+match the guide being read; omit them to keep site-level or Agent Card prompts.
+
+```yaml
+title: Digital nomad residency
+description: A guide to remote work residency options.
+updated: "2026-11-12"
+chatSuggestions:
+  - What documents does this guide mention?
+  - How can I check whether this route fits me?
+```
 
 Shared layout, i18n runtime, blog engine, discovery routes, and the built embed
 widget are starter-owned. The checked-in widget keeps a standalone clone

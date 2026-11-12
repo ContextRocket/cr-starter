@@ -121,8 +121,8 @@ the real brand or source-site content.
 - Keep errors, loading states, permissions, and authentication language
   especially plain; trust surfaces are not places for playful claims.
 - The embed chat widget should feel like a helpful site capability, not a repeated sales
-  banner. Its title, greeting, and opening suggestions must come from configuration or
-  localized messages (script tag + `features.chatFab`).
+  banner. Its title, greeting, and opening suggestions must come from configuration,
+  localized messages, or topic content (script tag + `features.chatFab`).
 - Use the existing shared i18n seams. Do not hardcode UI copy in a shared
   component or add a new locale bundle to a fork that does not serve it.
 

@@ -40,7 +40,7 @@ const jsonLdExtra = [
 ];
 ---
 
-<BaseLayout locale={locale} title={topic.title} description={topic.description} path={path} ogType="article" image={topic.image} includeSiteJsonLd={false} jsonLdExtra={jsonLdExtra}>
+<BaseLayout locale={locale} title={topic.title} description={topic.description} path={path} ogType="article" image={topic.image} includeSiteJsonLd={false} jsonLdExtra={jsonLdExtra} chatSuggestions={topic.chatSuggestions}>
   <main id="main-content" tabindex="-1" class="px-5 py-12 sm:px-8 sm:py-20">
     <article class="mx-auto max-w-3xl">
       <a href={localizedHref(locale, `${blogPublicBasePath()}/topics`)} class="text-sm font-medium text-text-secondary underline-offset-4 hover:text-foreground hover:underline">← {t("blog.topics")}</a>

@@ -10,6 +10,7 @@ export interface TopicMeta {
   description: string;
   updated: string;
   image?: string;
+  chatSuggestions?: string[];
   draft: boolean;
 }
 
@@ -33,6 +34,20 @@ function validDate(value: unknown, filePath: string): string {
     throw new Error(`Topic ${filePath} requires a valid YYYY-MM-DD updated date`);
   }
   return date;
+}
+
+function normalizeCRTopicSuggestions(value: unknown, filePath: string): string[] | undefined {
+  if (value === undefined) return undefined;
+  if (!Array.isArray(value) || value.some((item) => typeof item !== "string")) {
+    throw new Error(`Topic ${filePath} has invalid chatSuggestions; use a list of strings`);
+  }
+  const suggestions = value.map((item: string) =>
+    item.replace(/[\u0000-\u001f\u007f]/g, "").trim(),
+  ).filter(Boolean);
+  if (suggestions.length > 5 || suggestions.some((item) => item.length > 200)) {
+    throw new Error(`Topic ${filePath} chatSuggestions must contain at most five prompts of at most 200 characters`);
+  }
+  return suggestions.length ? suggestions : undefined;
 }
 
 function readTopic(filePath: string, slug: string): Topic {
@@ -63,6 +78,7 @@ function readTopic(filePath: string, slug: string): Topic {
     description: data.description.trim(),
     updated: validDate(data.updated, filePath),
     image: typeof data.image === "string" ? data.image : undefined,
+    chatSuggestions: normalizeCRTopicSuggestions(data.chatSuggestions, filePath),
     draft: data.draft === true,
     bodyMarkdown: content,
     bodyHtml,
