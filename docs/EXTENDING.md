@@ -37,37 +37,45 @@ Browser SDK and embeds live in the sibling public repo **`cr-sdk`**
 ## Composing a landing page with contact capture
 
 Keep a generated page's layout and source-specific copy in its page file, then
-reuse the starter's standard contact section instead of copying the dedicated
-contact page markup:
+reuse `ContactFormSection` for the common heading, card, and SDK-backed form
+pattern. It is optional; use `ContactForm` directly when the surrounding layout
+needs a different composition:
 
 ```astro
 ---
-import ContactForm from "@/components/contact/ContactForm.astro";
+import ContactFormSection from "@/components/contact/ContactFormSection.astro";
 import type { SupportedLocale } from "@/i18n/locales";
 
 interface Props { locale: SupportedLocale }
 const { locale } = Astro.props;
 ---
 
-<section id="inquiry" class="rounded-3xl border border-border bg-card p-6 sm:p-10">
-  <!-- Add the fork's localized heading and approved inquiry copy here. -->
-  <div class="mt-6">
-    <ContactForm locale={locale} idPrefix="landing-inquiry" />
-  </div>
-</section>
+<ContactFormSection
+  locale={locale}
+  id="inquiry"
+  idPrefix="landing-inquiry"
+  eyebrow="Residency services"
+  title="Tell us what you need"
+  description="The page provides the customer-approved inquiry copy."
+/>
 ```
 
-The form reads its demo/live mode, organization, API origin, SDK URL, and
-localized labels from starter configuration. Demo mode shows its “not sent”
-notice before fields. `idPrefix` keeps labels and controls unique when a page
-contains more than one form. For a custom source form, keep its field names and
-validation in the fork and use the checked-in contact-form bridge to connect it
-to the same SDK behavior. Add optional source-specific questions through the
-named slot; `data-cr-custom-answer` maps each existing form field to a key in
-the organization's configured contact schema:
+`ContactFormSection` accepts customer-owned copy, an optional eyebrow and
+section ID, and a class override. Use `headingAs="h1"` when it is the page's
+main heading; embedded sections default to `h2`. The form reads its demo/live
+mode, organization, API origin, SDK URL, and localized labels from starter
+configuration. Demo mode shows its “not sent” notice before fields. `idPrefix`
+keeps labels and controls unique when a page contains more than one form. Add
+optional source-specific questions through the named slot; `data-cr-custom-answer`
+maps each existing form field to a key in the organization's configured contact
+schema:
 
 ```astro
-<ContactForm locale={locale} idPrefix="residency-inquiry">
+<ContactFormSection
+  locale={locale}
+  idPrefix="residency-inquiry"
+  title="Plan your move"
+>
   <label slot="custom-fields" class="block text-sm font-medium">
     Where are you planning to live?
     <select
@@ -81,7 +89,7 @@ the organization's configured contact schema:
       <option value="other">Another area</option>
     </select>
   </label>
-</ContactForm>
+</ContactFormSection>
 ```
 
 The control keeps the site's field name, label, choices, and browser validation.

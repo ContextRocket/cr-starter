@@ -1,0 +1,43 @@
+---
+import ContactForm from "@/components/contact/ContactForm.astro";
+import type { SupportedLocale } from "@/i18n/locales";
+
+interface Props {
+  locale: SupportedLocale;
+  title: string;
+  description?: string;
+  eyebrow?: string;
+  headingAs?: "h1" | "h2" | "h3";
+  id?: string;
+  idPrefix?: string;
+  className?: string;
+}
+
+const {
+  locale,
+  title,
+  description,
+  eyebrow,
+  headingAs = "h2",
+  id,
+  idPrefix = "contact",
+  className = "mx-auto max-w-2xl rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-10",
+} = Astro.props;
+const HeadingTag = headingAs;
+---
+
+<section id={id} class={className}>
+  <header>
+    {eyebrow && <p class="text-sm font-medium uppercase tracking-[0.16em] text-text-secondary">{eyebrow}</p>}
+    <HeadingTag class="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">{title}</HeadingTag>
+    {description && <p class="mt-4 leading-7 text-text-secondary">{description}</p>}
+  </header>
+
+  <div class="mt-8">
+    <ContactForm locale={locale} idPrefix={idPrefix}>
+      <slot name="custom-fields" slot="custom-fields" />
+    </ContactForm>
+  </div>
+
+  <slot name="after-form" />
+</section>
