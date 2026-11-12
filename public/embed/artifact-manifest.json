@@ -4,10 +4,10 @@
   "artifacts": {
     "chat": {
       "package": "@contextrocket/embed-chat",
-      "version": "0.1.6",
+      "version": "0.0.1",
       "file": "embed/widget.js",
-      "bytes": 104490,
-      "sha256": "666f6c913ddcde4316840ac6b8d3290855cbe723c3e1e575d36577ec8f596466"
+      "bytes": 104791,
+      "sha256": "445ed51374dec2f6d086dc82d0172664faf97d0ca5f71ba808625af20748d4ab"
     },
     "contactForm": {
       "package": "@contextrocket/sdk",
