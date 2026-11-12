@@ -2,7 +2,7 @@
 /**
  * Site chrome -- marketing / minimal header + footer.
  */
-import { Navbar } from "@/components/chrome/Navbar";
+import Navbar from "@/components/chrome/Navbar.astro";
 import MinimalHeader from "@/components/chrome/MinimalHeader.astro";
 import FooterSection from "@/components/chrome/FooterSection.astro";
 import { siteConfig, isSingleLocale, type NavLinkConfig } from "@/config/site.config";
@@ -10,8 +10,8 @@ import { createT } from "@/i18n/keys";
 import { getActiveLocales, type SupportedLocale } from "@/i18n/locales";
 import { homeHref, localizedHref } from "@/lib/paths";
 import { isCurrentNavigationLink } from "@/lib/navigation";
-import type { BrandLogoAsset } from "@/components/chrome/BrandLogo";
-import type { LocaleOption } from "@/components/chrome/LocaleSwitcher";
+import type { BrandLogoAsset } from "@/components/chrome/brand-logo-types";
+import type { LocaleOption } from "@/components/chrome/navigation-types";
 
 interface Props {
   locale: SupportedLocale;
@@ -135,6 +135,7 @@ const headerProps = {
   locale,
   localeOptions,
   changeLanguageLabel: t("locale.changeLanguage"),
+  navBreakpoint: siteConfig.chrome.navBreakpoint,
 };
 ---
 
@@ -143,7 +144,7 @@ const headerProps = {
     (useMinimal ? (
       <MinimalHeader {...headerProps} />
     ) : (
-      <Navbar client:media="(max-width: 1023px)" {...headerProps} />
+      <Navbar {...headerProps} />
     ))
 }
 

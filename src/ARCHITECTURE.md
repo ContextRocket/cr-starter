@@ -22,14 +22,15 @@ Classify first. Mixing kinds is the usual source of coupling.
 | Config / content | site identity, theme, and posts | `config/site.json`, Markdown, site messages |
 | URL | locale segment, public path | Astro routes + `lib/paths.ts` |
 | Browser preference | cookie consent | localStorage via the cookie banner |
-| Local UI | open navigation menu | Headless UI React island |
+| Local UI | open navigation menu | Native `<dialog>` with a small browser script |
 | Form interaction | validation, submission, retry, and status | Typed browser module; request identity and submission are owned by the SDK bridge |
 
 Decision rule: if it must survive reload and be shareable → URL. If several
 components need it with no server → small shared module or storage helper. If
-one component owns it → local state. Astro pages remain static HTML; the
-navigation menu is the React island, while the contact form uses a small
-browser module. Do **not** introduce TanStack Query,
+one component owns it → local state. Astro pages remain static HTML; the shared
+navigation uses the browser's modal-dialog behavior, while the contact form
+uses a small browser module. Keep React and Headless UI available for fork-owned
+interactive components without hydrating shared site chrome. Do **not** introduce TanStack Query,
 Zustand, or XState for marketing chrome.
 
 ## 2. Ownership seams

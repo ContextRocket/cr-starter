@@ -93,6 +93,7 @@ const siteDataExt = siteData as typeof siteData & {
 };
 const siteChrome = siteData.chrome as typeof siteData.chrome & {
   exemptPrefixes?: readonly string[];
+  navBreakpoint?: "lg" | "xl";
   poweredByTone?: "ink" | "white";
 };
 type PublicRouteConfig = {
@@ -216,6 +217,9 @@ export const siteConfig = {
       ["full", "minimal", "none"],
     ),
     logoVariant: siteData.chrome.logoVariant as "icon" | "wordmark",
+    navBreakpoint: (siteChrome.navBreakpoint === "xl" ? "xl" : "lg") as
+      | "lg"
+      | "xl",
     poweredByTone: (siteChrome.poweredByTone === "white" ? "white" : "ink") as
       "ink" | "white",
     showBrandLogo: siteData.chrome.showBrandLogo,
