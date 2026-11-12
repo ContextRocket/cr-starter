@@ -83,7 +83,7 @@
     "logoVariant": "wordmark",
     "poweredByTone": "ink",
     "showBrandLogo": true,
-    "cookieBannerStyle": "bar",
+    "cookieBannerStyle": "dock",
     "exemptPrefixes": []
   },
   "features": {

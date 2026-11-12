@@ -16,7 +16,7 @@ Fork design is data-first. Start with `config/site.json`:
 - `assets` points at fork-owned logos and images;
 - `chrome` controls the header/footer presentation, including
   `poweredByTone` (`ink` for light surfaces, `white` for dark surfaces) and
-  `cookieBannerStyle` (`bar`, `card`, or `terminal`); and
+  `cookieBannerStyle` (`dock`, `bar`, `card`, or `terminal`); and
 - `nav` controls links and public feature flags.
 
 Typography uses the same theme seam: set `--font-sans`, `--font-mono`, or
@@ -25,11 +25,12 @@ and Newsreader Italic are served from the shared ContextRocket CDN brand kit.
 For a customer-specific font, self-host its licensed WOFF2 files and declare
 `@font-face` in the fork's `src/styles/global.css` with `font-display: swap`.
 
-Use `chrome.cookieBannerStyle` to choose the consent banner presentation for
-the site's surfaces: `bar` spans the viewport edge, `card` uses a contained
-floating panel, and `terminal` uses the site's foreground/background tokens
-with monospace type. This changes presentation only; consent categories and
-stored visitor choices remain the same.
+Use `chrome.cookieBannerStyle` to choose the consent presentation for the site's
+surfaces: `dock` is the compact, branded ContextRocket pattern; `bar` spans the
+viewport edge; `card` uses a contained floating panel; and `terminal` uses the
+site's foreground/background tokens with monospace type. This changes
+presentation only; consent categories and stored visitor choices remain the
+same.
 
 Keep site-specific photos in `public/` so their URLs stay stable. Resize them
 for their largest rendered use before adding them: the starter's blog images

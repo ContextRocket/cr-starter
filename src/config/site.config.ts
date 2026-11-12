@@ -221,10 +221,10 @@ export const siteConfig = {
     poweredByTone: (siteChrome.poweredByTone === "white" ? "white" : "ink") as
       "ink" | "white",
     showBrandLogo: siteData.chrome.showBrandLogo,
-    cookieBannerStyle: envEnum<"bar" | "card" | "terminal">(
+    cookieBannerStyle: envEnum<"dock" | "bar" | "card" | "terminal">(
       "PUBLIC_COOKIE_BANNER_STYLE",
-      siteData.chrome.cookieBannerStyle as "bar" | "card" | "terminal",
-      ["bar", "card", "terminal"],
+      siteData.chrome.cookieBannerStyle as "dock" | "bar" | "card" | "terminal",
+      ["dock", "bar", "card", "terminal"],
     ),
     exemptPrefixes: siteChrome.exemptPrefixes ?? [],
   },
