@@ -1,0 +1,36 @@
+---
+import { siteConfig } from "@/config/site.config";
+import { crGroundingPageUrl } from "@/lib/contextrocket-urls";
+
+interface Props {
+  /** Customer-owned, localized link label. */
+  label: string;
+  /** Override only when the organization has a verified-domain proxy. */
+  publicOrigin?: string;
+  className?: string;
+  target?: "_self" | "_blank";
+}
+
+const {
+  label,
+  publicOrigin = "https://contextrocket.com",
+  className = "underline underline-offset-4",
+  target = "_self",
+} = Astro.props;
+
+const href = crGroundingPageUrl(
+  siteConfig.contextrocket.subjectKind,
+  siteConfig.contextrocket.handle,
+  publicOrigin,
+);
+---
+
+<a
+  href={href}
+  class={className}
+  target={target}
+  rel={target === "_blank" ? "noopener noreferrer" : undefined}
+  data-contextrocket-grounding-page
+>
+  <slot>{label}</slot>
+</a>

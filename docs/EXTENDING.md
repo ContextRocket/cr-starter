@@ -26,6 +26,27 @@ Pull these from `cr-starter` rather than copying fork logic into them (see `.for
 Browser SDK and embeds live in the sibling public repo **`cr-sdk`**
 (`@contextrocket/sdk`, `@contextrocket/embed-chat`), not in this starter.
 
+## Linking to the organization's Grounding Page
+
+Use the shared `GroundingPageLink` when a generated landing page should point
+visitors to the organization's public facts surface. The destination is built
+from `contextrocket.handle` and `contextrocket.subjectKind` in `config/site.json`
+and follows the typed `/company/{handle}/facts` or `/person/{handle}/facts`
+route. The visible label remains page-owned and localized:
+
+```astro
+---
+import GroundingPageLink from "@/components/chrome/GroundingPageLink.astro";
+---
+
+<GroundingPageLink label="Learn about our organization" />
+```
+
+For a verified customer-domain proxy, pass its public origin explicitly. Do not
+use an API URL or redirect protocol clients between the web and API origins.
+The component links to the Grounding Page; it does not copy or recreate its
+governed facts.
+
 ## Adding a feature
 
 1. Decide whether it is general functionality or brand content.
@@ -44,6 +65,7 @@ needs a different composition:
 ```astro
 ---
 import ContactFormSection from "@/components/contact/ContactFormSection.astro";
+import GroundingPageLink from "@/components/chrome/GroundingPageLink.astro";
 import type { SupportedLocale } from "@/i18n/locales";
 
 interface Props { locale: SupportedLocale }
@@ -58,6 +80,9 @@ const { locale } = Astro.props;
   title="Tell us what you need"
   description="The page provides the customer-approved inquiry copy."
 />
+<p class="mt-6 text-sm text-text-secondary">
+  Want to learn more? <GroundingPageLink label="Read our Grounding Page" />
+</p>
 ```
 
 `ContactFormSection` accepts customer-owned copy, an optional eyebrow and
