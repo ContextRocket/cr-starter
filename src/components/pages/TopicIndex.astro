@@ -33,8 +33,12 @@ const jsonLdExtra = [buildBreadcrumbListJsonLd([
     </header>
     {topics.length > 0 ? (
       <ul class:list={["mx-auto mt-12 grid items-stretch gap-5", topics.length === 1 ? "max-w-2xl grid-cols-1" : "max-w-5xl sm:grid-cols-2"]}>
-        {topics.map((topic) => (
-          <li class:list={["min-w-0", topics.length === 1 && "mx-auto w-full max-w-2xl"]}>
+        {topics.map((topic, index) => (
+          <li class:list={[
+            "min-w-0",
+            topics.length === 1 && "mx-auto w-full max-w-2xl",
+            topics.length > 1 && topics.length % 2 === 1 && index === topics.length - 1 && "sm:col-start-2",
+          ]}>
             <a href={localizedHref(locale, `${path}/${topic.slug}`)} class="group flex h-full flex-col rounded-2xl border border-border bg-card p-7 text-card-foreground transition-colors hover:border-primary/40">
               <h2 class="text-xl font-semibold tracking-tight group-hover:underline group-hover:underline-offset-4">{topic.title}</h2>
               <p class="mt-3 flex-1 leading-7 text-text-secondary">{topic.description}</p>
