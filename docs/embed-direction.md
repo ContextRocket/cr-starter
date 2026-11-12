@@ -108,6 +108,11 @@ policy, allowed origin, and any required publishable key must exist before the
 live path can work. These browser bundles are separate from the shared brand kit's
 `/brand/` assets.
 
+The contact-form adapter now uses `mapContactFormData`, introduced in SDK
+version `0.1.1`. The published `v0.1.0` browser bridge does not include that
+helper. Keep the checked-in local bridge selected until a matching newer
+browser artifact is published; do not point updated consumers at `v0.1.0`.
+
 The site behavior bundle is currently checked in for static offline builds; it
 does not yet have a published CDN URL. It can be added to the versioned CDN
 release workflow after its standalone artifact contract is reviewed.

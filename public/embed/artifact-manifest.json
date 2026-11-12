@@ -11,10 +11,10 @@
     },
     "contactForm": {
       "package": "@contextrocket/sdk",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "file": "embed/contact-form.js",
-      "bytes": 5422,
-      "sha256": "6507aa27a967fbaced00acdde7684fde9335665d3810e49710f7f859c14d884b"
+      "bytes": 7126,
+      "sha256": "f09b95db8a88b23984766372530bf15b37bb65db1c92819250caa077164fd875"
     },
     "siteBehaviors": {
       "package": "@contextrocket/sdk",

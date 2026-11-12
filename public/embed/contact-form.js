@@ -2,6 +2,55 @@
 (() => {
   // src/contact-form.ts
   var UTM_KEYS = ["source", "medium", "campaign", "content", "term"];
+  var CONTACT_INTENTS = [
+    "contact",
+    "appointment",
+    "demo",
+    "support",
+    "other"
+  ];
+  var DEFAULT_CONTACT_FIELDS = {
+    name: "name",
+    firstName: "",
+    lastName: "",
+    email: "email",
+    phone: "phone",
+    message: "message",
+    intent: "intent",
+    consent: "consent"
+  };
+  function formText(values, fieldName) {
+    if (!fieldName) return "";
+    const value = values.get(fieldName);
+    return typeof value === "string" ? value.trim() : "";
+  }
+  function mapContactFormData(values, options = {}) {
+    const fields = { ...DEFAULT_CONTACT_FIELDS, ...options.fields };
+    const consent = formText(values, fields.consent).toLowerCase();
+    if (!["1", "true", "yes", "on", "checked"].includes(consent)) {
+      throw new TypeError("Explicit consent is required.");
+    }
+    const directName = formText(values, fields.name);
+    const splitName = [
+      formText(values, fields.firstName),
+      formText(values, fields.lastName)
+    ].filter(Boolean).join(" ");
+    const name = directName || splitName;
+    const rawIntent = formText(values, fields.intent);
+    if (rawIntent && !CONTACT_INTENTS.includes(rawIntent)) {
+      throw new TypeError("The contact form intent is not supported.");
+    }
+    const intentValue = rawIntent ? rawIntent : options.defaultIntent;
+    return {
+      name,
+      email: formText(values, fields.email) || void 0,
+      phone: formText(values, fields.phone) || void 0,
+      message: formText(values, fields.message) || void 0,
+      ...intentValue ? { intent: intentValue } : {},
+      ...options.sourceChannel?.trim() ? { source_channel: options.sourceChannel.trim() } : {},
+      consent: true
+    };
+  }
   function extractContactAttribution(pageUrl, referrerUrl) {
     let page;
     try {
@@ -142,6 +191,7 @@
   // src/browser-contact-form.ts
   var browserSdk = Object.freeze({
     createContactFormController,
+    mapContactFormData,
     ContactFormError,
     extractContactAttribution,
     submitContactForm,

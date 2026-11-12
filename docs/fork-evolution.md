@@ -37,10 +37,12 @@ do not carry the embed bundles.
 Contact forms use the same layered pattern. `@contextrocket/sdk/contact-form`
 owns the organization-scoped capture request, bounded attribution extraction,
 idempotent retry controller, and receipt validation. The starter and Kleos
-form both use that controller. The starter owns a localized default form, while
-Kleos owns its own field set and copy; that presentation difference is
-intentional. Forks should keep their markup and brand copy, but should not
-reimplement the API request or retry behavior.
+forms use that controller and `mapContactFormData` to normalize common native
+form fields and require an affirmative consent value. The starter owns a
+localized default form, while Kleos owns its own field set and copy; that
+presentation difference is intentional. Forks should keep their markup, field
+aliases, and brand copy, but should not reimplement common payload mapping, the
+API request, or retry behavior.
 
 Cookie consent and browser integrations follow the same separation. The SDK
 owns preference storage, version migration, consent events, banner interaction

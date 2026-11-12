@@ -8,8 +8,6 @@ type ContactFormLabels = {
   submit: string;
 };
 
-type ContactIntent = "contact" | "appointment" | "demo" | "support" | "other";
-
 function loadContactSdk(src: string): Promise<NonNullable<Window["ContextRocketSDK"]>> {
   if (window.ContextRocketSDK) return Promise.resolve(window.ContextRocketSDK);
 
@@ -91,15 +89,7 @@ export function initializeContactForm(form: HTMLFormElement): void {
         orgHandle: handle,
         pageUrl: window.location.href,
         referrerUrl: document.referrer,
-        form: {
-          name: String(values.get("name") ?? "").trim(),
-          email: String(values.get("email") ?? "").trim(),
-          phone: String(values.get("phone") ?? "").trim() || undefined,
-          intent: String(values.get("intent") ?? "contact") as ContactIntent,
-          message: String(values.get("message") ?? "").trim() || undefined,
-          source_channel: "website",
-          consent: true,
-        },
+        form: sdk.mapContactFormData(values, { sourceChannel: "website" }),
       });
       setStatus(label("success"));
       form.reset();

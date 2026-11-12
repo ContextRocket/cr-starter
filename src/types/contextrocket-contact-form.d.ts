@@ -16,6 +16,24 @@ export interface ContactFormData {
     utm_content?: string;
     utm_term?: string;
 }
+export interface ContactFormFieldNames {
+    name: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    message: string;
+    intent: string;
+    consent: string;
+}
+export interface MapContactFormDataOptions {
+    /** HTML field names; empty strings disable optional fields. */
+    fields?: Partial<ContactFormFieldNames>;
+    /** Used when the form has no intent field, such as a general inquiry. */
+    defaultIntent?: ContactIntent;
+    /** Site-specific attribution channel, for example "website" or "form". */
+    sourceChannel?: string;
+}
 export interface ContactFormReceipt {
     lead_id: string;
     status: "captured";
@@ -38,6 +56,7 @@ export interface ContactAttribution {
 export interface ContextRocketBrowserSDK {
     readonly ContactFormError: typeof ContactFormError;
     readonly createContactFormController: typeof createContactFormController;
+    readonly mapContactFormData: typeof mapContactFormData;
     readonly extractContactAttribution: typeof extractContactAttribution;
     readonly submitContactForm: typeof submitContactForm;
     readonly submitContactFormWithAttribution: typeof submitContactFormWithAttribution;
@@ -48,6 +67,12 @@ declare global {
         ContextRocketSDK?: ContextRocketBrowserSDK;
     }
 }
+/**
+ * Map native form values to the shared contact API shape. Site markup and
+ * validation remain site-owned; this helper only normalizes common fields and
+ * refuses to invent the explicit consent required by the API.
+ */
+export declare function mapContactFormData(values: FormData, options?: MapContactFormDataOptions): ContactFormData;
 /**
  * Extract bounded attribution for a contact form without forwarding arbitrary
  * query parameters or fragments (which can contain tokens or personal data).
