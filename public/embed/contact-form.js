@@ -19,12 +19,33 @@
     intent: "intent",
     consent: "consent"
   };
+  function validateCustomAnswers(answers) {
+    if (!answers || Object.keys(answers).length === 0) return void 0;
+    const entries = Object.entries(answers);
+    if (entries.length > 50) {
+      throw new TypeError("At most 50 custom contact answers are allowed.");
+    }
+    for (const [key, value] of entries) {
+      if (!key || key.length > 64) {
+        throw new TypeError("A custom contact answer key is invalid.");
+      }
+      const serialized = JSON.stringify(value);
+      if (serialized === void 0 || serialized.length > 4096) {
+        throw new TypeError("A custom contact answer is invalid or too large.");
+      }
+    }
+    if (JSON.stringify(answers).length > 16384) {
+      throw new TypeError("Custom contact answers exceed the allowed size.");
+    }
+    return answers;
+  }
   function formText(values, fieldName) {
     if (!fieldName) return "";
     const value = values.get(fieldName);
     return typeof value === "string" ? value.trim() : "";
   }
   function mapContactFormData(values, options = {}) {
+    const customAnswers = validateCustomAnswers(options.customAnswers);
     const fields = { ...DEFAULT_CONTACT_FIELDS, ...options.fields };
     const consent = formText(values, fields.consent).toLowerCase();
     if (!["1", "true", "yes", "on", "checked"].includes(consent)) {
@@ -48,6 +69,7 @@
       message: formText(values, fields.message) || void 0,
       ...intentValue ? { intent: intentValue } : {},
       ...options.sourceChannel?.trim() ? { source_channel: options.sourceChannel.trim() } : {},
+      ...customAnswers ? { custom_answers: customAnswers } : {},
       consent: true
     };
   }

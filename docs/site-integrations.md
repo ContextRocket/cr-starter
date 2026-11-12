@@ -106,3 +106,34 @@ If using Google Tag Manager to deploy Google Analytics or PostHog, avoid
 configuring the same provider directly as well unless duplicate events are
 intentional. Google Tag Manager can run third-party tags without a site code
 change; manage those tags and their consent requirements in the GTM workspace.
+
+## Organization-defined contact fields
+
+The contact page can send configured extra answers without flattening them into
+the visitor's message. Mark a native control with the matching field key from
+the organization's Leads table. The API accepts only active, configured
+non-system fields for that organization and validates the value against its
+field type. Unknown keys and missing field schemas are rejected.
+
+```html
+<label>
+  Residence type
+  <select name="residence-type" data-cr-custom-answer="residence_type">
+    <option value="Digital Nomad Visa">Digital Nomad Visa</option>
+    <option value="Non-Lucrative Visa">Non-Lucrative Visa</option>
+  </select>
+</label>
+<label>
+  Monthly income
+  <input name="monthly-income" type="number" data-cr-custom-answer="monthly_income">
+</label>
+```
+
+Use `data-cr-custom-answer-type="boolean"` for a checkbox mapped to a boolean
+field, or `data-cr-custom-answer-type="multi_select"` for multiple selected
+values. Number inputs map to JSON numbers automatically; other controls map to
+strings or arrays. The field key must match the organization's configured
+schema exactly. The server remains authoritative for required fields, allowed
+options, value shape, and size limits. Do not mark a field until it exists in
+the organization's Leads table, and do not put identity documents or other
+uploads into contact answers.

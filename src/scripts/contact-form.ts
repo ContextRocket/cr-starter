@@ -53,6 +53,58 @@ export function initializeContactForm(form: HTMLFormElement): void {
       "input, select, textarea",
     ),
   );
+  const customAnswersFor = (values: FormData) => {
+    const fields = new Map<string, { type: string; values: string[]; names: Set<string> }>();
+    for (const control of controls) {
+      const key = control.dataset.crCustomAnswer?.trim();
+      if (!key) continue;
+      const type = control.dataset.crCustomAnswerType ||
+        (control instanceof HTMLInputElement && control.type === "number"
+          ? "number"
+          : control instanceof HTMLSelectElement && control.multiple
+            ? "multi_select"
+            : "text");
+      const current = fields.get(key) ?? { type, values: [], names: new Set<string>() };
+      if (current.type !== type) {
+        throw new TypeError(`Conflicting answer types for ${key}.`);
+      }
+      if (control.name && !current.names.has(control.name)) {
+        current.names.add(control.name);
+        current.values.push(
+          ...values
+            .getAll(control.name)
+            .filter((value): value is string => typeof value === "string")
+            .map((value) => value.trim())
+            .filter(Boolean),
+        );
+      }
+      fields.set(key, current);
+    }
+
+    const answers: Record<string, string | number | boolean | string[]> = {};
+    for (const [key, field] of fields) {
+      if (field.type === "boolean") {
+        const markedControls = controls.filter(
+          (control) => control.dataset.crCustomAnswer?.trim() === key,
+        );
+        answers[key] = markedControls.some(
+          (control) => control instanceof HTMLInputElement && control.checked,
+        );
+      } else if (!field.values.length) {
+        continue;
+      } else if (field.type === "number") {
+        if (field.values.length !== 1 || !Number.isFinite(Number(field.values[0]))) {
+          throw new TypeError(`Invalid numeric answer for ${key}.`);
+        }
+        answers[key] = Number(field.values[0]);
+      } else if (field.type === "multi_select") {
+        answers[key] = field.values;
+      } else {
+        answers[key] = field.values.length === 1 ? field.values[0]! : field.values;
+      }
+    }
+    return answers;
+  };
   let submissionController: ReturnType<NonNullable<Window["ContextRocketSDK"]>["createContactFormController"]> | undefined;
   let isSubmitting = false;
 
@@ -95,12 +147,17 @@ export function initializeContactForm(form: HTMLFormElement): void {
     try {
       const sdk = await loadCRContactSdk(sdkSrc);
       submissionController ??= sdk.createContactFormController();
+      const payload = sdk.mapContactFormData(values, { sourceChannel: "website" });
+      const customAnswers = customAnswersFor(values);
+      if (Object.keys(customAnswers).length > 0) {
+        payload.custom_answers = customAnswers;
+      }
       await submissionController.submit({
         apiBaseUrl,
         orgHandle: handle,
         pageUrl: window.location.href,
         referrerUrl: document.referrer,
-        form: sdk.mapContactFormData(values, { sourceChannel: "website" }),
+        form: payload,
       });
       setStatus(label("success"));
       form.reset();

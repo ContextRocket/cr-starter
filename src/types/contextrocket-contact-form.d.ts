@@ -1,5 +1,8 @@
 /** Public, browser-safe client for an organization's website contact form. */
 export type ContactIntent = "contact" | "appointment" | "demo" | "support" | "other";
+export type ContactFormJsonValue = string | number | boolean | null | ContactFormJsonValue[] | {
+    [key: string]: ContactFormJsonValue;
+};
 export interface ContactFormData {
     name: string;
     email?: string;
@@ -8,6 +11,8 @@ export interface ContactFormData {
     intent?: ContactIntent;
     source_channel?: string;
     consent: true;
+    /** Answers keyed by configured, non-system fields in the org's Leads table. */
+    custom_answers?: Record<string, ContactFormJsonValue>;
     source_url?: string;
     referrer_origin?: string;
     utm_source?: string;
@@ -33,6 +38,8 @@ export interface MapContactFormDataOptions {
     defaultIntent?: ContactIntent;
     /** Site-specific attribution channel, for example "website" or "form". */
     sourceChannel?: string;
+    /** Explicitly mapped values keyed by the org's configured Leads field keys. */
+    customAnswers?: Record<string, ContactFormJsonValue>;
 }
 export interface ContactFormReceipt {
     lead_id: string;
