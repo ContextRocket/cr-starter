@@ -13,8 +13,8 @@
       "package": "@contextrocket/sdk",
       "version": "0.1.1",
       "file": "embed/contact-form.js",
-      "bytes": 8226,
-      "sha256": "d7cd79a68bc570d7461936b9cadf18eaa33225152d0f91bd52c7123facd0b205"
+      "bytes": 9975,
+      "sha256": "d109f304675d1af19ec0f5e97ece486e61f5d2486815f6917d69b0e88aeebfb8"
     },
     "siteBehaviors": {
       "package": "@contextrocket/sdk",

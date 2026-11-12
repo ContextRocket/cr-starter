@@ -44,6 +44,43 @@
     const value = values.get(fieldName);
     return typeof value === "string" ? value.trim() : "";
   }
+  function mapCustomContactAnswers(values, fields) {
+    const answers = {};
+    for (const [key, field] of Object.entries(fields)) {
+      if (!key || !field.name) {
+        throw new TypeError("A custom contact answer field mapping is invalid.");
+      }
+      const selected = values.getAll(field.name).filter((value) => typeof value === "string").map((value) => value.trim()).filter(Boolean);
+      const type = field.type ?? "text";
+      if (type === "boolean") {
+        if (selected.length > 1) {
+          throw new TypeError(`Boolean contact answer ${key} has multiple values.`);
+        }
+        const value = selected[0]?.toLowerCase();
+        if (value && !["1", "true", "yes", "on", "checked", "0", "false", "no", "off"].includes(value)) {
+          throw new TypeError(`Boolean contact answer ${key} is invalid.`);
+        }
+        answers[key] = value ? !["0", "false", "no", "off"].includes(value) : false;
+      } else if (type === "number") {
+        if (!selected.length) continue;
+        if (selected.length !== 1 || !Number.isFinite(Number(selected[0]))) {
+          throw new TypeError(`Numeric contact answer ${key} is invalid.`);
+        }
+        answers[key] = Number(selected[0]);
+      } else if (type === "multi_select") {
+        if (selected.length) answers[key] = selected;
+      } else if (type === "text") {
+        if (!selected.length) continue;
+        if (selected.length !== 1) {
+          throw new TypeError(`Text contact answer ${key} has multiple values.`);
+        }
+        answers[key] = selected[0];
+      } else {
+        throw new TypeError(`Custom contact answer ${key} has an unsupported type.`);
+      }
+    }
+    return validateCustomAnswers(answers) ?? {};
+  }
   function mapContactFormData(values, options = {}) {
     const customAnswers = validateCustomAnswers(options.customAnswers);
     const fields = { ...DEFAULT_CONTACT_FIELDS, ...options.fields };
@@ -219,6 +256,7 @@
   var browserSdk = Object.freeze({
     createContactFormController,
     mapContactFormData,
+    mapCustomContactAnswers,
     ContactFormError,
     extractContactAttribution,
     submitContactForm,

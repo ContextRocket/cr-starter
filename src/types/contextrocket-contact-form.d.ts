@@ -31,6 +31,13 @@ export interface ContactFormFieldNames {
     intent: string;
     consent: string;
 }
+export type ContactFormCustomAnswerType = "text" | "number" | "boolean" | "multi_select";
+export interface ContactFormCustomAnswerField {
+    /** Native form control name. Repeated checkbox/select values share a name. */
+    name: string;
+    /** Defaults to text; multi-select and boolean answers should be explicit. */
+    type?: ContactFormCustomAnswerType;
+}
 export interface MapContactFormDataOptions {
     /** HTML field names; empty strings disable optional fields. */
     fields?: Partial<ContactFormFieldNames>;
@@ -64,6 +71,7 @@ export interface ContextRocketBrowserSDK {
     readonly ContactFormError: typeof ContactFormError;
     readonly createContactFormController: typeof createContactFormController;
     readonly mapContactFormData: typeof mapContactFormData;
+    readonly mapCustomContactAnswers: typeof mapCustomContactAnswers;
     readonly extractContactAttribution: typeof extractContactAttribution;
     readonly submitContactForm: typeof submitContactForm;
     readonly submitContactFormWithAttribution: typeof submitContactFormWithAttribution;
@@ -74,6 +82,8 @@ declare global {
         ContextRocketSDK?: ContextRocketBrowserSDK;
     }
 }
+/** Map explicitly configured HTML fields to organization Leads field keys. */
+export declare function mapCustomContactAnswers(values: FormData, fields: Record<string, ContactFormCustomAnswerField>): Record<string, ContactFormJsonValue>;
 /**
  * Map native form values to the shared contact API shape. Site markup and
  * validation remain site-owned; this helper only normalizes common fields and
