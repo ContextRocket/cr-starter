@@ -12,6 +12,7 @@ import {
   blogTopicsDir,
 } from "../../blog.config.mjs";
 import type { SiteIntegrationConfig } from "@/lib/integrations";
+import { shouldShowConsentBanner } from "@/lib/consent-config";
 
 type CookieConsentCategory = "necessary" | "functional" | "analytics" | "marketing";
 type CookieConsentCopy = {
@@ -128,14 +129,11 @@ const cookieConsent = envEnum<"auto" | "on" | "off">(
   siteDataExt.features.cookieConsent ?? "auto",
   ["auto", "on", "off"],
 );
-const optionalIntegrationConfigured = Object.values(integrations).some(
-  (integration) =>
-    integration.enabled !== false && integration.consentCategory !== "necessary",
+const consentBanner = shouldShowConsentBanner(
+  cookieConsent,
+  integrationConsentMode,
+  integrations,
 );
-const consentBanner =
-  integrationConsentMode === "auto" &&
-  (cookieConsent === "on" ||
-    (cookieConsent === "auto" && optionalIntegrationConfigured));
 
 export const siteConfig = {
   trailingSlash:
