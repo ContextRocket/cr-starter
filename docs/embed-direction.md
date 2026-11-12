@@ -97,9 +97,9 @@ artifact version. Do not use a mutable `latest` URL.
 The published chat widget bundle URL is
 `https://contextrocket.cdn.contextrocket.com/embeds/chat/v0.1.3/widget.js`.
 The published contact-form browser bridge URL is
-`https://contextrocket.cdn.contextrocket.com/embeds/contact-form/v0.1.0/contact-form.browser.js`.
-Both were published and verified on 2026-11-11. New releases use a unique
-version-specific prefix through the existing `contextrocket sites publish`
+`https://contextrocket.cdn.contextrocket.com/embeds/contact-form/v0.1.1/contact-form.browser.js`.
+The chat bundle was published on 2026-11-11 and the contact-form bridge on
+2026-11-12. New releases use a unique version-specific prefix through the existing `contextrocket sites publish`
 operator command. Customers can load these public URLs without an operator
 token. Publishing a bundle is independent of creating an organization or
 enabling live chat/form handling for a handle. A configured demo handle is only
@@ -108,10 +108,10 @@ policy, allowed origin, and any required publishable key must exist before the
 live path can work. These browser bundles are separate from the shared brand kit's
 `/brand/` assets.
 
-The contact-form adapter now uses `mapContactFormData`, introduced in SDK
-version `0.1.1`. The published `v0.1.0` browser bridge does not include that
-helper. Keep the checked-in local bridge selected until a matching newer
-browser artifact is published; do not point updated consumers at `v0.1.0`.
+The contact-form adapter uses `mapContactFormData`, introduced in SDK version
+`0.1.1`. The published `v0.1.1` browser bridge includes that helper and can be
+pinned by sites that want the shared CDN artifact. The checked-in local bridge
+remains the offline default.
 
 The site behavior bundle is currently checked in for static offline builds; it
 does not yet have a published CDN URL. It can be added to the versioned CDN
