@@ -12,14 +12,8 @@ interface BrandLogoProps {
   className?: string;
 }
 
-const DEFAULT_CLASS: Record<"icon" | "wordmark", string> = {
-  icon: "h-7 w-7",
-  wordmark: "h-7 w-auto",
-};
-
 export function BrandLogo({ logo, brandName, className }: BrandLogoProps) {
   const variant = logo.variant ?? "icon";
-  const sizeClass = className ?? DEFAULT_CLASS[variant];
 
   const image = (
     <img
@@ -27,7 +21,8 @@ export function BrandLogo({ logo, brandName, className }: BrandLogoProps) {
       alt={logo.alt}
       width={logo.width}
       height={logo.height}
-      className={sizeClass}
+      className={className ?? "block shrink-0"}
+      style={className ? undefined : { width: logo.width, height: logo.height }}
     />
   );
 
