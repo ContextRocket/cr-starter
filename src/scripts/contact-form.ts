@@ -8,7 +8,7 @@ type ContactFormLabels = {
   submit: string;
 };
 
-function loadContactSdk(src: string): Promise<NonNullable<Window["ContextRocketSDK"]>> {
+function loadCRContactSdk(src: string): Promise<NonNullable<Window["ContextRocketSDK"]>> {
   if (window.ContextRocketSDK) return Promise.resolve(window.ContextRocketSDK);
 
   return new Promise((resolve, reject) => {
@@ -82,7 +82,7 @@ export function initializeContactForm(form: HTMLFormElement): void {
     setStatus("");
 
     try {
-      const sdk = await loadContactSdk(sdkSrc);
+      const sdk = await loadCRContactSdk(sdkSrc);
       submissionController ??= sdk.createContactFormController();
       await submissionController.submit({
         apiBaseUrl,
