@@ -10,9 +10,7 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = createT(locale);
-const enabled =
-  siteConfig.features.cookieConsent === "on" &&
-  siteConfig.integrationConsentMode === "auto";
+const enabled = siteConfig.consentBanner;
 const copy = siteConfig.features.cookieConsentCopy;
 const preferencesDescription =
   copy?.preferencesDescription ?? t("cookie.consent.prefs.description");

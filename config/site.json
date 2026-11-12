@@ -92,7 +92,7 @@
     "chatFab": true,
     "languageSelector": true,
     "poweredByBadge": true,
-    "cookieConsent": "off"
+    "cookieConsent": "auto"
   },
   "chat": {
     "widgetSrc": "/embed/widget.js",

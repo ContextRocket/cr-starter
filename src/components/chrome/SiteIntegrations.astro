@@ -5,14 +5,9 @@ const integrations = siteConfig.integrations;
 const activeIntegrations = Object.values(integrations).some(
   (integration) => integration.enabled !== false,
 );
-const consentBanner =
-  siteConfig.features.cookieConsent === "on" &&
-  siteConfig.integrationConsentMode === "auto";
+const consentBanner = siteConfig.consentBanner;
 const shouldLoadSiteBehaviors = activeIntegrations || consentBanner;
-const consentManaged =
-  siteConfig.integrationConsentMode === "external" ||
-  (siteConfig.integrationConsentMode === "auto" &&
-    siteConfig.features.cookieConsent === "on");
+const consentManaged = siteConfig.consentManaged;
 const payload = JSON.stringify({
   integrations,
   consentManaged,

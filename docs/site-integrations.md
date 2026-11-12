@@ -6,7 +6,7 @@ script extensions without editing the shared layout.
 
 ```json
 {
-  "features": { "cookieConsent": "on" },
+  "features": { "cookieConsent": "auto" },
   "integrationConsentMode": "auto",
   "integrations": {
     "tag-manager": {
@@ -57,17 +57,29 @@ tracking scripts.
 
 ## Consent
 
-With `features.cookieConsent` set to `on` and `integrationConsentMode` set to
-`auto`, optional integrations wait until the visitor grants their category.
-The banner offers accept, decline, and category settings; visitors can reopen
-settings from the site footer. Necessary integrations always load. A provider
-with no `consentCategory` defaults to `analytics`, except Google Tag Manager,
-which defaults to `marketing` because its container may run many kinds of tags.
+With `features.cookieConsent` set to `auto` (the starter default) and
+`integrationConsentMode` set to `auto`, the consent dock appears when an enabled
+optional integration is configured. With no such integrations, no prompt is
+shown. Set the feature to `on` to always prompt, or `off` to explicitly disable
+the built-in prompt. Optional integrations wait until the visitor grants their
+category. The banner offers accept, decline, and category settings; visitors can
+reopen settings from the site footer. Necessary integrations always load. A
+provider with no `consentCategory` defaults to `analytics`, except Google Tag
+Manager, which defaults to `marketing` because its container may run many kinds
+of tags.
+
+The chat widget is hidden while this prompt is unresolved, so the two floating
+surfaces are never shown together. Any recorded choice (accept, decline, or
+custom preferences) releases the widget. Necessary login/session cookies and
+storage remain separate from optional analytics and functional preferences;
+classify optional site features under their actual purpose rather than treating
+every cookie as one blanket choice.
 
 `integrationConsentMode` can be:
 
-- `auto` -- use the built-in banner when `features.cookieConsent` is `on`;
-  otherwise load the configured integrations immediately. This is the default.
+- `auto` -- use the built-in banner when `features.cookieConsent` is `on` or
+  `auto` detects an enabled optional integration; otherwise load configured
+  integrations immediately. This is the default.
 - `always` -- load configured integrations immediately and do not show the
   built-in consent banner or settings link.
 - `external` -- wait for consent from another consent manager and do not show

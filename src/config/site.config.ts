@@ -117,6 +117,25 @@ const contextRocketSubjectKind = envEnum<"company" | "person">(
   siteDataExt.contextrocket?.subjectKind ?? "company",
   ["company", "person"],
 );
+const integrations = siteDataExt.integrations ?? {};
+const integrationConsentMode =
+  siteDataExt.integrationConsentMode === "always" ||
+  siteDataExt.integrationConsentMode === "external"
+    ? siteDataExt.integrationConsentMode
+    : "auto";
+const cookieConsent = envEnum<"auto" | "on" | "off">(
+  "PUBLIC_COOKIE_CONSENT",
+  siteDataExt.features.cookieConsent ?? "auto",
+  ["auto", "on", "off"],
+);
+const optionalIntegrationConfigured = Object.values(integrations).some(
+  (integration) =>
+    integration.enabled !== false && integration.consentCategory !== "necessary",
+);
+const consentBanner =
+  integrationConsentMode === "auto" &&
+  (cookieConsent === "on" ||
+    (cookieConsent === "auto" && optionalIntegrationConfigured));
 
 export const siteConfig = {
   trailingSlash:
@@ -183,11 +202,7 @@ export const siteConfig = {
       "PUBLIC_POWERED_BY_BADGE",
       siteData.features.poweredByBadge,
     ),
-    cookieConsent: envEnum<"auto" | "on" | "off">(
-      "PUBLIC_COOKIE_CONSENT",
-      siteDataExt.features.cookieConsent ?? "off",
-      ["auto", "on", "off"],
-    ),
+    cookieConsent,
     cookieConsentCopy: siteDataExt.features.cookieConsentCopy,
   },
 
@@ -246,11 +261,11 @@ export const siteConfig = {
   },
 
   integrations: siteDataExt.integrations ?? {},
-  integrationConsentMode:
-    siteDataExt.integrationConsentMode === "always" ||
-    siteDataExt.integrationConsentMode === "external"
-      ? siteDataExt.integrationConsentMode
-      : "auto",
+  integrationConsentMode,
+  consentBanner,
+  consentManaged:
+    integrationConsentMode === "external" ||
+    (integrationConsentMode === "auto" && consentBanner),
 
   contextrocket: {
     apiBaseUrl: contextRocketApiBase,
