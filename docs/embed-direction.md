@@ -119,6 +119,12 @@ The contact-form adapter uses `mapContactFormData`, introduced in SDK version
 pinned by sites that want the shared CDN artifact. The checked-in local bridge
 remains the offline default.
 
+The SDK `0.1.2` contact-form bridge adds `mapCustomContactAnswers` for mapping
+site-owned controls to the organization's configured Leads fields. The local
+starter bundle includes it. The `v0.1.2` CDN release is pending; do not pin it
+until the URL is published and verified. The published `v0.1.1` URL does not
+contain this mapper.
+
 The site-behaviors bundle is checked in for static offline builds and can also
 be loaded from the versioned CDN URL using
 `PUBLIC_CONTEXTROCKET_SITE_BEHAVIORS_URL`. Keep the checked-in local file as

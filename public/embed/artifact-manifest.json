@@ -11,7 +11,7 @@
     },
     "contactForm": {
       "package": "@contextrocket/sdk",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "file": "embed/contact-form.js",
       "bytes": 9975,
       "sha256": "d109f304675d1af19ec0f5e97ece486e61f5d2486815f6917d69b0e88aeebfb8"

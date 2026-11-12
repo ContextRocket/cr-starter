@@ -107,8 +107,10 @@ This optional contributor command rebuilds the widget from a sibling
 standalone builds and does not need to be rebuilt by a fork.
 Set `PUBLIC_CONTEXTROCKET_CHAT_WIDGET_URL` to a published, version-pinned CDN
 URL to load a shared widget instead; by default the site uses the checked-in
-local artifact. The ContextRocket CDN currently serves chat `v0.1.3` and
-contact-form bridge `v0.1.1`. Site behaviors default to the checked-in local
+local artifact. The ContextRocket CDN currently serves chat `v0.0.2` and
+contact-form bridge `v0.1.1`. SDK `0.1.2` adds typed custom-answer mapping to
+the local contact-form bridge; its CDN release is pending, so keep the local
+artifact when using that feature. Site behaviors default to the checked-in local
 bundle and can be pinned with `PUBLIC_CONTEXTROCKET_SITE_BEHAVIORS_URL` at
 version `v0.1.1`.
 See
