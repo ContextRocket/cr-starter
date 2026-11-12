@@ -93,7 +93,9 @@ features such as remembering a visitor's chosen interface preferences.
   choices are ignored in this mode. A custom
   consent manager script can use `consentCategory: "necessary"` and dispatch
   `cr:consent-change` with a `preferences` object containing `necessary`,
-  `functional`, `analytics`, and `marketing` booleans.
+  `functional`, `analytics`, and `marketing` booleans. The chat widget remains
+  hidden until that event too; dispatch the current saved choice after the
+  manager initializes, as well as after each visitor choice.
 
 When consent is revoked after a provider has loaded, the starter updates
 Google Consent Mode and opts PostHog out. A custom script cannot be unloaded;
