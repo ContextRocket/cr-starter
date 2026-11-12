@@ -63,6 +63,7 @@ const labels = {
       <option value="other">{labels.other}</option>
     </select>
   </label>
+  <slot name="custom-fields" />
   <label class="block text-sm font-medium" for={`${id}-message`}>{labels.message}
     <textarea class="mt-2 block min-h-36 w-full resize-y rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id={`${id}-message`} name="message" rows="5" maxlength="5000"></textarea>
   </label>
