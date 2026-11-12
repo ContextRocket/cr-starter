@@ -67,6 +67,9 @@ const categories = ["functional", "analytics", "marketing"] as const;
               <span>
                 <span class="block text-sm font-medium text-foreground">
                   {copy?.categories?.necessary?.label ?? t("cookie.consent.prefs.category.necessary.label")}
+                  {copy?.categories?.necessary?.alwaysActiveLabel && (
+                    <> {copy.categories.necessary.alwaysActiveLabel}</>
+                  )}
                 </span>
                 <span class="mt-1 block text-xs leading-5 text-text-secondary">
                   {copy?.categories?.necessary?.description ?? t("cookie.consent.prefs.category.necessary.description")}

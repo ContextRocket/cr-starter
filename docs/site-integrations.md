@@ -39,6 +39,8 @@ Sites that migrate an existing consent manager can preserve its copy by
 setting optional `features.cookieConsentCopy` strings and category labels in
 `config/site.json`. Omitted strings use the localized starter defaults. The
 four category keys are `necessary`, `functional`, `analytics`, and `marketing`.
+Category copy accepts `label`, `description`, and the optional
+`alwaysActiveLabel`; `manageFooter` can differ from the banner’s `manage` label.
 
 Built-in providers are `google-tag-manager`, `google-analytics`, and
 `posthog`. The `script` provider is the extension seam: give each script a

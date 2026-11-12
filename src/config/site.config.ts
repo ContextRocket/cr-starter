@@ -18,11 +18,17 @@ type CookieConsentCopy = {
   title?: string;
   body?: string;
   manage?: string;
+  manageFooter?: string;
   accept?: string;
   decline?: string;
   preferencesDescription?: string;
   save?: string;
-  categories?: Partial<Record<CookieConsentCategory, { label?: string; description?: string }>>;
+  categories?: Partial<
+    Record<
+      CookieConsentCategory,
+      { label?: string; description?: string; alwaysActiveLabel?: string }
+    >
+  >;
 };
 
 const contextRocketBrandAssetsUrl =
