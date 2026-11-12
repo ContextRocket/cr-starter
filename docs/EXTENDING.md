@@ -34,4 +34,34 @@ Browser SDK and embeds live in the sibling public repo **`cr-sdk`**
 4. Keep static builds usable offline; live ContextRocket access stays browser-direct via the embed widget.
 5. Run `make verify` (theme, i18n, typecheck, build, smoke).
 
+## Composing a landing page with contact capture
+
+Keep a generated page's layout and source-specific copy in its page file, then
+reuse the starter's standard contact section instead of copying the dedicated
+contact page markup:
+
+```astro
+---
+import ContactForm from "@/components/contact/ContactForm.astro";
+import type { SupportedLocale } from "@/i18n/locales";
+
+interface Props { locale: SupportedLocale }
+const { locale } = Astro.props;
+---
+
+<section id="inquiry" class="rounded-3xl border border-border bg-card p-6 sm:p-10">
+  <!-- Add the fork's localized heading and approved inquiry copy here. -->
+  <div class="mt-6">
+    <ContactForm locale={locale} idPrefix="landing-inquiry" />
+  </div>
+</section>
+```
+
+The form reads its demo/live mode, organization, API origin, SDK URL, and
+localized labels from starter configuration. Demo mode shows its “not sent”
+notice before fields. `idPrefix` keeps labels and controls unique when a page
+contains more than one form. For a custom source form, keep its field names and
+validation in the fork and use the checked-in contact-form bridge to connect it
+to the same SDK behavior.
+
 Auth, passwordless accounts, dashboards, and FastAPI are deliberately outside this public repo. Use the private `cr-auth-starter` for those concerns.
