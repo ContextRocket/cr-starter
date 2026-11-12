@@ -75,6 +75,7 @@ const siteDataExt = siteData as typeof siteData & {
   titleSeparator?: string;
   chat?: {
     widgetSrc?: string;
+    suggestions?: string[];
     fullscreen?: boolean;
     fullscreenOnOpen?: boolean;
     fullscreenOnLoad?: boolean;
@@ -269,6 +270,7 @@ export const siteConfig = {
     handle: contextRocketHandle,
     subjectKind: contextRocketSubjectKind,
     apiKey: env("PUBLIC_CONTEXTROCKET_API_KEY", ""),
+    suggestions: siteDataExt.chat?.suggestions ?? [],
     fullscreen: envBool(
       "PUBLIC_CR_CHAT_FULLSCREEN",
       siteDataExt.chat?.fullscreen ?? true,

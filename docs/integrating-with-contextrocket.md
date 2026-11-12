@@ -95,6 +95,14 @@ palette, suggestions, and optional full-screen behavior. Use
 The full-screen close control reveals the site; arbitrary CSS, HTML,
 JavaScript, prompts, or model settings are not part of the embed contract.
 
+Opening suggestions can come from the live organization's Agent Card examples,
+from `chat.suggestions` in `config/site.json`, or from the `chatSuggestions`
+prop on an individual `BaseLayout`. Page suggestions override the site list;
+leaving both unset preserves live Agent Card discovery and the widget's local
+demo suggestions. The widget bounds configured lists to five prompts of at most
+200 characters each. Use page-specific suggestions only when they match that
+page's content and the configured demo or live agent can answer them.
+
 ## Contact form integration
 
 `/contact/` is a reusable localized example. Demo mode is safe by default: it
