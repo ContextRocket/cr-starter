@@ -51,6 +51,11 @@ Topic frontmatter may also include up to five `chatSuggestions`. The topic page
 passes those prompts to the shared chat widget, so its opening questions can
 match the guide being read; omit them to keep site-level or Agent Card prompts.
 
+`chat.launcherColor` in `config/site.json` controls the SDK launcher. It defaults
+to `pink`; use `ink` or a site brand hex color to match a fork. Custom colors
+select a white or Ink rocket only when it meets 3:1 contrast, otherwise the
+launcher falls back to Ink.
+
 ```yaml
 title: Digital nomad residency
 description: A guide to remote work residency options.

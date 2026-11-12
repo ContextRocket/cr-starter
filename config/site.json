@@ -16,7 +16,11 @@
   "defaultLocale": "en",
   "trailingSlash": "always",
   "redirects": [],
-  "locales": ["en", "es", "de"],
+  "locales": [
+    "en",
+    "es",
+    "de"
+  ],
   "publicRoutes": [
     {
       "key": "home",
@@ -94,7 +98,8 @@
     "widgetSrc": "/embed/widget.js",
     "fullscreen": true,
     "fullscreenOnOpen": false,
-    "fullscreenOnLoad": false
+    "fullscreenOnLoad": false,
+    "launcherColor": "pink"
   },
   "contactForm": {
     "mode": "demo",

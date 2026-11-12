@@ -75,6 +75,7 @@ const siteDataExt = siteData as typeof siteData & {
   titleSeparator?: string;
   chat?: {
     widgetSrc?: string;
+    launcherColor?: string;
     suggestions?: string[];
     fullscreen?: boolean;
     fullscreenOnOpen?: boolean;
@@ -261,6 +262,10 @@ export const siteConfig = {
     widgetSrc: env(
       "PUBLIC_CONTEXTROCKET_CHAT_WIDGET_URL",
       siteDataExt.chat?.widgetSrc ?? "/embed/widget.js",
+    ),
+    launcherColor: env(
+      "PUBLIC_CR_CHAT_LAUNCHER_COLOR",
+      siteDataExt.chat?.launcherColor ?? "pink",
     ),
     mode: envEnum<"demo" | "live">("PUBLIC_CR_CHAT_MODE", "demo", [
       "demo",

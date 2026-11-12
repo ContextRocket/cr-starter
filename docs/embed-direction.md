@@ -88,19 +88,21 @@ package at runtime; the checked-in widget bundle is built from `cr-sdk`.
 The checked-in `public/embed/widget.js` remains the standalone offline default.
 Set `PUBLIC_CONTEXTROCKET_CHAT_WIDGET_URL` to a full versioned HTTPS URL when a
 widget release is published; the site layout applies the configured widget
-theme and organization settings to that script. The contact-form bridge can be
+theme, launcher color, and organization settings to that script. The
+`chat.launcherColor` option accepts `pink`, `ink`, or a contrast-checked hex
+color. The contact-form bridge can be
 selected with `PUBLIC_CONTEXTROCKET_CONTACT_FORM_SCRIPT_URL` or
 `contactForm.scriptSrc` in `config/site.json`. Both URLs default to checked-in
 local files, so offline demos continue to work. Keep external URLs pinned to an
 artifact version. Do not use a mutable `latest` URL.
 
 The published chat widget bundle URL is
-`https://contextrocket.cdn.contextrocket.com/embeds/chat/v0.1.5/widget.js`.
+`https://contextrocket.cdn.contextrocket.com/embeds/chat/v0.1.6/widget.js`.
 The published contact-form browser bridge URL is
 `https://contextrocket.cdn.contextrocket.com/embeds/contact-form/v0.1.1/contact-form.browser.js`.
 The consent and site-integrations browser bundle URL is
 `https://contextrocket.cdn.contextrocket.com/embeds/site-behaviors/v0.1.1/site-behaviors.browser.js`.
-The chat bundle was published on 2026-11-11; the contact-form bridge and
+The chat bundle version 0.1.6 was published on 2026-11-12; the contact-form bridge and
 site-behaviors bundle were published on 2026-11-12. New releases use a unique
 version-specific prefix through the existing `contextrocket sites publish`
 operator command. Customers can load these public URLs without an operator
