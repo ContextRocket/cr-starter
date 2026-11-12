@@ -63,7 +63,7 @@ export function initializeContactForm(form: HTMLFormElement): void {
   );
   const customAnswerFields = () => {
     type CustomAnswerFields = Parameters<CRBrowserSdk["mapCustomContactAnswers"]>[1];
-    const fields: CustomAnswerFields = {};
+    const fields = Object.create(null) as CustomAnswerFields;
     for (const control of controls) {
       const key = control.dataset.crCustomAnswer?.trim();
       if (!key) continue;

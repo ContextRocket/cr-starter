@@ -45,7 +45,7 @@
     return typeof value === "string" ? value.trim() : "";
   }
   function mapCustomContactAnswers(values, fields) {
-    const answers = {};
+    const answers = /* @__PURE__ */ Object.create(null);
     for (const [key, field] of Object.entries(fields)) {
       if (!key || !field.name) {
         throw new TypeError("A custom contact answer field mapping is invalid.");
