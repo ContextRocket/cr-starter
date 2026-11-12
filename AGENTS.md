@@ -37,7 +37,8 @@ the emitted Astro routes.
 - Contact (localized SDK contact-form example; demo mode by default)
 - Website discovery: `sitemap.xml`, `robots.txt`, `llms.txt`, `feed.xml`,
   `.well-known/security.txt`
-- Optional cookie consent banner (off unless explicitly enabled)
+- Cookie consent: automatic by default when an optional site integration is
+  configured; can also be forced on or off in site configuration
 - Multi-locale support (same convention as before). A fork may set
   `locales: ["en"]` only.
 
