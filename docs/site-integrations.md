@@ -75,6 +75,12 @@ storage remain separate from optional analytics and functional preferences;
 classify optional site features under their actual purpose rather than treating
 every cookie as one blanket choice.
 
+For an authenticated ContextRocket experience, cookies required to maintain the
+user's requested sign-in, session security, or CSRF protection belong to the
+necessary category. They are not optional functional preferences and must not
+be gated on an analytics choice. The `functional` category is for optional
+features such as remembering a visitor's chosen interface preferences.
+
 `integrationConsentMode` can be:
 
 - `auto` -- use the built-in banner when `features.cookieConsent` is `on` or
