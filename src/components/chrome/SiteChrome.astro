@@ -157,10 +157,7 @@ const headerProps = {
       variant={footerVariant}
       showPoweredByBadge={siteConfig.features.poweredByBadge}
       poweredByTone={siteConfig.chrome.poweredByTone}
-      showCookieSettings={
-        siteConfig.features.cookieConsent === "on" &&
-        siteConfig.integrationConsentMode === "auto"
-      }
+      showCookieSettings={siteConfig.consentBanner}
       cookieSettingsLabel={
         siteConfig.features.cookieConsentCopy?.manageFooter ??
           siteConfig.features.cookieConsentCopy?.manage ??
