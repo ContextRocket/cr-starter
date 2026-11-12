@@ -76,6 +76,7 @@ const siteDataExt = siteData as typeof siteData & {
   titleSeparator?: string;
   chat?: {
     widgetSrc?: string;
+    position?: "bottom-left" | "bottom-right";
     launcherColor?: string;
     suggestions?: string[];
     fullscreen?: boolean;
@@ -275,6 +276,11 @@ export const siteConfig = {
     widgetSrc: env(
       "PUBLIC_CONTEXTROCKET_CHAT_WIDGET_URL",
       siteDataExt.chat?.widgetSrc ?? "/embed/widget.js",
+    ),
+    position: envEnum<"bottom-left" | "bottom-right">(
+      "PUBLIC_CR_CHAT_POSITION",
+      siteDataExt.chat?.position ?? "bottom-right",
+      ["bottom-left", "bottom-right"],
     ),
     launcherColor: env(
       "PUBLIC_CR_CHAT_LAUNCHER_COLOR",

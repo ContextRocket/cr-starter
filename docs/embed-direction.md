@@ -90,7 +90,10 @@ Set `PUBLIC_CONTEXTROCKET_CHAT_WIDGET_URL` to a full versioned HTTPS URL when a
 widget release is published; the site layout applies the configured widget
 theme, launcher color, and organization settings to that script. The
 `chat.launcherColor` option accepts `pink`, `ink`, or a contrast-checked hex
-color. The contact-form bridge can be
+color. `chat.position` in `config/site.json` accepts `bottom-right` (the
+default) or `bottom-left`; `PUBLIC_CR_CHAT_POSITION` can override it at build
+time. This passes through to the SDK's `data-contextrocket-position` setting.
+The contact-form bridge can be
 selected with `PUBLIC_CONTEXTROCKET_CONTACT_FORM_SCRIPT_URL` or
 `contactForm.scriptSrc` in `config/site.json`. Both URLs default to checked-in
 local files, so offline demos continue to work. Keep external URLs pinned to an

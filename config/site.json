@@ -96,6 +96,7 @@
   },
   "chat": {
     "widgetSrc": "/embed/widget.js",
+    "position": "bottom-right",
     "fullscreen": true,
     "fullscreenOnOpen": false,
     "fullscreenOnLoad": false,
