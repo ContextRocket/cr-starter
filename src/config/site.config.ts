@@ -13,6 +13,18 @@ import {
 } from "../../blog.config.mjs";
 import type { SiteIntegrationConfig } from "@/lib/integrations";
 
+type CookieConsentCategory = "necessary" | "functional" | "analytics" | "marketing";
+type CookieConsentCopy = {
+  title?: string;
+  body?: string;
+  manage?: string;
+  accept?: string;
+  decline?: string;
+  preferencesDescription?: string;
+  save?: string;
+  categories?: Partial<Record<CookieConsentCategory, { label?: string; description?: string }>>;
+};
+
 const contextRocketBrandAssetsUrl =
   "https://contextrocket.cdn.contextrocket.com/brand";
 
@@ -48,6 +60,7 @@ const siteDataExt = siteData as typeof siteData & {
     testimonials?: boolean;
     topics?: boolean;
     cookieConsent?: "auto" | "on" | "off";
+    cookieConsentCopy?: CookieConsentCopy;
   };
   defaultLocale?: string;
   contextrocket?: { handle?: string; subjectKind?: "company" | "person" };
@@ -167,6 +180,7 @@ export const siteConfig = {
       siteDataExt.features.cookieConsent ?? "off",
       ["auto", "on", "off"],
     ),
+    cookieConsentCopy: siteDataExt.features.cookieConsentCopy,
   },
 
   chrome: {

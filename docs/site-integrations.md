@@ -35,6 +35,11 @@ script extensions without editing the shared layout.
 }
 ```
 
+Sites that migrate an existing consent manager can preserve its copy by
+setting optional `features.cookieConsentCopy` strings and category labels in
+`config/site.json`. Omitted strings use the localized starter defaults. The
+four category keys are `necessary`, `functional`, `analytics`, and `marketing`.
+
 Built-in providers are `google-tag-manager`, `google-analytics`, and
 `posthog`. The `script` provider is the extension seam: give each script a
 stable key, an HTTPS `src`, an optional consent category, and optional HTML

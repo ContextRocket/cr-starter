@@ -161,7 +161,10 @@ const headerProps = {
         siteConfig.features.cookieConsent === "on" &&
         siteConfig.integrationConsentMode === "auto"
       }
-      cookieSettingsLabel={t("cookie.consent.manage")}
+      cookieSettingsLabel={
+        siteConfig.features.cookieConsentCopy?.manage ??
+          t("cookie.consent.manage")
+      }
     />
   )
 }
