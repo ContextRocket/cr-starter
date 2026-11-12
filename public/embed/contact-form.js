@@ -123,6 +123,7 @@
     const handle = orgHandle.trim().replace(/^@/, "").toLowerCase();
     if (!handle) throw new TypeError("An organization handle is required.");
     if (!form.consent) throw new TypeError("Explicit consent is required.");
+    const customAnswers = validateCustomAnswers(form.custom_answers);
     const endpoint = new URL("/api/apps/leads/capture", apiBaseUrl);
     endpoint.searchParams.set("org_handle", handle);
     const headers = new Headers({
@@ -138,7 +139,11 @@
         credentials: "omit",
         cache: "no-store",
         headers,
-        body: JSON.stringify({ ...form, org_handle: handle }),
+        body: JSON.stringify({
+          ...form,
+          ...customAnswers ? { custom_answers: customAnswers } : {},
+          org_handle: handle
+        }),
         signal
       });
     } catch (error) {
