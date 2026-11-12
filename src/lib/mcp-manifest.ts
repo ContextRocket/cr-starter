@@ -4,8 +4,8 @@
 
 import { siteConfig } from "@/config/site.config";
 import {
-  contextRocketIdentityUrl,
-  type ContextRocketSubjectKind,
+  crIdentityUrl,
+  type CRSubjectKind,
 } from "@/lib/contextrocket-urls";
 
 export interface McpManifestOptions {
@@ -13,7 +13,7 @@ export interface McpManifestOptions {
   companyName?: string;
   agentUrl?: string | null;
   handle?: string;
-  subjectKind?: ContextRocketSubjectKind;
+  subjectKind?: CRSubjectKind;
 }
 
 function env(name: string): string | undefined {
@@ -36,7 +36,7 @@ export function buildMcpManifest(
     options.subjectKind ?? siteConfig.contextrocket.subjectKind;
   const mcpUrl =
     crAgentUrl && handle
-      ? contextRocketIdentityUrl(crAgentUrl, subjectKind, handle, "mcp")
+      ? crIdentityUrl(crAgentUrl, subjectKind, handle, "mcp")
       : null;
 
   return {

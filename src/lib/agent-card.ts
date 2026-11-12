@@ -8,14 +8,14 @@
 
 import { siteConfig } from "@/config/site.config";
 import {
-  contextRocketIdentityUrl,
-  type ContextRocketSubjectKind,
+  crIdentityUrl,
+  type CRSubjectKind,
 } from "@/lib/contextrocket-urls";
 
 export interface AgentCardOptions {
   agentUrl?: string;
   handle?: string;
-  subjectKind?: ContextRocketSubjectKind;
+  subjectKind?: CRSubjectKind;
 }
 
 const A2A_PROTOCOL_VERSION = "1.0";
@@ -43,13 +43,13 @@ export function buildAgentCard(
     siteConfig.chat.handle ||
     "contextrocket";
   const subjectKind = options.subjectKind ?? siteConfig.chat.subjectKind;
-  const interfaceUrl = contextRocketIdentityUrl(
+  const interfaceUrl = crIdentityUrl(
     crAgentUrl,
     subjectKind,
     handle,
     "a2a",
   );
-  const agentCardUrl = contextRocketIdentityUrl(
+  const agentCardUrl = crIdentityUrl(
     crAgentUrl,
     subjectKind,
     handle,
