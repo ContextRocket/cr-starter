@@ -21,6 +21,12 @@ function createForm(mode: "demo" | "live"): HTMLFormElement {
       <input name="email" type="email" required>
       <input name="consent" type="checkbox" required>
       <select name="intent"><option value="contact" selected>Contact</option></select>
+      <label>Residency area
+        <select name="residency-area" data-cr-custom-answer="residency_area" required>
+          <option value="madrid" selected>Madrid</option>
+          <option value="other">Another area</option>
+        </select>
+      </label>
       <input name="message">
       <p data-form-status></p>
       <button data-submit type="submit">Send message</button>
@@ -70,7 +76,12 @@ describe("static contact form", () => {
         intent: String(values.get("intent") ?? "contact"),
         consent: true as const,
       })),
-      mapCustomContactAnswers: vi.fn(() => ({})),
+      mapCustomContactAnswers: vi.fn(
+        (
+          _values: FormData,
+          fields: Record<string, { name: string; type?: string }>,
+        ) => (fields.residency_area ? { residency_area: "madrid" } : {}),
+      ),
     } as unknown as NonNullable<Window["ContextRocketSDK"]>;
     const appendSpy = vi.spyOn(document.head, "append").mockImplementation((...nodes) => {
       window.ContextRocketSDK = sdk;
@@ -94,8 +105,13 @@ describe("static contact form", () => {
         email: "alex@example.com",
         intent: "contact",
         consent: true,
+        custom_answers: { residency_area: "madrid" },
       }),
     }));
+    expect(sdk.mapCustomContactAnswers).toHaveBeenCalledWith(
+      expect.any(FormData),
+      { residency_area: { name: "residency-area", type: "text" } },
+    );
     resolveSubmission({ status: "captured" });
     await vi.waitFor(() => expect(form.querySelector("[data-form-status]")?.textContent).toBe(labels.success));
   });

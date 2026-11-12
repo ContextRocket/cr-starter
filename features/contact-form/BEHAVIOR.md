@@ -27,3 +27,13 @@ not sent or saved.
 
 The note uses semantic theme roles so automatically generated site themes can
 style it without coupling form behavior to a specific brand palette.
+
+## CONTACT-004: Landing-page fields use the shared submission behavior
+
+Given a landing page adds an organization-configured custom field through the
+`ContactForm` custom-fields slot,
+When the visitor submits a live inquiry,
+Then the bridge preserves the control's native name and value,
+And maps the value to the configured `custom_answers` key,
+And uses the same attribution, idempotency, and status behavior as the standard
+contact fields.
