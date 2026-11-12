@@ -8,10 +8,14 @@ type ContactFormLabels = {
   submit: string;
 };
 
-function loadCRContactSdk(src: string): Promise<NonNullable<Window["ContextRocketSDK"]>> {
-  if (window.ContextRocketSDK) return Promise.resolve(window.ContextRocketSDK);
+type CRBrowserSdk = NonNullable<Window["ContextRocketSDK"]>;
+let crContactSdkPromise: Promise<CRBrowserSdk> | undefined;
 
-  return new Promise((resolve, reject) => {
+function loadCRContactSdk(src: string): Promise<CRBrowserSdk> {
+  if (window.ContextRocketSDK) return Promise.resolve(window.ContextRocketSDK);
+  if (crContactSdkPromise) return crContactSdkPromise;
+
+  const pending = new Promise<CRBrowserSdk>((resolve, reject) => {
     const script = document.createElement("script");
     script.src = src;
     script.async = true;
@@ -19,11 +23,18 @@ function loadCRContactSdk(src: string): Promise<NonNullable<Window["ContextRocke
     script.onload = () => {
       const sdk = window.ContextRocketSDK;
       if (sdk) resolve(sdk);
-      else reject(new Error("Contact form SDK did not initialize"));
+      else fail(new Error("Contact form SDK did not initialize"));
     };
-    script.onerror = () => reject(new Error("Contact form SDK failed to load"));
+    script.onerror = () => fail(new Error("Contact form SDK failed to load"));
+    function fail(error: Error) {
+      script.remove();
+      crContactSdkPromise = undefined;
+      reject(error);
+    }
     document.head.append(script);
   });
+  crContactSdkPromise = pending;
+  return pending;
 }
 
 export function initializeContactForm(form: HTMLFormElement): void {
