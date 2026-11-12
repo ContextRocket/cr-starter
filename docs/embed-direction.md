@@ -98,8 +98,11 @@ The published chat widget bundle URL is
 `https://contextrocket.cdn.contextrocket.com/embeds/chat/v0.1.3/widget.js`.
 The published contact-form browser bridge URL is
 `https://contextrocket.cdn.contextrocket.com/embeds/contact-form/v0.1.1/contact-form.browser.js`.
-The chat bundle was published on 2026-11-11 and the contact-form bridge on
-2026-11-12. New releases use a unique version-specific prefix through the existing `contextrocket sites publish`
+The consent and site-integrations browser bundle URL is
+`https://contextrocket.cdn.contextrocket.com/embeds/site-behaviors/v0.1.1/site-behaviors.browser.js`.
+The chat bundle was published on 2026-11-11; the contact-form bridge and
+site-behaviors bundle were published on 2026-11-12. New releases use a unique
+version-specific prefix through the existing `contextrocket sites publish`
 operator command. Customers can load these public URLs without an operator
 token. Publishing a bundle is independent of creating an organization or
 enabling live chat/form handling for a handle. A configured demo handle is only
@@ -113,6 +116,7 @@ The contact-form adapter uses `mapContactFormData`, introduced in SDK version
 pinned by sites that want the shared CDN artifact. The checked-in local bridge
 remains the offline default.
 
-The site behavior bundle is currently checked in for static offline builds; it
-does not yet have a published CDN URL. It can be added to the versioned CDN
-release workflow after its standalone artifact contract is reviewed.
+The site-behaviors bundle is checked in for static offline builds and can also
+be loaded from the versioned CDN URL using
+`PUBLIC_CONTEXTROCKET_SITE_BEHAVIORS_URL`. Keep the checked-in local file as
+the offline default.

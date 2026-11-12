@@ -18,7 +18,7 @@
     },
     "siteBehaviors": {
       "package": "@contextrocket/sdk",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "file": "embed/site-behaviors.js",
       "bytes": 13323,
       "sha256": "8314c012a41209c3ffc3a9c7d4095b3b337380e21f2f0b5dd1dfcfe71eef7a02"

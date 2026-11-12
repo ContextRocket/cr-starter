@@ -19,6 +19,9 @@ const payload = JSON.stringify({
   consentStorage: siteConfig.integrationConsentMode !== "external",
   consentBanner,
 }).replaceAll("<", "\\u003c");
+const siteBehaviorsSrc =
+  import.meta.env.PUBLIC_CONTEXTROCKET_SITE_BEHAVIORS_URL?.trim() ||
+  "/embed/site-behaviors.js";
 ---
 
 {
@@ -30,7 +33,7 @@ const payload = JSON.stringify({
         is:inline
         set:html={payload}
       />
-      <script is:inline src="/embed/site-behaviors.js" defer></script>
+      <script is:inline src={siteBehaviorsSrc} defer></script>
     </>
   )
 }
