@@ -97,12 +97,12 @@ local files, so offline demos continue to work. Keep external URLs pinned to an
 artifact version. Do not use a mutable `latest` URL.
 
 The published chat widget bundle URL is
-`https://contextrocket.cdn.contextrocket.com/embeds/chat/v0.0.1/widget.js`.
+`https://contextrocket.cdn.contextrocket.com/embeds/chat/v0.0.2/widget.js`.
 The published contact-form browser bridge URL is
 `https://contextrocket.cdn.contextrocket.com/embeds/contact-form/v0.1.1/contact-form.browser.js`.
 The consent and site-integrations browser bundle URL is
 `https://contextrocket.cdn.contextrocket.com/embeds/site-behaviors/v0.1.1/site-behaviors.browser.js`.
-The chat bundle version 0.0.1 was published and verified on 2026-11-12; the
+The chat bundle version 0.0.2 was published and verified on 2026-11-12; the
 contact-form bridge and
 site-behaviors bundle were published on 2026-11-12. New releases use a unique
 version-specific prefix through the existing `contextrocket sites publish`

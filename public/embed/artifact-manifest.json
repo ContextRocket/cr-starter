@@ -4,7 +4,7 @@
   "artifacts": {
     "chat": {
       "package": "@contextrocket/embed-chat",
-      "version": "0.0.1",
+      "version": "0.0.2",
       "file": "embed/widget.js",
       "bytes": 105612,
       "sha256": "0d7e6c33eec01e9c546c9561ec46a4aa17eb6e20306ba5904dceb4cfda92a988"
