@@ -12,6 +12,7 @@ const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
 const expected = {
   chat: "@contextrocket/embed-chat",
   contactForm: "@contextrocket/sdk",
+  siteBehaviors: "@contextrocket/sdk",
 };
 
 if (

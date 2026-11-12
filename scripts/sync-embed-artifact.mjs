@@ -27,6 +27,21 @@ const artifacts = {
     declaration: "../cr-sdk/packages/sdk/dist/contact-form.d.ts",
     declarationTarget: "src/types/contextrocket-contact-form.d.ts",
   },
+  "site-behaviors": {
+    source: "../cr-sdk/packages/sdk/dist/site-behaviors.browser.js",
+    packageJson: "../cr-sdk/packages/sdk/package.json",
+    target: "public/embed/site-behaviors.js",
+    key: "siteBehaviors",
+    packageName: "@contextrocket/sdk",
+    declaration: "../cr-sdk/packages/sdk/dist/site-integrations.d.ts",
+    declarationTarget: "src/types/contextrocket-sdk/site-integrations.d.ts",
+    extraDeclarations: [
+      {
+        source: "../cr-sdk/packages/sdk/dist/site-consent.d.ts",
+        target: "src/types/contextrocket-sdk/site-consent.d.ts",
+      },
+    ],
+  },
 };
 
 const name = process.argv[2];
@@ -84,14 +99,20 @@ writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
 console.log(`Updated ${manifestPath}`);
 
 if (artifact.declaration) {
-  const declarationSource = resolve(root, artifact.declaration);
-  const declarationTarget = resolve(root, artifact.declarationTarget);
-  if (!existsSync(declarationSource)) {
-    throw new Error(`Missing ${declarationSource}. Build the SDK package first.`);
+  const declarations = [
+    { source: artifact.declaration, target: artifact.declarationTarget },
+    ...(artifact.extraDeclarations ?? []),
+  ];
+  for (const item of declarations) {
+    const declarationSource = resolve(root, item.source);
+    const declarationTarget = resolve(root, item.target);
+    if (!existsSync(declarationSource)) {
+      throw new Error(`Missing ${declarationSource}. Build the SDK package first.`);
+    }
+    mkdirSync(dirname(declarationTarget), { recursive: true });
+    const declaration = readFileSync(declarationSource, "utf8")
+      .replace(/\n?\/\/# sourceMappingURL=.*\n?$/, "\n");
+    writeFileSync(declarationTarget, declaration);
+    console.log(`Copied ${declarationSource} -> ${declarationTarget}`);
   }
-  mkdirSync(dirname(declarationTarget), { recursive: true });
-  const declaration = readFileSync(declarationSource, "utf8")
-    .replace(/\n?\/\/# sourceMappingURL=.*\n?$/, "\n");
-  writeFileSync(declarationTarget, declaration);
-  console.log(`Copied ${declarationSource} -> ${declarationTarget}`);
 }

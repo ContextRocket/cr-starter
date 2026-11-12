@@ -43,7 +43,10 @@
       "scripts/sync-embed-artifact.mjs",
       "public/embed/widget.js",
       "public/embed/contact-form.js",
+      "public/embed/site-behaviors.js",
       "public/embed/artifact-manifest.json",
+      "src/types/contextrocket-contact-form.d.ts",
+      "src/types/contextrocket-sdk/**",
       "scripts/emit-static-redirects.mjs",
       "scripts/containerize-dist.mjs",
       "AGENTS.md",
@@ -61,6 +64,9 @@
     "forceSync": [
       "public/embed/widget.js",
       "public/embed/contact-form.js",
+      "public/embed/site-behaviors.js",
+      "src/types/contextrocket-contact-form.d.ts",
+      "src/types/contextrocket-sdk/**",
       "public/embed/artifact-manifest.json"
     ]
   }

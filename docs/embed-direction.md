@@ -27,12 +27,19 @@ local copies with `pnpm run build:embeds` from a sibling `cr-sdk` checkout.
 `src/types/contextrocket-contact-form.d.ts`, so sites use the SDK's current
 `window.ContextRocketSDK` type instead of maintaining a local approximation.
 
+The SDK now also builds `dist/site-behaviors.browser.js`. It owns consent
+preference storage and migration, the consent events and banner interactions,
+and the configurable Google Tag Manager, Google Analytics, PostHog, and custom
+script loaders. The starter keeps the translated, theme-aware Astro banner
+markup and `config/site.json` values; the generated browser artifact supplies
+the shared behavior. Its generated type contract is copied to
+`src/types/contextrocket-site-integrations.d.ts`.
+
 The package names are defined in `cr-sdk`, but the packages are not currently
 available from the public npm registry. The starter therefore keeps its built
-widget in `public/embed/widget.js` and its contact form bridge in
-`public/embed/contact-form.js`. Normal site setup does not require either
-package. Add versioned package dependencies after a verified package release
-exists.
+widget and browser bridges in `public/embed/`. Normal site setup does not
+require the SDK checkout. Add versioned package dependencies after a verified
+package release exists.
 
 ## Local package development
 
@@ -52,10 +59,10 @@ pnpm --dir ../cr-sdk install
 pnpm run build:embeds
 ```
 
-To refresh just one artifact, use `pnpm run build:widget` or
-`pnpm run build:contact-form` from the starter checkout. The corresponding
-SDK package is built by each command before its generated browser artifact is
-copied into `public/embed/`.
+The combined command builds the SDK once, builds the chat widget, then refreshes
+all three generated artifacts in `public/embed/`. To refresh one artifact, use
+`pnpm run build:widget`, `pnpm run build:contact-form`, or
+`pnpm run build:site-behaviors` from the starter checkout.
 
 ## Import rule
 
@@ -100,3 +107,7 @@ a default value; after a production reset, a matching organization, public
 policy, allowed origin, and any required publishable key must exist before the
 live path can work. These browser bundles are separate from the shared brand kit's
 `/brand/` assets.
+
+The site behavior bundle is currently checked in for static offline builds; it
+does not yet have a published CDN URL. It can be added to the versioned CDN
+release workflow after its standalone artifact contract is reviewed.

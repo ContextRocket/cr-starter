@@ -42,22 +42,24 @@ Kleos owns its own field set and copy; that presentation difference is
 intentional. Forks should keep their markup and brand copy, but should not
 reimplement the API request or retry behavior.
 
+Cookie consent and browser integrations follow the same separation. The SDK
+owns preference storage, version migration, consent events, banner interaction
+behavior, and the delayed loading / revocation behavior for analytics providers.
+The starter owns the localized banner markup, semantic theme classes, and
+site-owned provider configuration. `public/embed/site-behaviors.js` is the
+generated offline artifact from the SDK; forks force-sync it with the other
+versioned SDK artifacts.
+
 ## Component package boundary
 
-Astro and browser components that need to be shared by multiple forks should
-move into a small `@contextrocket/astro` package in `cr-sdk`. Candidate modules
-include a branded **Powered by** badge, cookie consent, or a headless contact
-form presentation layer. The contact form transport is already in the browser
-SDK; a future UI package should compose that client instead of adding another
-submission path. Any package should provide typed inputs, CSS-variable/slot
-styling hooks, and browser-safe behavior. It should not own page routes, brand
-copy, site content, or a site's overall theme.
-
-Keep a UI capability in `cr-starter` until at least two concrete consumers
-establish its public inputs. Then move the reusable behavior and its tests into
-`cr-sdk`, publish it, and switch the starter and forks to the package. Keep
-brand-specific fields, labels, and layout in each site. This avoids publishing
-speculative APIs and keeps package contracts grounded in real customer sites.
+Portable TypeScript behavior belongs in `cr-sdk`, with contract and browser
+behavior tests there. Astro markup, routes, localized copy, brand chrome, and
+site-level composition belong in `cr-starter` or the fork. A reusable UI
+package is justified only when multiple real sites need the same visual
+component and its inputs can be expressed without importing Astro or owning a
+site's brand theme. Shared capability behavior should not wait for a separate
+Astro package when a framework-neutral SDK module or browser artifact already
+fits.
 
 ## Forking vs. consuming a package
 

@@ -129,7 +129,7 @@ pnpm run build:embeds
 ```
 
 This optional contributor command expects a sibling `../cr-sdk` checkout and
-refreshes both the chat widget and contact-form bridge. Normal starter builds
+refreshes the chat widget, contact-form bridge, and site-behaviors bundle. Normal starter builds
 use the checked-in assets and do not need that checkout.
 
 For a local or self-hosted install, use the checked-in artifact:
@@ -145,8 +145,9 @@ For a local or self-hosted install, use the checked-in artifact:
 ```
 
 The chat script is served from `public/embed/widget.js`; the contact example
-loads `public/embed/contact-form.js`. The SDK build command also refreshes
-`src/types/contextrocket-contact-form.d.ts` from the SDK contract. A published
+loads `public/embed/contact-form.js`; consent and configured browser integrations
+use `public/embed/site-behaviors.js`. The SDK build command also refreshes
+the contact-form and site-integration declarations in `src/types/`. A published
 chat artifact can be selected with `PUBLIC_CONTEXTROCKET_CHAT_WIDGET_URL`; the
 contact-form bridge can use `PUBLIC_CONTEXTROCKET_CONTACT_FORM_SCRIPT_URL` or
 `contactForm.scriptSrc` in `config/site.json`. Both default to local files for

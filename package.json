@@ -21,7 +21,8 @@
     "smoke": "node scripts/smoke-routes.mjs",
     "build:widget": "pnpm --dir ../cr-sdk/packages/embed-chat build && node scripts/sync-embed-artifact.mjs widget",
     "build:contact-form": "pnpm --dir ../cr-sdk/packages/sdk build && node scripts/sync-embed-artifact.mjs contact-form",
-    "build:embeds": "pnpm run build:widget && pnpm run build:contact-form"
+    "build:site-behaviors": "pnpm --dir ../cr-sdk/packages/sdk build && node scripts/sync-embed-artifact.mjs site-behaviors",
+    "build:embeds": "pnpm --dir ../cr-sdk/packages/sdk run build && node ../cr-sdk/packages/embed-chat/build.mjs && node scripts/sync-embed-artifact.mjs widget && node scripts/sync-embed-artifact.mjs contact-form && node scripts/sync-embed-artifact.mjs site-behaviors"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.10",

@@ -5,6 +5,10 @@ const integrations = siteConfig.integrations;
 const activeIntegrations = Object.values(integrations).some(
   (integration) => integration.enabled !== false,
 );
+const consentBanner =
+  siteConfig.features.cookieConsent === "on" &&
+  siteConfig.integrationConsentMode === "auto";
+const shouldLoadSiteBehaviors = activeIntegrations || consentBanner;
 const consentManaged =
   siteConfig.integrationConsentMode === "external" ||
   (siteConfig.integrationConsentMode === "auto" &&
@@ -13,11 +17,12 @@ const payload = JSON.stringify({
   integrations,
   consentManaged,
   consentStorage: siteConfig.integrationConsentMode !== "external",
+  consentBanner,
 }).replaceAll("<", "\\u003c");
 ---
 
 {
-  activeIntegrations && (
+  shouldLoadSiteBehaviors && (
     <>
       <script
         id="cr-site-integrations-config"
@@ -25,18 +30,7 @@ const payload = JSON.stringify({
         is:inline
         set:html={payload}
       />
-      <script>
-        import { initializeSiteIntegrations } from "@/lib/integrations";
-
-        const configNode = document.getElementById("cr-site-integrations-config");
-        if (configNode?.textContent) {
-          try {
-            initializeSiteIntegrations(JSON.parse(configNode.textContent));
-          } catch {
-            console.error("ContextRocket site integration config is invalid.");
-          }
-        }
-      </script>
+      <script is:inline src="/embed/site-behaviors.js" defer></script>
     </>
   )
 }
