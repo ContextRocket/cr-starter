@@ -393,7 +393,9 @@ for (const htmlFile of htmlFiles) {
     : logicalServedPath;
   const pageUrl = new URL(servedPath, siteOrigin);
   const html = fs.readFileSync(htmlFile, "utf8");
-  for (const match of html.matchAll(/\b(?:href|src|action|poster)\s*=\s*(["'])(.*?)\1/gi)) {
+  // Match actual HTML attribute names. A word boundary also matches the
+  // `action` suffix in data-action, which is a behavior hook rather than a URL.
+  for (const match of html.matchAll(/(?<![\w:-])(?:href|src|action|poster)\s*=\s*(["'])(.*?)\1/gi)) {
     const raw = match[2]
       .replaceAll("&amp;", "&")
       .replaceAll("&#x2F;", "/")
