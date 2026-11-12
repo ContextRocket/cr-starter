@@ -36,9 +36,17 @@ const jsonLdExtra = [
     </header>
 
     {posts.length > 0 ? (
-      <ul class="mx-auto mt-12 grid max-w-6xl items-stretch gap-6 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
+      <ul class="mx-auto mt-12 grid max-w-6xl items-stretch gap-6 sm:grid-cols-2 lg:mt-16 lg:grid-cols-6">
         {posts.map((post, index) => (
-          <li class="min-w-0">
+          <li
+            class:list={[
+              "min-w-0 lg:col-span-2",
+              posts.length % 2 === 1 && index === posts.length - 1 && "sm:col-start-2",
+              posts.length % 3 === 1 && index === posts.length - 1 && "lg:col-start-3",
+              posts.length % 3 === 2 && index === posts.length - 2 && "lg:col-start-2",
+              posts.length % 3 === 2 && index === posts.length - 1 && "lg:col-start-4",
+            ]}
+          >
             <BlogPostCard post={post} locale={locale} priority={index === 0} />
           </li>
         ))}
