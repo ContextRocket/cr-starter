@@ -55,6 +55,7 @@ export const sharedDe: LocaleMessages<typeof sharedEn> = {
     consent: "Ich bin einverstanden, zu dieser Anfrage kontaktiert zu werden.",
     submit: "Nachricht senden",
     sending: "Wird gesendet…",
+    demoNotice: "Dies ist eine Demo. Hier eingegebene Informationen werden weder gesendet noch gespeichert.",
     demoResult: "Demo abgeschlossen. Es wurden keine Daten gesendet oder gespeichert.",
     success: "Danke. Ihre Nachricht ist eingegangen.",
     failure: "Ihre Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",

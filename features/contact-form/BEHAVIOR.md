@@ -17,3 +17,13 @@ And success or failure is shown using localized messages.
 
 Never silently discard a live submission because the bridge has not finished
 loading.
+
+## CONTACT-003: Demo mode discloses local handling before data entry
+
+Given the starter contact form is configured for demo mode,
+When a visitor opens the contact page,
+Then a localized note explains before the fields that entered information is
+not sent or saved.
+
+The note uses semantic theme roles so automatically generated site themes can
+style it without coupling form behavior to a specific brand palette.

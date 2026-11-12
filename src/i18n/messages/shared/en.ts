@@ -52,6 +52,7 @@ export const sharedEn = {
     consent: "I agree to be contacted about this request.",
     submit: "Send message",
     sending: "Sending…",
+    demoNotice: "This is a demo. Information entered here will not be sent or saved.",
     demoResult: "Demo complete. No information was sent or stored.",
     success: "Thanks. Your message has been received.",
     failure: "We could not send your message. Please try again.",
