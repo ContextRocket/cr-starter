@@ -12,6 +12,7 @@
       "src/layouts/**",
       "src/components/chrome/**",
       "src/components/blog/**",
+      "src/components/contact/**",
       "src/components/pages/ContactPage.astro",
       "src/scripts/**",
       "src/lib/**",

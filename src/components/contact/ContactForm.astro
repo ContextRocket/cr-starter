@@ -1,0 +1,75 @@
+---
+import { siteConfig } from "@/config/site.config";
+import { createT } from "@/i18n/keys";
+import type { SupportedLocale } from "@/i18n/locales";
+
+interface Props {
+  locale: SupportedLocale;
+  /** Unique prefix when a page has more than one form. */
+  idPrefix?: string;
+}
+
+const { locale, idPrefix = "contact" } = Astro.props;
+const t = createT(locale);
+const id = idPrefix.trim().replace(/[^a-zA-Z0-9_-]/g, "-") || "contact";
+const labels = {
+  name: t("contact.name"), email: t("contact.email"), phone: t("contact.phone"),
+  intent: t("contact.intent"), contact: t("contact.intentContact"), demo: t("contact.intentDemo"),
+  appointment: t("contact.intentAppointment"), support: t("contact.intentSupport"),
+  other: t("contact.intentOther"),
+  message: t("contact.message"), consent: t("contact.consent"), submit: t("contact.submit"),
+  sending: t("contact.sending"), demoResult: t("contact.demoResult"), success: t("contact.success"),
+  failure: t("contact.failure"), unavailable: t("contact.liveUnavailable"),
+  required: t("contact.required"),
+};
+---
+
+<script>
+  import "../../scripts/contact-form.ts";
+</script>
+
+{siteConfig.contactForm.mode === "demo" && (
+  <p class="mb-6 rounded-xl border border-primary/20 bg-primary/5 px-4 py-3 text-sm leading-6 text-text-secondary" data-contact-demo-notice role="note">
+    {t("contact.demoNotice")}
+  </p>
+)}
+
+<form
+  class="space-y-5"
+  data-contact-form
+  data-mode={siteConfig.contactForm.mode}
+  data-handle={siteConfig.contactForm.handle}
+  data-api-base={siteConfig.contactForm.apiBaseUrl}
+  data-sdk-src={siteConfig.contactForm.scriptSrc}
+  data-labels={JSON.stringify(labels)}
+>
+  <div class="grid gap-5 sm:grid-cols-2">
+    <label class="block text-sm font-medium" for={`${id}-name`}>{labels.name}<span aria-hidden="true"> *</span>
+      <input class="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id={`${id}-name`} name="name" autocomplete="name" required maxlength="160" />
+    </label>
+    <label class="block text-sm font-medium" for={`${id}-email`}>{labels.email}<span aria-hidden="true"> *</span>
+      <input class="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id={`${id}-email`} name="email" type="email" autocomplete="email" required maxlength="254" />
+    </label>
+  </div>
+  <label class="block text-sm font-medium" for={`${id}-phone`}>{labels.phone}
+    <input class="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id={`${id}-phone`} name="phone" type="tel" autocomplete="tel" maxlength="40" />
+  </label>
+  <label class="block text-sm font-medium" for={`${id}-intent`}>{labels.intent}
+    <select class="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id={`${id}-intent`} name="intent">
+      <option value="contact">{labels.contact}</option>
+      <option value="demo">{labels.demo}</option>
+      <option value="appointment">{labels.appointment}</option>
+      <option value="support">{labels.support}</option>
+      <option value="other">{labels.other}</option>
+    </select>
+  </label>
+  <label class="block text-sm font-medium" for={`${id}-message`}>{labels.message}
+    <textarea class="mt-2 block min-h-36 w-full resize-y rounded-xl border border-input bg-background px-4 py-3 text-base font-normal outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20" id={`${id}-message`} name="message" rows="5" maxlength="5000"></textarea>
+  </label>
+  <label class="flex items-start gap-3 text-sm leading-6 text-text-secondary">
+    <input class="mt-1 size-4 shrink-0 accent-primary" type="checkbox" name="consent" required />
+    <span>{labels.consent}<span aria-hidden="true"> *</span></span>
+  </label>
+  <p data-form-status class="min-h-6 text-sm text-text-secondary" aria-live="polite" role="status">{t("contact.javascriptRequired")}</p>
+  <button data-submit class="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-60" type="submit">{labels.submit}</button>
+</form>

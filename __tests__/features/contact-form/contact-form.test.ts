@@ -64,6 +64,13 @@ describe("static contact form", () => {
     const createController = vi.fn(() => ({ submit, reset: vi.fn() }));
     const sdk = {
       createContactFormController: createController,
+      mapContactFormData: vi.fn((values: FormData) => ({
+        name: String(values.get("name") ?? ""),
+        email: String(values.get("email") ?? ""),
+        intent: String(values.get("intent") ?? "contact"),
+        consent: true as const,
+      })),
+      mapCustomContactAnswers: vi.fn(() => ({})),
     } as unknown as NonNullable<Window["ContextRocketSDK"]>;
     const appendSpy = vi.spyOn(document.head, "append").mockImplementation((...nodes) => {
       window.ContextRocketSDK = sdk;
