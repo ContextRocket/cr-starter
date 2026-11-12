@@ -9,6 +9,7 @@
     "build": "astro build && node scripts/flatten-single-locale.mjs && node scripts/emit-static-redirects.mjs",
     "build:container": "CONTAINER_BASE=/site astro build && node scripts/flatten-single-locale.mjs && node scripts/emit-static-redirects.mjs && CONTAINER_BASE=/site node scripts/containerize-dist.mjs",
     "preview": "astro preview",
+    "publish:site": "node ../cr-sdk/packages/site-publisher/dist/cli.js dist --manifest publication.json",
     "typecheck": "astro check",
     "lint": "eslint . --max-warnings 0",
     "i18n:check": "node scripts/check-i18n-parity.cjs",

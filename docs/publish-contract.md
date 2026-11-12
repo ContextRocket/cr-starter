@@ -34,8 +34,13 @@ site to its ContextRocket CDN using the Node-only
 admin-scoped organization machine token and does not change canonical paths.
 The package is not yet released on npm. Platform-operator tasks such as
 publishing shared brand assets remain in the ContextRocket operator CLI.
-Publishing to ContextRocket's CDN is not needed to connect a site to the
-ContextRocket API.
+For the optional development publisher, copy `publication.example.json` to
+`publication.json` and set the canonical origin and mounts. `pnpm publish:site
+--reviewed` forwards that declaration with the build; the server reads its
+sitemaps to derive the URL inventory. See
+[integration setup](integrating-with-contextrocket.md#publishing-to-the-contextrocket-cdn)
+for the unpublished SDK source requirement. Publishing to ContextRocket's CDN
+is not needed to connect a site to the ContextRocket API.
 
 ## Blog-only mounting
 

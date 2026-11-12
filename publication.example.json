@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "publication_id": "your-site",
+  "kind": "site",
+  "canonical_origin": "https://example.com",
+  "renderer": {
+    "id": "astro"
+  },
+  "routes": [
+    {
+      "public_path": "/",
+      "cdn_path": "",
+      "sitemap": "/sitemap.xml"
+    }
+  ],
+  "visibility": {
+    "indexable": true,
+    "sitemap": true,
+    "noindex": false
+  },
+  "review": {
+    "required": true,
+    "policy": "owner"
+  }
+}

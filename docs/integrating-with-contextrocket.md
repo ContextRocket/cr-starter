@@ -147,10 +147,18 @@ adjacent `cr-sdk` checkout and run its CLI directly:
 ```bash
 pnpm --dir ../cr-sdk install
 pnpm --dir ../cr-sdk/packages/site-publisher run build
-node ../cr-sdk/packages/site-publisher/dist/cli.js ./dist \
-  --prefix blog \
-  --env-file ../cr-vault/.env.prod
+cp publication.example.json publication.json
+# Set the canonical origin and route mounts in publication.json.
+pnpm run publish:site --reviewed --env-file ../cr-vault/.env.prod
 ```
+
+This development command requires SDK commit `371036f` or later for manifest
+upload and server acknowledgement. The package is still unpublished; building
+an older adjacent checkout does not adopt the new request contract. Use
+`--dry-run` to package without uploading. The explicit `--reviewed` option
+approves a generic publication under the authenticated actor; it does not
+assert a human content review. The API derives exact URLs from uploaded
+sitemaps and must acknowledge the manifest and archive before success is reported.
 
 The CLI resolves the handle from `config/site.json` (`contextrocket.handle`),
 or from `CR_ORG_HANDLE` / `PUBLIC_CONTEXTROCKET_HANDLE`; `--org` can override
