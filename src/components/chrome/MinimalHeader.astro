@@ -1,8 +1,8 @@
 ---
 /** Compact header emitted as static HTML during the Astro build. */
-import { BrandLogo, type BrandLogoAsset } from "@/components/chrome/BrandLogo";
-import type { LocaleOption } from "@/components/chrome/LocaleSwitcher";
-import type { NavLink } from "@/components/chrome/Navbar";
+import BrandLogo from "@/components/chrome/BrandLogo.astro";
+import type { BrandLogoAsset } from "@/components/chrome/brand-logo-types";
+import type { LocaleOption, NavLink } from "@/components/chrome/navigation-types";
 
 interface Props {
   links: NavLink[];
@@ -45,9 +45,7 @@ const showLocale = showLanguageSelector && localeOptions.length > 1;
       href={homeHref}
       class="shrink-0 text-base font-semibold tracking-tight transition-colors hover:text-primary"
     >
-      {logo ? <BrandLogo logo={logo} brandName={brandName} /> : (
-        brandName
-      )}
+      {logo ? <BrandLogo logo={logo} brandName={brandName} /> : brandName}
     </a>
 
     {(links.length > 0 || showLocale) && (

@@ -19,6 +19,10 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
+- Shared marketing navigation now renders as static Astro markup and uses a
+  native modal dialog for the mobile menu instead of hydrating React. Forks can
+  set `chrome.navBreakpoint` to `"xl"` when their desktop navigation needs more
+  room; the default remains `"lg"`.
 - Site identity, semantic theme, assets, feature switches, locales, and
   publication routes are configured in `config/site.json`; blog path and
   content location are configured in `blog.config.mjs`.

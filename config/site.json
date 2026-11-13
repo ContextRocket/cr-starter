@@ -80,6 +80,7 @@
   "chrome": {
     "header": "marketing",
     "footer": "full",
+    "navBreakpoint": "lg",
     "logoVariant": "wordmark",
     "poweredByTone": "ink",
     "showBrandLogo": true,
