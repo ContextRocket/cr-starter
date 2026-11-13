@@ -97,6 +97,11 @@ export const sharedEn = {
     },
   },
   locale: {
+    redirectTitle: "Choosing your language",
+    redirectBody:
+      "Opening the version that best matches your browser. You can also choose a language below.",
+    redirectStatus: "Finding the right version…",
+    redirectChoose: "Choose a language",
     labelEnglish: "English",
     labelSpanish: "Spanish",
     labelGerman: "German",

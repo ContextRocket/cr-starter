@@ -16,8 +16,9 @@ const variant = logo.variant ?? "icon";
     <img
       src={logo.src}
       alt={logo.alt}
-      class={className ?? "block h-auto w-auto max-h-12 max-w-[160px] shrink-0 object-contain"}
-      style={className ? undefined : "width:auto;height:auto;max-width:160px;max-height:48px;object-fit:contain"}
+      width={logo.width}
+      class={className ?? "block h-auto shrink-0 object-contain"}
+      style={className ? undefined : `width:${logo.width}px;height:auto;max-width:${logo.width}px;max-height:48px;object-fit:contain`}
     />
   </span>
 ) : (

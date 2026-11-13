@@ -100,6 +100,11 @@ export const sharedDe: LocaleMessages<typeof sharedEn> = {
     },
   },
   locale: {
+    redirectTitle: "Sprache auswählen",
+    redirectBody:
+      "Die Version wird geöffnet, die am besten zu deinem Browser passt. Du kannst unten auch eine Sprache auswählen.",
+    redirectStatus: "Die passende Version wird gesucht…",
+    redirectChoose: "Sprache auswählen",
     labelEnglish: "Englisch",
     labelSpanish: "Spanisch",
     labelGerman: "Deutsch",
