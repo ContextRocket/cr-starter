@@ -1,0 +1,35 @@
+---
+import { createT } from "@/i18n/keys";
+import type { SupportedLocale } from "@/i18n/locales";
+import type { BlogSection } from "@/lib/blog";
+
+interface Props {
+  sections: BlogSection[];
+  locale: SupportedLocale;
+}
+
+const { sections, locale } = Astro.props;
+const t = createT(locale);
+---
+
+{sections.length >= 4 && (
+  <nav
+    class="blog-article-contents h-fit rounded-2xl border border-border bg-card p-5 shadow-sm lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto"
+    data-blog-contents
+    aria-label={t("blog.contents")}
+  >
+    <h2 class="text-sm font-semibold tracking-wide text-foreground">{t("blog.contents")}</h2>
+    <ol class="mt-4 space-y-2 border-t border-border pt-4">
+      {sections.map((section) => (
+        <li class:list={[section.level > 2 && "pl-3"]}>
+          <a
+            class="text-sm leading-5 text-text-secondary underline-offset-4 transition-colors hover:text-foreground hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            href={`#${encodeURIComponent(section.id)}`}
+          >
+            {section.title}
+          </a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+)}

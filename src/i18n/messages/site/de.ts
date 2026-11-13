@@ -20,6 +20,7 @@ export const siteDe: LocaleMessages<typeof siteEn> = {
     topics: "Themen",
     topics_description: "Zeitlose Leitfäden und Referenzartikel.",
     topics_empty: "Noch keine Themen veröffentlicht.",
+    contents: "In diesem Artikel",
     updated: "Aktualisiert",
     empty: "Noch keine Beiträge. Schauen Sie bald wieder vorbei.",
     back: {

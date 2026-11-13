@@ -76,3 +76,18 @@ scenario("BLOG-004 featured posts are explicit", () => {
     expect(post?.featured).toBe(false);
   });
 });
+
+scenario("BLOG-006 long articles expose navigable sections", () => {
+  it("adds stable fragment targets for the article contents links", () => {
+    const post = getPost("building-your-first-page", "en");
+    const sections = post?.sections ?? [];
+    const sectionIds = sections.map((section) => section.id);
+
+    expect(sections.length).toBeGreaterThanOrEqual(4);
+    expect(new Set(sectionIds).size).toBe(sectionIds.length);
+    for (const section of sections) {
+      expect(section.title.length).toBeGreaterThan(0);
+      expect(post?.bodyHtml).toContain(`id="${section.id}"`);
+    }
+  });
+});

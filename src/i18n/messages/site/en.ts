@@ -17,6 +17,7 @@ export const siteEn = {
     topics: "Topics",
     topics_description: "Evergreen guides and reference articles.",
     topics_empty: "No published topics yet.",
+    contents: "In this article",
     updated: "Updated",
     empty: "No posts yet. Check back soon.",
     back: {

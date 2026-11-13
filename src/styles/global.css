@@ -245,6 +245,11 @@
   font-family: var(--font-editorial, "Newsreader", Georgia, serif);
   font-style: italic;
 }
+
+.prose :where(h2, h3, h4, h5, h6)[id] {
+  scroll-margin-top: 6rem;
+}
+
 .text-darken {
   color: var(--darken, var(--foreground));
 }

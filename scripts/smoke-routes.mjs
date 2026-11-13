@@ -11,6 +11,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import matter from "gray-matter";
+import { marked } from "marked";
 import { blogConfig } from "../blog.config.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -212,7 +213,48 @@ if (features.blog) {
           }
           continue;
         }
-        requireFile(`blog post (${publicPath})`, pageExists(...segments));
+        const postHtmlFile = pageExists(...segments);
+        requireFile(`blog post (${publicPath})`, postHtmlFile);
+
+        if (postHtmlFile) {
+          const localeFile = path.join(contentDir, `${slug}.${locale}.md`);
+          const sharedFile = path.join(contentDir, `${slug}.md`);
+          const sourceFile = fs.existsSync(localeFile) ? localeFile : sharedFile;
+          const sourceContent = matter(fs.readFileSync(sourceFile, "utf8")).content;
+          const sourceSectionCount = marked
+            .lexer(sourceContent)
+            .filter((token) => token.type === "heading" && token.depth >= 2 && token.text.trim())
+            .length;
+          const postHtml = fs.readFileSync(postHtmlFile, "utf8");
+          const contentsMatch = postHtml.match(
+            /<nav\b(?=[^>]*\bdata-blog-contents(?:\s|=|>))[^>]*>([\s\S]*?)<\/nav>/i,
+          );
+
+          if (sourceSectionCount >= 4 && !contentsMatch) {
+            missing.push(`long blog post is missing its contents navigation (${publicPath})`);
+          }
+          if (contentsMatch) {
+            const links = [...contentsMatch[1].matchAll(/<a\b[^>]*\bhref=["']#([^"']+)["']/gi)];
+            const headingIds = new Set(
+              [...postHtml.matchAll(/<h[2-6]\b[^>]*\bid=["']([^"']+)["'][^>]*>/gi)]
+                .map((match) => match[1]),
+            );
+            if (links.length < 4) {
+              missing.push(`blog contents navigation has too few links (${publicPath})`);
+            }
+            for (const link of links) {
+              let id = "";
+              try {
+                id = decodeURIComponent(link[1]);
+              } catch {
+                missing.push(`blog contents link has an invalid fragment (${publicPath})`);
+              }
+              if (!id || !headingIds.has(id)) {
+                missing.push(`blog contents link does not resolve to an article heading (${publicPath})`);
+              }
+            }
+          }
+        }
 
         if (baseSegments.join("/") !== "blog") {
           const legacySegments = [
