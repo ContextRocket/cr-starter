@@ -77,6 +77,9 @@ const siteDataExt = siteData as typeof siteData & {
   chat?: {
     widgetSrc?: string;
     title?: string;
+    headerLogoUrl?: string;
+    headerBackgroundColor?: string;
+    headerForegroundColor?: string;
     poweredByTone?: "ink" | "white";
     theme?: {
       background?: string;
@@ -305,6 +308,9 @@ export const siteConfig = {
       ["contextrocket", "probe"],
     ),
     title: env("PUBLIC_CR_CHAT_TITLE", siteDataExt.chat?.title ?? ""),
+    headerLogoUrl: siteDataExt.chat?.headerLogoUrl,
+    headerBackgroundColor: siteDataExt.chat?.headerBackgroundColor,
+    headerForegroundColor: siteDataExt.chat?.headerForegroundColor,
     poweredByTone: siteDataExt.chat?.poweredByTone ?? siteChrome.poweredByTone ?? "ink",
     theme: siteDataExt.chat?.theme ?? {},
     agentAvatar: env("PUBLIC_CR_CHAT_AGENT_AVATAR", siteDataExt.chat?.agentAvatar ?? ""),
