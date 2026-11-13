@@ -31,6 +31,13 @@ Before accepting generated tokens:
 - Review the page composition separately. A palette cannot reproduce spacing,
   typography hierarchy, imagery, or source-specific content structure.
 
+`pnpm run theme:check` evaluates configured semantic text pairs at WCAG AA's
+4.5:1 normal-text threshold and focus-ring pairs at 3:1. Pass
+`--config <site.json>` to audit a fork's theme with the same validator. It
+supports hex, RGB(A), and HSL(A) token values and fails when a configured pair
+cannot be measured. This guards selected token combinations; it does not
+replace checking actual component states and screenshots.
+
 The normalized palette is intentionally small and maintainable. The receipt
 retains the richer crawl context without making the public site's runtime
 depend on internal crawl tools or a sibling repository.
