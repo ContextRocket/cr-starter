@@ -162,6 +162,7 @@ const jsonLdPayload = jsonLd.length > 0 ? jsonLd : null;
     <meta name="application-name" content={siteConfig.companyName} />
     <meta name="author" content={siteConfig.companyName} />
     <meta name="robots" content={robots} />
+    {multiLocale && <meta name="google" content="notranslate" />}
     {
       siteConfig.verification?.google && (
         <meta
