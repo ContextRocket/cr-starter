@@ -3,7 +3,7 @@ title: "Empezar con ContextRocket Starter"
 author: "Equipo CR"
 date: "2026-08-19"
 image: "/images/blog/contextrocket-intro.jpg"
-excerpt: "Configura el sitio, personaliza la marca y publica tu primer artículo Markdown — con imagen de portada."
+excerpt: "Configura el sitio, personaliza la marca y publica tu primer artículo Markdown, con imagen de portada."
 featured: true
 ---
 
@@ -22,10 +22,10 @@ Abre `http://localhost:3100` (este starter). Los forks suelen usar puertos cerca
 
 Edita `config/site.json`:
 
-- `company.name` — nombre en la cabecera
-- `company.tagline` / `company.description` — inicio y SEO
-- `company.siteUrl` — URLs canónicas y datos estructurados
-- `theme` — tokens de color para modo claro y oscuro
+- `company.name`: nombre en la cabecera
+- `company.tagline` / `company.description`: inicio y SEO
+- `company.siteUrl`: URLs canónicas y datos estructurados
+- `theme`: tokens de color para modo claro y oscuro
 
 Los textos de marketing viven en `src/i18n/messages/site/`.
 

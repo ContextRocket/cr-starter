@@ -66,6 +66,10 @@ Brand crawl / Brand Lab tooling is **internal** and lives in the sibling
 3. Never add LLM keys. Live chat uses the embed widget + publishable API key.
 4. Static builds must work offline in demo mode.
 5. No hardcoded UI copy; use `src/i18n/keys.ts` (`createT(locale)`) and `t()`.
+   For customer site ports, follow `docs/content-fidelity.md`: preserve and
+   reconcile source content, document material omissions or rewrites, and do
+   not use em dashes in editorial copy. `pnpm run content:check` enforces the
+   punctuation rule on localized messages and blog posts.
 6. ContextRocket identity: `handle` and `subjectKind` in `config/site.json`,
    `PUBLIC_CONTEXTROCKET_HANDLE` and `PUBLIC_CONTEXTROCKET_SUBJECT_KIND`,
    `data-contextrocket-handle` and `data-contextrocket-subject-kind`.

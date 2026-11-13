@@ -16,7 +16,7 @@ Brand identity, navigation links, and feature switches live in `config/site.json
 
 ## Translate as you go
 
-User-facing UI copy goes through `t("KEY")` and the site message files. Blog and long-form articles stay in Markdown under `content/posts/` — that keeps article language with the content, not the chrome strings.
+User-facing UI copy goes through `t("KEY")` and the site message files. Blog and long-form articles stay in Markdown under `content/posts/`, which keeps article language with the content rather than the chrome strings.
 
 ## Wire it into navigation
 
@@ -30,4 +30,4 @@ Cover images belong in frontmatter (`image: "/images/..."`). In-post figures use
 
 Use images you own or are licensed to publish. Store site assets under `public/` and reference them with a root-relative URL.
 
-That loop — page, config, translation, navigation, media — is how the starter stays small while still looking finished.
+That loop of page, config, translation, navigation, and media is how the starter stays small while still looking finished.
