@@ -7,6 +7,12 @@ published to the ContextRocket CDN; sites can load those bundles directly
 without installing the npm packages. The starter checks in generated local
 artifacts, so it can also build and demo offline.
 
+Avatar presentation is independently configurable: `chat.agentAvatar` sets the
+portrait shown in the conversation, while `chat.launcherAvatar` replaces the
+rocket in the floating launcher. Without a launcher avatar, the brand rocket
+remains the default. The SDK attributes are `data-contextrocket-agent-avatar`
+and `data-contextrocket-launcher-avatar`.
+
 ## Packages
 
 | Package | npm name | Role |

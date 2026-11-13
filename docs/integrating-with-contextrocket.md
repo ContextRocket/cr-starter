@@ -92,6 +92,10 @@ SDK's README. Its installation attributes can set organization, key, mode,
 palette, suggestions, and optional full-screen behavior. Use
 `PUBLIC_CR_CHAT_FULLSCREEN=true` to show the expand control and
 `PUBLIC_CR_CHAT_FULLSCREEN_ON_LOAD=true` for a chat-first site such as GBA.
+Set `chat.agentAvatar` and `chat.launcherAvatar` in `config/site.json` to
+customer-hosted image paths for the assistant portrait and launcher portrait.
+These are independent options; omitting `chat.launcherAvatar` keeps the branded
+ContextRocket rocket in the launcher.
 The full-screen close control reveals the site; arbitrary CSS, HTML,
 JavaScript, prompts, or model settings are not part of the embed contract.
 

@@ -76,6 +76,8 @@ const siteDataExt = siteData as typeof siteData & {
   titleSeparator?: string;
   chat?: {
     widgetSrc?: string;
+    agentAvatar?: string;
+    launcherAvatar?: string;
     position?: "bottom-left" | "bottom-right";
     launcherColor?: string;
     suggestions?: string[];
@@ -281,6 +283,8 @@ export const siteConfig = {
       "PUBLIC_CONTEXTROCKET_CHAT_WIDGET_URL",
       siteDataExt.chat?.widgetSrc ?? "/embed/widget.js",
     ),
+    agentAvatar: env("PUBLIC_CR_CHAT_AGENT_AVATAR", siteDataExt.chat?.agentAvatar ?? ""),
+    launcherAvatar: env("PUBLIC_CR_CHAT_LAUNCHER_AVATAR", siteDataExt.chat?.launcherAvatar ?? ""),
     position: envEnum<"bottom-left" | "bottom-right">(
       "PUBLIC_CR_CHAT_POSITION",
       siteDataExt.chat?.position ?? "bottom-right",
