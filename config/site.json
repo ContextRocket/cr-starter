@@ -102,7 +102,7 @@
     "fullscreen": true,
     "fullscreenOnOpen": false,
     "fullscreenOnLoad": false,
-    "launcherColor": "pink"
+    "launcherColor": "ink"
   },
   "contactForm": {
     "mode": "demo",

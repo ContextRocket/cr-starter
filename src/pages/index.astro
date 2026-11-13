@@ -1,5 +1,6 @@
 ---
 import { getDefaultLocale } from "@/i18n/locales";
+import { siteConfig } from "@/config/site.config";
 import StarterHome from "@/components/pages/StarterHome.astro";
 import { redirectTargetForUnprefixedRoute } from "@/lib/routing";
 
@@ -7,8 +8,23 @@ const redirectTarget = redirectTargetForUnprefixedRoute(
   "/",
   new URL(Astro.request.url).search,
 );
-if (redirectTarget) return Astro.redirect(redirectTarget);
 const locale = getDefaultLocale();
 ---
 
-<StarterHome locale={locale} />
+{redirectTarget ? (
+  <html lang={locale}>
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="robots" content="noindex, follow" />
+      <meta http-equiv="refresh" content={`0;url=${redirectTarget}`} />
+      <title>{siteConfig.companyName}</title>
+      <script is:inline define:vars={{ redirectTarget }}>
+        window.location.replace(redirectTarget);
+      </script>
+    </head>
+    <body></body>
+  </html>
+) : (
+  <StarterHome locale={locale} />
+)}

@@ -60,10 +60,17 @@ match the guide being read; omit them to keep site-level or Agent Card prompts.
 to `pink`; use `ink` or a site brand hex color to match a fork. Custom colors
 select a white or Ink rocket only when it meets 3:1 contrast, otherwise the
 launcher falls back to Ink.
-The chat header and welcome state use the ContextRocket spark by default. Set
+The chat header and assistant messages use the ContextRocket spark by default;
+the welcome state stays uncluttered unless a site configures an assistant
+portrait. Set
 `chat.agentIdentity` to `probe` only for a ContextRocket product surface. A
 configured `chat.agentAvatar` portrait takes precedence for a site-specific
 assistant identity.
+`chat.theme` can set semantic widget colors independently from the page theme
+(`background`, `foreground`, `surface`, `muted`, `border`, and `accent`). The
+widget keeps its shared layout and controls. `chat.title` and
+`chat.poweredByTone` let a fork identify the assistant and choose the matching
+ContextRocket attribution logo.
 
 ```yaml
 title: Digital nomad residency
