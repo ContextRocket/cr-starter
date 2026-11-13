@@ -6,8 +6,8 @@
       "package": "@contextrocket/embed-chat",
       "version": "0.0.1",
       "file": "embed/widget.js",
-      "bytes": 124137,
-      "sha256": "089b7757ac48f53eac7f6a42fd3e7a013596788cc82f10950f97bcd663191a70"
+      "bytes": 124304,
+      "sha256": "3090bdf7dc77ac38a8840f929c00f8372466b2a4434bafcf97024fda786a924a"
     },
     "contactForm": {
       "package": "@contextrocket/sdk",
