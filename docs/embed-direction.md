@@ -15,7 +15,7 @@ standalone circular portrait with a restrained glimmer; set
 `chat.launcherAvatarBackground` to a color or `transparent` for transparent art.
 `chat.agentAvatarStyle: "cutout"` lets a transparent assistant portrait overlap
 a soft gradient header; `chat.agentHeaderStartColor` and
-`chat.agentHeaderEndColor` control its two color stops. Page-level `chatTitle` and `chatSubtitle` props localize
+`chat.agentHeaderEndColor` control its two color stops. Page-level `chatTitle`, `chatTitleBadge`, and `chatSubtitle` props localize
 the name shown there. These treatments are opt-in; other sites keep the default
 ContextRocket launcher and compact chat header.
 
