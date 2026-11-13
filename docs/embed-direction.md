@@ -17,7 +17,9 @@ standalone circular portrait with a restrained glimmer; set
 a soft gradient header; `chat.agentHeaderStartColor` and
 `chat.agentHeaderEndColor` control its two color stops. Page-level `chatTitle`, `chatTitleBadge`, and `chatSubtitle` props localize
 the name shown there. These treatments are opt-in; other sites keep the default
-ContextRocket launcher and compact chat header.
+ContextRocket launcher and compact chat header. Full-screen mode is also handled
+by the SDK, which centers the opening experience and keeps the composer within
+a readable width on desktop while using the available screen on mobile.
 
 ## Packages
 
