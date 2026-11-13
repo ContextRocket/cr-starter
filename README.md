@@ -44,6 +44,11 @@ and a short role/byline, then render them in a fork's blog composition where
 they belong. The shared content loader validates and exposes them without
 forcing a particular author-card layout on every site.
 
+Posts with four or more section headings automatically get a localized
+contents panel above the article on mobile and a sticky reading rail on wider
+screens. Heading fragment IDs are generated at build time while preserving
+explicit IDs from authored HTML.
+
 Evergreen topics are optional. Enable `features.topics` in `config/site.json`;
 published topic pages join the sitemap and `llms.txt`, but stay out of the dated
 post listing and RSS feed.

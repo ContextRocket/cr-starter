@@ -20,6 +20,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      entities:
+        specifier: ^4.5.0
+        version: 4.5.0
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3

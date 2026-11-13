@@ -53,3 +53,16 @@ Then its article route and discovery entries are omitted.
 Given `features.topics` is disabled,
 When the site is built,
 Then no topic routes are emitted.
+
+## BLOG-006: Long articles have responsive section navigation
+
+Given a published article has at least four non-empty section headings,
+When its static page is built,
+Then a localized contents navigation lists those headings in source order,
+And every link targets the matching heading in the article body,
+And the navigation sits above the article on narrow screens and beside it on
+wide screens.
+
+Given an article has fewer than four section headings,
+When its page is built,
+Then the compact reading layout is retained without an empty contents panel.

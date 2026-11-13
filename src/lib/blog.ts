@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { decodeHTML } from "entities";
 import matter from "gray-matter";
 import { marked } from "marked";
 import { siteConfig } from "@/config/site.config";
@@ -28,7 +29,85 @@ export type BlogPostMeta = {
 export type BlogPost = BlogPostMeta & {
   bodyHtml: string;
   bodyMarkdown: string;
+  sections: BlogSection[];
 };
+
+export type BlogSection = {
+  id: string;
+  title: string;
+  level: number;
+};
+
+function headingText(html: string): string {
+  return decodeHTML(html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ")).trim();
+}
+
+function headingSlug(title: string): string {
+  return title
+    .normalize("NFKD")
+    .replace(/\p{M}/gu, "")
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, "-")
+    .replace(/^-+|-+$/g, "") || "section";
+}
+
+function escapeHtmlAttribute(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function withBlogHeadingIds(html: string): { html: string; sections: BlogSection[] } {
+  const usedIds = new Set<string>();
+  const reservedIds = new Set(
+    [...html.matchAll(/<[a-z][^>]*>/gi)].flatMap(([tag]) => {
+      const match = tag.match(/\bid\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i);
+      const id = match ? decodeHTML(match[1] ?? match[2] ?? match[3] ?? "") : "";
+      return id ? [id] : [];
+    }),
+  );
+  const sections: BlogSection[] = [];
+  const bodyHtml = html.replace(
+    /<h([2-6])\b([^>]*)>([\s\S]*?)<\/h\1>/gi,
+    (_heading, rawLevel: string, rawAttributes: string, inner: string) => {
+      const title = headingText(inner);
+      const idAttribute = rawAttributes.match(
+        /\bid\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i,
+      );
+      const existingId = idAttribute
+        ? decodeHTML(idAttribute[1] ?? idAttribute[2] ?? idAttribute[3] ?? "")
+        : "";
+      const baseId = existingId || headingSlug(title);
+      let id = baseId;
+      let suffix = 2;
+      while (
+        usedIds.has(id) ||
+        (!existingId && reservedIds.has(id))
+      ) {
+        id = `${baseId}-${suffix++}`;
+      }
+      usedIds.add(id);
+
+      let attributes = rawAttributes;
+      if (idAttribute) {
+        if (id !== existingId) {
+          attributes = attributes.replace(
+            idAttribute[0],
+            `id="${escapeHtmlAttribute(id)}"`,
+          );
+        }
+      } else {
+        attributes += ` id="${id}"`;
+      }
+
+      if (title) sections.push({ id, title, level: Number(rawLevel) });
+      return `<h${rawLevel}${attributes}>${inner}</h${rawLevel}>`;
+    },
+  );
+  return { html: bodyHtml, sections };
+}
 
 function addDeferredImageHints(html: string): string {
   return html.replace(/<img\b[^>]*>/gi, (tag) => {
@@ -153,6 +232,9 @@ function readPostFile(
       `Blog post ${filePath} has invalid series; use a positive integer`,
     );
   }
+  const renderedBody = withBlogHeadingIds(
+    marked.parse(content, { async: false }) as string,
+  );
   return {
     slug,
     title: data.title.trim(),
@@ -176,9 +258,8 @@ function readPostFile(
     songUrl: data.songUrl ? String(data.songUrl) : undefined,
     locale,
     bodyMarkdown: content,
-    bodyHtml: addDeferredImageHints(
-      marked.parse(content, { async: false }) as string,
-    ),
+    bodyHtml: addDeferredImageHints(renderedBody.html),
+    sections: renderedBody.sections,
   };
 }
 

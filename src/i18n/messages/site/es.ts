@@ -20,6 +20,7 @@ export const siteEs: LocaleMessages<typeof siteEn> = {
     topics: "Temas",
     topics_description: "Guías permanentes y artículos de referencia.",
     topics_empty: "Todavía no hay temas publicados.",
+    contents: "En este artículo",
     updated: "Actualizado",
     empty: "Aún no hay publicaciones. Vuelve pronto.",
     back: {
