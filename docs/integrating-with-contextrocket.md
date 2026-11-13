@@ -95,7 +95,11 @@ palette, suggestions, and optional full-screen behavior. Use
 Set `chat.agentAvatar` and `chat.launcherAvatar` in `config/site.json` to
 customer-hosted image paths for the assistant portrait and launcher portrait.
 These are independent options; omitting `chat.launcherAvatar` keeps the branded
-ContextRocket rocket in the launcher.
+ContextRocket rocket in the launcher. For a portrait-led install, set
+`chat.launcherAppearance` to `portrait` and `chat.agentAvatarStyle` to `cutout`;
+transparent PNG avatars, localized `chatSubtitle`, and custom
+`agentHeaderStartColor` / `agentHeaderEndColor` values work well with this
+presentation. The default remains the ContextRocket brand treatment.
 The full-screen close control reveals the site; arbitrary CSS, HTML,
 JavaScript, prompts, or model settings are not part of the embed contract.
 

@@ -10,8 +10,14 @@ artifacts, so it can also build and demo offline.
 Avatar presentation is independently configurable: `chat.agentAvatar` sets the
 portrait shown in the conversation, while `chat.launcherAvatar` replaces the
 rocket in the floating launcher. Without a launcher avatar, the brand rocket
-remains the default. The SDK attributes are `data-contextrocket-agent-avatar`
-and `data-contextrocket-launcher-avatar`.
+remains the default. Optional `chat.launcherAppearance: "portrait"` displays a
+standalone circular portrait with a restrained glimmer; set
+`chat.launcherAvatarBackground` to a color or `transparent` for transparent art.
+`chat.agentAvatarStyle: "cutout"` lets a transparent assistant portrait overlap
+a soft gradient header; `chat.agentHeaderStartColor` and
+`chat.agentHeaderEndColor` control its two color stops. Page-level `chatTitle` and `chatSubtitle` props localize
+the name shown there. These treatments are opt-in; other sites keep the default
+ContextRocket launcher and compact chat header.
 
 ## Packages
 

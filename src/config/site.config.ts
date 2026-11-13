@@ -78,6 +78,11 @@ const siteDataExt = siteData as typeof siteData & {
     widgetSrc?: string;
     agentAvatar?: string;
     launcherAvatar?: string;
+    launcherAppearance?: "brand" | "portrait";
+    launcherAvatarBackground?: string;
+    agentAvatarStyle?: "circle" | "cutout";
+    agentHeaderStartColor?: string;
+    agentHeaderEndColor?: string;
     position?: "bottom-left" | "bottom-right";
     launcherColor?: string;
     suggestions?: string[];
@@ -285,6 +290,11 @@ export const siteConfig = {
     ),
     agentAvatar: env("PUBLIC_CR_CHAT_AGENT_AVATAR", siteDataExt.chat?.agentAvatar ?? ""),
     launcherAvatar: env("PUBLIC_CR_CHAT_LAUNCHER_AVATAR", siteDataExt.chat?.launcherAvatar ?? ""),
+    launcherAppearance: env("PUBLIC_CR_CHAT_LAUNCHER_APPEARANCE", siteDataExt.chat?.launcherAppearance ?? "brand"),
+    launcherAvatarBackground: env("PUBLIC_CR_CHAT_LAUNCHER_AVATAR_BACKGROUND", siteDataExt.chat?.launcherAvatarBackground ?? ""),
+    agentAvatarStyle: env("PUBLIC_CR_CHAT_AGENT_AVATAR_STYLE", siteDataExt.chat?.agentAvatarStyle ?? "circle"),
+    agentHeaderStartColor: env("PUBLIC_CR_CHAT_AGENT_HEADER_START", siteDataExt.chat?.agentHeaderStartColor ?? ""),
+    agentHeaderEndColor: env("PUBLIC_CR_CHAT_AGENT_HEADER_END", siteDataExt.chat?.agentHeaderEndColor ?? ""),
     position: envEnum<"bottom-left" | "bottom-right">(
       "PUBLIC_CR_CHAT_POSITION",
       siteDataExt.chat?.position ?? "bottom-right",
