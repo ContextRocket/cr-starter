@@ -187,7 +187,7 @@
   --muted-foreground: hsl(0 0% 43%);
   --accent: hsl(0 0% 96.1%);
   --accent-foreground: hsl(0 0% 9%);
-  --destructive: hsl(0 84.2% 60.2%);
+  --destructive: #b91c1c;
   --destructive-foreground: hsl(0 0% 98%);
   --border: hsl(0 0% 89.8%);
   --input: hsl(0 0% 89.8%);
@@ -201,12 +201,12 @@
 
   /* Semantic tokens (override per fork in site.config.ts theme) */
   --success: #10b981;
-  --success-foreground: #ffffff;
+  --success-foreground: #0e0f13;
   --warning: #fbbf24;
   --warning-foreground: #0a0a0a;
   --info: #3b82f6;
-  --info-foreground: #ffffff;
-  --error: #ef4444;
+  --info-foreground: #0e0f13;
+  --error: #b91c1c;
   --error-foreground: #ffffff;
   --disabled: #e5e7eb;
   --disabled-foreground: #9ca3af;
