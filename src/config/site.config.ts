@@ -76,6 +76,7 @@ const siteDataExt = siteData as typeof siteData & {
   titleSeparator?: string;
   chat?: {
     widgetSrc?: string;
+    agentIdentity?: "contextrocket" | "probe";
     agentAvatar?: string;
     launcherAvatar?: string;
     launcherAppearance?: "brand" | "portrait";
@@ -287,6 +288,11 @@ export const siteConfig = {
     widgetSrc: env(
       "PUBLIC_CONTEXTROCKET_CHAT_WIDGET_URL",
       siteDataExt.chat?.widgetSrc ?? "/embed/widget.js",
+    ),
+    agentIdentity: envEnum<"contextrocket" | "probe">(
+      "PUBLIC_CR_CHAT_AGENT_IDENTITY",
+      siteDataExt.chat?.agentIdentity ?? "contextrocket",
+      ["contextrocket", "probe"],
     ),
     agentAvatar: env("PUBLIC_CR_CHAT_AGENT_AVATAR", siteDataExt.chat?.agentAvatar ?? ""),
     launcherAvatar: env("PUBLIC_CR_CHAT_LAUNCHER_AVATAR", siteDataExt.chat?.launcherAvatar ?? ""),

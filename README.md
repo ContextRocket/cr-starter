@@ -60,6 +60,10 @@ match the guide being read; omit them to keep site-level or Agent Card prompts.
 to `pink`; use `ink` or a site brand hex color to match a fork. Custom colors
 select a white or Ink rocket only when it meets 3:1 contrast, otherwise the
 launcher falls back to Ink.
+The chat header and welcome state use the ContextRocket spark by default. Set
+`chat.agentIdentity` to `probe` only for a ContextRocket product surface. A
+configured `chat.agentAvatar` portrait takes precedence for a site-specific
+assistant identity.
 
 ```yaml
 title: Digital nomad residency

@@ -97,6 +97,7 @@
   },
   "chat": {
     "widgetSrc": "/embed/widget.js",
+    "agentIdentity": "contextrocket",
     "position": "bottom-right",
     "fullscreen": true,
     "fullscreenOnOpen": false,
