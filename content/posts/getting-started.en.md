@@ -3,7 +3,7 @@ title: "Getting started with ContextRocket Starter"
 author: "CR Team"
 date: "2026-08-19"
 image: "/images/blog/contextrocket-intro.jpg"
-excerpt: "Set up the site, customize brand identity, and publish your first Markdown post — including a cover image."
+excerpt: "Set up the site, customize brand identity, and publish your first Markdown post, including a cover image."
 featured: true
 ---
 
@@ -22,10 +22,10 @@ Open `http://localhost:3100` (this starter). Forks often use nearby ports such a
 
 Edit `config/site.json`:
 
-- `company.name` — display name in the chrome
-- `company.tagline` / `company.description` — home and SEO
-- `company.siteUrl` — canonical URLs and structured data
-- `theme` — one set of color tokens for your brand
+- `company.name`: display name in the chrome
+- `company.tagline` / `company.description`: home and SEO
+- `company.siteUrl`: canonical URLs and structured data
+- `theme`: one set of color tokens for your brand
 
 Site copy for marketing pages lives in `src/i18n/messages/site/`.
 
@@ -55,7 +55,7 @@ You can also embed images in the body:
 - Shared post for every language: `my-post.md`
 - Locale-specific copy: `my-post.en.md`, `my-post.es.md`, `my-post.de.md`
 
-A locale-specific file wins over a shared file with the same slug. Keep translations in Markdown — not in the UI message bundles.
+A locale-specific file wins over a shared file with the same slug. Keep translations in Markdown, not in the UI message bundles.
 
 ## Connect ContextRocket (optional)
 

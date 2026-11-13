@@ -12,7 +12,7 @@ excerpt: "A short checklist for taking the starter from local development to a s
 pnpm run build
 ```
 
-Astro writes a fully static `dist/`. There is no app server to run — upload the folder to any static host or CDN.
+Astro writes a fully static `dist/`. There is no app server to run. Upload the folder to any static host or CDN.
 
 ## Run through the checklist
 

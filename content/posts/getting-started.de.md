@@ -3,7 +3,7 @@ title: "Erste Schritte mit ContextRocket Starter"
 author: "CR Team"
 date: "2026-08-19"
 image: "/images/blog/contextrocket-intro.jpg"
-excerpt: "Site einrichten, Marke anpassen und den ersten Markdown-Beitrag veröffentlichen — inklusive Titelbild."
+excerpt: "Site einrichten, Marke anpassen und den ersten Markdown-Beitrag veröffentlichen, inklusive Titelbild."
 featured: true
 ---
 
@@ -22,10 +22,10 @@ pnpm dev
 
 Bearbeite `config/site.json`:
 
-- `company.name` — Anzeigename in der Navigation
-- `company.tagline` / `company.description` — Startseite und SEO
-- `company.siteUrl` — kanonische URLs und Structured Data
-- `theme` — Farbtokens für Hell- und Dunkelmodus
+- `company.name`: Anzeigename in der Navigation
+- `company.tagline` / `company.description`: Startseite und SEO
+- `company.siteUrl`: kanonische URLs und Structured Data
+- `theme`: Farbtokens für Hell- und Dunkelmodus
 
 Marketingtexte liegen in `src/i18n/messages/site/`.
 
