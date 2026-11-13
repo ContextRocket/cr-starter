@@ -117,10 +117,10 @@ policy, allowed origin, and any required publishable key must exist before the
 live path can work. These browser bundles are separate from the shared brand kit's
 `/brand/` assets.
 
-The checked-in `public/embed/widget.js` is built from the SDK branch's
-`@contextrocket/embed-chat@0.0.3`, which adds language propagation and optional
-agent portraits. This version is not yet published to the CDN. Keep the public
-CDN URL pinned to `v0.0.2` until `v0.0.3` is released and verified.
+The checked-in `public/embed/widget.js` is built from the unpublished
+`@contextrocket/embed-chat@0.0.1` development source, which adds language
+propagation and optional agent portraits. Keep published installs pinned to
+the CDN's `v0.0.2` URL until a later public release is agreed and verified.
 
 The contact-form adapter uses `mapContactFormData`, introduced in SDK version
 `0.1.1`. The published `v0.1.1` browser bridge includes that helper and can be
