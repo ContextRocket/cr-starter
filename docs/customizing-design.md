@@ -22,8 +22,11 @@ Fork design is data-first. Start with `config/site.json`:
 Typography uses the same theme seam: set `--font-sans`, `--font-mono`, or
 `--font-editorial` in `theme.tokens`. ContextRocket's Inter Tight, Geist Mono,
 and Newsreader Italic are served from the shared ContextRocket CDN brand kit.
-For a customer-specific font, self-host its licensed WOFF2 files and declare
-`@font-face` in the fork's `src/styles/global.css` with `font-display: swap`.
+Do not fetch or hotlink fonts from the crawled site. For a customer-specific
+font, use it only when its license permits redistribution and the licensed
+files are included with the site. See [`brand-evidence.md`](brand-evidence.md)
+for how crawl evidence maps to the canonical `theme.json` artifact and the
+starter's currently explicit configuration step.
 
 Use `chrome.cookieBannerStyle` to choose the consent presentation for the site's
 surfaces: `dock` is the compact, branded ContextRocket pattern; `bar` spans the

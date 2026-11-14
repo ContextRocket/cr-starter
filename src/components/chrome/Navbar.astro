@@ -43,7 +43,7 @@ const menuMediaQuery =
 ---
 
 <header
-  class={`relative z-50 w-full overflow-visible bg-background text-foreground shadow-sm ${className}`}
+  class={`relative z-50 w-full overflow-visible border-b border-[var(--nav-line,var(--border))] bg-[var(--nav-surface,var(--background))] text-[var(--nav-ink,var(--foreground))] shadow-sm ${className}`}
 >
   <nav
     aria-label={navLabel}
@@ -73,10 +73,10 @@ const menuMediaQuery =
             href={link.href}
             aria-current={link.current ? "page" : undefined}
             class:list={[
-              "text-sm transition-colors hover:text-foreground",
+              "text-sm transition-colors hover:text-[var(--nav-ink,var(--foreground))]",
               link.current
-                ? "font-medium text-foreground"
-                : "text-muted-foreground",
+                ? "font-medium text-[var(--nav-ink,var(--foreground))]"
+                : "text-[var(--nav-muted,var(--muted-foreground))]",
             ]}
           >
             {link.label}
@@ -94,7 +94,7 @@ const menuMediaQuery =
 
     <div
       class:list={[
-        "flex items-center gap-1",
+        "flex items-center gap-1 text-[var(--nav-muted,var(--muted-foreground))]",
         desktopBreakpoint === "xl" ? "xl:hidden" : "lg:hidden",
       ]}
     >
@@ -111,7 +111,7 @@ const menuMediaQuery =
         aria-label={openMenuLabel}
         aria-expanded="false"
         aria-controls="mobile-navigation-panel"
-        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-[var(--nav-muted,var(--muted-foreground))] transition-colors hover:text-[var(--nav-ink,var(--foreground))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="size-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -124,7 +124,7 @@ const menuMediaQuery =
     id="mobile-navigation-panel"
     aria-label={navLabel}
     data-desktop-query={menuMediaQuery}
-    class="mobile-navigation fixed inset-y-0 right-0 m-0 h-dvh max-h-none w-full overflow-y-auto max-w-none border-0 bg-background px-6 py-6 text-foreground shadow-2xl backdrop:bg-foreground/40 sm:max-w-sm"
+    class="mobile-navigation fixed inset-y-0 right-0 m-0 h-dvh max-h-none w-full overflow-y-auto max-w-none border-0 bg-[var(--nav-surface,var(--background))] px-6 py-6 text-[var(--nav-ink,var(--foreground))] shadow-2xl backdrop:bg-foreground/40 sm:max-w-sm"
   >
     <div class="flex items-center justify-between">
       <a href={homeHref} class="-m-1.5 p-1.5">
@@ -135,7 +135,7 @@ const menuMediaQuery =
         data-mobile-nav-close
         autofocus
         aria-label={closeMenuLabel}
-        class="-m-2.5 rounded-md p-2.5 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        class="-m-2.5 rounded-md p-2.5 text-[var(--nav-muted,var(--muted-foreground))] transition-colors hover:text-[var(--nav-ink,var(--foreground))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="size-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="m6 6 12 12M18 6 6 18" />
@@ -158,10 +158,10 @@ const menuMediaQuery =
               href={link.href}
               aria-current={link.current ? "page" : undefined}
               class:list={[
-                "block rounded-lg px-4 py-3 text-base font-semibold hover:bg-muted hover:text-foreground",
+                "block rounded-lg px-4 py-3 text-base font-semibold hover:bg-muted hover:text-[var(--nav-ink,var(--foreground))]",
                 link.current
-                  ? "bg-muted text-foreground"
-                  : "text-muted-foreground",
+                  ? "bg-muted text-[var(--nav-ink,var(--foreground))]"
+                  : "text-[var(--nav-muted,var(--muted-foreground))]",
               ]}
             >
               {link.label}

@@ -1,14 +1,18 @@
 # Crawl-derived brand themes
 
-The starter's `theme.tokens` is the rendering contract: one curated palette of
-semantic CSS values for a particular site. It can describe a light, dark, or
-mixed-surface design without maintaining paired light and dark modes.
+The ContextRocket crawl pipeline's canonical published artifact is
+`theme.json` (`cr.theme.v1`). It carries captured evidence, semantic light and
+dark variants, a `site_mode`, marks, icons, and provenance. The starter's
+`config/site.json` remains the fork-owned runtime configuration and contains
+one selected semantic palette; it does not yet import or resolve a published
+`theme.json` automatically.
 
-Crawler output is evidence, not a ready-made theme. A crawl can observe colors,
-font families, logo candidates, and screenshots, but those observations do not
-by themselves say which color should be page background, body text, a CTA, or a
-focus ring. Review the evidence and map it into the semantic tokens in
-`config/site.json`.
+The theme document is a reviewed, publishable projection of crawl evidence,
+not a reproduction of the source site's layout engine. When applying it to a
+matching site, use the `site_mode` variant; use the document's `default`
+variant for ContextRocket-generated surfaces. Map its shared semantic token
+vocabulary into `config/site.json` without inventing a second token language.
+The starter currently requires that mapping to be done explicitly.
 
 When a theme is generated from a brand pack, keep its compact design receipt in
 `docs/brand-evidence/`. The receipt records the selected values, observed color
@@ -25,9 +29,11 @@ Before accepting generated tokens:
 - Confirm accent and CTA roles from observed controls, rather than assigning
   every prominent color the same role.
 - Check text and control contrast, including the focus ring.
-- Keep observed font names in the receipt. Add a font to the site only when the
-  asset is licensed and included locally; a name alone is not a deployable
-  font.
+- Keep observed font names and evidence in the receipt. Never fetch or hotlink
+  a customer's font. Use an included, licensed local font or a shared
+  ContextRocket font; names alone do not make a font available to the site.
+- Preserve the theme's `--nav-*` roles separately from page surfaces. Shared
+  starter headers consume these roles, with semantic page tokens as fallback.
 - Review the page composition separately. A palette cannot reproduce spacing,
   typography hierarchy, imagery, or source-specific content structure.
 
@@ -38,6 +44,6 @@ supports hex, RGB(A), and HSL(A) token values and fails when a configured pair
 cannot be measured. This guards selected token combinations; it does not
 replace checking actual component states and screenshots.
 
-The normalized palette is intentionally small and maintainable. The receipt
-retains the richer crawl context without making the public site's runtime
-depend on internal crawl tools or a sibling repository.
+The normalized palette is intentionally small and maintainable. The published
+theme bundle retains richer crawl context without making a public site's
+runtime depend on internal crawl tools or a sibling repository.

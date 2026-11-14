@@ -36,14 +36,14 @@ const {
 const showLocale = showLanguageSelector && localeOptions.length > 1;
 ---
 
-<header class={`w-full border-b border-border bg-background text-foreground ${className}`}>
+<header class={`w-full border-b border-[var(--nav-line,var(--border))] bg-[var(--nav-surface,var(--background))] text-[var(--nav-ink,var(--foreground))] ${className}`}>
   <nav
     aria-label={navLabel}
     class={`mx-auto flex min-h-14 w-full flex-wrap items-center justify-between gap-y-2 py-2 ${containerClassName}`}
   >
     <a
       href={homeHref}
-      class="shrink-0 text-base font-semibold tracking-tight transition-colors hover:text-primary"
+      class="shrink-0 text-base font-semibold tracking-tight transition-colors hover:text-[var(--nav-ink,var(--foreground))]"
     >
       {logo ? <BrandLogo logo={logo} brandName={brandName} /> : brandName}
     </a>
@@ -64,8 +64,8 @@ const showLocale = showLanguageSelector && localeOptions.length > 1;
               href={link.href}
               aria-current={link.current ? "page" : undefined}
               class:list={[
-                "text-sm transition-colors hover:text-foreground",
-                link.current ? "font-medium text-foreground" : "text-muted-foreground",
+                "text-sm transition-colors hover:text-[var(--nav-ink,var(--foreground))]",
+                link.current ? "font-medium text-[var(--nav-ink,var(--foreground))]" : "text-[var(--nav-muted,var(--muted-foreground))]",
               ]}
             >
               {link.label}
@@ -78,7 +78,7 @@ const showLocale = showLanguageSelector && localeOptions.length > 1;
             <summary
               aria-label={changeLanguageLabel}
               title={changeLanguageLabel}
-              class="flex h-9 min-w-[3rem] cursor-pointer list-none select-none items-center gap-1 rounded px-2 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden"
+              class="flex h-9 min-w-[3rem] cursor-pointer list-none select-none items-center gap-1 rounded px-2 text-sm text-[var(--nav-muted,var(--muted-foreground))] transition-colors hover:text-[var(--nav-ink,var(--foreground))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden"
             >
               <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="h-4 w-4 shrink-0">
                 <circle cx="12" cy="12" r="9" />
