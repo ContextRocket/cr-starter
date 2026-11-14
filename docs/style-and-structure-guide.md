@@ -133,6 +133,9 @@ content, links, images, and important URL paths are the baseline. Design
 improvements are welcome when they remain recognizably on brand and do not
 silently remove information. For a showcase such as `cr-gba` or `cr-luna`,
 describe the actual product scenario and keep domain claims supportable.
+For a site port, follow [`source-site-fidelity.md`](source-site-fidelity.md):
+preserve copy by default, keep proposals separate from sourced material, and
+review content changes independently from visual changes.
 
 ## Page structure
 
