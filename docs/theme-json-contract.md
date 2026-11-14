@@ -31,7 +31,17 @@ bundle does not provide is set to `""`, so the layout omits its link tag. The
 import owns `public/theme/` and removes files there that the new theme no
 longer uses. Every other field stays fork-owned. The candidate config must pass
 `scripts/validate-theme.mjs` before anything is written; a theme that fails the
-contrast check is reported and nothing changes. Running the import again with
+contrast check is reported and nothing changes.
+
+ContextRocket builds themes against the same contrast pairs and ratios as
+`scripts/validate-theme.mjs` (its `brand/theme/contrast.py` mirrors this file),
+so a published theme passes here. Only derived tokens are adjusted to meet a
+pair; observed brand colors (`--primary`, `--brand-accent`, the background and
+an observed card) are never changed. When an observed pair cannot meet its
+ratio, the theme names it in `warnings` as
+`starter_contrast:<fg>_on_<bg>:<ratio>:<min>`, and the fork must choose that
+color. The editorial font token is `--font-editorial`. Change the pair table
+here and in ContextRocket together. Running the import again with
 the same theme changes nothing. Use `--config` and `--public` to target another
 fork layout.
 
