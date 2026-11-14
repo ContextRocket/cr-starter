@@ -28,6 +28,8 @@ a readable width on desktop while using the available screen on mobile.
 | `packages/sdk` | `@contextrocket/sdk` | A2A client + `createCRClient` |
 | `packages/embed-chat` | `@contextrocket/embed-chat` | Chat widget IIFE |
 
+The browser bridge submits leads to `POST /api/orgs/{org_ref}/leads`, with the configured organization handle in the path. It sends lead fields and attribution in the JSON body; organization selection is not repeated in a query parameter or body field.
+
 The SDK also builds `dist/contact-form.browser.js`, a small browser bridge
 exposing the public contact-form API and attribution helpers to static forms. Its
 `createContactFormController()` helper owns retry idempotency: unchanged
