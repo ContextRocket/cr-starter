@@ -104,7 +104,11 @@ const siteDataExt = siteData as typeof siteData & {
     fullscreenOnOpen?: boolean;
     fullscreenOnLoad?: boolean;
   };
-  contactForm?: { mode?: "demo" | "live"; scriptSrc?: string };
+  contactForm?: {
+    mode?: "demo" | "live";
+    scriptSrc?: string;
+    fields?: { phone?: boolean; intent?: boolean; message?: boolean };
+  };
   integrations?: Record<string, SiteIntegrationConfig>;
   integrationConsentMode?: "auto" | "always" | "external";
   gallery?: {
@@ -364,6 +368,11 @@ export const siteConfig = {
     ),
     handle: contextRocketHandle,
     apiBaseUrl: contextRocketApiBase,
+    fields: {
+      phone: siteDataExt.contactForm?.fields?.phone ?? true,
+      intent: siteDataExt.contactForm?.fields?.intent ?? true,
+      message: siteDataExt.contactForm?.fields?.message ?? true,
+    },
   },
 
   allowAiCrawlers: true,

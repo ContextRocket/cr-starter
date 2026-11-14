@@ -122,6 +122,39 @@ The bridge submits its value under `custom_answers.residency_area`; confirm that
 key with the organization before enabling live submissions. Use
 `data-cr-custom-answer-type="multi_select"` for a multiple select, or
 `"number"` / `"boolean"` when the custom schema expects those value types.
+When the source form has a smaller field set, disable the optional starter
+fields in that fork's `config/site.json`; name, email, and explicit consent
+remain part of the shared contact contract:
+
+```json
+{
+  "contactForm": {
+    "fields": { "phone": false, "intent": false, "message": false }
+  }
+}
+```
+
+Then add the source's required fields in the `custom-fields` slot and map each
+to its configured custom answer key. This keeps the source's form shape while
+the SDK continues to own validation, attribution, and submission behavior.
+For example, a LinkedIn URL field can retain its source label and native URL
+validation while being sent as a configured custom answer:
+
+```astro
+<label slot="custom-fields" class="block text-sm font-medium">
+  LinkedIn URL
+  <input
+    class="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3"
+    name="linkedin"
+    type="url"
+    data-cr-custom-answer="linkedin_url"
+    required
+  />
+</label>
+```
+
+The custom answer key must exist in that organization's lead schema before live
+submissions are enabled.
 For a fully custom source form, use `data-contact-form` with the same bridge
 attributes and retain its source markup and validation.
 
