@@ -25,8 +25,8 @@ and Newsreader Italic are served from the shared ContextRocket CDN brand kit.
 Do not fetch or hotlink fonts from the crawled site. For a customer-specific
 font, use it only when its license permits redistribution and the licensed
 files are included with the site. See [`brand-evidence.md`](brand-evidence.md)
-for how crawl evidence maps to the canonical `theme.json` artifact and the
-starter's currently explicit configuration step.
+for how crawl evidence maps to the canonical `theme.json` artifact, and
+[`theme-json-contract.md`](theme-json-contract.md) for `pnpm run theme:import`.
 
 Use `chrome.cookieBannerStyle` to choose the consent presentation for the site's
 surfaces: `dock` is the compact, branded ContextRocket pattern; `bar` spans the

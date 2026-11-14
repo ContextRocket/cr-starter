@@ -4,15 +4,15 @@ The ContextRocket crawl pipeline's canonical published artifact is
 `theme.json` (`cr.theme.v1`). It carries captured evidence, semantic light and
 dark variants, a `site_mode`, marks, icons, and provenance. The starter's
 `config/site.json` remains the fork-owned runtime configuration and contains
-one selected semantic palette; it does not yet import or resolve a published
-`theme.json` automatically.
+one selected semantic palette. `pnpm run theme:import` applies a published
+`theme.json` to it; see [`theme-json-contract.md`](theme-json-contract.md).
 
 The theme document is a reviewed, publishable projection of crawl evidence,
 not a reproduction of the source site's layout engine. When applying it to a
 matching site, use the `site_mode` variant; use the document's `default`
-variant for ContextRocket-generated surfaces. Map its shared semantic token
-vocabulary into `config/site.json` without inventing a second token language.
-The starter currently requires that mapping to be done explicitly.
+variant for ContextRocket-generated surfaces. The import writes its shared
+semantic token vocabulary into `config/site.json` without a second token
+language.
 
 When a theme is generated from a brand pack, keep its compact design receipt in
 `docs/brand-evidence/`. The receipt records the selected values, observed color

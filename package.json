@@ -14,6 +14,7 @@
     "lint": "eslint . --max-warnings 0",
     "i18n:check": "node scripts/check-i18n-parity.cjs",
     "theme:check": "node scripts/validate-theme.mjs",
+    "theme:import": "node scripts/import-theme.mjs",
     "check:behavior-ids": "node scripts/check-behavior-ids.mjs",
     "check:embed-artifacts": "node scripts/check-embed-artifacts.mjs",
     "content:check": "node scripts/check-content-quality.mjs",
