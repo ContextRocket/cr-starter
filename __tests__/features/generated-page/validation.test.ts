@@ -103,3 +103,10 @@ it("GENERATED-001: refuses absent contact authority and wrong configured origin"
     }),
   ).toThrow("CAPABILITY_BINDING");
 });
+
+it("GENERATED-001: requires product admission for the pinned canonical asset bytes", async () => {
+  const { input } = await fixture();
+  expect(() =>
+    validateInputs({ ...input, assetAdmissionReceiptId: "" }),
+  ).toThrow("ASSET_ADMISSION_REQUIRED");
+});

@@ -1,4 +1,5 @@
 ---
+import { assetHref } from "@/lib/paths";
 import { siteConfig } from "@/config/site.config";
 
 const integrations = siteConfig.integrations;
@@ -14,9 +15,9 @@ const payload = JSON.stringify({
   consentStorage: siteConfig.integrationConsentMode !== "external",
   consentBanner,
 }).replaceAll("<", "\\u003c");
-const siteBehaviorsSrc =
+const siteBehaviorsSrc = assetHref(
   import.meta.env.PUBLIC_CONTEXTROCKET_SITE_BEHAVIORS_URL?.trim() ||
-  "/embed/site-behaviors.js";
+  "/embed/site-behaviors.js");
 ---
 
 {

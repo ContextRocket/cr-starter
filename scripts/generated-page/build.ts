@@ -178,6 +178,7 @@ export interface GeneratedBuildArtifact {
     inputSha256: string;
     manifestSha256: string;
     schemaSource: unknown;
+    assetAdmissionReceiptId: string;
   };
 }
 /** Offline build boundary. Does not authorize publication or contact capture. */
@@ -242,13 +243,6 @@ export async function buildGeneratedPage({
   for (const name of Object.keys(input.assets)) {
     if (!/\.(png|jpe?g|webp|gif|svg|ico|woff2?)$/i.test(name))
       fail("UNSUPPORTED_ASSET", name);
-    if (
-      name.endsWith(".svg") &&
-      /<script|<foreignObject|\bon\w+\s*=|(?:href|src)\s*=\s*["'](?:https?:|\/\/|javascript:)/i.test(
-        await readFile(join(inputRoot, "assets", name), "utf8"),
-      )
-    )
-      fail("EXECUTABLE_ASSET", name);
   }
   if (
     manifest.disclosure_mode === "contextrocket" &&
@@ -339,6 +333,7 @@ export async function buildGeneratedPage({
     PATH: process.env.PATH,
     NODE_ENV: "production",
     ASTRO_TELEMETRY_DISABLED: "1",
+    CONTAINER_BASE: input.mount,
   };
   if (input.chat)
     Object.assign(env, {
@@ -378,12 +373,7 @@ export async function buildGeneratedPage({
     fail("MISSING_THEME_ICON", "A local published icon is required");
   await writeJson(join(source, "src/generated/manifest.json"), manifest);
   await writeJson(join(source, "src/generated/build-input.json"), input);
-  const routeFile = join(
-    source,
-    "src/pages",
-    input.mount.slice(1),
-    "index.astro",
-  );
+  const routeFile = join(source, "src/pages/index.astro");
   await mkdir(dirname(routeFile), { recursive: true });
   await writeFile(
     routeFile,
@@ -407,7 +397,7 @@ export async function buildGeneratedPage({
   );
   await writeFile(
     join(source, "public/robots.txt"),
-    `User-agent: *\n${indexed ? "Allow: " + input.mount : "Disallow: /"}\nSitemap: ${input.publicOrigin}/sitemap.xml\n`,
+    `User-agent: *\n${indexed ? "Allow: " + input.mount : "Disallow: /"}\nSitemap: ${input.publicOrigin}${input.mount}sitemap.xml\n`,
   );
   await writeFile(
     join(source, "public/llms.txt"),
@@ -426,9 +416,15 @@ export async function buildGeneratedPage({
     source,
     env,
   );
+  run(
+    process.execPath,
+    [join(source, "scripts/flatten-single-locale.mjs")],
+    source,
+    env,
+  );
   const dist = join(source, "dist");
   const files = await fileInventory(dist);
-  const pageFile = input.mount.slice(1) + "index.html";
+  const pageFile = "index.html";
   if (
     !files[pageFile] ||
     Object.keys(files).some((p) => p.endsWith(".html") && p !== pageFile)
@@ -443,9 +439,11 @@ export async function buildGeneratedPage({
   )) {
     const path = match[1];
     if (path === input.factsLink?.href || path === input.mount) continue;
+    if (!path.startsWith(input.mount)) fail("UNMOUNTED_LOCAL_REFERENCE", path);
+    const archivePath = path.slice(input.mount.length);
     if (
-      !files[path.slice(1)] &&
-      !files[path.slice(1).replace(/\/$/, "") + "/index.html"]
+      !files[archivePath] &&
+      !files[archivePath.replace(/\/$/, "") + "/index.html"]
     )
       fail("BROKEN_LOCAL_REFERENCE", path);
   }
@@ -484,6 +482,7 @@ export async function buildGeneratedPage({
       inputSha256: sha256(inputBytes),
       manifestSha256: sha256(manifestBytes),
       schemaSource,
+      assetAdmissionReceiptId: input.assetAdmissionReceiptId,
     },
   };
   const { tar_bytes: _bytes, ...receipt } = artifact;

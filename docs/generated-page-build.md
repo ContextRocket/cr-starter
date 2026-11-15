@@ -26,7 +26,11 @@ The input directory contains only:
 - `build-input.json`: the adapter envelope below.
 - `theme/`: a complete immutable local `cr.theme.v1` bundle with an icon set.
 - `assets/`: governed image files, including a local attribution mark when the
-  manifest selects ContextRocket disclosure. No executable assets or symlinks.
+  manifest selects ContextRocket disclosure. These must be canonical bytes already
+  admitted by the product's asset pipeline, including its SVG security checks.
+  The build requires an admission receipt and exact digests; a caller-supplied
+  digest alone is not evidence that an arbitrary SVG is safe. Executable file
+  types and symlinks are refused; this adapter is not an SVG sanitizer.
 
 The builder uses the exported product schema in
 `schemas/landing-page-manifest.schema.json`. Its adjacent `.source.json` records
@@ -42,6 +46,7 @@ content model here. JSON Schema validation runs before renderer-specific checks.
 | `publicOrigin`, `mount`, `visibility` | Explicit HTTPS origin, `/p/{page_slug}/`, and `public` or `private`.                                                                                                   |
 | `pins`                                | Exact `rendererPins()` result: starter Git revision, actual source digest, lockfile, schema, shared chrome, installed SDK artifacts, embed artifacts and Node version. |
 | `theme`                               | Immutable `release` identifier and complete relative-path-to-SHA256 `files` map. Imported locally with `--purpose published`.                                          |
+| `assetAdmissionReceiptId`             | Product asset-admission receipt for these canonical theme and asset bytes. The product publisher owns unsafe-SVG rejection.                                            |
 | `assets`                              | Complete relative-path-to-SHA256 map for `assets/`.                                                                                                                    |
 | `factsLink`                           | Optional supplied `label` and `href`; links to a managed Facts bundle without copying it.                                                                              |
 | `contact`, `chat`                     | Optional product-resolved binding: `appRef`, `organizationHandle`, `publicOrigin`, `apiOrigin`, `receiptId`. Chat also requires an origin-bound `publicApiKey`.        |
@@ -51,6 +56,15 @@ Set the manifest renderer to `cr-starter` and `pinned_version` to
 identifies the executed renderer. The caller must supply product-normalized
 manifest bytes if it needs the product's canonical manifest hash: the receipt
 records the exact input bytes' digest and does not recreate Python normalization.
+
+The archive is relative to its publication mount: root `index.html`, `_astro/`,
+`assets/`, `embed/` and discovery files. Existing Astro `CONTAINER_BASE` config
+prefixes compiled resources; the shared asset path helper prefixes authored
+resources once. The single-locale flatten helper remains in the build. For
+`/p/workshop/`, canonical URLs stay `PUBLIC_ORIGIN/p/workshop/` and all local
+resources use that prefix. SiteRelease supplies `path_prefix=p/workshop`; it
+must not prepend a second physical `p/workshop/` directory. No post-build HTML
+rewrite or publisher byte transformation is required.
 
 The builder checks binding consistency offline. It cannot establish whether an
 App or origin grant is still live. The product must resolve those bindings and
@@ -87,6 +101,10 @@ only this page; private builds are excluded from indexing.
 Focused witnesses live under `__tests__/features/generated-page/` and use the
 fictional supplied manifest in `__tests__/fixtures/generated-page/page.json`.
 The archive witness executes Astro twice, compares archive bytes, checks escaped
-content and proves Facts are linked, not included. Run it only with the shared
+content and proves Facts are linked, not included. It extracts the SDK archive,
+serves it under the non-root mount, parses HTML with script execution and remote
+resource loading disabled, and requests local HTML, CSS, form script, widget,
+consent and brand resources over HTTP. Each must return 200; Facts return 404
+from this isolated bundle. Run it only with the shared
 build slot available. Validation and SDK receipt witnesses need no services or
 network. Contract: [generated page behavior](../features/generated-page/BEHAVIOR.md).

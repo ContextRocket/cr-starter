@@ -1,4 +1,5 @@
 ---
+import { assetHref } from '@/lib/paths';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import ContextRocketBadge from '@/components/chrome/ContextRocketBadge.astro';
 import GeneratedLeadForm from './GeneratedLeadForm.astro';
@@ -32,7 +33,7 @@ function ctaHref(section:Record<string,unknown>):string {
         {s.type==='hero' ? <h1 class="text-4xl font-semibold tracking-tight sm:text-6xl">{text(s.headline)}</h1> : s.title && <h2 class="text-3xl font-semibold">{text(s.title)}</h2>}
         {(s.subhead || s.subtitle || s.description || s.eyebrow) && <p class="text-lg text-muted-foreground">{text(s.subhead || s.subtitle || s.description || s.eyebrow)}</p>}
         {array(s.paragraphs ?? s.body ?? []).map(p=><p class="leading-7">{text(p)}</p>)}
-        {images(s).map(asset=><img src={`/assets/${text(asset.local_path)}`} alt={text(asset.alt_text)} width={asset.width ? Number(asset.width):undefined} height={asset.height ? Number(asset.height):undefined} loading={s.type==='hero'?'eager':'lazy'} class="max-w-full rounded-lg" />)}
+        {images(s).map(asset=><img src={assetHref(`/assets/${text(asset.local_path)}`)} alt={text(asset.alt_text)} width={asset.width ? Number(asset.width):undefined} height={asset.height ? Number(asset.height):undefined} loading={s.type==='hero'?'eager':'lazy'} class="max-w-full rounded-lg" />)}
         {s.type==='faq' ? array(s.items).map(object).map(item=><details class="border-t border-border py-4"><summary>{text(item.question)}</summary><p class="mt-3">{text(item.answer)}</p></details>) : s.items && <ul class="grid gap-5 sm:grid-cols-2">{array(s.items).map(object).map(item=><li class="rounded-lg border border-border p-5"><h3 class="text-xl font-semibold">{text(item.title ?? item.value)}</h3><p class="mt-3">{text(item.description ?? item.label)}</p></li>)}</ul>}
         {array(s.actions ?? []).map(object).map(action=><a class="inline-flex rounded-md bg-primary px-5 py-3 text-primary-foreground" href={text(action.href)}>{text(action.label)}</a>)}
         {s.type==='cta' && <a class="inline-flex rounded-md bg-primary px-5 py-3 text-primary-foreground" href={ctaHref(s)}>{text(s.action_label)}</a>}

@@ -74,6 +74,8 @@ export interface BuildInputs {
   pins: Record<string, string>;
   theme: { release: string; files: Record<string, string> };
   assets: Record<string, string>;
+  /** Upstream product admission, including SVG safety; hashes alone do not establish admission. */
+  assetAdmissionReceiptId: string;
   factsLink?: { label: string; href: string };
   contact?: CapabilityBinding;
   chat?: CapabilityBinding & { publicApiKey: string };
@@ -90,6 +92,7 @@ export function validateInputs(raw: unknown): BuildInputs {
     "pins",
     "theme",
     "assets",
+    "assetAdmissionReceiptId",
     "factsLink",
     "contact",
     "chat",
@@ -101,6 +104,11 @@ export function validateInputs(raw: unknown): BuildInputs {
     !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(text(o.organizationHandle))
   )
     fail("INVALID_INPUT", "Format or Organization handle");
+  if (!text(o.assetAdmissionReceiptId).trim())
+    fail(
+      "ASSET_ADMISSION_REQUIRED",
+      "Product-admitted canonical asset bytes are required",
+    );
   httpsOrigin(text(o.publicOrigin));
   if (!/^\/p\/[a-z0-9]+(?:-[a-z0-9]+)*\/$/.test(text(o.mount)))
     fail("UNSUPPORTED_ROUTE", "Expected /p/{page_slug}/");

@@ -65,6 +65,7 @@ export async function fixtureInput(directory: string) {
       release: "fixture-theme-v1",
       files: await fileInventory(join(directory, "theme")),
     },
+    assetAdmissionReceiptId: "fictional-product-asset-admission",
     assets: await fileInventory(join(directory, "assets")),
     factsLink: { label: "Company facts", href: "https://example.test/facts/" },
     contact: {

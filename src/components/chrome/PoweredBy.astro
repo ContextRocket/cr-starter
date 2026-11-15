@@ -1,6 +1,7 @@
 ---
 import { createT } from "@/i18n/keys";
 import type { SupportedLocale } from "@/i18n/locales";
+import { assetHref } from "@/lib/paths";
 import { siteConfig } from "@/config/site.config";
 
 interface Props {
@@ -16,9 +17,9 @@ const {
 } = Astro.props;
 const locale = (Astro.currentLocale ?? "en") as SupportedLocale;
 const t = createT(locale);
-const logo = tone === "white"
+const logo = assetHref(tone === "white"
   ? `${siteConfig.contextRocketBrandAssetsUrl}/logo-h-spark-white.svg`
-  : `${siteConfig.contextRocketBrandAssetsUrl}/logo-h-spark-ink.svg`;
+  : `${siteConfig.contextRocketBrandAssetsUrl}/logo-h-spark-ink.svg`);
 ---
 
 <a

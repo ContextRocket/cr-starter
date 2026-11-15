@@ -13,9 +13,10 @@ function formatRoutePath(path: string): string {
   // An explicit trailing slash in a route path overrides the site default.
   // Clones can preserve exceptional source URLs without changing every route.
   const explicitTrailingSlash = pathname.endsWith("/");
-  const formatted = siteConfig.trailingSlash === "always" || explicitTrailingSlash
-    ? `${withoutTrailing}/`
-    : withoutTrailing;
+  const formatted =
+    siteConfig.trailingSlash === "always" || explicitTrailingSlash
+      ? `${withoutTrailing}/`
+      : withoutTrailing;
   return `${formatted}${suffix}`;
 }
 
@@ -71,4 +72,23 @@ export function absoluteUrl(pathname: string): string {
 
 export function defaultLocaleRedirectTarget(): string {
   return formatRoutePath(`/${getDefaultLocale()}`);
+}
+
+/** Mount a locally served asset once; navigation and canonical URLs keep their own contract. */
+export function withAssetBase(path: string, base: string): string {
+  const prefix = base.replace(/\/+$/, "");
+  if (
+    !prefix ||
+    prefix === "/" ||
+    !path.startsWith("/") ||
+    path.startsWith("//") ||
+    path === prefix ||
+    path.startsWith(`${prefix}/`)
+  )
+    return path;
+  return `${prefix}${path}`;
+}
+
+export function assetHref(path: string): string {
+  return withAssetBase(path, import.meta.env.BASE_URL || "/");
 }
