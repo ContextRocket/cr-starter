@@ -33,6 +33,7 @@ type CookieConsentCopy = {
 };
 
 const contextRocketBrandAssetsUrl =
+  (siteData as { brandAssetsUrl?: string }).brandAssetsUrl ??
   "https://contextrocket.cdn.contextrocket.com/brand";
 
 function env(key: string, fallback: string = ""): string {

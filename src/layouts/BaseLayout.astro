@@ -14,6 +14,8 @@ import { createT } from "@/i18n/keys";
 import "../styles/global.css";
 
 interface Props {
+  /** Explicit local font files; an empty map selects system fonts only. */
+  fontAssets?: { sans?: string; editorial?: string; mono?: string };
   title?: string;
   /** Use the supplied title verbatim when it is already a complete document title. */
   titleIsExact?: boolean;
@@ -32,7 +34,7 @@ interface Props {
   /** Extra JSON-LD nodes merged after the optional home Organization/WebSite. */
   jsonLdExtra?: unknown[];
   ogType?: "website" | "article";
-  robots?: "index, follow" | "noindex, follow";
+  robots?: "index, follow" | "noindex, follow" | "index,follow" | "noindex,nofollow";
   /** Page-specific opening suggestions; falls back to the site chat config. */
   chatSuggestions?: string[];
   chatTitle?: string;
@@ -101,10 +103,13 @@ const configuredSans = themeTokenMap?.["--font-sans"];
 const preloadInterTight =
   typeof configuredSans !== "string" || configuredSans.includes("Inter Tight");
 const fontRoot = `${siteConfig.contextRocketBrandAssetsUrl}/fonts`;
-const interTightFont = `${fontRoot}/InterTight-Variable.woff2`;
-const newsreaderFont = `${fontRoot}/Newsreader-Italic.woff2`;
-const geistMonoFont = `${fontRoot}/GeistMonoVF.woff`;
-const fontFaceCss = `@font-face{font-family:"Inter Tight";src:url(${JSON.stringify(interTightFont)}) format("woff2");font-weight:100 900;font-display:swap}@font-face{font-family:"Newsreader";src:url(${JSON.stringify(newsreaderFont)}) format("woff2");font-style:italic;font-weight:400;font-display:swap}@font-face{font-family:"Geist Mono";src:url(${JSON.stringify(geistMonoFont)}) format("woff");font-weight:100 900;font-display:swap}`;
+const fonts = Astro.props.fontAssets ?? { sans: `${fontRoot}/InterTight-Variable.woff2`, editorial: `${fontRoot}/Newsreader-Italic.woff2`, mono: `${fontRoot}/GeistMonoVF.woff` };
+const interTightFont = fonts.sans;
+const fontFaceCss = [
+  fonts.sans ? `@font-face{font-family:"Inter Tight";src:url(${JSON.stringify(fonts.sans)}) format("woff2");font-weight:100 900;font-display:swap}` : "",
+  fonts.editorial ? `@font-face{font-family:"Newsreader";src:url(${JSON.stringify(fonts.editorial)}) format("woff2");font-style:italic;font-weight:400;font-display:swap}` : "",
+  fonts.mono ? `@font-face{font-family:"Geist Mono";src:url(${JSON.stringify(fonts.mono)}) format("woff");font-weight:100 900;font-display:swap}` : "",
+].join("");
 const themeEntries = Object.entries(theme.tokens ?? {}).filter(
   ([key, value]) => /^--[a-zA-Z0-9_-]+$/.test(key) &&
     typeof value === "string" && !/[<>;{}]/.test(value),
@@ -291,7 +296,7 @@ const jsonLdPayload = jsonLd.length > 0 ? jsonLd : null;
         />
       )
     }
-    {preloadInterTight && (
+    {preloadInterTight && interTightFont && (
       <link
         rel="preload"
         href={interTightFont}

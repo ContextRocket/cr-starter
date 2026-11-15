@@ -25,7 +25,8 @@
     "build:widget": "pnpm --dir ../cr-sdk/packages/embed-chat build && node scripts/sync-embed-artifact.mjs widget",
     "build:contact-form": "pnpm --dir ../cr-sdk/packages/sdk build && node scripts/sync-embed-artifact.mjs contact-form",
     "build:site-behaviors": "pnpm --dir ../cr-sdk/packages/sdk build && node scripts/sync-embed-artifact.mjs site-behaviors",
-    "build:embeds": "pnpm --dir ../cr-sdk/packages/sdk run build && node ../cr-sdk/packages/embed-chat/build.mjs && node scripts/sync-embed-artifact.mjs widget && node scripts/sync-embed-artifact.mjs contact-form && node scripts/sync-embed-artifact.mjs site-behaviors"
+    "build:embeds": "pnpm --dir ../cr-sdk/packages/sdk run build && node ../cr-sdk/packages/embed-chat/build.mjs && node scripts/sync-embed-artifact.mjs widget && node scripts/sync-embed-artifact.mjs contact-form && node scripts/sync-embed-artifact.mjs site-behaviors",
+    "build:generated-page": "node --experimental-strip-types scripts/build-generated-page.ts"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.10",
@@ -42,11 +43,15 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
     "@astrojs/react": "^4.4.2",
+    "@contextrocket/sdk": "file:../cr-sdk/packages/sdk",
+    "@contextrocket/site-publisher": "file:../cr-sdk/packages/site-publisher",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.12",
     "@types/node": "^22.17.2",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
     "eslint": "^9.33.0",
     "eslint-plugin-astro": "^1.3.1",
     "happy-dom": "^21.0.4",

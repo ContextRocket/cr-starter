@@ -71,8 +71,9 @@ Return the exact archive digest, file/route inventory, input digests and actual
 renderer revision to the product's existing SiteRelease build boundary. Build
 success does not authorize publication.
 
-`pnpm run build` already emits static output. The product-manifest adapter and
-archive-worker entry point are not implemented here. `build:container` is the
+`pnpm run build` emits static website output. The bounded offline
+[generated page adapter](generated-page-build.md) now renders supplied manifests
+and returns an SDK archive; the product BuildPort cutover remains separate. `build:container` is the
 website's `/site/` build, not a generated-page route selector. Use the product's
 selected public path and container mount for a gap-page build; this contract
 does not choose or rename that namespace.

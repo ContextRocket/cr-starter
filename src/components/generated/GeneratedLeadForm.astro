@@ -1,0 +1,25 @@
+---
+import { createT } from '@/i18n/keys';
+import type { GeneratedLeadFormView } from '@/lib/generated-lead-form';
+interface Props { view: GeneratedLeadFormView }
+const { view } = Astro.props;
+const t = createT('en');
+---
+<script>import '../../scripts/generated-lead-form';</script>
+<section id={view.id} class="rounded-xl border border-border bg-card p-6 sm:p-10">
+  <h2 class="text-3xl font-semibold">{view.title}</h2>
+  {view.description && <p class="mt-4">{view.description}</p>}
+  <form data-generated-lead-form data-config={JSON.stringify(view)} class="mt-6 grid gap-5" aria-describedby={`${view.id}-status`}>
+    {view.fields.map(field => (
+      <label for={`${view.id}-${field.name}`} class="grid gap-2">
+        <span>{field.label}{field.required && <span aria-hidden="true"> *</span>}</span>
+        {field.fieldType === 'textarea' ?
+          <textarea id={`${view.id}-${field.name}`} name={field.name} required={field.required} class="min-h-32 rounded-md border border-input bg-background p-3" /> :
+          <input id={`${view.id}-${field.name}`} name={field.name} type={field.fieldType} required={field.required} class="rounded-md border border-input bg-background p-3" />}
+      </label>
+    ))}
+    <label class="flex gap-3"><input type="checkbox" name="consent" required /><span>{view.consentText} <a class="underline" href={view.privacyUrl}>{view.privacyUrl}</a></span></label>
+    <p id={`${view.id}-status`} role="status" aria-live="polite" data-form-status>{t('contact.javascriptRequired')}</p>
+    <button type="submit" class="min-h-12 rounded-md bg-primary px-6 py-3 text-primary-foreground">{t('contact.submit')}</button>
+  </form>
+</section>

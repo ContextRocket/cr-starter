@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0.0",
+  "renderer_contract": {
+    "renderer_id": "cr-starter",
+    "min_version": "0.2.0",
+    "pinned_version": "fixture-pin"
+  },
+  "page_id": "fictional-workshop",
+  "organization_ref": "example-workshop",
+  "locale": "en",
+  "title": "Example workshop",
+  "route": "/p/workshop/",
+  "authority_mode": "operator_prepared",
+  "disclosure_mode": "contextrocket",
+  "search": {
+    "title": "Example workshop",
+    "description": "A fictional supplied page for offline build verification.",
+    "canonical_intent": "self",
+    "indexing_intent": "index",
+    "sitemap_include": true,
+    "robots_intent": "index,follow"
+  },
+  "appearance": { "fallback": "brand_theme" },
+  "assets": [],
+  "analytics": { "enabled": false },
+  "provenance": {
+    "representation_version": "fixture-v1",
+    "source_set_version": "fixture-sources-v1",
+    "review_receipt_id": "fixture-approved",
+    "created_at": "2026-11-15T00:00:00Z"
+  },
+  "sections": [
+    {
+      "id": "intro",
+      "order": 0,
+      "type": "hero",
+      "headline": "Example <workshop> & participants",
+      "subhead": "Supplied fictional content.",
+      "body": [],
+      "actions": [
+        {
+          "label": "Ask a question",
+          "href": "#contact",
+          "kind": "internal_route"
+        }
+      ],
+      "evidence": [{ "kind": "claim", "ref": "fixture:identity" }]
+    },
+    {
+      "id": "details",
+      "order": 1,
+      "type": "rich_text",
+      "title": "Workshop details",
+      "paragraphs": [
+        "Literal <script>alert('fixture')</script> text must remain text."
+      ],
+      "evidence": [{ "kind": "claim", "ref": "fixture:details" }]
+    },
+    {
+      "id": "contact",
+      "order": 2,
+      "type": "lead_form",
+      "title": "Ask about the workshop",
+      "binding": {
+        "binding_id": "workshop-contact",
+        "public_app_ref": "11111111-1111-4111-8111-111111111111",
+        "campaign_ref": "fixture-campaign",
+        "landing_page_ref": "fictional-workshop",
+        "release_ref": "fixture-release",
+        "consent_text": "I agree to receive a reply to this request.",
+        "privacy_url": "https://example.test/privacy/",
+        "data_controller_mode": "customer",
+        "retention_posture": "fixture-retention-policy",
+        "fields": [
+          {
+            "name": "name",
+            "label": "Your name",
+            "field_type": "text",
+            "required": true
+          },
+          {
+            "name": "email",
+            "label": "Your email",
+            "field_type": "email",
+            "required": true
+          },
+          {
+            "name": "message",
+            "label": "Your question",
+            "field_type": "textarea",
+            "required": false
+          }
+        ],
+        "success_message": "Your request was recorded.",
+        "validation_error_message": "Check your details.",
+        "unavailable_message": "The request could not be recorded."
+      }
+    }
+  ],
+  "form_bindings": []
+}
