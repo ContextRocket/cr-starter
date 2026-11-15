@@ -35,6 +35,13 @@ export const sharedEn = {
   attribution: {
     poweredBy: "Powered by",
   },
+  testimonials: {
+    exampleLabel: "Starter example content",
+    previous: "Previous testimonial",
+    next: "Next testimonial",
+    chooseSlide: "Choose a testimonial",
+    slideLabel: "Testimonial {current} of {total}",
+  },
   contact: {
     title: "Start a conversation",
     introduction: "Tell us a little about what you are working on.",

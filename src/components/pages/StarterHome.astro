@@ -6,6 +6,8 @@ import { createT } from "@/i18n/keys";
 import BlogPostCard from "@/components/blog/BlogPostCard.astro";
 import { listPosts } from "@/lib/blog";
 import { blogIndexHref, localizedHref } from "@/lib/paths";
+import { getTestimonials } from "@/lib/testimonials";
+import TestimonialsSection from "@/components/sections/TestimonialsSection.astro";
 
 interface Props {
   locale: SupportedLocale;
@@ -14,6 +16,9 @@ interface Props {
 const { locale } = Astro.props;
 const t = createT(locale);
 const posts = siteConfig.features.blog ? listPosts(locale).slice(0, 3) : [];
+const testimonials = siteConfig.features.testimonials
+  ? getTestimonials(locale)
+  : { title: "", items: [] };
 const contactHref = localizedHref(locale, "/contact");
 ---
 
@@ -42,6 +47,14 @@ const contactHref = localizedHref(locale, "/contact");
         </div>
       </div>
     </section>
+
+    {testimonials.items.length > 0 && (
+      <TestimonialsSection
+        locale={locale}
+        title={testimonials.title}
+        items={testimonials.items}
+      />
+    )}
 
     {posts.length > 0 && (
       <section class="border-t border-border bg-muted/35 px-5 py-16 sm:px-8 sm:py-20">

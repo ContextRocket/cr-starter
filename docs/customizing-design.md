@@ -73,6 +73,13 @@ the fork serves. An English-only fork should keep only en.ts in each message
 slice. Shared and app messages are starter-owned. Keep all visible strings
 behind the i18n API (`createT(locale)` / `t()`).
 
+The home page includes an editable testimonial carousel. Replace the sample
+entries in `config/testimonials.json` with approved customer quotes, names,
+attributions, and optional portrait paths. Quote, title, author, and role fields
+support the site's configured locales and fall back to English. Set
+`features.testimonials` to `false` in `config/site.json` to omit the section.
+Use the semantic secondary surface tokens so the panel follows the site's theme.
+
 For a genuinely different home page, edit `src/pages/[locale]/index.astro`
 (and the unprefixed home when single-locale) while preserving shared sections
 and config seams. Add fork-specific components under `src/components/custom/`.

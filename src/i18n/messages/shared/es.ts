@@ -38,6 +38,13 @@ export const sharedEs: LocaleMessages<typeof sharedEn> = {
   attribution: {
     poweredBy: "Con tecnología de",
   },
+  testimonials: {
+    exampleLabel: "Contenido de ejemplo del starter",
+    previous: "Testimonio anterior",
+    next: "Testimonio siguiente",
+    chooseSlide: "Elegir un testimonio",
+    slideLabel: "Testimonio {current} de {total}",
+  },
   contact: {
     title: "Inicia una conversación",
     introduction: "Cuéntanos brevemente en qué estás trabajando.",

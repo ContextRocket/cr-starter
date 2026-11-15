@@ -89,6 +89,7 @@
   },
   "features": {
     "blog": true,
+    "testimonials": true,
     "topics": false,
     "chatFab": true,
     "languageSelector": true,

@@ -85,8 +85,10 @@ Shared layout, i18n runtime, blog engine, discovery routes, and the built embed
 widget are starter-owned. The checked-in widget keeps a standalone clone
 installable without sibling repositories.
 
-**Default surface:** home, configurable Markdown blog, and a localized
-contact-form example that runs in safe demo mode by default. There are no generated
+**Default surface:** home, an editable testimonial carousel, configurable Markdown blog,
+localized contact-form example, and a ContextRocket chat launcher. The contact form
+runs in safe demo mode by default. Testimonial examples are clearly labeled and
+should be replaced with approved customer quotes before publishing. There are no generated
 legal pages; add the pages your site needs. Cookie consent is optional and off
 by default. No FAQ / About / gallery / Features pages are required.
 

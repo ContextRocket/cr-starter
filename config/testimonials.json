@@ -1,0 +1,45 @@
+{
+  "title": {
+    "en": "What customers say",
+    "es": "Lo que dicen nuestros clientes",
+    "de": "Was unsere Kunden sagen"
+  },
+  "items": [
+    {
+      "id": "example-one",
+      "author": {
+        "en": "Customer name",
+        "es": "Nombre del cliente",
+        "de": "Kundenname"
+      },
+      "role": {
+        "en": "Role, company",
+        "es": "Cargo, empresa",
+        "de": "Rolle, Unternehmen"
+      },
+      "quote": {
+        "en": "Replace this example with a customer-approved quote. Keep the wording and attribution true to the original.",
+        "es": "Sustituye este ejemplo por una cita aprobada por el cliente. Conserva fielmente sus palabras y atribución.",
+        "de": "Ersetze dieses Beispiel durch ein vom Kunden freigegebenes Zitat. Wortlaut und Zuordnung müssen dem Original entsprechen."
+      }
+    },
+    {
+      "id": "example-two",
+      "author": {
+        "en": "Another customer",
+        "es": "Otro cliente",
+        "de": "Ein weiterer Kunde"
+      },
+      "role": {
+        "en": "Role, company",
+        "es": "Cargo, empresa",
+        "de": "Rolle, Unternehmen"
+      },
+      "quote": {
+        "en": "Add a second approved quote here. Only include results or claims the customer actually shared.",
+        "es": "Añade aquí una segunda cita aprobada. Incluye solo resultados o afirmaciones que el cliente haya compartido.",
+        "de": "Füge hier ein zweites freigegebenes Zitat ein. Nenne nur Ergebnisse oder Aussagen, die der Kunde tatsächlich geteilt hat."
+      }
+    }
+  ]
+}
