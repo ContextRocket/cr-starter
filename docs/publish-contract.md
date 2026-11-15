@@ -42,6 +42,55 @@ sitemaps to derive the URL inventory. See
 for the unpublished SDK source requirement. Publishing to ContextRocket's CDN
 is not needed to connect a site to the ContextRocket API.
 
+## Generated gap pages and repository handoff
+
+ContextRocket generates a gap page with this starter's Astro components and
+the SDK chat, contact-form and consent bridges. The first build is English
+only. It can stay on ContextRocket's CDN while the organization's website
+stays on another host indefinitely. A website migration is not a prerequisite.
+
+The product owns fact selection, generation, authority and SiteRelease. This
+repository owns page rendering. The build boundary takes pinned inputs and
+returns a static archive; the product must not import a sibling checkout or
+maintain another page renderer.
+
+| Build input | Contract |
+|---|---|
+| Content | Product-validated semantic page manifest with exact evidence and generation receipts; no executable content or credentials. |
+| Route | Organization handle, page slug, explicit public origin and mount, and visibility. The Organization handle selects the container; the slug selects its page. |
+| Language | `locales: ["en"]`, `defaultLocale: "en"`; the existing single-locale build emits paths without `/en/`. |
+| Design | One immutable `cr.theme.v1` bundle, imported locally with `--purpose published`; pin its release and digest. |
+| Components and assets | Pinned starter revision, lockfile, template and shared chrome version, SDK artifact digests, governed assets and licensed fonts. |
+| Browser capabilities | Organization-scoped public chat and contact configuration, consent configuration and attribution. Live capabilities require their real server-side bindings. |
+
+Materialize these inputs into an isolated starter source tree. Run the normal
+Astro build and its route checks, then package `dist/` with
+`@contextrocket/site-publisher`'s `prepareSiteArchive`. Its deterministic archive
+is already the SDK's upload input; use it rather than a second archive format.
+Return the exact archive digest, file/route inventory, input digests and actual
+renderer revision to the product's existing SiteRelease build boundary. Build
+success does not authorize publication.
+
+`pnpm run build` already emits static output. The product-manifest adapter and
+archive-worker entry point are not implemented here. `build:container` is the
+website's `/site/` build, not a generated-page route selector. Use the product's
+selected public path and container mount for a gap-page build; this contract
+does not choose or rename that namespace.
+
+| Delivery | Page owner and build inputs | Facts |
+|---|---|---|
+| CDN only | ContextRocket maintains the page and pins its starter inputs. | Separate ContextRocket-managed bundle. |
+| Path proxy on an external website | The customer proxies the selected page path to the same CDN release; their website remains independent. | Proxy the separate managed Facts path. |
+| Customer Git website, managed gap pages | The website has its own repository; ContextRocket keeps the gap-page inputs and releases. | Separate managed bundle, linked or path-proxied. |
+| Customer Git page takeover | Export the same content, config, assets and version pins so the customer builds the page with Astro. | Remains ContextRocket-managed and path-proxied; never copied into the page's source tree. |
+
+Repository takeover transfers page editing and building. It does not grant
+domain, GitHub or publication authority. Keep deployment credentials outside
+the source inputs. A new origin needs the corresponding browser capability
+configuration; exporting files does not authorize that origin. Share versioned
+design, assets, components and fonts across pages and Facts without merging
+their release bundles.
+
 ## Blog-only mounting
 
 The build includes the home route and the blog. A host can expose only the
