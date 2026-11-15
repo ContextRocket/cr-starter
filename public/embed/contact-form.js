@@ -147,7 +147,7 @@
   function isContactFormReceipt(payload) {
     if (!payload || typeof payload !== "object") return false;
     const receipt = payload;
-    return typeof receipt.lead_id === "string" && receipt.lead_id.trim().length > 0 && receipt.status === "captured" && (receipt.delivery_state === "queued" || receipt.delivery_state === "duplicate") && receipt.follow_up_state === "human_follow_up";
+    return typeof receipt.contact_id === "string" && receipt.contact_id.trim().length > 0 && receipt.status === "captured" && (receipt.delivery_state === "queued" || receipt.delivery_state === "duplicate") && receipt.follow_up_state === "human_follow_up";
   }
   async function submitContactForm({
     apiBaseUrl,
@@ -161,7 +161,7 @@
     if (!handle) throw new TypeError("An organization handle is required.");
     if (!form.consent) throw new TypeError("Explicit consent is required.");
     const customAnswers = validateCustomAnswers(form.custom_answers);
-    const endpoint = new URL(`/api/orgs/${encodeURIComponent(handle)}/leads`, apiBaseUrl);
+    const endpoint = new URL(`/api/orgs/${encodeURIComponent(handle)}/contacts`, apiBaseUrl);
     const headers = new Headers({
       accept: "application/json",
       "content-type": "application/json"
@@ -188,7 +188,7 @@
     const payload = await response.json().catch(() => null);
     if (!response.ok) {
       const detail = payload && typeof payload === "object" ? payload.detail : void 0;
-      const code = typeof detail === "string" ? detail : detail && typeof detail === "object" && typeof detail.code === "string" ? String(detail.code) : "LEAD_CAPTURE_FAILED";
+      const code = typeof detail === "string" ? detail : detail && typeof detail === "object" && typeof detail.code === "string" ? String(detail.code) : "CONTACT_CAPTURE_FAILED";
       throw new ContactFormError("The contact form could not be submitted.", response.status, code);
     }
     if (!isContactFormReceipt(payload)) {

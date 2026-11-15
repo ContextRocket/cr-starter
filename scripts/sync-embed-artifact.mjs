@@ -10,34 +10,35 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const sdkRoot = resolve(root, process.env.CR_SDK_ROOT ?? "../cr-sdk");
 const artifacts = {
   widget: {
-    source: "../cr-sdk/packages/embed-chat/dist/widget.js",
-    packageJson: "../cr-sdk/packages/embed-chat/package.json",
+    source: "packages/embed-chat/dist/widget.js",
+    packageJson: "packages/embed-chat/package.json",
     target: "public/embed/widget.js",
     key: "chat",
     packageName: "@contextrocket/embed-chat",
   },
   "contact-form": {
-    source: "../cr-sdk/packages/sdk/dist/contact-form.browser.js",
-    packageJson: "../cr-sdk/packages/sdk/package.json",
+    source: "packages/sdk/dist/contact-form.browser.js",
+    packageJson: "packages/sdk/package.json",
     target: "public/embed/contact-form.js",
     key: "contactForm",
     packageName: "@contextrocket/sdk",
-    declaration: "../cr-sdk/packages/sdk/dist/contact-form.d.ts",
+    declaration: "packages/sdk/dist/contact-form.d.ts",
     declarationTarget: "src/types/contextrocket-contact-form.d.ts",
   },
   "site-behaviors": {
-    source: "../cr-sdk/packages/sdk/dist/site-behaviors.browser.js",
-    packageJson: "../cr-sdk/packages/sdk/package.json",
+    source: "packages/sdk/dist/site-behaviors.browser.js",
+    packageJson: "packages/sdk/package.json",
     target: "public/embed/site-behaviors.js",
     key: "siteBehaviors",
     packageName: "@contextrocket/sdk",
-    declaration: "../cr-sdk/packages/sdk/dist/site-integrations.d.ts",
+    declaration: "packages/sdk/dist/site-integrations.d.ts",
     declarationTarget: "src/types/contextrocket-sdk/site-integrations.d.ts",
     extraDeclarations: [
       {
-        source: "../cr-sdk/packages/sdk/dist/site-consent.d.ts",
+        source: "packages/sdk/dist/site-consent.d.ts",
         target: "src/types/contextrocket-sdk/site-consent.d.ts",
       },
     ],
@@ -52,7 +53,7 @@ if (!artifact) {
   );
 }
 
-const source = resolve(root, artifact.source);
+const source = resolve(sdkRoot, artifact.source);
 const target = resolve(root, artifact.target);
 if (!existsSync(source)) {
   throw new Error(
@@ -64,7 +65,7 @@ mkdirSync(dirname(target), { recursive: true });
 copyFileSync(source, target);
 console.log(`Copied ${source} -> ${target}`);
 
-const packageJsonPath = resolve(root, artifact.packageJson);
+const packageJsonPath = resolve(sdkRoot, artifact.packageJson);
 const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf8"));
 if (
   packageJson.name !== artifact.packageName ||
@@ -104,7 +105,7 @@ if (artifact.declaration) {
     ...(artifact.extraDeclarations ?? []),
   ];
   for (const item of declarations) {
-    const declarationSource = resolve(root, item.source);
+    const declarationSource = resolve(sdkRoot, item.source);
     const declarationTarget = resolve(root, item.target);
     if (!existsSync(declarationSource)) {
       throw new Error(`Missing ${declarationSource}. Build the SDK package first.`);

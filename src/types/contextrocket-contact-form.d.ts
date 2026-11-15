@@ -11,7 +11,7 @@ export interface ContactFormData {
     intent?: ContactIntent;
     source_channel?: string;
     consent: true;
-    /** Answers keyed by configured, non-system fields in the org's Leads table. */
+    /** Answers keyed by configured, non-system fields in the org's Contacts schema. */
     custom_answers?: Record<string, ContactFormJsonValue>;
     source_url?: string;
     referrer_origin?: string;
@@ -45,11 +45,11 @@ export interface MapContactFormDataOptions {
     defaultIntent?: ContactIntent;
     /** Site-specific attribution channel, for example "website" or "form". */
     sourceChannel?: string;
-    /** Explicitly mapped values keyed by the org's configured Leads field keys. */
+    /** Explicitly mapped values keyed by the org's configured Contacts field keys. */
     customAnswers?: Record<string, ContactFormJsonValue>;
 }
 export interface ContactFormReceipt {
-    lead_id: string;
+    contact_id: string;
     status: "captured";
     delivery_state: "queued" | "duplicate";
     follow_up_state: "human_follow_up";
@@ -82,7 +82,7 @@ declare global {
         ContextRocketSDK?: ContextRocketBrowserSDK;
     }
 }
-/** Map explicitly configured HTML fields to organization Leads field keys. */
+/** Map explicitly configured HTML fields to organization Contact field keys. */
 export declare function mapCustomContactAnswers(values: FormData, fields: Record<string, ContactFormCustomAnswerField>): Record<string, ContactFormJsonValue>;
 /**
  * Map native form values to the shared contact API shape. Site markup and
@@ -120,7 +120,7 @@ export interface ContactFormController {
     reset(): void;
 }
 /**
- * Submit one consented contact form to the organization-scoped leads endpoint.
+ * Submit one consented contact form to the organization-scoped contacts endpoint.
  * This endpoint does not use a browser API key; the path identifies the
  * organization and the server checks the request origin.
  */

@@ -28,7 +28,7 @@ a readable width on desktop while using the available screen on mobile.
 | `packages/sdk` | `@contextrocket/sdk` | A2A client + `createCRClient` |
 | `packages/embed-chat` | `@contextrocket/embed-chat` | Chat widget IIFE |
 
-The browser bridge submits leads to `POST /api/orgs/{org_ref}/leads`, with the configured organization handle in the path. It sends lead fields and attribution in the JSON body; organization selection is not repeated in a query parameter or body field.
+The browser bridge submits contacts to `POST /api/orgs/{org_ref}/contacts`, with the configured organization handle in the path. It sends contact fields and attribution in the JSON body; organization selection is not repeated in a query parameter or body field. The receipt identifies the request as `contact_id`.
 
 The SDK also builds `dist/contact-form.browser.js`, a small browser bridge
 exposing the public contact-form API and attribution helpers to static forms. Its
@@ -143,11 +143,12 @@ The contact-form adapter uses `mapContactFormData`, introduced in SDK version
 pinned by sites that want the shared CDN artifact. The checked-in local bridge
 remains the offline default.
 
-The SDK `0.1.2` contact-form bridge adds `mapCustomContactAnswers` for mapping
-site-owned controls to the organization's configured Leads fields. The local
-starter bundle includes it. The `v0.1.2` CDN release is pending; do not pin it
-until the URL is published and verified. The published `v0.1.1` URL does not
-contain this mapper.
+The contact-form bridge `1.0.0` submits to `/contacts`, reads `contact_id`, and
+includes `mapCustomContactAnswers` for mapping site-owned controls to the
+organization's configured Contact fields. The checked-in starter bundle uses
+this contract. The `v1.0.0` CDN release is pending; do not pin it until the URL
+is published and verified. The published `v0.1.1` bridge uses the retired
+`/leads` contract and is incompatible with this API.
 
 The site-behaviors bundle is checked in for static offline builds and can also
 be loaded from the versioned CDN URL using

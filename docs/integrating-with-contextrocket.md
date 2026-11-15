@@ -128,7 +128,7 @@ The page uses the checked-in browser bridge generated from
 name, email, optional phone, message, explicit consent, source URL, referrer
 origin, bounded UTM fields, and an idempotency key. Only the page origin and
 path are retained in `source_url`; query parameters other than the five UTM
-fields and all fragments are omitted. The API owns the lead ID, capture status,
+fields and all fragments are omitted. The API owns the contact ID, capture status,
 delivery state, and authoritative timestamps. The browser does not invent or
 overwrite those values.
 

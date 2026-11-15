@@ -153,7 +153,7 @@ validation while being sent as a configured custom answer:
 </label>
 ```
 
-The custom answer key must exist in that organization's lead schema before live
+The custom answer key must exist in that organization's Contact schema before live
 submissions are enabled.
 For a fully custom source form, use `data-contact-form` with the same bridge
 attributes and retain its source markup and validation.
