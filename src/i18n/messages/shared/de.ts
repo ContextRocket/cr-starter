@@ -66,6 +66,7 @@ export const sharedDe: LocaleMessages<typeof sharedEn> = {
     demoResult: "Demo abgeschlossen. Es wurden keine Daten gesendet oder gespeichert.",
     success: "Danke. Ihre Nachricht ist eingegangen.",
     failure: "Ihre Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+    consentRequired: "Bitte stimmen Sie der Kontaktaufnahme zu, bevor Sie die Nachricht senden.",
     liveUnavailable: "Die Live-Erfassung ist für diese Website nicht konfiguriert.",
     javascriptRequired: "Aktivieren Sie JavaScript, um diese Nachricht sicher zu senden.",
     required: "Bitte füllen Sie die Pflichtfelder aus und stimmen Sie der Kontaktaufnahme zu.",

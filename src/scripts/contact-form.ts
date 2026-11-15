@@ -5,6 +5,7 @@ type ContactFormLabels = {
   sending: string;
   success: string;
   failure: string;
+  consentRequired: string;
   submit: string;
 };
 
@@ -139,8 +140,16 @@ export function initializeContactForm(form: HTMLFormElement): void {
       });
       setStatus(label("success"));
       form.reset();
-    } catch {
-      setStatus(label("failure"));
+    } catch (error) {
+      const code =
+        error && typeof error === "object" && "code" in error
+          ? error.code
+          : null;
+      setStatus(
+        code === "ERROR_CONTACT_CONSENT_REQUIRED"
+          ? label("consentRequired")
+          : label("failure"),
+      );
     } finally {
       isSubmitting = false;
       controls.forEach((control) => { control.disabled = false; });

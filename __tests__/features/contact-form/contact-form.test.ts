@@ -10,6 +10,7 @@ const labels = {
   sending: "Sending…",
   success: "Message sent.",
   failure: "Could not send your message.",
+  consentRequired: "Please agree to be contacted before sending this message.",
   submit: "Send message",
 };
 
@@ -46,6 +47,18 @@ afterEach(() => {
 });
 
 describe("static contact form", () => {
+  it("keeps required consent client-side", () => {
+    const form = createForm("live");
+    form.querySelector<HTMLInputElement>('input[name="consent"]')!.checked = false;
+    const reportValidity = vi.spyOn(form, "reportValidity").mockReturnValue(false);
+    initializeContactForm(form);
+
+    form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+
+    expect(reportValidity).toHaveBeenCalledOnce();
+    expect(document.querySelector("script[data-contact-form-sdk]")).toBeNull();
+  });
+
   it("CONTACT-001: handles demo submissions locally", async () => {
     const form = createForm("demo");
     initializeContactForm(form);
@@ -114,5 +127,43 @@ describe("static contact form", () => {
     );
     resolveSubmission({ status: "captured" });
     await vi.waitFor(() => expect(form.querySelector("[data-form-status]")?.textContent).toBe(labels.success));
+  });
+
+  it.each([
+    [
+      "typed consent refusal",
+      Object.assign(new Error("request failed"), {
+        code: "ERROR_CONTACT_CONSENT_REQUIRED",
+      }),
+      labels.consentRequired,
+    ],
+    ["network failure", new Error("offline"), labels.failure],
+  ])("shows %s feedback and keeps the entered values", async (_case, error, message) => {
+    const form = createForm("live");
+    const sdk = {
+      createContactFormController: () => ({
+        submit: vi.fn().mockRejectedValue(error),
+        reset: vi.fn(),
+      }),
+      mapContactFormData: vi.fn(() => ({ consent: true as const })),
+      mapCustomContactAnswers: vi.fn(() => ({})),
+    } as unknown as NonNullable<Window["ContextRocketSDK"]>;
+    window.ContextRocketSDK = sdk;
+    initializeContactForm(form);
+
+    form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+
+    await vi.waitFor(() =>
+      expect(form.querySelector("[data-form-status]")?.textContent).toBe(message),
+    );
+    expect(form.querySelector<HTMLInputElement>('input[name="name"]')?.value).toBe(
+      "Alex Example",
+    );
+    expect(form.querySelector<HTMLInputElement>('input[name="email"]')?.value).toBe(
+      "alex@example.com",
+    );
+    expect(form.querySelector<HTMLInputElement>('input[name="message"]')?.value).toBe(
+      "A question",
+    );
   });
 });
