@@ -47,6 +47,7 @@ function themeBundle(dir: string, schemaVersion = "cr.theme.v1") {
   mkdirSync(path.join(dir, "marks"), { recursive: true });
   mkdirSync(path.join(dir, "icons"), { recursive: true });
   writeFileSync(path.join(dir, "marks/01-logo.trimmed.png"), "logo-bytes");
+  writeFileSync(path.join(dir, "marks/01-logo.light.png"), "light-logo-bytes");
   writeFileSync(path.join(dir, "icons/favicon.svg"), "<svg/>");
   writeFileSync(
     path.join(dir, "icons/manifest.json"),
@@ -60,7 +61,7 @@ function themeBundle(dir: string, schemaVersion = "cr.theme.v1") {
       site_mode: "dark",
       variants: { light, dark },
       ...light,
-      marks: [{ role: "logo", url: "https://example.com/logo.png", files: { trimmed: "01-logo.trimmed.png" } }],
+      marks: [{ role: "logo", url: "https://example.com/logo.png", files: { trimmed: "01-logo.trimmed.png", light: "01-logo.light.png" } }],
       fallback_wordmark: null,
       icons: "icons/manifest.json",
     }),
@@ -71,10 +72,10 @@ let scratch: string;
 let sitePath: string;
 let publicDir: string;
 
-function runImport(bundle: string) {
+function runImport(bundle: string, ...options: string[]) {
   return spawnSync(
     process.execPath,
-    ["scripts/import-theme.mjs", "--from", bundle, "--config", sitePath, "--public", publicDir],
+    ["scripts/import-theme.mjs", "--from", bundle, "--config", sitePath, "--public", publicDir, ...options],
     { cwd: root, encoding: "utf8" },
   );
 }
@@ -92,6 +93,24 @@ beforeEach(() => {
 afterEach(() => rmSync(scratch, { recursive: true, force: true }));
 
 scenario("a fork imports a published theme for its own site", () => {
+  it("uses the published variant and readable mark for a generated page without changing its content", () => {
+    const bundle = path.join(scratch, "bundle");
+    themeBundle(bundle);
+    const before = JSON.parse(readFileSync(sitePath, "utf8"));
+
+    assert.equal(runImport(bundle, "--purpose", "published").status, 0);
+
+    const site = JSON.parse(readFileSync(sitePath, "utf8"));
+    assert.equal(site.theme.tokens["--background"], "#ffffff");
+    assert.equal(site.theme.radius, "1rem");
+    assert.equal(site.assets.logo, "/theme/marks/01-logo.light.png");
+    assert.equal(readFileSync(path.join(publicDir, "theme/marks/01-logo.light.png"), "utf8"), "light-logo-bytes");
+    assert.deepEqual(site.company, before.company);
+    assert.deepEqual(site.nav, before.nav);
+    assert.equal(runImport(bundle, "--purpose", "published").status, 0);
+    assert.deepEqual(JSON.parse(readFileSync(sitePath, "utf8")), site);
+  });
+
   it("applies the site variant and brand files without touching fork-owned fields, idempotently", async () => {
     const bundle = given("a bundle whose site is dark while its default is light", () => {
       const dir = path.join(scratch, "bundle");

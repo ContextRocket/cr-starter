@@ -43,6 +43,14 @@ PUBLIC_CONTEXTROCKET_API_KEY=your-publishable-api-key
 - `content/topics/` -- optional evergreen references when `features.topics` is enabled
 - `public/` -- assets
 
+Import a captured brand with `pnpm theme:import --org <handle>` or
+`pnpm theme:import --from <bundle-directory>`. Website imports use the site's
+observed variant. For a generated landing page, add `--purpose published` to
+use the shared published variant and its matching marks. Import validates the
+theme before writing and preserves the fork's content and navigation. Automated
+builds should import a local bundle pinned to the selected theme release rather
+than fetching several assets from a changing CDN route.
+
 Use `draft: true` in a post's Markdown frontmatter while preparing it. Drafts
 appear in local development for review, but production builds omit their pages
 and exclude them from the blog listing, feed, and sitemap.

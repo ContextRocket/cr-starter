@@ -4,10 +4,11 @@
  *
  *   node scripts/import-theme.mjs --org <handle>        # https://<handle>.cdn.contextrocket.com/theme/
  *   node scripts/import-theme.mjs --from <dir|theme.json>  # a local theme bundle
- *   ... [--dry-run] [--config <site.json>] [--public <dir>]
+ *   ... [--purpose site|published] [--dry-run] [--config <site.json>] [--public <dir>]
  *
- * The import applies the variant for the site itself (`site_mode`, else
- * `default`), merges its tokens and radius into `theme` in config/site.json,
+ * Website imports apply `site_mode` (else `default`); generated surfaces use
+ * `--purpose published` to apply `default` and its matching mark. The import
+ * merges tokens and radius into `theme` in config/site.json,
  * and points the brand marks and icon set in `assets` at copies under
  * `public/theme/`. The import owns `public/theme/`; every other field stays
  * fork-owned. The candidate config passes scripts/validate-theme.mjs before
@@ -59,7 +60,7 @@ const ICON_ASSETS = {
   icon192Maskable: ["icon-192-maskable.png"],
   icon512Maskable: ["icon-512-maskable.png"],
 };
-/** The mark file the site shows: the observed colours, trimmed when available. */
+/** Website marks retain the observed colours, trimmed when available. */
 const SITE_MARK_FILES = ["trimmed", "saved"];
 
 class ImportError extends Error {}
@@ -67,25 +68,26 @@ class ImportError extends Error {}
 function usage() {
   return (
     "Usage: node scripts/import-theme.mjs (--org <handle> | --from <dir|theme.json>) " +
-    "[--dry-run] [--config <site.json>] [--public <dir>]"
+    "[--purpose site|published] [--dry-run] [--config <site.json>] [--public <dir>]"
   );
 }
 
 function parseArgs(argv) {
-  const options = { dryRun: false };
+  const options = { dryRun: false, purpose: "site" };
   for (let index = 0; index < argv.length; index += 1) {
     const flag = argv[index];
     if (flag === "--dry-run") {
       options.dryRun = true;
       continue;
     }
-    const key = { "--org": "org", "--from": "from", "--config": "config", "--public": "public" }[flag];
+    const key = { "--org": "org", "--from": "from", "--config": "config", "--public": "public", "--purpose": "purpose" }[flag];
     const value = argv[index + 1];
     if (!key || !value || value.startsWith("--")) throw new ImportError(usage());
     options[key] = value;
     index += 1;
   }
   if (Boolean(options.org) === Boolean(options.from)) throw new ImportError(usage());
+  if (!["site", "published"].includes(options.purpose)) throw new ImportError(usage());
   return options;
 }
 
@@ -186,18 +188,20 @@ function parseThemeDocument(raw) {
   return document;
 }
 
-/** Same rule as ContextRocket's `variant_mode_for(purpose="site")`. */
-function siteVariantMode(document) {
-  return document.variants[document.site_mode] ? document.site_mode : document.default;
+/** Same purpose rule as ContextRocket's `variant_mode_for`. */
+function variantMode(document, purpose) {
+  return purpose === "site" && document.variants[document.site_mode]
+    ? document.site_mode : document.default;
 }
 
-function siteMarkFile(mark) {
-  const key = SITE_MARK_FILES.find((name) => mark.files[name]);
+function markFile(mark, purpose, mode) {
+  const choices = purpose === "published" ? [mode] : SITE_MARK_FILES;
+  const key = choices.find((name) => mark.files[name]);
   return key ? mark.files[key] : undefined;
 }
 
 /** The files to place under public/theme/ and the `assets` fields that point at them. */
-async function plannedAssets(source, document) {
+async function plannedAssets(source, document, purpose, mode) {
   const files = new Map();
   const assets = {};
   const warnings = [];
@@ -207,8 +211,8 @@ async function plannedAssets(source, document) {
   };
 
   const markPath = (role) => {
-    const mark = document.marks.find((entry) => entry.role === role && siteMarkFile(entry));
-    return mark ? `marks/${siteMarkFile(mark)}` : undefined;
+    const mark = document.marks.find((entry) => entry.role === role && markFile(entry, purpose, mode));
+    return mark ? `marks/${markFile(mark, purpose, mode)}` : undefined;
   };
   const logo = markPath("logo");
   const wordmark = markPath("wordmark");
@@ -286,9 +290,9 @@ async function main() {
   const source = themeSource(options);
 
   const document = parseThemeDocument(await source.read("theme.json"));
-  const mode = siteVariantMode(document);
+  const mode = variantMode(document, options.purpose);
   const variant = document.variants[mode];
-  const planned = await plannedAssets(source, document);
+  const planned = await plannedAssets(source, document, options.purpose, mode);
 
   const siteText = readFileSync(configPath, "utf8");
   const site = JSON.parse(siteText);
@@ -316,7 +320,7 @@ async function main() {
   const stale = [...existing].filter((path) => !planned.files.has(path));
   for (const path of stale) fileLines.push(`  - ${path}`);
 
-  console.log(`import-theme: ${source.label} (${SCHEMA_VERSION}, site variant: ${mode})`);
+  console.log(`import-theme: ${source.label} (${SCHEMA_VERSION}, ${options.purpose} variant: ${mode})`);
   for (const warning of [...planned.warnings, ...variant.warnings.map((w) => `theme: ${w}`)]) {
     console.log(`import-theme: warning: ${warning}`);
   }
