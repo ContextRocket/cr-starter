@@ -1,5 +1,18 @@
 # ContextRocket Starter -- Developer Guide
 
+`AGENTS.md` is the shared, canonical instruction file for this repository and
+its Astro forks. Read [README.md](README.md) for the product overview and quick
+start. If `AGENTS.project.md` exists, read it for that site's identity,
+constraints, content boundaries, and owned routes. Keep it short and
+site-specific; do not copy shared starter rules into it. Fork sync policies
+must preserve `AGENTS.project.md` while syncing this file. More specific nested
+`AGENTS.md` files also apply to the paths they cover.
+
+Claude, Gemini, Cursor, Codex, OpenCode, and GitHub Copilot entry points should
+lead here. Keep `CLAUDE.md`, `GEMINI.md`, and editor-specific launchers as thin pointers.
+Task-specific workflows belong in a focused skill or guide linked from this
+file, not duplicated across agent entry points.
+
 This is the public, **Astro/static-first** starter. Astro generates the pages
 at build time into a `dist/` tree for any CDN (Cloudflare Pages, CloudFront,
 S3, Netlify, etc.). Generated sites do not require server-side rendering, a
@@ -34,7 +47,8 @@ the emitted Astro routes.
 - Home (landing) -- fork-owned composition under `src/pages/[locale]/index.astro`
 - Blog (path from `blog.config.mjs`)
 - Optional evergreen topics (only when `features.topics` is enabled)
-- Contact (localized SDK contact-form example; demo mode by default)
+- Contact page (localized SDK contact-form example; demo mode by default)
+- Editable testimonial showcase and ContextRocket chat FAB
 - Website discovery: `sitemap.xml`, `robots.txt`, `llms.txt`, `feed.xml`,
   `.well-known/security.txt`
 - Cookie consent: automatic by default when an optional site integration is
@@ -49,7 +63,10 @@ or an appearance toggle.
 **Out by default (do not reintroduce as required pages)**
 
 - Privacy, terms, cookies, impressum, attribution, FAQ, About,
-  Features-as-a-page, gallery/portfolio demos, auth/dashboard, testimonials
+  Features-as-a-page, gallery/portfolio demos, auth/dashboard
+
+The testimonial showcase contains example content. Replace it with approved
+quotes or remove it before publishing a customer site.
 
 Forks add brand-specific pages under `src/pages/` or `src/components/custom/`
 when needed. Do not force FAQ/About onto every port.
@@ -117,11 +134,25 @@ Do not assert exact marketing copy. Prefer pure helpers and observable outcomes.
 Product-app state (Query / Zustand / nuqs / XState) belongs in `cr-auth-starter`
 / `cr-landing`, not here.
 
+## Agent skills and local guidance
+
+- Check `.agents/skills/*/SKILL.md` for a relevant workflow before specialized
+  work. The reusable source-site port workflow is
+  `.agents/skills/source-site-port/SKILL.md`. Read and follow relevant skills;
+  avoid copying their full workflows into another agent file.
+- Shared starter workflows belong in a focused guide or skill in this
+  repository and should be linked here. Customer identity, content boundaries,
+  route exceptions, and brand-specific instructions belong in the fork's
+  `AGENTS.project.md`.
+- New brand forks should start from
+  [`docs/AGENTS.project.template.md`](docs/AGENTS.project.template.md). Add
+  `AGENTS.project.md` to `.fork-sync.json`'s `preserve` list.
+
 ## Relationship to other repos
 
-- **cr-auth-starter / Luna** -- Next.js + API line. Tracks `cr-landing`
-  architecture (Query / Zustand / nuqs / XState, behavior contracts). This
-  Astro starter shares testing _ideas_, not that state stack.
+- **cr-auth-starter** -- separate Next.js + FastAPI line for full-stack auth
+  products. Luna is now an Astro brand fork of this starter; do not describe it
+  as an active auth-starter fork.
 - **ContextRocket product / cr-landing** -- separate. Learn from this starter's
   publish contract; do not fork or depend on this repo from the product.
 - **Brand forks (kleos, markmacmahon, …)** -- Astro config + content + home

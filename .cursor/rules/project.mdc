@@ -1,17 +1,6 @@
 ---
-description: Project-wide AI agent instructions
+description: Canonical project instructions
 alwaysApply: true
 ---
 
-Read and follow all instructions in @AGENTS.md in this repository root.
-
-When working in a subdirectory, also read the local AGENTS.md if one exists.
-
-Key rules for in-editor work:
-1. Self-contained product code -- do not import from sibling *app* repos.
-   Browser SDK/embeds come only from `@contextrocket/*` (local `file:` to
-   `cr-sdk` during development).
-2. i18n keys for strings -- all user-facing text goes through `createT(locale)` / `t("KEY")` in `src/i18n/keys.ts`; no hardcoded English in markup.
-3. Live chat goes through the embed widget (`public/embed/widget.js` from
-   `@contextrocket/embed-chat`) with publishable `PUBLIC_*` credentials --
-   never mint server secrets in the browser.
+Read and follow the repository root AGENTS.md before making changes. It points to any project-specific AGENTS.project.md and narrower instructions that apply to the files being changed.

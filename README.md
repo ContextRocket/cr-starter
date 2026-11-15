@@ -1,7 +1,20 @@
 # ContextRocket Starter
 
-Public **Astro** starter for branded static websites that connect to ContextRocket
-through embeddable chat and contact-form SDK artifacts. Builds to `dist/` for any CDN.
+Public **Astro** starter for branded static websites that connect to
+ContextRocket through embeddable chat and contact-form SDK artifacts. Builds to
+`dist/` for any CDN.
+
+## For coding agents
+
+Start with [AGENTS.md](AGENTS.md), the shared agent guide. Brand forks can add
+`AGENTS.project.md` for their site-specific facts and decisions; the shared
+guide loads it when present, and `.fork-sync.json` should preserve it. Use
+[`docs/AGENTS.project.template.md`](docs/AGENTS.project.template.md) when
+creating a fork. `CLAUDE.md`, `GEMINI.md`, `.cursor/rules/project.mdc`, and
+`.github/copilot-instructions.md` are thin entry points to the same
+instructions. The README is the human-facing setup and product overview;
+detailed contribution rules stay in `AGENTS.md`. For existing-site ports, the
+shared `.agents/skills/source-site-port/SKILL.md` workflow applies.
 
 ## Quick start
 

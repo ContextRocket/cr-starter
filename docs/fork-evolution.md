@@ -20,6 +20,17 @@ page or dependency unless the fork composes one.
 | `cr-sdk` | Browser SDK, A2A transport, chat widget, contact form clients, reusable UI packages | Versioned `@contextrocket/*` releases |
 | Brand fork | Site-specific copy, pages, assets, design tokens, configuration | Customer/site repository |
 
+## Agent instruction files
+
+`AGENTS.md` is the shared instruction source for the starter and Astro forks.
+It points to the README, focused guides, and relevant skills. Each fork may add
+`AGENTS.project.md` for only its site-specific identity, content boundaries,
+route exceptions, and local workflow. The fork's `.fork-sync.json` must list
+that file under `preserve` while syncing the shared `AGENTS.md` and any shared
+skills. Claude, Gemini, Cursor, Copilot, Codex, and OpenCode entry points should
+point to this source rather than maintain a second instruction set. Start new
+overlays from `docs/AGENTS.project.template.md`.
+
 The embed chat is already a good example: its source and behavior tests live in
 `cr-sdk/packages/embed-chat`; the static site consumes its built widget. Forks
 do not carry another copy of the chat test suite.
