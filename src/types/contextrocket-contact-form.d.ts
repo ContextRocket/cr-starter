@@ -31,7 +31,7 @@ export interface ContactFormFieldNames {
     intent: string;
     consent: string;
 }
-export type ContactFormCustomAnswerType = "text" | "number" | "boolean" | "multi_select";
+export type ContactFormCustomAnswerType = "text" | "url" | "number" | "boolean" | "multi_select";
 export interface ContactFormCustomAnswerField {
     /** Native form control name. Repeated checkbox/select values share a name. */
     name: string;
@@ -120,9 +120,9 @@ export interface ContactFormController {
     reset(): void;
 }
 /**
- * Submit one consented contact form to the org-scoped public capture endpoint.
- * This endpoint does not use a browser API key; the server binds the handle to
- * that organization's lead record and checks the request origin.
+ * Submit one consented contact form to the organization-scoped leads endpoint.
+ * This endpoint does not use a browser API key; the path identifies the
+ * organization and the server checks the request origin.
  */
 export declare function submitContactForm({ apiBaseUrl, orgHandle, form, idempotencyKey, signal, fetcher, }: SubmitContactFormOptions): Promise<ContactFormReceipt>;
 /**
