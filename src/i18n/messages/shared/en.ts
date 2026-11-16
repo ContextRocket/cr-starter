@@ -65,7 +65,7 @@ export const sharedEn = {
     failure: "We could not send your message. Please try again.",
     consentRequired: "Please agree to be contacted before sending this message.",
     liveUnavailable: "Live contact form is not configured for this site.",
-    javascriptRequired: "Please enable JavaScript to send your message.",
+    javascriptRequired: "This form requires JavaScript to send your message.",
     required: "Please complete the required fields and give consent.",
   },
   notifications: {

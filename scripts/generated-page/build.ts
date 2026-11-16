@@ -24,6 +24,35 @@ import {
 import type { BuildInputs } from "./validate.ts";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const sourceRoots = ["src", "scripts", "schemas", "config"];
+// These are the fonts the Starter already serves through the fixed
+// ContextRocket brand-assets CDN. Customer-hosted fonts need a separate
+// admitted asset path; accepting arbitrary family names here would make a
+// generated page depend on a font that the reviewed theme did not publish.
+const SUPPORTED_GENERATED_FONT_FAMILIES = new Set([
+  "Inter Tight",
+  "Geist Mono",
+  "Space Mono",
+  "Newsreader",
+  "system-ui",
+  "sans-serif",
+  "serif",
+  "monospace",
+  "Georgia",
+  "PingFang SC",
+  "Hiragino Sans GB",
+  "Microsoft YaHei",
+  "Noto Sans SC",
+]);
+function supportedGeneratedFontStack(value: unknown): boolean {
+  if (typeof value !== "string") return false;
+  const families = value
+    .split(",")
+    .map((family) => family.trim().replace(/^(['"])(.*)\1$/, "$2"));
+  return (
+    families.length > 0 &&
+    families.every((family) => SUPPORTED_GENERATED_FONT_FAMILIES.has(family))
+  );
+}
 export const sha256 = (bytes: Uint8Array | string) =>
   createHash("sha256").update(bytes).digest("hex");
 export async function fileInventory(
@@ -289,6 +318,9 @@ export async function buildGeneratedPage({
   const config = JSON.parse(
     await readFile(join(root, "config/site.json"), "utf8"),
   );
+  const themeDocument = JSON.parse(
+    await readFile(join(inputRoot, "theme/theme.json"), "utf8"),
+  );
   config.company = {
     name: input.companyName,
     description: text(object(manifest.search).description),
@@ -311,7 +343,17 @@ export async function buildGeneratedPage({
       indexable: object(manifest.search).sitemap_include === true,
     },
   ];
-  config.assets = { logo: "", wordmark: "", faviconIco: "" };
+  // Keep the ContextRocket wordmark as the header fallback when a captured
+  // theme has no usable mark. A source logo imported below replaces it.
+  const defaultWordmark =
+    themeDocument.site_mode === "dark"
+      ? "/brand/logo-h-spark-white.svg"
+      : "/brand/logo-h-spark-ink.svg";
+  config.assets = {
+    logo: defaultWordmark,
+    wordmark: defaultWordmark,
+    faviconIco: "",
+  };
   config.social = {};
   config.nav = { showAppLinks: false, links: [], footerLinks: [] };
   config.chrome = {
@@ -335,9 +377,6 @@ export async function buildGeneratedPage({
   config.integrationConsentMode = "auto";
   config.theme = { tokens: {}, radius: "0.5rem" };
   config.brandAssetsUrl = "/brand";
-  const themeDocument = JSON.parse(
-    await readFile(join(inputRoot, "theme/theme.json"), "utf8"),
-  );
   if (themeDocument.site_mode === "dark") config.chrome.poweredByTone = "white";
   await writeJson(join(source, "config/site.json"), config);
   const env: NodeJS.ProcessEnv = {
@@ -371,13 +410,13 @@ export async function buildGeneratedPage({
   const themed = JSON.parse(
     await readFile(join(source, "config/site.json"), "utf8"),
   );
-  // The bounded renderer uses system fonts; custom font bundles need an explicit adapter.
+  // ContextRocket's bundled typefaces are available from the shared brand CDN.
+  // Keep rejecting customer-hosted or otherwise unbundled font families until
+  // the renderer has an admitted font-asset adapter.
   for (const [name, value] of Object.entries(themed.theme.tokens))
     if (
       name.startsWith("--font-") &&
-      !/^(system-ui|sans-serif|serif|monospace)(,\s*(system-ui|sans-serif|serif|monospace))*$/.test(
-        text(value),
-      )
+      !supportedGeneratedFontStack(value)
     )
       fail("UNSUPPORTED_FONT", name);
   if (!themed.assets.faviconIco)

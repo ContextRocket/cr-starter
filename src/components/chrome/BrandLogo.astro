@@ -18,7 +18,7 @@ const variant = logo.variant ?? "icon";
       alt={logo.alt}
       width={logo.width}
       class={className ?? "block h-auto shrink-0 object-contain"}
-      style={className ? undefined : `width:auto;height:auto;max-width:${logo.width}px;max-height:48px;object-fit:contain`}
+      style={className ? undefined : `width:${logo.width}px;height:auto;max-width:${logo.width}px;max-height:48px;object-fit:contain`}
     />
   </span>
 ) : (

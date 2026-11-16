@@ -89,8 +89,12 @@ by Astro, never injected as executable markup. Canonical Contact fields are
 `name`, `email`, `phone`, `company` and `message`; `name` is required. Other
 form fields need an explicit adapter to the configured Contacts schema.
 
-The first slice supports system fonts and self canonicals. Custom font tokens,
-analytics, other locales, and unsupported sections are refused. The route is
+The first slice supports system fonts and a strict allowlist of ContextRocket
+brand-CDN families (`Inter Tight`, `Geist Mono`, `Space Mono`, and `Newsreader`)
+plus the listed platform fallbacks. An observed customer font is accepted only
+when it resolves to one of those already-shipped families; the builder refuses
+customer-hosted or unbundled font stacks. Canonicals must be self-referential.
+Analytics, other locales, and unsupported sections are refused. The route is
 not restricted to the onboarding `/p/` namespace. This is still a bounded
 semantic page producer; it does not import an arbitrary website or make its
 content structure unrestricted. `/cr/` remains an unselected proposal. Shared
