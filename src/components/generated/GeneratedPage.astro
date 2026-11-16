@@ -2,6 +2,7 @@
 import { assetHref } from '@/lib/paths';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import ContextRocketBadge from '@/components/chrome/ContextRocketBadge.astro';
+import { siteConfig } from '@/config/site.config';
 import GeneratedContactForm from './GeneratedContactForm.astro';
 import type { GeneratedContactFormView } from '@/lib/generated-contact-form';
 import { object, text, array, type BuildInputs } from '../../../scripts/generated-page/validate';
@@ -26,7 +27,7 @@ function ctaHref(section:Record<string,unknown>):string {
   return `#${text(sections.find(s=>s.type==='contact_form' && object(s.binding).binding_id===section.form_binding_id)!.id)}`;
 }
 ---
-<BaseLayout locale="en" path={input.mount} title={text(search.title)} titleIsExact description={text(search.description)} robots={text(search.robots_intent) as 'index,follow' | 'noindex,nofollow'} includeSiteJsonLd={false} fontAssets={{}}>
+<BaseLayout locale="en" path={input.mount} title={text(search.title)} titleIsExact description={text(search.description)} robots={text(search.robots_intent) as 'index,follow' | 'noindex,nofollow'} includeSiteJsonLd={false} fontAssets={{}} navigation={input.navigation ? { ...input.navigation, homeHref: input.navigation.homeHref ?? `${input.publicOrigin}/` } : undefined}>
   <main id="main-content" class="mx-auto w-full max-w-5xl space-y-12 px-6 py-12">
     {sections.map(s=> s.type==='contact_form' ? <GeneratedContactForm view={contactFormView(s)} /> : (
       <section id={text(s.id)} class="space-y-5">
@@ -40,6 +41,6 @@ function ctaHref(section:Record<string,unknown>):string {
       </section>
     ))}
     {input.factsLink && <nav><a class="underline" href={input.factsLink.href}>{input.factsLink.label}</a></nav>}
-    {manifest.disclosure_mode==='contextrocket' && <ContextRocketBadge variant="inline" />}
+    {manifest.disclosure_mode==='contextrocket' && <ContextRocketBadge variant="inline" tone={siteConfig.chrome.poweredByTone} />}
   </main>
 </BaseLayout>

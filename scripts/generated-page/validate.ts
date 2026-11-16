@@ -102,6 +102,11 @@ export interface BuildInputs {
   factsLink?: { label: string; href: string };
   contact?: CapabilityBinding;
   chat?: CapabilityBinding & { publicApiKey: string };
+  navigation?: {
+    homeHref?: string;
+    containerWidth?: "5xl" | "screen-xl";
+    links: { label: string; href: string; variant?: "default" | "primary" }[];
+  };
 }
 export function validateInputs(raw: unknown): BuildInputs {
   const o = object(raw);
@@ -119,6 +124,7 @@ export function validateInputs(raw: unknown): BuildInputs {
     "factsLink",
     "contact",
     "chat",
+    "navigation",
   ];
   if (Object.keys(o).some((k) => !allowed.includes(k)))
     fail("INVALID_INPUT", "Unknown build input");
@@ -181,6 +187,42 @@ export function validateInputs(raw: unknown): BuildInputs {
       !/^[A-Za-z0-9_.-]{8,4096}$/.test(text(binding.publicApiKey))
     )
       fail("CAPABILITY_BINDING", "Chat publishable key");
+  }
+  if (o.navigation !== undefined) {
+    const navigation = object(o.navigation);
+    if (
+      Object.keys(navigation).some(
+        (key) => !["homeHref", "containerWidth", "links"].includes(key),
+      )
+    )
+      fail("INVALID_NAVIGATION", "Unknown navigation field");
+    if (navigation.homeHref !== undefined) safeHref(text(navigation.homeHref));
+    if (
+      navigation.containerWidth !== undefined &&
+      !["5xl", "screen-xl"].includes(text(navigation.containerWidth))
+    )
+      fail("INVALID_NAVIGATION", "Unsupported navigation width");
+    const links = array(navigation.links);
+    if (links.length < 1 || links.length > 12)
+      fail("INVALID_NAVIGATION", "Expected between 1 and 12 navigation links");
+    for (const rawLink of links) {
+      const link = object(rawLink);
+      if (
+        Object.keys(link).some(
+          (key) => !["label", "href", "variant"].includes(key),
+        )
+      )
+        fail("INVALID_NAVIGATION", "Unknown navigation link field");
+      const label = text(link.label);
+      if (!label.trim() || label.length > 120)
+        fail("INVALID_NAVIGATION", "Navigation label is empty or too long");
+      safeHref(text(link.href));
+      if (
+        link.variant !== undefined &&
+        !["default", "primary"].includes(text(link.variant))
+      )
+        fail("INVALID_NAVIGATION", "Unsupported navigation link variant");
+    }
   }
   return o as unknown as BuildInputs;
 }
@@ -269,7 +311,10 @@ export function validateManifest(
     if (kind === "contact_form") {
       const binding = object(section.binding);
       if (!input.contact || binding.public_app_ref !== input.contact.appRef)
-        fail("CAPABILITY_BINDING", "Contact form App mismatch or missing binding");
+        fail(
+          "CAPABILITY_BINDING",
+          "Contact form App mismatch or missing binding",
+        );
       safeHref(text(binding.privacy_url));
       const fields = array(binding.fields).map(object);
       // These are canonical Contact fields, not a second form-data model.

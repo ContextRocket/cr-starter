@@ -25,9 +25,10 @@ The input directory contains only:
 - `manifest.json`: product-owned semantic page content and evidence receipts.
 - `build-input.json`: the adapter envelope below.
 - `theme/`: a complete immutable local `cr.theme.v1` bundle with an icon set.
-- `assets/`: governed image files, including a local attribution mark when the
-  manifest selects ContextRocket disclosure. These must be canonical bytes already
-  admitted by the product's asset pipeline, including its SVG security checks.
+- `assets/`: governed image files. The renderer supplies the pinned ContextRocket
+  attribution marks when the manifest selects ContextRocket disclosure.
+  Customer assets must be canonical bytes already admitted by the product's
+  asset pipeline, including its SVG security checks.
   The build requires an admission receipt and exact digests; a caller-supplied
   digest alone is not evidence that an arbitrary SVG is safe. Executable file
   types and symlinks are refused; this adapter is not an SVG sanitizer.
@@ -40,16 +41,17 @@ content model here. JSON Schema validation runs before renderer-specific checks.
 
 `build-input.json` has format `cr.generated-page.v1` and these fields:
 
-| Field                                 | Meaning                                                                                                                                                                                                                |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `organizationHandle`, `companyName`   | Supplied Organization identity; handle must match the manifest.                                                                                                                                                        |
-| `publicOrigin`, `mount`, `visibility` | Explicit HTTPS origin, the exact safe publication path (for example `/services/` or `/journal/solar-storage/`), and `public` or `private`. `/` is supported when the product intentionally owns the organization root. |
-| `pins`                                | Exact `rendererPins()` result: starter Git revision, actual source digest, lockfile, schema, shared chrome, installed SDK artifacts, embed artifacts and Node version.                                                 |
-| `theme`                               | Immutable `release` identifier and complete relative-path-to-SHA256 `files` map. Imported locally with `--purpose published`.                                                                                          |
-| `assetAdmissionReceiptId`             | Product asset-admission receipt for these canonical theme and asset bytes. The product publisher owns unsafe-SVG rejection.                                                                                            |
-| `assets`                              | Complete relative-path-to-SHA256 map for `assets/`.                                                                                                                                                                    |
-| `factsLink`                           | Optional supplied `label` and `href`; links to a managed Facts bundle without copying it.                                                                                                                              |
-| `contact`, `chat`                     | Optional product-resolved binding: `appRef`, `organizationHandle`, `publicOrigin`, `apiOrigin`, `receiptId`. Chat also requires an origin-bound `publicApiKey`.                                                        |
+| Field                                 | Meaning                                                                                                                                                                                                                            |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `organizationHandle`, `companyName`   | Supplied Organization identity; handle must match the manifest.                                                                                                                                                                    |
+| `publicOrigin`, `mount`, `visibility` | Explicit HTTPS origin, the exact safe publication path (for example `/services/` or `/journal/solar-storage/`), and `public` or `private`. `/` is supported when the product intentionally owns the organization root.             |
+| `pins`                                | Exact `rendererPins()` result: starter Git revision, actual source digest, lockfile, schema, shared chrome, installed SDK artifacts, embed artifacts and Node version.                                                             |
+| `theme`                               | Immutable `release` identifier and complete relative-path-to-SHA256 `files` map. Imported locally with `--purpose site` so the source brand's `site_mode` is applied.                                                              |
+| `assetAdmissionReceiptId`             | Product asset-admission receipt for these canonical theme and asset bytes. The product publisher owns unsafe-SVG rejection.                                                                                                        |
+| `assets`                              | Complete relative-path-to-SHA256 map for `assets/`.                                                                                                                                                                                |
+| `factsLink`                           | Optional supplied `label` and `href`; links to a managed Facts bundle without copying it.                                                                                                                                          |
+| `navigation`                          | Optional source-site navigation: original `homeHref` and ordered `{label, href, variant}` links, with a shared `5xl` or `screen-xl` container width. The generated header renders these labels directly and does not invent links. |
+| `contact`, `chat`                     | Optional product-resolved binding: `appRef`, `organizationHandle`, `publicOrigin`, `apiOrigin`, `receiptId`. Chat also requires an origin-bound `publicApiKey`.                                                                    |
 
 Set the manifest renderer to `cr-starter` and `pinned_version` to
 `pins.starterSourceSha256`. The source digest, rather than a Git label alone,
@@ -92,8 +94,10 @@ analytics, other locales, and unsupported sections are refused. The route is
 not restricted to the onboarding `/p/` namespace. This is still a bounded
 semantic page producer; it does not import an arbitrary website or make its
 content structure unrestricted. `/cr/` remains an unselected proposal. Shared
-BaseLayout provides chat and consent; generated forms reuse the SDK's receipt
-and retry controller.
+The renderer imports the theme's `site_mode` variant so the preview reflects
+the captured site's own surface and uses a contrasting ContextRocket
+attribution mark. BaseLayout provides optional source navigation, chat and
+consent; generated forms reuse the SDK's receipt and retry controller.
 Facts publication, GitHub provisioning, product BuildPort cutover and browser
 capability provisioning remain outside this producer.
 

@@ -8,21 +8,29 @@ import FooterSection from "@/components/chrome/FooterSection.astro";
 import { siteConfig, isSingleLocale, type NavLinkConfig } from "@/config/site.config";
 import { createT } from "@/i18n/keys";
 import { getActiveLocales, type SupportedLocale } from "@/i18n/locales";
-import { homeHref, localizedHref } from "@/lib/paths";
+import { assetHref, homeHref, localizedHref } from "@/lib/paths";
 import { isCurrentNavigationLink } from "@/lib/navigation";
 import type { BrandLogoAsset } from "@/components/chrome/brand-logo-types";
-import type { LocaleOption } from "@/components/chrome/navigation-types";
+import type { LocaleOption, NavLink } from "@/components/chrome/navigation-types";
+
+type NavigationOverride = {
+  homeHref?: string;
+  links: NavLink[];
+  containerWidth?: "5xl" | "screen-xl";
+};
 
 interface Props {
   locale: SupportedLocale;
   path?: string;
+  navigation?: NavigationOverride;
 }
 
-const { locale, path = "/" } = Astro.props;
+const { locale, path = "/", navigation } = Astro.props;
 const t = createT(locale);
 
-const navLinks = ((siteConfig.nav.links ?? []) as NavLinkConfig[])
-  .map((link) => {
+const navLinks = navigation
+  ? navigation.links.map((link) => ({ ...link, current: false }))
+  : ((siteConfig.nav.links ?? []) as NavLinkConfig[]).map((link) => {
     const href =
       link.href.startsWith("http") || link.href.startsWith("mailto:")
         ? link.href
@@ -106,10 +114,11 @@ const brandAssets = siteConfig.assets as {
 };
 const logo: BrandLogoAsset | undefined = siteConfig.chrome.showBrandLogo
   ? {
-      src:
+      src: assetHref(
         logoVariant === "wordmark"
           ? (brandAssets.wordmark ?? brandAssets.logo)
           : brandAssets.logo,
+      ),
       alt: siteConfig.companyName,
       variant: logoVariant,
       width: logoVariant === "wordmark" ? 180 : 28,
@@ -127,7 +136,7 @@ const headerProps = {
   links: navLinks,
   logo,
   brandName: siteConfig.companyName,
-  homeHref: homeHref(locale),
+  homeHref: navigation?.homeHref ?? homeHref(locale),
   navLabel: t("nav.aria.primary"),
   openMenuLabel: t("nav.aria.openMenu"),
   closeMenuLabel: t("nav.aria.closeMenu"),
@@ -136,6 +145,8 @@ const headerProps = {
   localeOptions,
   changeLanguageLabel: t("locale.changeLanguage"),
   navBreakpoint: siteConfig.chrome.navBreakpoint,
+  containerClassName:
+    navigation?.containerWidth === "5xl" ? "max-w-5xl" : "max-w-screen-xl",
 };
 ---
 

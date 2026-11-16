@@ -79,6 +79,10 @@ export async function rendererPins(): Promise<Record<string, string>> {
   const embeds: Record<string, string> = {};
   for (const file of ["widget.js", "site-behaviors.js"])
     embeds[file] = sha256(await readFile(join(root, "public/embed", file)));
+  for (const file of ["logo-h-spark-ink.svg", "logo-h-spark-white.svg"])
+    source[`public/brand/${file}`] = sha256(
+      await readFile(join(root, "public/brand", file)),
+    );
   return {
     schemaSha256: sha256(
       await readFile(join(root, "schemas/landing-page-manifest.schema.json")),
@@ -244,11 +248,6 @@ export async function buildGeneratedPage({
     if (!/\.(png|jpe?g|webp|gif|svg|ico|woff2?)$/i.test(name))
       fail("UNSUPPORTED_ASSET", name);
   }
-  if (
-    manifest.disclosure_mode === "contextrocket" &&
-    !input.assets["brand/logo-h-spark-ink.svg"]
-  )
-    fail("MISSING_PIN", "Local attribution mark");
   await freshDirectory(work);
   await freshDirectory(output);
   const source = join(work, "source");
@@ -271,6 +270,12 @@ export async function buildGeneratedPage({
     recursive: true,
   });
   await cp(inputRoot, join(source, "build-inputs"), { recursive: true });
+  await mkdir(join(source, "public/brand"), { recursive: true });
+  for (const file of ["logo-h-spark-ink.svg", "logo-h-spark-white.svg"])
+    await cp(
+      join(root, "public/brand", file),
+      join(source, "public/brand", file),
+    );
   if (
     inventoryHash(await fileInventory(join(source, "build-inputs"))) !==
     inventoryHash(supplied)
@@ -310,9 +315,11 @@ export async function buildGeneratedPage({
   config.social = {};
   config.nav = { showAppLinks: false, links: [], footerLinks: [] };
   config.chrome = {
-    header: "none",
+    header: input.navigation ? "marketing" : "none",
     footer: "none",
-    showBrandLogo: false,
+    logoVariant: "wordmark",
+    showBrandLogo: Boolean(input.navigation),
+    poweredByTone: "ink",
     exemptPrefixes: [],
   };
   config.features = {
@@ -327,7 +334,11 @@ export async function buildGeneratedPage({
   config.integrations = {};
   config.integrationConsentMode = "auto";
   config.theme = { tokens: {}, radius: "0.5rem" };
-  config.brandAssetsUrl = "/assets/brand";
+  config.brandAssetsUrl = "/brand";
+  const themeDocument = JSON.parse(
+    await readFile(join(inputRoot, "theme/theme.json"), "utf8"),
+  );
+  if (themeDocument.site_mode === "dark") config.chrome.poweredByTone = "white";
   await writeJson(join(source, "config/site.json"), config);
   const env: NodeJS.ProcessEnv = {
     PATH: process.env.PATH,
@@ -348,7 +359,7 @@ export async function buildGeneratedPage({
       "--from",
       join(source, "build-inputs/theme"),
       "--purpose",
-      "published",
+      "site",
       "--config",
       join(source, "config/site.json"),
       "--public",
