@@ -68,7 +68,7 @@ export const sharedDe: LocaleMessages<typeof sharedEn> = {
     failure: "Ihre Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
     consentRequired: "Bitte stimmen Sie der Kontaktaufnahme zu, bevor Sie die Nachricht senden.",
     liveUnavailable: "Die Live-Erfassung ist für diese Website nicht konfiguriert.",
-    javascriptRequired: "Bitte aktiviere JavaScript, um dieses Formular abzusenden.",
+    javascriptRequired: "Bitte aktiviere JavaScript, um deine Nachricht zu senden.",
     required: "Bitte füllen Sie die Pflichtfelder aus und stimmen Sie der Kontaktaufnahme zu.",
   },
   notifications: {
