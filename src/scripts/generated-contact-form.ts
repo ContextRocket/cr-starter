@@ -1,14 +1,14 @@
 import { createContactFormController } from "@contextrocket/sdk/contact-form";
 import {
   generatedContactPayload,
-  type GeneratedLeadFormView,
-} from "@/lib/generated-lead-form";
+  type GeneratedContactFormView,
+} from "@/lib/generated-contact-form";
 /** SDK validates the capture receipt and owns retry identity; HTTP 200 alone is not success. */
-export function initializeGeneratedLeadForm(
+export function initializeGeneratedContactForm(
   form: HTMLFormElement,
   controller = createContactFormController(),
 ) {
-  const view = JSON.parse(form.dataset.config ?? "") as GeneratedLeadFormView;
+  const view = JSON.parse(form.dataset.config ?? "") as GeneratedContactFormView;
   const status = form.querySelector<HTMLElement>("[data-form-status]");
   const submit = form.querySelector<HTMLButtonElement>('[type="submit"]');
   if (!status || !submit) return;
@@ -43,5 +43,5 @@ export function initializeGeneratedLeadForm(
 }
 if (typeof document !== "undefined")
   document
-    .querySelectorAll<HTMLFormElement>("[data-generated-lead-form]")
-    .forEach((form) => initializeGeneratedLeadForm(form));
+    .querySelectorAll<HTMLFormElement>("[data-generated-contact-form]")
+    .forEach((form) => initializeGeneratedContactForm(form));

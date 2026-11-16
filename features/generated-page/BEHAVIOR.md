@@ -6,7 +6,7 @@
 - **GENERATED-002:** Execute Astro from isolated source, reuse shared layout and
   browser components, and package its static output with the SDK. Equal inputs
   produce equal archives. Root index and assets serve under the publication mount without duplicate prefixes. Facts remain links to a separate managed bundle.
-- **GENERATED-003:** Send lead forms through the SDK Contacts transport with the
+- **GENERATED-003:** Send contact forms through the SDK Contacts transport with the
   exact supplied App UUID and attribution. Show success only after a valid
   capture receipt. Failed or malformed responses keep the form available.
 

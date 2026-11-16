@@ -15,7 +15,7 @@
               "cta",
               "form_start",
               "form_submit",
-              "lead_accepted"
+              "contact_accepted"
             ],
             "type": "string"
           },
@@ -29,62 +29,6 @@
     "Appearance": {
       "additionalProperties": false,
       "properties": {
-        "corner": {
-          "default": "rounded",
-          "enum": [
-            "rounded",
-            "soft",
-            "square"
-          ],
-          "title": "Corner",
-          "type": "string"
-        },
-        "density": {
-          "default": "comfortable",
-          "enum": [
-            "comfortable",
-            "compact"
-          ],
-          "title": "Density",
-          "type": "string"
-        },
-        "fallback": {
-          "$ref": "#/$defs/AppearanceFallback",
-          "default": "starter_theme"
-        },
-        "font_family": {
-          "anyOf": [
-            {
-              "maxLength": 400,
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Font Family"
-        },
-        "logo_asset_id": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Logo Asset Id"
-        },
-        "missing_inputs": {
-          "description": "Observed appearance gaps recorded for review (weak-brand).",
-          "items": {
-            "type": "string"
-          },
-          "title": "Missing Inputs",
-          "type": "array"
-        },
         "profile_ref": {
           "anyOf": [
             {
@@ -98,15 +42,9 @@
           "default": null,
           "title": "Profile Ref"
         },
-        "shadow": {
-          "default": "subtle",
-          "enum": [
-            "none",
-            "subtle",
-            "elevated"
-          ],
-          "title": "Shadow",
-          "type": "string"
+        "fallback": {
+          "$ref": "#/$defs/AppearanceFallback",
+          "default": "starter_theme"
         },
         "tokens": {
           "$ref": "#/$defs/ColorTokens"
@@ -121,6 +59,60 @@
           "title": "Typography Role",
           "type": "string"
         },
+        "font_family": {
+          "anyOf": [
+            {
+              "maxLength": 400,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Font Family"
+        },
+        "density": {
+          "default": "comfortable",
+          "enum": [
+            "comfortable",
+            "compact"
+          ],
+          "title": "Density",
+          "type": "string"
+        },
+        "corner": {
+          "default": "rounded",
+          "enum": [
+            "rounded",
+            "soft",
+            "square"
+          ],
+          "title": "Corner",
+          "type": "string"
+        },
+        "shadow": {
+          "default": "subtle",
+          "enum": [
+            "none",
+            "subtle",
+            "elevated"
+          ],
+          "title": "Shadow",
+          "type": "string"
+        },
+        "logo_asset_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Logo Asset Id"
+        },
         "wordmark_asset_id": {
           "anyOf": [
             {
@@ -132,6 +124,14 @@
           ],
           "default": null,
           "title": "Wordmark Asset Id"
+        },
+        "missing_inputs": {
+          "description": "Observed appearance gaps recorded for review (weak-brand).",
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Inputs",
+          "type": "array"
         }
       },
       "title": "Appearance",
@@ -151,28 +151,52 @@
       "additionalProperties": false,
       "description": "Governed asset reference. Render must not fetch arbitrary remotes.",
       "properties": {
-        "alt_text": {
-          "maxLength": 500,
-          "minLength": 1,
-          "title": "Alt Text",
-          "type": "string"
-        },
         "asset_id": {
           "maxLength": 128,
           "minLength": 1,
           "title": "Asset Id",
           "type": "string"
         },
-        "focal_point": {
+        "role": {
+          "default": "other",
+          "enum": [
+            "logo",
+            "wordmark",
+            "hero",
+            "media",
+            "avatar",
+            "social",
+            "icon",
+            "other"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "local_path": {
+          "description": "Checked-in relative path under the fixture/public asset root (e.g. 'kleos/tla-linkedin-alumni.png'). Never a remote URL.",
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Local Path",
+          "type": "string"
+        },
+        "alt_text": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Alt Text",
+          "type": "string"
+        },
+        "width": {
           "anyOf": [
             {
-              "$ref": "#/$defs/FocalPoint"
+              "minimum": 1,
+              "type": "integer"
             },
             {
               "type": "null"
             }
           ],
-          "default": null
+          "default": null,
+          "title": "Width"
         },
         "height": {
           "anyOf": [
@@ -187,12 +211,28 @@
           "default": null,
           "title": "Height"
         },
-        "local_path": {
-          "description": "Checked-in relative path under the fixture/public asset root (e.g. 'kleos/tla-linkedin-alumni.png'). Never a remote URL.",
-          "maxLength": 512,
-          "minLength": 1,
-          "title": "Local Path",
-          "type": "string"
+        "focal_point": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FocalPoint"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "surface_suitability": {
+          "items": {
+            "enum": [
+              "light",
+              "dark",
+              "any"
+            ],
+            "type": "string"
+          },
+          "title": "Surface Suitability",
+          "type": "array"
         },
         "provenance": {
           "anyOf": [
@@ -226,46 +266,6 @@
           ],
           "title": "Rights Posture",
           "type": "string"
-        },
-        "role": {
-          "default": "other",
-          "enum": [
-            "logo",
-            "wordmark",
-            "hero",
-            "media",
-            "avatar",
-            "social",
-            "icon",
-            "other"
-          ],
-          "title": "Role",
-          "type": "string"
-        },
-        "surface_suitability": {
-          "items": {
-            "enum": [
-              "light",
-              "dark",
-              "any"
-            ],
-            "type": "string"
-          },
-          "title": "Surface Suitability",
-          "type": "array"
-        },
-        "width": {
-          "anyOf": [
-            {
-              "minimum": 1,
-              "type": "integer"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Width"
         }
       },
       "required": [
@@ -287,30 +287,6 @@
     "ColorTokens": {
       "additionalProperties": false,
       "properties": {
-        "accent": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Accent"
-        },
-        "border": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Border"
-        },
         "canvas": {
           "anyOf": [
             {
@@ -323,7 +299,7 @@
           "default": null,
           "title": "Canvas"
         },
-        "danger": {
+        "surface": {
           "anyOf": [
             {
               "type": "string"
@@ -333,9 +309,9 @@
             }
           ],
           "default": null,
-          "title": "Danger"
+          "title": "Surface"
         },
-        "focus": {
+        "text": {
           "anyOf": [
             {
               "type": "string"
@@ -345,7 +321,7 @@
             }
           ],
           "default": null,
-          "title": "Focus"
+          "title": "Text"
         },
         "muted_text": {
           "anyOf": [
@@ -371,7 +347,7 @@
           "default": null,
           "title": "Primary"
         },
-        "surface": {
+        "accent": {
           "anyOf": [
             {
               "type": "string"
@@ -381,9 +357,9 @@
             }
           ],
           "default": null,
-          "title": "Surface"
+          "title": "Accent"
         },
-        "text": {
+        "border": {
           "anyOf": [
             {
               "type": "string"
@@ -393,15 +369,290 @@
             }
           ],
           "default": null,
-          "title": "Text"
+          "title": "Border"
+        },
+        "focus": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Focus"
+        },
+        "danger": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Danger"
         }
       },
       "title": "ColorTokens",
       "type": "object"
     },
+    "ContactFormBinding": {
+      "additionalProperties": false,
+      "description": "Publishable public App binding. Unresolved → fail closed.",
+      "properties": {
+        "binding_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Binding Id",
+          "type": "string"
+        },
+        "public_app_ref": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Public App Ref",
+          "type": "string"
+        },
+        "campaign_ref": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Campaign Ref"
+        },
+        "landing_page_ref": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Landing Page Ref"
+        },
+        "variant_ref": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Variant Ref"
+        },
+        "release_ref": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Release Ref"
+        },
+        "consent_text": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Consent Text",
+          "type": "string"
+        },
+        "privacy_url": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Privacy Url",
+          "type": "string"
+        },
+        "data_controller_mode": {
+          "default": "customer",
+          "enum": [
+            "customer",
+            "contextrocket"
+          ],
+          "title": "Data Controller Mode",
+          "type": "string"
+        },
+        "retention_posture": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Retention Posture",
+          "type": "string"
+        },
+        "fields": {
+          "items": {
+            "$ref": "#/$defs/ContactFormField"
+          },
+          "minItems": 1,
+          "title": "Fields",
+          "type": "array"
+        },
+        "success_message": {
+          "maxLength": 400,
+          "minLength": 1,
+          "title": "Success Message",
+          "type": "string"
+        },
+        "validation_error_message": {
+          "maxLength": 400,
+          "minLength": 1,
+          "title": "Validation Error Message",
+          "type": "string"
+        },
+        "unavailable_message": {
+          "maxLength": 400,
+          "minLength": 1,
+          "title": "Unavailable Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "binding_id",
+        "public_app_ref",
+        "consent_text",
+        "privacy_url",
+        "retention_posture",
+        "fields",
+        "success_message",
+        "validation_error_message",
+        "unavailable_message"
+      ],
+      "title": "ContactFormBinding",
+      "type": "object"
+    },
+    "ContactFormField": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "field_type": {
+          "default": "text",
+          "enum": [
+            "text",
+            "email",
+            "tel",
+            "textarea"
+          ],
+          "title": "Field Type",
+          "type": "string"
+        },
+        "required": {
+          "default": true,
+          "title": "Required",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "label"
+      ],
+      "title": "ContactFormField",
+      "type": "object"
+    },
+    "ContactFormSection": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "order": {
+          "minimum": 0,
+          "title": "Order",
+          "type": "integer"
+        },
+        "visible": {
+          "default": true,
+          "title": "Visible",
+          "type": "boolean"
+        },
+        "variant": {
+          "default": "default",
+          "maxLength": 64,
+          "title": "Variant",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceRef"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "type": {
+          "const": "contact_form",
+          "default": "contact_form",
+          "title": "Type",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        },
+        "binding": {
+          "$ref": "#/$defs/ContactFormBinding"
+        }
+      },
+      "required": [
+        "id",
+        "order",
+        "title",
+        "binding"
+      ],
+      "title": "ContactFormSection",
+      "type": "object"
+    },
     "ContentFeedItem": {
       "additionalProperties": false,
       "properties": {
+        "title": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
         "href": {
           "maxLength": 512,
           "minLength": 1,
@@ -420,12 +671,6 @@
           ],
           "default": null,
           "title": "Summary"
-        },
-        "title": {
-          "maxLength": 200,
-          "minLength": 1,
-          "title": "Title",
-          "type": "string"
         }
       },
       "required": [
@@ -438,6 +683,28 @@
     "ContentFeedSection": {
       "additionalProperties": false,
       "properties": {
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "order": {
+          "minimum": 0,
+          "title": "Order",
+          "type": "integer"
+        },
+        "visible": {
+          "default": true,
+          "title": "Visible",
+          "type": "boolean"
+        },
+        "variant": {
+          "default": "default",
+          "maxLength": 64,
+          "title": "Variant",
+          "type": "string"
+        },
         "evidence": {
           "items": {
             "$ref": "#/$defs/EvidenceRef"
@@ -445,10 +712,16 @@
           "title": "Evidence",
           "type": "array"
         },
-        "id": {
-          "maxLength": 64,
+        "type": {
+          "const": "content_feed",
+          "default": "content_feed",
+          "title": "Type",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 200,
           "minLength": 1,
-          "title": "Id",
+          "title": "Title",
           "type": "string"
         },
         "items": {
@@ -457,42 +730,6 @@
           },
           "title": "Items",
           "type": "array"
-        },
-        "order": {
-          "minimum": 0,
-          "title": "Order",
-          "type": "integer"
-        },
-        "title": {
-          "maxLength": 200,
-          "minLength": 1,
-          "title": "Title",
-          "type": "string"
-        },
-        "type": {
-          "const": "content_feed",
-          "default": "content_feed",
-          "title": "Type",
-          "type": "string"
-        },
-        "variant": {
-          "default": "default",
-          "maxLength": 64,
-          "title": "Variant",
-          "type": "string"
-        },
-        "view_all_href": {
-          "anyOf": [
-            {
-              "maxLength": 512,
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "View All Href"
         },
         "view_all_label": {
           "anyOf": [
@@ -507,10 +744,18 @@
           "default": null,
           "title": "View All Label"
         },
-        "visible": {
-          "default": true,
-          "title": "Visible",
-          "type": "boolean"
+        "view_all_href": {
+          "anyOf": [
+            {
+              "maxLength": 512,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "View All Href"
         }
       },
       "required": [
@@ -534,10 +779,45 @@
     "CtaSection": {
       "additionalProperties": false,
       "properties": {
-        "action_label": {
-          "maxLength": 120,
+        "id": {
+          "maxLength": 64,
           "minLength": 1,
-          "title": "Action Label",
+          "title": "Id",
+          "type": "string"
+        },
+        "order": {
+          "minimum": 0,
+          "title": "Order",
+          "type": "integer"
+        },
+        "visible": {
+          "default": true,
+          "title": "Visible",
+          "type": "boolean"
+        },
+        "variant": {
+          "default": "default",
+          "maxLength": 64,
+          "title": "Variant",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceRef"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "type": {
+          "const": "cta",
+          "default": "cta",
+          "title": "Type",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Title",
           "type": "string"
         },
         "description": {
@@ -553,28 +833,14 @@
           "default": null,
           "title": "Description"
         },
+        "action_label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Action Label",
+          "type": "string"
+        },
         "destination_kind": {
           "$ref": "#/$defs/CtaDestinationKind"
-        },
-        "evidence": {
-          "items": {
-            "$ref": "#/$defs/EvidenceRef"
-          },
-          "title": "Evidence",
-          "type": "array"
-        },
-        "form_binding_id": {
-          "anyOf": [
-            {
-              "maxLength": 128,
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Form Binding Id"
         },
         "href": {
           "anyOf": [
@@ -589,39 +855,18 @@
           "default": null,
           "title": "Href"
         },
-        "id": {
-          "maxLength": 64,
-          "minLength": 1,
-          "title": "Id",
-          "type": "string"
-        },
-        "order": {
-          "minimum": 0,
-          "title": "Order",
-          "type": "integer"
-        },
-        "title": {
-          "maxLength": 200,
-          "minLength": 1,
-          "title": "Title",
-          "type": "string"
-        },
-        "type": {
-          "const": "cta",
-          "default": "cta",
-          "title": "Type",
-          "type": "string"
-        },
-        "variant": {
-          "default": "default",
-          "maxLength": 64,
-          "title": "Variant",
-          "type": "string"
-        },
-        "visible": {
-          "default": true,
-          "title": "Visible",
-          "type": "boolean"
+        "form_binding_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Form Binding Id"
         }
       },
       "required": [
@@ -647,20 +892,6 @@
       "additionalProperties": false,
       "description": "Stable pointer to an approved claim, chunk, or asset.",
       "properties": {
-        "confidence": {
-          "anyOf": [
-            {
-              "maximum": 1.0,
-              "minimum": 0.0,
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Confidence"
-        },
         "kind": {
           "default": "claim",
           "enum": [
@@ -677,6 +908,20 @@
           "minLength": 1,
           "title": "Ref",
           "type": "string"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
         }
       },
       "required": [
@@ -688,6 +933,12 @@
     "FaqItem": {
       "additionalProperties": false,
       "properties": {
+        "question": {
+          "maxLength": 400,
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        },
         "answer": {
           "maxLength": 4000,
           "minLength": 1,
@@ -700,12 +951,6 @@
           },
           "title": "Evidence",
           "type": "array"
-        },
-        "question": {
-          "maxLength": 400,
-          "minLength": 1,
-          "title": "Question",
-          "type": "string"
         }
       },
       "required": [
@@ -718,6 +963,28 @@
     "FaqSection": {
       "additionalProperties": false,
       "properties": {
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "order": {
+          "minimum": 0,
+          "title": "Order",
+          "type": "integer"
+        },
+        "visible": {
+          "default": true,
+          "title": "Visible",
+          "type": "boolean"
+        },
+        "variant": {
+          "default": "default",
+          "maxLength": 64,
+          "title": "Variant",
+          "type": "string"
+        },
         "evidence": {
           "items": {
             "$ref": "#/$defs/EvidenceRef"
@@ -725,10 +992,16 @@
           "title": "Evidence",
           "type": "array"
         },
-        "id": {
-          "maxLength": 64,
+        "type": {
+          "const": "faq",
+          "default": "faq",
+          "title": "Type",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 200,
           "minLength": 1,
-          "title": "Id",
+          "title": "Title",
           "type": "string"
         },
         "items": {
@@ -738,34 +1011,6 @@
           "minItems": 1,
           "title": "Items",
           "type": "array"
-        },
-        "order": {
-          "minimum": 0,
-          "title": "Order",
-          "type": "integer"
-        },
-        "title": {
-          "maxLength": 200,
-          "minLength": 1,
-          "title": "Title",
-          "type": "string"
-        },
-        "type": {
-          "const": "faq",
-          "default": "faq",
-          "title": "Type",
-          "type": "string"
-        },
-        "variant": {
-          "default": "default",
-          "maxLength": 64,
-          "title": "Variant",
-          "type": "string"
-        },
-        "visible": {
-          "default": true,
-          "title": "Visible",
-          "type": "boolean"
         }
       },
       "required": [
@@ -780,6 +1025,12 @@
     "FeatureGridItem": {
       "additionalProperties": false,
       "properties": {
+        "title": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
         "description": {
           "maxLength": 600,
           "minLength": 1,
@@ -792,12 +1043,6 @@
           },
           "title": "Evidence",
           "type": "array"
-        },
-        "title": {
-          "maxLength": 160,
-          "minLength": 1,
-          "title": "Title",
-          "type": "string"
         }
       },
       "required": [
@@ -810,15 +1055,27 @@
     "FeatureGridSection": {
       "additionalProperties": false,
       "properties": {
-        "columns": {
-          "default": 3,
-          "enum": [
-            2,
-            3,
-            4
-          ],
-          "title": "Columns",
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "order": {
+          "minimum": 0,
+          "title": "Order",
           "type": "integer"
+        },
+        "visible": {
+          "default": true,
+          "title": "Visible",
+          "type": "boolean"
+        },
+        "variant": {
+          "default": "default",
+          "maxLength": 64,
+          "title": "Variant",
+          "type": "string"
         },
         "evidence": {
           "items": {
@@ -827,24 +1084,17 @@
           "title": "Evidence",
           "type": "array"
         },
-        "id": {
-          "maxLength": 64,
-          "minLength": 1,
-          "title": "Id",
+        "type": {
+          "const": "feature_grid",
+          "default": "feature_grid",
+          "title": "Type",
           "type": "string"
         },
-        "items": {
-          "items": {
-            "$ref": "#/$defs/FeatureGridItem"
-          },
-          "minItems": 1,
-          "title": "Items",
-          "type": "array"
-        },
-        "order": {
-          "minimum": 0,
-          "title": "Order",
-          "type": "integer"
+        "title": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
         },
         "subtitle": {
           "anyOf": [
@@ -859,28 +1109,23 @@
           "default": null,
           "title": "Subtitle"
         },
-        "title": {
-          "maxLength": 200,
-          "minLength": 1,
-          "title": "Title",
-          "type": "string"
+        "items": {
+          "items": {
+            "$ref": "#/$defs/FeatureGridItem"
+          },
+          "minItems": 1,
+          "title": "Items",
+          "type": "array"
         },
-        "type": {
-          "const": "feature_grid",
-          "default": "feature_grid",
-          "title": "Type",
-          "type": "string"
-        },
-        "variant": {
-          "default": "default",
-          "maxLength": 64,
-          "title": "Variant",
-          "type": "string"
-        },
-        "visible": {
-          "default": true,
-          "title": "Visible",
-          "type": "boolean"
+        "columns": {
+          "default": 3,
+          "enum": [
+            2,
+            3,
+            4
+          ],
+          "title": "Columns",
+          "type": "integer"
         }
       },
       "required": [
@@ -918,6 +1163,12 @@
     "HeroAction": {
       "additionalProperties": false,
       "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
         "href": {
           "maxLength": 512,
           "minLength": 1,
@@ -927,12 +1178,6 @@
         "kind": {
           "$ref": "#/$defs/CtaDestinationKind",
           "default": "internal_route"
-        },
-        "label": {
-          "maxLength": 120,
-          "minLength": 1,
-          "title": "Label",
-          "type": "string"
         }
       },
       "required": [
@@ -945,40 +1190,6 @@
     "HeroSection": {
       "additionalProperties": false,
       "properties": {
-        "actions": {
-          "items": {
-            "$ref": "#/$defs/HeroAction"
-          },
-          "title": "Actions",
-          "type": "array"
-        },
-        "asset_ids": {
-          "items": {
-            "type": "string"
-          },
-          "title": "Asset Ids",
-          "type": "array"
-        },
-        "body": {
-          "items": {
-            "type": "string"
-          },
-          "title": "Body",
-          "type": "array"
-        },
-        "evidence": {
-          "items": {
-            "$ref": "#/$defs/EvidenceRef"
-          },
-          "title": "Evidence",
-          "type": "array"
-        },
-        "headline": {
-          "maxLength": 300,
-          "minLength": 1,
-          "title": "Headline",
-          "type": "string"
-        },
         "id": {
           "maxLength": 64,
           "minLength": 1,
@@ -989,6 +1200,36 @@
           "minimum": 0,
           "title": "Order",
           "type": "integer"
+        },
+        "visible": {
+          "default": true,
+          "title": "Visible",
+          "type": "boolean"
+        },
+        "variant": {
+          "default": "default",
+          "maxLength": 64,
+          "title": "Variant",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceRef"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "type": {
+          "const": "hero",
+          "default": "hero",
+          "title": "Type",
+          "type": "string"
+        },
+        "headline": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Headline",
+          "type": "string"
         },
         "subhead": {
           "anyOf": [
@@ -1003,22 +1244,26 @@
           "default": null,
           "title": "Subhead"
         },
-        "type": {
-          "const": "hero",
-          "default": "hero",
-          "title": "Type",
-          "type": "string"
+        "body": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Body",
+          "type": "array"
         },
-        "variant": {
-          "default": "default",
-          "maxLength": 64,
-          "title": "Variant",
-          "type": "string"
+        "actions": {
+          "items": {
+            "$ref": "#/$defs/HeroAction"
+          },
+          "title": "Actions",
+          "type": "array"
         },
-        "visible": {
-          "default": true,
-          "title": "Visible",
-          "type": "boolean"
+        "asset_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Asset Ids",
+          "type": "array"
         }
       },
       "required": [
@@ -1037,207 +1282,9 @@
       "title": "IndexingIntent",
       "type": "string"
     },
-    "LeadFormBinding": {
-      "additionalProperties": false,
-      "description": "Publishable public App binding. Unresolved \u2192 fail closed.",
-      "properties": {
-        "binding_id": {
-          "maxLength": 128,
-          "minLength": 1,
-          "title": "Binding Id",
-          "type": "string"
-        },
-        "campaign_ref": {
-          "anyOf": [
-            {
-              "maxLength": 128,
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Campaign Ref"
-        },
-        "consent_text": {
-          "maxLength": 2000,
-          "minLength": 1,
-          "title": "Consent Text",
-          "type": "string"
-        },
-        "data_controller_mode": {
-          "default": "customer",
-          "enum": [
-            "customer",
-            "contextrocket"
-          ],
-          "title": "Data Controller Mode",
-          "type": "string"
-        },
-        "fields": {
-          "items": {
-            "$ref": "#/$defs/LeadFormField"
-          },
-          "minItems": 1,
-          "title": "Fields",
-          "type": "array"
-        },
-        "landing_page_ref": {
-          "anyOf": [
-            {
-              "maxLength": 128,
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Landing Page Ref"
-        },
-        "privacy_url": {
-          "maxLength": 512,
-          "minLength": 1,
-          "title": "Privacy Url",
-          "type": "string"
-        },
-        "public_app_ref": {
-          "maxLength": 128,
-          "minLength": 1,
-          "title": "Public App Ref",
-          "type": "string"
-        },
-        "release_ref": {
-          "anyOf": [
-            {
-              "maxLength": 128,
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Release Ref"
-        },
-        "retention_posture": {
-          "maxLength": 256,
-          "minLength": 1,
-          "title": "Retention Posture",
-          "type": "string"
-        },
-        "success_message": {
-          "maxLength": 400,
-          "minLength": 1,
-          "title": "Success Message",
-          "type": "string"
-        },
-        "unavailable_message": {
-          "maxLength": 400,
-          "minLength": 1,
-          "title": "Unavailable Message",
-          "type": "string"
-        },
-        "validation_error_message": {
-          "maxLength": 400,
-          "minLength": 1,
-          "title": "Validation Error Message",
-          "type": "string"
-        },
-        "variant_ref": {
-          "anyOf": [
-            {
-              "maxLength": 128,
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Variant Ref"
-        }
-      },
-      "required": [
-        "binding_id",
-        "public_app_ref",
-        "consent_text",
-        "privacy_url",
-        "retention_posture",
-        "fields",
-        "success_message",
-        "validation_error_message",
-        "unavailable_message"
-      ],
-      "title": "LeadFormBinding",
-      "type": "object"
-    },
-    "LeadFormField": {
+    "LogoStripSection": {
       "additionalProperties": false,
       "properties": {
-        "field_type": {
-          "default": "text",
-          "enum": [
-            "text",
-            "email",
-            "tel",
-            "textarea"
-          ],
-          "title": "Field Type",
-          "type": "string"
-        },
-        "label": {
-          "maxLength": 120,
-          "minLength": 1,
-          "title": "Label",
-          "type": "string"
-        },
-        "name": {
-          "maxLength": 64,
-          "minLength": 1,
-          "title": "Name",
-          "type": "string"
-        },
-        "required": {
-          "default": true,
-          "title": "Required",
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "name",
-        "label"
-      ],
-      "title": "LeadFormField",
-      "type": "object"
-    },
-    "LeadFormSection": {
-      "additionalProperties": false,
-      "properties": {
-        "binding": {
-          "$ref": "#/$defs/LeadFormBinding"
-        },
-        "description": {
-          "anyOf": [
-            {
-              "maxLength": 500,
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Description"
-        },
-        "evidence": {
-          "items": {
-            "$ref": "#/$defs/EvidenceRef"
-          },
-          "title": "Evidence",
-          "type": "array"
-        },
         "id": {
           "maxLength": 64,
           "minLength": 1,
@@ -1249,17 +1296,10 @@
           "title": "Order",
           "type": "integer"
         },
-        "title": {
-          "maxLength": 200,
-          "minLength": 1,
-          "title": "Title",
-          "type": "string"
-        },
-        "type": {
-          "const": "lead_form",
-          "default": "lead_form",
-          "title": "Type",
-          "type": "string"
+        "visible": {
+          "default": true,
+          "title": "Visible",
+          "type": "boolean"
         },
         "variant": {
           "default": "default",
@@ -1267,32 +1307,6 @@
           "title": "Variant",
           "type": "string"
         },
-        "visible": {
-          "default": true,
-          "title": "Visible",
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "id",
-        "order",
-        "title",
-        "binding"
-      ],
-      "title": "LeadFormSection",
-      "type": "object"
-    },
-    "LogoStripSection": {
-      "additionalProperties": false,
-      "properties": {
-        "asset_ids": {
-          "items": {
-            "type": "string"
-          },
-          "minItems": 1,
-          "title": "Asset Ids",
-          "type": "array"
-        },
         "evidence": {
           "items": {
             "$ref": "#/$defs/EvidenceRef"
@@ -1300,16 +1314,11 @@
           "title": "Evidence",
           "type": "array"
         },
-        "id": {
-          "maxLength": 64,
-          "minLength": 1,
-          "title": "Id",
+        "type": {
+          "const": "logo_strip",
+          "default": "logo_strip",
+          "title": "Type",
           "type": "string"
-        },
-        "order": {
-          "minimum": 0,
-          "title": "Order",
-          "type": "integer"
         },
         "title": {
           "anyOf": [
@@ -1324,22 +1333,13 @@
           "default": null,
           "title": "Title"
         },
-        "type": {
-          "const": "logo_strip",
-          "default": "logo_strip",
-          "title": "Type",
-          "type": "string"
-        },
-        "variant": {
-          "default": "default",
-          "maxLength": 64,
-          "title": "Variant",
-          "type": "string"
-        },
-        "visible": {
-          "default": true,
-          "title": "Visible",
-          "type": "boolean"
+        "asset_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Asset Ids",
+          "type": "array"
         }
       },
       "required": [
@@ -1353,20 +1353,27 @@
     "MediaSection": {
       "additionalProperties": false,
       "properties": {
-        "asset_ids": {
-          "items": {
-            "type": "string"
-          },
-          "minItems": 1,
-          "title": "Asset Ids",
-          "type": "array"
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
         },
-        "body": {
-          "items": {
-            "type": "string"
-          },
-          "title": "Body",
-          "type": "array"
+        "order": {
+          "minimum": 0,
+          "title": "Order",
+          "type": "integer"
+        },
+        "visible": {
+          "default": true,
+          "title": "Visible",
+          "type": "boolean"
+        },
+        "variant": {
+          "default": "default",
+          "maxLength": 64,
+          "title": "Variant",
+          "type": "string"
         },
         "evidence": {
           "items": {
@@ -1374,6 +1381,25 @@
           },
           "title": "Evidence",
           "type": "array"
+        },
+        "type": {
+          "const": "media",
+          "default": "media",
+          "title": "Type",
+          "type": "string"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Title"
         },
         "eyebrow": {
           "anyOf": [
@@ -1388,46 +1414,20 @@
           "default": null,
           "title": "Eyebrow"
         },
-        "id": {
-          "maxLength": 64,
-          "minLength": 1,
-          "title": "Id",
-          "type": "string"
+        "body": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Body",
+          "type": "array"
         },
-        "order": {
-          "minimum": 0,
-          "title": "Order",
-          "type": "integer"
-        },
-        "title": {
-          "anyOf": [
-            {
-              "maxLength": 200,
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Title"
-        },
-        "type": {
-          "const": "media",
-          "default": "media",
-          "title": "Type",
-          "type": "string"
-        },
-        "variant": {
-          "default": "default",
-          "maxLength": 64,
-          "title": "Variant",
-          "type": "string"
-        },
-        "visible": {
-          "default": true,
-          "title": "Visible",
-          "type": "boolean"
+        "asset_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Asset Ids",
+          "type": "array"
         }
       },
       "required": [
@@ -1441,12 +1441,11 @@
     "ProofStatItem": {
       "additionalProperties": false,
       "properties": {
-        "evidence": {
-          "items": {
-            "$ref": "#/$defs/EvidenceRef"
-          },
-          "title": "Evidence",
-          "type": "array"
+        "value": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Value",
+          "type": "string"
         },
         "label": {
           "maxLength": 120,
@@ -1454,11 +1453,12 @@
           "title": "Label",
           "type": "string"
         },
-        "value": {
-          "maxLength": 64,
-          "minLength": 1,
-          "title": "Value",
-          "type": "string"
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceRef"
+          },
+          "title": "Evidence",
+          "type": "array"
         }
       },
       "required": [
@@ -1471,6 +1471,28 @@
     "ProofStatSection": {
       "additionalProperties": false,
       "properties": {
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "order": {
+          "minimum": 0,
+          "title": "Order",
+          "type": "integer"
+        },
+        "visible": {
+          "default": true,
+          "title": "Visible",
+          "type": "boolean"
+        },
+        "variant": {
+          "default": "default",
+          "maxLength": 64,
+          "title": "Variant",
+          "type": "string"
+        },
         "evidence": {
           "items": {
             "$ref": "#/$defs/EvidenceRef"
@@ -1478,24 +1500,11 @@
           "title": "Evidence",
           "type": "array"
         },
-        "id": {
-          "maxLength": 64,
-          "minLength": 1,
-          "title": "Id",
+        "type": {
+          "const": "proof_stat",
+          "default": "proof_stat",
+          "title": "Type",
           "type": "string"
-        },
-        "items": {
-          "items": {
-            "$ref": "#/$defs/ProofStatItem"
-          },
-          "minItems": 1,
-          "title": "Items",
-          "type": "array"
-        },
-        "order": {
-          "minimum": 0,
-          "title": "Order",
-          "type": "integer"
         },
         "title": {
           "anyOf": [
@@ -1510,22 +1519,13 @@
           "default": null,
           "title": "Title"
         },
-        "type": {
-          "const": "proof_stat",
-          "default": "proof_stat",
-          "title": "Type",
-          "type": "string"
-        },
-        "variant": {
-          "default": "default",
-          "maxLength": 64,
-          "title": "Variant",
-          "type": "string"
-        },
-        "visible": {
-          "default": true,
-          "title": "Visible",
-          "type": "boolean"
+        "items": {
+          "items": {
+            "$ref": "#/$defs/ProofStatItem"
+          },
+          "minItems": 1,
+          "title": "Items",
+          "type": "array"
         }
       },
       "required": [
@@ -1539,37 +1539,24 @@
     "Provenance": {
       "additionalProperties": false,
       "properties": {
-        "approved_at": {
-          "anyOf": [
-            {
-              "format": "date-time",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Approved At"
-        },
-        "created_at": {
-          "anyOf": [
-            {
-              "format": "date-time",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Created At"
-        },
         "representation_version": {
           "maxLength": 64,
           "minLength": 1,
           "title": "Representation Version",
           "type": "string"
+        },
+        "source_set_version": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Set Version"
         },
         "review_receipt_id": {
           "anyOf": [
@@ -1584,10 +1571,10 @@
           "default": null,
           "title": "Review Receipt Id"
         },
-        "source_set_version": {
+        "created_at": {
           "anyOf": [
             {
-              "maxLength": 64,
+              "format": "date-time",
               "type": "string"
             },
             {
@@ -1595,7 +1582,20 @@
             }
           ],
           "default": null,
-          "title": "Source Set Version"
+          "title": "Created At"
+        },
+        "approved_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Approved At"
         }
       },
       "required": [
@@ -1607,6 +1607,12 @@
     "RendererContract": {
       "additionalProperties": false,
       "properties": {
+        "renderer_id": {
+          "default": "contextrocket-launch",
+          "minLength": 1,
+          "title": "Renderer Id",
+          "type": "string"
+        },
         "min_version": {
           "default": "1.0.0",
           "minLength": 1,
@@ -1625,12 +1631,6 @@
           ],
           "default": null,
           "title": "Pinned Version"
-        },
-        "renderer_id": {
-          "default": "contextrocket-launch",
-          "minLength": 1,
-          "title": "Renderer Id",
-          "type": "string"
         }
       },
       "title": "RendererContract",
@@ -1639,13 +1639,6 @@
     "RichTextSection": {
       "additionalProperties": false,
       "properties": {
-        "evidence": {
-          "items": {
-            "$ref": "#/$defs/EvidenceRef"
-          },
-          "title": "Evidence",
-          "type": "array"
-        },
         "id": {
           "maxLength": 64,
           "minLength": 1,
@@ -1657,13 +1650,29 @@
           "title": "Order",
           "type": "integer"
         },
-        "paragraphs": {
+        "visible": {
+          "default": true,
+          "title": "Visible",
+          "type": "boolean"
+        },
+        "variant": {
+          "default": "default",
+          "maxLength": 64,
+          "title": "Variant",
+          "type": "string"
+        },
+        "evidence": {
           "items": {
-            "type": "string"
+            "$ref": "#/$defs/EvidenceRef"
           },
-          "minItems": 1,
-          "title": "Paragraphs",
+          "title": "Evidence",
           "type": "array"
+        },
+        "type": {
+          "const": "rich_text",
+          "default": "rich_text",
+          "title": "Type",
+          "type": "string"
         },
         "title": {
           "anyOf": [
@@ -1678,22 +1687,13 @@
           "default": null,
           "title": "Title"
         },
-        "type": {
-          "const": "rich_text",
-          "default": "rich_text",
-          "title": "Type",
-          "type": "string"
-        },
-        "variant": {
-          "default": "default",
-          "maxLength": 64,
-          "title": "Variant",
-          "type": "string"
-        },
-        "visible": {
-          "default": true,
-          "title": "Visible",
-          "type": "boolean"
+        "paragraphs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Paragraphs",
+          "type": "array"
         }
       },
       "required": [
@@ -1715,14 +1715,10 @@
     "SearchMeta": {
       "additionalProperties": false,
       "properties": {
-        "canonical_intent": {
-          "default": "self",
-          "enum": [
-            "self",
-            "customer",
-            "none"
-          ],
-          "title": "Canonical Intent",
+        "title": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Title",
           "type": "string"
         },
         "description": {
@@ -1730,44 +1726,6 @@
           "minLength": 1,
           "title": "Description",
           "type": "string"
-        },
-        "indexing_intent": {
-          "$ref": "#/$defs/IndexingIntent",
-          "default": "noindex"
-        },
-        "robots_intent": {
-          "$ref": "#/$defs/RobotsIntent",
-          "default": "noindex,nofollow"
-        },
-        "sitemap_include": {
-          "default": false,
-          "title": "Sitemap Include",
-          "type": "boolean"
-        },
-        "social_asset_id": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Social Asset Id"
-        },
-        "social_description": {
-          "anyOf": [
-            {
-              "maxLength": 500,
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Social Description"
         },
         "social_title": {
           "anyOf": [
@@ -1782,11 +1740,53 @@
           "default": null,
           "title": "Social Title"
         },
-        "title": {
-          "maxLength": 200,
-          "minLength": 1,
-          "title": "Title",
+        "social_description": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Social Description"
+        },
+        "social_asset_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Social Asset Id"
+        },
+        "canonical_intent": {
+          "default": "self",
+          "enum": [
+            "self",
+            "customer",
+            "none"
+          ],
+          "title": "Canonical Intent",
           "type": "string"
+        },
+        "indexing_intent": {
+          "$ref": "#/$defs/IndexingIntent",
+          "default": "noindex"
+        },
+        "sitemap_include": {
+          "default": false,
+          "title": "Sitemap Include",
+          "type": "boolean"
+        },
+        "robots_intent": {
+          "$ref": "#/$defs/RobotsIntent",
+          "default": "noindex,nofollow"
         }
       },
       "required": [
@@ -1799,23 +1799,23 @@
     "TestimonialItem": {
       "additionalProperties": false,
       "properties": {
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
         "author": {
           "maxLength": 120,
           "minLength": 1,
           "title": "Author",
           "type": "string"
         },
-        "avatar_asset_id": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Avatar Asset Id"
+        "quote": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
         },
         "company": {
           "anyOf": [
@@ -1830,24 +1830,30 @@
           "default": null,
           "title": "Company"
         },
-        "evidence": {
-          "items": {
-            "$ref": "#/$defs/EvidenceRef"
-          },
-          "title": "Evidence",
-          "type": "array"
+        "role": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Role"
         },
-        "id": {
-          "maxLength": 64,
-          "minLength": 1,
-          "title": "Id",
-          "type": "string"
-        },
-        "quote": {
-          "maxLength": 2000,
-          "minLength": 1,
-          "title": "Quote",
-          "type": "string"
+        "avatar_asset_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Avatar Asset Id"
         },
         "rating": {
           "anyOf": [
@@ -1863,18 +1869,12 @@
           "default": null,
           "title": "Rating"
         },
-        "role": {
-          "anyOf": [
-            {
-              "maxLength": 160,
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Role"
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceRef"
+          },
+          "title": "Evidence",
+          "type": "array"
         }
       },
       "required": [
@@ -1888,6 +1888,28 @@
     "TestimonialSection": {
       "additionalProperties": false,
       "properties": {
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "order": {
+          "minimum": 0,
+          "title": "Order",
+          "type": "integer"
+        },
+        "visible": {
+          "default": true,
+          "title": "Visible",
+          "type": "boolean"
+        },
+        "variant": {
+          "default": "default",
+          "maxLength": 64,
+          "title": "Variant",
+          "type": "string"
+        },
         "evidence": {
           "items": {
             "$ref": "#/$defs/EvidenceRef"
@@ -1895,10 +1917,16 @@
           "title": "Evidence",
           "type": "array"
         },
-        "id": {
-          "maxLength": 64,
+        "type": {
+          "const": "testimonial",
+          "default": "testimonial",
+          "title": "Type",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 200,
           "minLength": 1,
-          "title": "Id",
+          "title": "Title",
           "type": "string"
         },
         "items": {
@@ -1908,34 +1936,6 @@
           "minItems": 1,
           "title": "Items",
           "type": "array"
-        },
-        "order": {
-          "minimum": 0,
-          "title": "Order",
-          "type": "integer"
-        },
-        "title": {
-          "maxLength": 200,
-          "minLength": 1,
-          "title": "Title",
-          "type": "string"
-        },
-        "type": {
-          "const": "testimonial",
-          "default": "testimonial",
-          "title": "Type",
-          "type": "string"
-        },
-        "variant": {
-          "default": "default",
-          "maxLength": 64,
-          "title": "Variant",
-          "type": "string"
-        },
-        "visible": {
-          "default": true,
-          "title": "Visible",
-          "type": "boolean"
         }
       },
       "required": [
@@ -1951,38 +1951,19 @@
   "additionalProperties": false,
   "description": "Canonical semantic landing-page representation.",
   "properties": {
-    "analytics": {
-      "$ref": "#/$defs/AnalyticsIntent"
+    "schema_version": {
+      "const": "2.0.0",
+      "default": "2.0.0",
+      "title": "Schema Version",
+      "type": "string"
     },
-    "appearance": {
-      "$ref": "#/$defs/Appearance"
+    "renderer_contract": {
+      "$ref": "#/$defs/RendererContract"
     },
-    "assets": {
-      "items": {
-        "$ref": "#/$defs/AssetRef"
-      },
-      "title": "Assets",
-      "type": "array"
-    },
-    "authority_mode": {
-      "$ref": "#/$defs/AuthorityMode",
-      "default": "operator_prepared"
-    },
-    "disclosure_mode": {
-      "$ref": "#/$defs/DisclosureMode",
-      "default": "contextrocket"
-    },
-    "form_bindings": {
-      "items": {
-        "$ref": "#/$defs/LeadFormBinding"
-      },
-      "title": "Form Bindings",
-      "type": "array"
-    },
-    "locale": {
-      "maxLength": 16,
-      "minLength": 2,
-      "title": "Locale",
+    "page_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Page Id",
       "type": "string"
     },
     "organization_ref": {
@@ -1991,14 +1972,23 @@
       "title": "Organization Ref",
       "type": "string"
     },
-    "page_id": {
-      "maxLength": 128,
-      "minLength": 1,
-      "title": "Page Id",
+    "locale": {
+      "maxLength": 16,
+      "minLength": 2,
+      "title": "Locale",
       "type": "string"
     },
-    "provenance": {
-      "$ref": "#/$defs/Provenance"
+    "title": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "route": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Route",
+      "type": "string"
     },
     "purpose": {
       "anyOf": [
@@ -2013,34 +2003,37 @@
       "default": null,
       "title": "Purpose"
     },
-    "renderer_contract": {
-      "$ref": "#/$defs/RendererContract"
+    "authority_mode": {
+      "$ref": "#/$defs/AuthorityMode",
+      "default": "operator_prepared"
     },
-    "route": {
-      "maxLength": 256,
-      "minLength": 1,
-      "title": "Route",
-      "type": "string"
-    },
-    "schema_version": {
-      "const": "1.0.0",
-      "default": "1.0.0",
-      "title": "Schema Version",
-      "type": "string"
+    "disclosure_mode": {
+      "$ref": "#/$defs/DisclosureMode",
+      "default": "contextrocket"
     },
     "search": {
       "$ref": "#/$defs/SearchMeta"
+    },
+    "appearance": {
+      "$ref": "#/$defs/Appearance"
+    },
+    "assets": {
+      "items": {
+        "$ref": "#/$defs/AssetRef"
+      },
+      "title": "Assets",
+      "type": "array"
     },
     "sections": {
       "items": {
         "discriminator": {
           "mapping": {
+            "contact_form": "#/$defs/ContactFormSection",
             "content_feed": "#/$defs/ContentFeedSection",
             "cta": "#/$defs/CtaSection",
             "faq": "#/$defs/FaqSection",
             "feature_grid": "#/$defs/FeatureGridSection",
             "hero": "#/$defs/HeroSection",
-            "lead_form": "#/$defs/LeadFormSection",
             "logo_strip": "#/$defs/LogoStripSection",
             "media": "#/$defs/MediaSection",
             "proof_stat": "#/$defs/ProofStatSection",
@@ -2081,18 +2074,25 @@
             "$ref": "#/$defs/CtaSection"
           },
           {
-            "$ref": "#/$defs/LeadFormSection"
+            "$ref": "#/$defs/ContactFormSection"
           }
         ]
       },
       "title": "Sections",
       "type": "array"
     },
-    "title": {
-      "maxLength": 200,
-      "minLength": 1,
-      "title": "Title",
-      "type": "string"
+    "form_bindings": {
+      "items": {
+        "$ref": "#/$defs/ContactFormBinding"
+      },
+      "title": "Form Bindings",
+      "type": "array"
+    },
+    "analytics": {
+      "$ref": "#/$defs/AnalyticsIntent"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
     }
   },
   "required": [

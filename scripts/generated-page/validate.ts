@@ -193,7 +193,7 @@ const supported = new Set([
   "feature_grid",
   "faq",
   "cta",
-  "lead_form",
+  "contact_form",
 ]);
 export function validateManifest(
   raw: unknown,
@@ -266,10 +266,10 @@ export function validateManifest(
       safeHref(text(action.href));
     if (kind === "cta" && section.destination_kind !== "form_binding")
       safeHref(text(section.href));
-    if (kind === "lead_form") {
+    if (kind === "contact_form") {
       const binding = object(section.binding);
       if (!input.contact || binding.public_app_ref !== input.contact.appRef)
-        fail("CAPABILITY_BINDING", "Lead form App mismatch or missing binding");
+        fail("CAPABILITY_BINDING", "Contact form App mismatch or missing binding");
       safeHref(text(binding.privacy_url));
       const fields = array(binding.fields).map(object);
       // These are canonical Contact fields, not a second form-data model.
@@ -292,7 +292,7 @@ export function validateManifest(
     if (
       !sections.some(
         (s) =>
-          s.type === "lead_form" &&
+          s.type === "contact_form" &&
           object(s.binding).binding_id === section.form_binding_id,
       )
     )

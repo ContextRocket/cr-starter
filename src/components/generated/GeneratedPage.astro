@@ -2,8 +2,8 @@
 import { assetHref } from '@/lib/paths';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import ContextRocketBadge from '@/components/chrome/ContextRocketBadge.astro';
-import GeneratedLeadForm from './GeneratedLeadForm.astro';
-import type { GeneratedLeadFormView } from '@/lib/generated-lead-form';
+import GeneratedContactForm from './GeneratedContactForm.astro';
+import type { GeneratedContactFormView } from '@/lib/generated-contact-form';
 import { object, text, array, type BuildInputs } from '../../../scripts/generated-page/validate';
 interface Props { manifest: Record<string, unknown>; input: BuildInputs }
 const { manifest, input }=Astro.props;
@@ -11,24 +11,24 @@ const sections=array(manifest.sections).map(object).filter(s=>s.visible !== fals
 const assets=array(manifest.assets).map(object);
 const search=object(manifest.search);
 const images=(section:Record<string,unknown>)=>array(section.asset_ids ?? []).map(id=>assets.find(a=>a.asset_id===id)!);
-function leadView(section:Record<string,unknown>): GeneratedLeadFormView {
+function contactFormView(section:Record<string,unknown>): GeneratedContactFormView {
   const b=object(section.binding);
   return {
     id:text(section.id), title:text(section.title), description:section.description ? text(section.description):undefined,
     appRef:text(b.public_app_ref),orgHandle:input.organizationHandle,apiOrigin:input.contact!.apiOrigin,
-    fields:array(b.fields).map(object).map(f=>({ name:text(f.name) as GeneratedLeadFormView['fields'][number]['name'], label:text(f.label),fieldType:text(f.field_type ?? 'text') as GeneratedLeadFormView['fields'][number]['fieldType'],required:f.required !== false })),
+    fields:array(b.fields).map(object).map(f=>({ name:text(f.name) as GeneratedContactFormView['fields'][number]['name'], label:text(f.label),fieldType:text(f.field_type ?? 'text') as GeneratedContactFormView['fields'][number]['fieldType'],required:f.required !== false })),
     consentText:text(b.consent_text),privacyUrl:text(b.privacy_url),successMessage:text(b.success_message),validationMessage:text(b.validation_error_message),unavailableMessage:text(b.unavailable_message),
     attribution:{campaign_ref:b.campaign_ref ? text(b.campaign_ref):undefined, landing_page_ref:b.landing_page_ref ? text(b.landing_page_ref):undefined,site_release_ref:b.release_ref ? text(b.release_ref):undefined,variant_ref:b.variant_ref ? text(b.variant_ref):undefined,controller_mode:b.data_controller_mode === 'contextrocket' ? 'contextrocket_operator':'organization'},
   };
 }
 function ctaHref(section:Record<string,unknown>):string {
   if(section.destination_kind !== 'form_binding') return text(section.href);
-  return `#${text(sections.find(s=>s.type==='lead_form' && object(s.binding).binding_id===section.form_binding_id)!.id)}`;
+  return `#${text(sections.find(s=>s.type==='contact_form' && object(s.binding).binding_id===section.form_binding_id)!.id)}`;
 }
 ---
 <BaseLayout locale="en" path={input.mount} title={text(search.title)} titleIsExact description={text(search.description)} robots={text(search.robots_intent) as 'index,follow' | 'noindex,nofollow'} includeSiteJsonLd={false} fontAssets={{}}>
   <main id="main-content" class="mx-auto w-full max-w-5xl space-y-12 px-6 py-12">
-    {sections.map(s=> s.type==='lead_form' ? <GeneratedLeadForm view={leadView(s)} /> : (
+    {sections.map(s=> s.type==='contact_form' ? <GeneratedContactForm view={contactFormView(s)} /> : (
       <section id={text(s.id)} class="space-y-5">
         {s.type==='hero' ? <h1 class="text-4xl font-semibold tracking-tight sm:text-6xl">{text(s.headline)}</h1> : s.title && <h2 class="text-3xl font-semibold">{text(s.title)}</h2>}
         {(s.subhead || s.subtitle || s.description || s.eyebrow) && <p class="text-lg text-muted-foreground">{text(s.subhead || s.subtitle || s.description || s.eyebrow)}</p>}

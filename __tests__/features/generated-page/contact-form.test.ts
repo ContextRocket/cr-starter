@@ -4,10 +4,10 @@ import {
   createContactFormController,
   submitContactFormWithAttribution,
 } from "@contextrocket/sdk/contact-form";
-import { initializeGeneratedLeadForm } from "../../../src/scripts/generated-lead-form";
-import type { GeneratedLeadFormView } from "../../../src/lib/generated-lead-form";
+import { initializeGeneratedContactForm } from "../../../src/scripts/generated-contact-form";
+import type { GeneratedContactFormView } from "../../../src/lib/generated-contact-form";
 it("GENERATED-003: submits exact App attribution and never shows success for an invalid receipt", async () => {
-  const view: GeneratedLeadFormView = {
+  const view: GeneratedContactFormView = {
     id: "contact",
     title: "Fixture",
     appRef: "11111111-1111-4111-8111-111111111111",
@@ -55,7 +55,7 @@ it("GENERATED-003: submits exact App attribution and never shows success for an 
   const controller = createContactFormController((options) =>
     submitContactFormWithAttribution({ ...options, fetcher }),
   );
-  initializeGeneratedLeadForm(form, controller);
+  initializeGeneratedContactForm(form, controller);
   form.dispatchEvent(new Event("submit", { cancelable: true }));
   await expect.poll(() => form.dataset.captureStatus).toBe("error");
   expect(form.querySelector('[role="status"]')?.textContent).toBe(

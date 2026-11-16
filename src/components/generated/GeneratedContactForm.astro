@@ -1,15 +1,15 @@
 ---
 import { createT } from '@/i18n/keys';
-import type { GeneratedLeadFormView } from '@/lib/generated-lead-form';
-interface Props { view: GeneratedLeadFormView }
+import type { GeneratedContactFormView } from '@/lib/generated-contact-form';
+interface Props { view: GeneratedContactFormView }
 const { view } = Astro.props;
 const t = createT('en');
 ---
-<script>import '../../scripts/generated-lead-form';</script>
+<script>import '../../scripts/generated-contact-form';</script>
 <section id={view.id} class="rounded-xl border border-border bg-card p-6 sm:p-10">
   <h2 class="text-3xl font-semibold">{view.title}</h2>
   {view.description && <p class="mt-4">{view.description}</p>}
-  <form data-generated-lead-form data-config={JSON.stringify(view)} class="mt-6 grid gap-5" aria-describedby={`${view.id}-status`}>
+  <form data-generated-contact-form data-config={JSON.stringify(view)} class="mt-6 grid gap-5" aria-describedby={`${view.id}-status`}>
     {view.fields.map(field => (
       <label for={`${view.id}-${field.name}`} class="grid gap-2">
         <span>{field.label}{field.required && <span aria-hidden="true"> *</span>}</span>

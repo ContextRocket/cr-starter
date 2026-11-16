@@ -91,7 +91,7 @@ async function mountedArchiveSmoke(
     expect([...served].some((p) => p.endsWith(".css"))).toBe(true);
     expect(
       [...served].some(
-        (p) => p.includes("GeneratedLeadForm") && p.endsWith(".js"),
+        (p) => p.includes("GeneratedContactForm") && p.endsWith(".js"),
       ),
     ).toBe(true);
     expect(served.has(mount + "embed/widget.js")).toBe(true);
@@ -144,7 +144,7 @@ it("GENERATED-002: executes Astro twice and packages only the supplied page, ass
     expect(html).not.toContain("<script>alert('fixture')");
     expect(html).toContain("https://example.test/facts/");
     expect(html).toContain("11111111-1111-4111-8111-111111111111");
-    expect(html).toContain("data-generated-lead-form");
+    expect(html).toContain("data-generated-contact-form");
     expect(html).toContain('data-contextrocket-mode="live"');
     expect(html).toContain('data-contextrocket-consent-gate="true"');
     expect(first.filePaths).toContain("embed/widget.js");

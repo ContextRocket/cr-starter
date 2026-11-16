@@ -73,7 +73,7 @@ and the immutable `_releases` ledger remain reserved.
 The builder checks binding consistency offline. It cannot establish whether an
 App or origin grant is still live. The product must resolve those bindings and
 recheck publication authority before storing or publishing the returned release.
-Lead forms use the SDK's existing `/api/orgs/{handle}/contacts` transport with
+Contact forms use the SDK's existing `/api/orgs/{handle}/contacts` transport with
 `app_id`, supplied attribution, consent and canonical Contact fields. A valid
 capture receipt is required for success; it does not claim downstream delivery.
 No demo-success mode is enabled.
@@ -81,7 +81,7 @@ No demo-success mode is enabled.
 ## Bounded renderer
 
 Supported visible default-variant sections are `hero`, `rich_text`, `media`,
-`logo_strip`, `proof_stat`, `feature_grid`, `faq`, `cta` and `lead_form`. Other
+`logo_strip`, `proof_stat`, `feature_grid`, `faq`, `cta` and `contact_form`. Other
 visible sections or variants fail explicitly. Content is interpolated as text
 by Astro, never injected as executable markup. Canonical Contact fields are
 `name`, `email`, `phone`, `company` and `message`; `name` is required. Other

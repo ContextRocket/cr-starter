@@ -1,6 +1,6 @@
 import type { ContactFormData } from "@contextrocket/sdk/contact-form";
 /** Render projection only; the input content contract remains the product JSON Schema. */
-export interface GeneratedLeadFormView {
+export interface GeneratedContactFormView {
   id: string;
   title: string;
   description?: string;
@@ -28,7 +28,7 @@ export interface GeneratedLeadFormView {
   >;
 }
 export function generatedContactPayload(
-  view: GeneratedLeadFormView,
+  view: GeneratedContactFormView,
   values: FormData,
 ): ContactFormData {
   if (values.get("consent") !== "on")
