@@ -9,15 +9,15 @@ S3, or any static host -- without forking a full Next app shell.
 
 ## Inputs (fork / client)
 
-| Input | Example |
-| --- | --- |
-| Brand + theme | `config/site.json` |
-| Copy | `src/i18n/messages/site/en.ts` (+ other locales if needed) |
-| Home composition | `src/pages/[locale]/index.astro` |
-| Posts | `content/posts/*.md` |
-| Optional evergreen topics | `content/topics/*.md` with `features.topics: true` |
-| Assets | `public/` |
-| Chat | Embed snippet + handle + publishable API key |
+| Input                     | Example                                                    |
+| ------------------------- | ---------------------------------------------------------- |
+| Brand + theme             | `config/site.json`                                         |
+| Copy                      | `src/i18n/messages/site/en.ts` (+ other locales if needed) |
+| Home composition          | `src/pages/[locale]/index.astro`                           |
+| Posts                     | `content/posts/*.md`                                       |
+| Optional evergreen topics | `content/topics/*.md` with `features.topics: true`         |
+| Assets                    | `public/`                                                  |
+| Chat                      | Embed snippet + handle + publishable API key               |
 
 ## Outputs
 
@@ -54,14 +54,14 @@ repository owns page rendering. The build boundary takes pinned inputs and
 returns a static archive; the product must not import a sibling checkout or
 maintain another page renderer.
 
-| Build input | Contract |
-|---|---|
-| Content | Product-validated semantic page manifest with exact evidence and generation receipts; no executable content or credentials. |
-| Route | Organization handle, page slug, explicit public origin and mount, and visibility. The Organization handle selects the container; the slug selects its page. |
-| Language | `locales: ["en"]`, `defaultLocale: "en"`; the existing single-locale build emits paths without `/en/`. |
-| Design | One immutable `cr.theme.v1` bundle, imported locally with `--purpose published`; pin its release and digest. |
-| Components and assets | Pinned starter revision, lockfile, template and shared chrome version, SDK artifact digests, governed assets and licensed fonts. |
-| Browser capabilities | Organization-scoped public chat and contact configuration, consent configuration and attribution. Live capabilities require their real server-side bindings. |
+| Build input           | Contract                                                                                                                                                                       |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Content               | Product-validated semantic page manifest with exact evidence and generation receipts; no executable content or credentials.                                                    |
+| Route                 | Organization handle, exact customer-selected page path, explicit public origin and mount, and visibility. The handle selects the container; the path selects the page release. |
+| Language              | `locales: ["en"]`, `defaultLocale: "en"`; the existing single-locale build emits paths without `/en/`.                                                                         |
+| Design                | One immutable `cr.theme.v1` bundle, imported locally with `--purpose published`; pin its release and digest.                                                                   |
+| Components and assets | Pinned starter revision, lockfile, template and shared chrome version, SDK artifact digests, governed assets and licensed fonts.                                               |
+| Browser capabilities  | Organization-scoped public chat and contact configuration, consent configuration and attribution. Live capabilities require their real server-side bindings.                   |
 
 Materialize these inputs into an isolated starter source tree. Run the normal
 Astro build and its route checks, then package `dist/` with
@@ -78,12 +78,12 @@ website's `/site/` build, not a generated-page route selector. Use the product's
 selected public path and container mount for a gap-page build; this contract
 does not choose or rename that namespace.
 
-| Delivery | Page owner and build inputs | Facts |
-|---|---|---|
-| CDN only | ContextRocket maintains the page and pins its starter inputs. | Separate ContextRocket-managed bundle. |
-| Path proxy on an external website | The customer proxies the selected page path to the same CDN release; their website remains independent. | Proxy the separate managed Facts path. |
-| Customer Git website, managed gap pages | The website has its own repository; ContextRocket keeps the gap-page inputs and releases. | Separate managed bundle, linked or path-proxied. |
-| Customer Git page takeover | Export the same content, config, assets and version pins so the customer builds the page with Astro. | Remains ContextRocket-managed and path-proxied; never copied into the page's source tree. |
+| Delivery                                | Page owner and build inputs                                                                             | Facts                                                                                     |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| CDN only                                | ContextRocket maintains the page and pins its starter inputs.                                           | Separate ContextRocket-managed bundle.                                                    |
+| Path proxy on an external website       | The customer proxies the selected page path to the same CDN release; their website remains independent. | Proxy the separate managed Facts path.                                                    |
+| Customer Git website, managed gap pages | The website has its own repository; ContextRocket keeps the gap-page inputs and releases.               | Separate managed bundle, linked or path-proxied.                                          |
+| Customer Git page takeover              | Export the same content, config, assets and version pins so the customer builds the page with Astro.    | Remains ContextRocket-managed and path-proxied; never copied into the page's source tree. |
 
 Repository takeover transfers page editing and building. It does not grant
 domain, GitHub or publication authority. Keep deployment credentials outside
@@ -180,11 +180,11 @@ current samples ran sequentially with warm local caches; older, slower samples
 are retained in the notes to show observed variance. Treat these as local
 observations rather than a performance guarantee:
 
-| Site | `pnpm build` (approx) | Notes |
-| --- | --- | --- |
-| `cr-starter` | 3.03s | 22 static pages; multi-locale (`en`/`es`/`de`); Astro build: 2.15s. Earlier samples were 9.8–11.1s warm and 59.2s on the first run. |
-| `cr-kleos` | 3.62s | 52 static pages, including 30 blog posts and custom pages; 3 static redirect rules. Earlier samples were 10.6–18.0s. |
-| `cr-markmacmahon` | 3.91s | 22 static pages; 15 posts and `/posts` alias; Astro build: 2.76s. The minimal header is emitted as static HTML at build time; homepage and `/posts/` emit no client islands. An earlier sample was ~9.5s. |
+| Site              | `pnpm build` (approx) | Notes                                                                                                                                                                                                     |
+| ----------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cr-starter`      | 3.03s                 | 22 static pages; multi-locale (`en`/`es`/`de`); Astro build: 2.15s. Earlier samples were 9.8–11.1s warm and 59.2s on the first run.                                                                       |
+| `cr-kleos`        | 3.62s                 | 52 static pages, including 30 blog posts and custom pages; 3 static redirect rules. Earlier samples were 10.6–18.0s.                                                                                      |
+| `cr-markmacmahon` | 3.91s                 | 22 static pages; 15 posts and `/posts` alias; Astro build: 2.76s. The minimal header is emitted as static HTML at build time; homepage and `/posts/` emit no client islands. An earlier sample was ~9.5s. |
 
 A build cannot run before dependencies are installed. For `cr-kleos`, a fresh
 project copy with an empty `node_modules` directory installed 566 packages in

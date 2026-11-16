@@ -40,16 +40,16 @@ content model here. JSON Schema validation runs before renderer-specific checks.
 
 `build-input.json` has format `cr.generated-page.v1` and these fields:
 
-| Field                                 | Meaning                                                                                                                                                                |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `organizationHandle`, `companyName`   | Supplied Organization identity; handle must match the manifest.                                                                                                        |
-| `publicOrigin`, `mount`, `visibility` | Explicit HTTPS origin, `/p/{page_slug}/`, and `public` or `private`.                                                                                                   |
-| `pins`                                | Exact `rendererPins()` result: starter Git revision, actual source digest, lockfile, schema, shared chrome, installed SDK artifacts, embed artifacts and Node version. |
-| `theme`                               | Immutable `release` identifier and complete relative-path-to-SHA256 `files` map. Imported locally with `--purpose published`.                                          |
-| `assetAdmissionReceiptId`             | Product asset-admission receipt for these canonical theme and asset bytes. The product publisher owns unsafe-SVG rejection.                                            |
-| `assets`                              | Complete relative-path-to-SHA256 map for `assets/`.                                                                                                                    |
-| `factsLink`                           | Optional supplied `label` and `href`; links to a managed Facts bundle without copying it.                                                                              |
-| `contact`, `chat`                     | Optional product-resolved binding: `appRef`, `organizationHandle`, `publicOrigin`, `apiOrigin`, `receiptId`. Chat also requires an origin-bound `publicApiKey`.        |
+| Field                                 | Meaning                                                                                                                                                                                                                |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `organizationHandle`, `companyName`   | Supplied Organization identity; handle must match the manifest.                                                                                                                                                        |
+| `publicOrigin`, `mount`, `visibility` | Explicit HTTPS origin, the exact safe publication path (for example `/services/` or `/journal/solar-storage/`), and `public` or `private`. `/` is supported when the product intentionally owns the organization root. |
+| `pins`                                | Exact `rendererPins()` result: starter Git revision, actual source digest, lockfile, schema, shared chrome, installed SDK artifacts, embed artifacts and Node version.                                                 |
+| `theme`                               | Immutable `release` identifier and complete relative-path-to-SHA256 `files` map. Imported locally with `--purpose published`.                                                                                          |
+| `assetAdmissionReceiptId`             | Product asset-admission receipt for these canonical theme and asset bytes. The product publisher owns unsafe-SVG rejection.                                                                                            |
+| `assets`                              | Complete relative-path-to-SHA256 map for `assets/`.                                                                                                                                                                    |
+| `factsLink`                           | Optional supplied `label` and `href`; links to a managed Facts bundle without copying it.                                                                                                                              |
+| `contact`, `chat`                     | Optional product-resolved binding: `appRef`, `organizationHandle`, `publicOrigin`, `apiOrigin`, `receiptId`. Chat also requires an origin-bound `publicApiKey`.                                                        |
 
 Set the manifest renderer to `cr-starter` and `pinned_version` to
 `pins.starterSourceSha256`. The source digest, rather than a Git label alone,
@@ -61,10 +61,14 @@ The archive is relative to its publication mount: root `index.html`, `_astro/`,
 `assets/`, `embed/` and discovery files. Existing Astro `CONTAINER_BASE` config
 prefixes compiled resources; the shared asset path helper prefixes authored
 resources once. The single-locale flatten helper remains in the build. For
-`/p/workshop/`, canonical URLs stay `PUBLIC_ORIGIN/p/workshop/` and all local
-resources use that prefix. SiteRelease supplies `path_prefix=p/workshop`; it
-must not prepend a second physical `p/workshop/` directory. No post-build HTML
-rewrite or publisher byte transformation is required.
+`/journal/solar-storage/`, canonical URLs stay at that exact path and all local
+resources use that prefix. SiteRelease supplies
+`path_prefix=journal/solar-storage`; it must not prepend a second physical
+`journal/solar-storage/` directory. The selected mount is build input, so the
+same renderer can produce a page at a customer-selected path without teaching
+the reviewer UI about that path. No post-build HTML rewrite or publisher byte
+transformation is required. Server-owned mounts such as `/facts/`, `/theme/`,
+and the immutable `_releases` ledger remain reserved.
 
 The builder checks binding consistency offline. It cannot establish whether an
 App or origin grant is still live. The product must resolve those bindings and
@@ -84,9 +88,12 @@ by Astro, never injected as executable markup. Canonical Contact fields are
 form fields need an explicit adapter to the configured Contacts schema.
 
 The first slice supports system fonts and self canonicals. Custom font tokens,
-analytics, other locales, unsupported sections and other route namespaces are
-refused. `/cr/` remains an unselected proposal. Shared BaseLayout provides chat
-and consent; generated forms reuse the SDK's receipt and retry controller.
+analytics, other locales, and unsupported sections are refused. The route is
+not restricted to the onboarding `/p/` namespace. This is still a bounded
+semantic page producer; it does not import an arbitrary website or make its
+content structure unrestricted. `/cr/` remains an unselected proposal. Shared
+BaseLayout provides chat and consent; generated forms reuse the SDK's receipt
+and retry controller.
 Facts publication, GitHub provisioning, product BuildPort cutover and browser
 capability provisioning remain outside this producer.
 

@@ -45,6 +45,29 @@ export function httpsOrigin(value: string): string {
     fail("UNSAFE_ORIGIN", value);
   return value;
 }
+export function validatePageMount(value: unknown): string {
+  const mount = text(value);
+  if (mount === "/") return mount;
+  if (
+    mount.length > 512 ||
+    !mount.startsWith("/") ||
+    !mount.endsWith("/") ||
+    mount.includes("//")
+  )
+    fail("UNSUPPORTED_ROUTE", "Expected a safe absolute page mount");
+  const segments = mount.slice(1, -1).split("/");
+  if (
+    segments.some(
+      (segment) =>
+        !/^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/.test(segment) ||
+        segment === "." ||
+        segment === "..",
+    ) ||
+    ["facts", "theme", "_releases"].includes(segments[0]!)
+  )
+    fail("UNSUPPORTED_ROUTE", "Page mount is unsafe or reserved");
+  return mount;
+}
 export function safeHref(value: string): string {
   if (
     /^#[a-zA-Z][\w-]*$/.test(value) ||
@@ -110,8 +133,7 @@ export function validateInputs(raw: unknown): BuildInputs {
       "Product-admitted canonical asset bytes are required",
     );
   httpsOrigin(text(o.publicOrigin));
-  if (!/^\/p\/[a-z0-9]+(?:-[a-z0-9]+)*\/$/.test(text(o.mount)))
-    fail("UNSUPPORTED_ROUTE", "Expected /p/{page_slug}/");
+  validatePageMount(o.mount);
   if (
     !["public", "private"].includes(text(o.visibility)) ||
     !text(o.companyName).trim()

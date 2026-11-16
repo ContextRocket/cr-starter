@@ -28,6 +28,15 @@ it("GENERATED-001: accepts the supplied English manifest and exact App binding",
     "/p/workshop/",
   );
 });
+it("GENERATED-001: accepts a source-matching article route outside the landing namespace", async () => {
+  const { manifest, input } = await fixture();
+  const articleMount = "/journal/solar-storage/";
+  manifest.route = articleMount;
+  input.mount = articleMount;
+  expect(validateManifest(manifest, schema, validateInputs(input)).route).toBe(
+    articleMount,
+  );
+});
 it.each([
   [
     "wrong locale",
@@ -109,4 +118,16 @@ it("GENERATED-001: requires product admission for the pinned canonical asset byt
   expect(() =>
     validateInputs({ ...input, assetAdmissionReceiptId: "" }),
   ).toThrow("ASSET_ADMISSION_REQUIRED");
+});
+
+it.each([
+  "journal/solar-storage/",
+  "/journal//solar/",
+  "/journal/../solar/",
+  "/facts/article/",
+])("GENERATED-001: refuses unsafe or reserved page mount %s", async (mount) => {
+  const { input } = await fixture();
+  expect(() => validateInputs({ ...input, mount })).toThrow(
+    "UNSUPPORTED_ROUTE",
+  );
 });
