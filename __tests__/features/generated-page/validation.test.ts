@@ -37,6 +37,10 @@ it("GENERATED-001: accepts a source-matching article route outside the landing n
     articleMount,
   );
 });
+it("GENERATED-001: accepts the organization root when explicitly selected", async () => {
+  const { input } = await fixture();
+  expect(validateInputs({ ...input, mount: "/" }).mount).toBe("/");
+});
 it.each([
   [
     "wrong locale",
