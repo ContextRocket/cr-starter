@@ -79,6 +79,6 @@ const fields = siteConfig.contactForm.fields;
     <input class="mt-1 size-4 shrink-0 accent-primary" type="checkbox" name="consent" required />
     <span>{labels.consent}<span aria-hidden="true"> *</span></span>
   </label>
-  <p data-form-status class="min-h-6 text-sm text-text-secondary" aria-live="polite" role="status">{t("contact.javascriptRequired")}</p>
+  <p data-form-status class="text-sm text-text-secondary" aria-live="polite" role="status" hidden></p>
   <button data-submit class="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-60" type="submit">{labels.submit}</button>
 </form>

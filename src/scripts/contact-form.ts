@@ -87,8 +87,7 @@ export function initializeContactForm(form: HTMLFormElement): void {
   let submissionController: ReturnType<NonNullable<Window["ContextRocketSDK"]>["createContactFormController"]> | undefined;
   let isSubmitting = false;
 
-  // Keep the server-rendered no-JavaScript notice visible until this module
-  // initializes; then remove the empty status row so it does not leave a gap.
+  // Status is announced only when the user takes an action.
   setStatus("");
   form.addEventListener("invalid", () => {
     setStatus(label("required"));

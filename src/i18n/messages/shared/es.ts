@@ -68,7 +68,6 @@ export const sharedEs: LocaleMessages<typeof sharedEn> = {
     failure: "No hemos podido enviar tu mensaje. Inténtalo de nuevo.",
     consentRequired: "Acepta que te contactemos antes de enviar este mensaje.",
     liveUnavailable: "La captura de contactos no está configurada en este sitio.",
-    javascriptRequired: "Activa JavaScript para enviar tu mensaje.",
     required: "Completa los campos obligatorios y acepta el consentimiento.",
   },
   notifications: {
