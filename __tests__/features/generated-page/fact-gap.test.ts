@@ -86,4 +86,7 @@ it("GENERATED-004: a private build marks our question, a public build shows its 
   expect(publicHtml).toContain(FALLBACK);
   // A gap with no fallback is omitted rather than rendered empty.
   expect(publicHtml).not.toContain('id="gap-proof"');
-}, 180000);
+  // Two real Astro builds: one page each, ~130s per build on a cold Vite
+  // cache. 180s could never fit both, so the witness could only ever time out
+  // rather than fail on its assertions.
+}, 600000);
