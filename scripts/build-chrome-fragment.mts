@@ -115,8 +115,10 @@ const GROUNDING_ROOT_VARS = new Set([
 ]);
 
 // The chrome token bridge: the starter's Tailwind semantics re-anchored onto
-// the Grounding page tokens. Fallbacks are the cr-starter light defaults.
-const BRIDGE = `.cr-chrome{--background:var(--canvas,#fff);--foreground:var(--text,#111);--muted-foreground:var(--muted,#5e616b);--muted:color-mix(in srgb,currentcolor 6%,transparent);--primary-foreground:#fff;--ring:var(--primary,#14151a);--card:var(--canvas,#fff);--color-background:var(--background);--color-foreground:var(--foreground);--color-muted:var(--muted);--color-muted-foreground:var(--muted-foreground);--color-primary:var(--primary,#14151a);--color-primary-foreground:var(--primary-foreground);--color-ring:var(--ring);--color-border:var(--border,#e4e1d9);--color-card:var(--card);--color-input:var(--border,#e4e1d9)}`;
+// the Grounding page tokens. Fallbacks are the cr-starter light defaults. The
+// last two rules keep the page's own link styling (underline, wrap) out of
+// the chrome, matching the starter's underline-free nav.
+const BRIDGE = `.cr-chrome{--background:var(--canvas,#fff);--foreground:var(--text,#111);--muted-foreground:var(--muted,#5e616b);--muted:color-mix(in srgb,currentcolor 6%,transparent);--primary-foreground:#fff;--ring:var(--primary,#14151a);--card:var(--canvas,#fff);--color-background:var(--background);--color-foreground:var(--foreground);--color-muted:var(--muted);--color-muted-foreground:var(--muted-foreground);--color-primary:var(--primary,#14151a);--color-primary-foreground:var(--primary-foreground);--color-ring:var(--ring);--color-border:var(--border,#e4e1d9);--color-card:var(--card);--color-input:var(--border,#e4e1d9)}.cr-chrome a{text-decoration:none}.cr-chrome .hidden a{white-space:nowrap}`;
 
 function scopeAndCollect(nodes, fragmentClasses, rootClasses, kept) {
   for (const node of nodes) {
@@ -143,7 +145,13 @@ function scopeAndCollect(nodes, fragmentClasses, rootClasses, kept) {
       const scoped = matched.map((selector) => {
         const tokens = classTokensInSelector(selector);
         const onRoot = tokens.length > 0 && tokens.every((token) => rootClasses.has(token));
-        return (onRoot ? ".cr-chrome" : ".cr-chrome ") + selector;
+        // A class can sit on the header root AND on a descendant (the root and
+        // the mobile panel both carry bg-[var(--nav-surface,...)]), so the
+        // compound and descendant forms are both emitted whenever the root
+        // form applies.
+        const compound = onRoot ? `.cr-chrome${selector}` : null;
+        const descendant = `.cr-chrome ${selector}`;
+        return compound ? `${compound},${descendant}` : descendant;
       });
       kept.push(`${scoped.join(",")}{${node.body}}`);
     } else if (node.name === "property") {
