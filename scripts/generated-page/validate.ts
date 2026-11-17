@@ -236,7 +236,16 @@ const supported = new Set([
   "faq",
   "cta",
   "contact_form",
+  // A fact the page needs and we lack. It never states a company fact: the
+  // private draft renders our question, and any published render drops it or
+  // shows its general fallback prose. Accepting it here is required so the
+  // generic renderer never falls through to the question as page copy.
+  "fact_gap",
 ]);
+// A section variant is a renderer style hook. ``gap_prompt`` is the one
+// non-default variant this renderer knows, and only for ``fact_gap``.
+const supportedVariant = (kind: string, variant: string) =>
+  variant === "default" || (kind === "fact_gap" && variant === "gap_prompt");
 export function validateManifest(
   raw: unknown,
   schema: unknown,
@@ -299,7 +308,8 @@ export function validateManifest(
     const kind = text(section.type);
     if (
       !supported.has(kind) ||
-      (section.variant !== undefined && section.variant !== "default")
+      (section.variant !== undefined &&
+        !supportedVariant(kind, text(section.variant)))
     )
       fail("UNSUPPORTED_SECTION", kind);
     for (const id of array(section.asset_ids ?? []))

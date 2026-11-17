@@ -1,8 +1,8 @@
 {
   "repository": "ContextRocket/context-rocket",
-  "revision": "c1466d93524a49e1143c2b890fcd31341320ecda",
+  "revision": "6bae66f7a0ac9061635f159e44f4a467e9fcf0e4",
   "source": "backend/app/modules/composition/landing_page/schema.py",
-  "sourceSha256": "86cf6c645ce098ccefbf0f4e1d2d150a34ff65fc8ed97782b97886d2b93f0ab1",
-  "schemaSha256": "11e3e7641e3326ae19318ce670661e4b855571adf52986853bb8ccbab428fbb2",
+  "sourceSha256": "beb3ed8cdc785f33109f6d6c09b52530e8c506c627dba7d5eee785cbc21b1c03",
+  "schemaSha256": "962bacbedb47939a286cf5ae46353111feac0f3c94bf5a3d452ec1064fbbe6e8",
   "export": "manifest_json_schema()"
 }

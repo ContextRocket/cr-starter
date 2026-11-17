@@ -89,6 +89,16 @@ by Astro, never injected as executable markup. Canonical Contact fields are
 `name`, `email`, `phone`, `company` and `message`; `name` is required. Other
 form fields need an explicit adapter to the configured Contacts schema.
 
+A `fact_gap` section (`variant: gap_prompt`) is the product's prompt for a fact
+the page still needs, so it is never page copy. A private build (`visibility:
+private` with no contact binding) renders it as a marked "we need this from
+you" block carrying the question; a public or contact-enabled build renders its
+`fallback` prose or omits the section entirely. The renderer must never print
+`question` on a published page; that is why the section has its own branch
+instead of falling through the generic renderer. The product signs its own
+published pages after the build, so the renderer never mints a publication
+marker and must not emit one.
+
 The first slice supports system fonts and a strict allowlist of ContextRocket
 brand-CDN families (`Inter Tight`, `Geist Mono`, `Space Mono`, and `Newsreader`)
 plus the listed platform fallbacks. An observed customer font is accepted only

@@ -29,7 +29,23 @@ function ctaHref(section:Record<string,unknown>):string {
 ---
 <BaseLayout locale="en" path={input.mount} title={text(search.title)} titleIsExact description={text(search.description)} robots={text(search.robots_intent) as 'index,follow' | 'noindex,nofollow'} includeSiteJsonLd={false} fontAssets={{}} navigation={input.navigation ? { ...input.navigation, homeHref: input.navigation.homeHref ?? `${input.publicOrigin}/` } : undefined}>
   <main id="main-content" class="mx-auto w-full max-w-5xl space-y-12 px-6 py-12">
-    {sections.map(s=> s.type==='contact_form' ? <GeneratedContactForm view={contactFormView(s)} /> : (
+    {sections.map(s=> s.type==='contact_form' ? <GeneratedContactForm view={contactFormView(s)} /> : s.type==='fact_gap' ? (
+      // A gap is our prompt, not the customer's copy. It is shown only on the
+      // private review surface; a public or contact-enabled build shows its
+      // general fallback or omits the section, so a question can never reach a
+      // published page through the generic renderer.
+      (input.visibility==='private' && !input.contact) ? (
+        <aside id={text(s.id)} aria-label="We need this from you" class="rounded-lg border border-dashed border-primary/60 bg-primary/5 p-6">
+          <p class="text-sm font-semibold tracking-wide text-primary uppercase">We need this from you</p>
+          <p class="mt-2 text-lg leading-7">{text(s.question)}</p>
+          <p class="mt-2 text-sm text-muted-foreground">Only you can see this. Answer it in your inbox and we will fill the page in.</p>
+        </aside>
+      ) : s.fallback ? (
+        <section id={text(s.id)} class="space-y-5">
+          <p class="leading-7">{text(s.fallback)}</p>
+        </section>
+      ) : null
+    ) : (
       <section id={text(s.id)} class="space-y-5">
         {s.type==='hero' ? <h1 class="text-4xl font-semibold tracking-tight sm:text-6xl">{text(s.headline)}</h1> : s.title && <h2 class="text-3xl font-semibold">{text(s.title)}</h2>}
         {(s.subhead || s.subtitle || s.description || s.eyebrow) && <p class="text-lg text-muted-foreground">{text(s.subhead || s.subtitle || s.description || s.eyebrow)}</p>}

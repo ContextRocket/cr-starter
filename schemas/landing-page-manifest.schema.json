@@ -867,6 +867,16 @@
           ],
           "default": null,
           "title": "Form Binding Id"
+        },
+        "evidence_requirement": {
+          "default": "company_fact",
+          "description": "Whether the description states company-specific claims. Defaults to company_fact; the title and action label are UI copy, never checked.",
+          "enum": [
+            "company_fact",
+            "general"
+          ],
+          "title": "Evidence Requirement",
+          "type": "string"
         }
       },
       "required": [
@@ -930,6 +940,80 @@
       "title": "EvidenceRef",
       "type": "object"
     },
+    "FactGapSection": {
+      "additionalProperties": false,
+      "description": "A fact the page needs and we lack: one Inbox question, never a blocker.\n\nThe private draft renders ``question`` as a marked prompt (``variant`` is\npinned to ``gap_prompt`` so a renderer can style it). Any published or\nindexable render drops this section or replaces it with ``fallback``; see\n``gap_page_manifest.published_gap_page_manifest``. A ``fact_gap`` never\nrefuses a build or a publish, and it never states a company fact: its\n``question`` is our prompt and its ``fallback`` is general prose, so neither\nis claim-bearing.",
+      "properties": {
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "order": {
+          "minimum": 0,
+          "title": "Order",
+          "type": "integer"
+        },
+        "visible": {
+          "default": true,
+          "title": "Visible",
+          "type": "boolean"
+        },
+        "variant": {
+          "const": "gap_prompt",
+          "default": "gap_prompt",
+          "title": "Variant",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceRef"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "type": {
+          "const": "fact_gap",
+          "default": "fact_gap",
+          "title": "Type",
+          "type": "string"
+        },
+        "gap_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Gap Id",
+          "type": "string"
+        },
+        "question": {
+          "maxLength": 400,
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        },
+        "fallback": {
+          "anyOf": [
+            {
+              "maxLength": 600,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fallback"
+        }
+      },
+      "required": [
+        "id",
+        "order",
+        "gap_id",
+        "question"
+      ],
+      "title": "FactGapSection",
+      "type": "object"
+    },
     "FaqItem": {
       "additionalProperties": false,
       "properties": {
@@ -951,6 +1035,15 @@
           },
           "title": "Evidence",
           "type": "array"
+        },
+        "evidence_requirement": {
+          "default": "company_fact",
+          "enum": [
+            "company_fact",
+            "general"
+          ],
+          "title": "Evidence Requirement",
+          "type": "string"
         }
       },
       "required": [
@@ -1043,6 +1136,15 @@
           },
           "title": "Evidence",
           "type": "array"
+        },
+        "evidence_requirement": {
+          "default": "company_fact",
+          "enum": [
+            "company_fact",
+            "general"
+          ],
+          "title": "Evidence Requirement",
+          "type": "string"
         }
       },
       "required": [
@@ -1264,6 +1366,16 @@
           },
           "title": "Asset Ids",
           "type": "array"
+        },
+        "evidence_requirement": {
+          "default": "company_fact",
+          "description": "Whether the headline, subhead and body state company-specific claims. Defaults to company_fact: an absent marker is never read as general. Button labels and ids are UI copy, never checked.",
+          "enum": [
+            "company_fact",
+            "general"
+          ],
+          "title": "Evidence Requirement",
+          "type": "string"
         }
       },
       "required": [
@@ -1428,6 +1540,16 @@
           "minItems": 1,
           "title": "Asset Ids",
           "type": "array"
+        },
+        "evidence_requirement": {
+          "default": "company_fact",
+          "description": "Whether the body prose states company-specific claims. Defaults to company_fact; the title and eyebrow are labels and are never checked.",
+          "enum": [
+            "company_fact",
+            "general"
+          ],
+          "title": "Evidence Requirement",
+          "type": "string"
         }
       },
       "required": [
@@ -1459,6 +1581,15 @@
           },
           "title": "Evidence",
           "type": "array"
+        },
+        "evidence_requirement": {
+          "default": "company_fact",
+          "enum": [
+            "company_fact",
+            "general"
+          ],
+          "title": "Evidence Requirement",
+          "type": "string"
         }
       },
       "required": [
@@ -1608,13 +1739,13 @@
       "additionalProperties": false,
       "properties": {
         "renderer_id": {
-          "default": "contextrocket-launch",
+          "default": "cr-starter",
           "minLength": 1,
           "title": "Renderer Id",
           "type": "string"
         },
         "min_version": {
-          "default": "1.0.0",
+          "default": "0.2.0",
           "minLength": 1,
           "title": "Min Version",
           "type": "string"
@@ -1694,6 +1825,16 @@
           "minItems": 1,
           "title": "Paragraphs",
           "type": "array"
+        },
+        "evidence_requirement": {
+          "default": "company_fact",
+          "description": "Whether the paragraphs state company-specific claims. Defaults to company_fact; the title is a label and is never checked.",
+          "enum": [
+            "company_fact",
+            "general"
+          ],
+          "title": "Evidence Requirement",
+          "type": "string"
         }
       },
       "required": [
@@ -1875,6 +2016,15 @@
           },
           "title": "Evidence",
           "type": "array"
+        },
+        "evidence_requirement": {
+          "default": "company_fact",
+          "enum": [
+            "company_fact",
+            "general"
+          ],
+          "title": "Evidence Requirement",
+          "type": "string"
         }
       },
       "required": [
@@ -2031,6 +2181,7 @@
             "contact_form": "#/$defs/ContactFormSection",
             "content_feed": "#/$defs/ContentFeedSection",
             "cta": "#/$defs/CtaSection",
+            "fact_gap": "#/$defs/FactGapSection",
             "faq": "#/$defs/FaqSection",
             "feature_grid": "#/$defs/FeatureGridSection",
             "hero": "#/$defs/HeroSection",
@@ -2075,6 +2226,9 @@
           },
           {
             "$ref": "#/$defs/ContactFormSection"
+          },
+          {
+            "$ref": "#/$defs/FactGapSection"
           }
         ]
       },
