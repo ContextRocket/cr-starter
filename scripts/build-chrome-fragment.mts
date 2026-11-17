@@ -118,7 +118,7 @@ const GROUNDING_ROOT_VARS = new Set([
 // the Grounding page tokens. Fallbacks are the cr-starter light defaults. The
 // last two rules keep the page's own link styling (underline, wrap) out of
 // the chrome, matching the starter's underline-free nav.
-const BRIDGE = `.cr-chrome{--background:var(--canvas,#fff);--foreground:var(--text,#111);--muted-foreground:var(--muted,#5e616b);--muted:color-mix(in srgb,currentcolor 6%,transparent);--primary-foreground:#fff;--ring:var(--primary,#14151a);--card:var(--canvas,#fff);--color-background:var(--background);--color-foreground:var(--foreground);--color-muted:var(--muted);--color-muted-foreground:var(--muted-foreground);--color-primary:var(--primary,#14151a);--color-primary-foreground:var(--primary-foreground);--color-ring:var(--ring);--color-border:var(--border,#e4e1d9);--color-card:var(--card);--color-input:var(--border,#e4e1d9)}.cr-chrome a{text-decoration:none}.cr-chrome .hidden a{white-space:nowrap}`;
+const BRIDGE = `.cr-chrome{--background:var(--canvas,#fff);--foreground:var(--text,#111);--muted-foreground:#5e616b;--muted:color-mix(in srgb,currentcolor 6%,transparent);--primary-foreground:#fff;--ring:var(--primary,#14151a);--card:var(--canvas,#fff);--color-background:var(--background);--color-foreground:var(--foreground);--color-muted:var(--muted);--color-muted-foreground:var(--muted-foreground);--color-primary:var(--primary,#14151a);--color-primary-foreground:var(--primary-foreground);--color-ring:var(--ring);--color-border:var(--border,#e4e1d9);--color-card:var(--card);--color-input:var(--border,#e4e1d9)}.cr-chrome a{text-decoration:none}.cr-chrome .hidden a{white-space:nowrap}`;
 
 function scopeAndCollect(nodes, fragmentClasses, rootClasses, kept) {
   for (const node of nodes) {
