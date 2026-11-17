@@ -1,0 +1,50 @@
+---
+// Renders the real chrome Navbar with bounded placeholder slots. The chrome
+// fragment builder (scripts/build-chrome-fragment.mts) extracts the rendered
+// <header> from this page's build output and pins it; the backend substitutes
+// the __CR_*__ placeholders per organization. This page is never deployed.
+import Navbar from "@/components/chrome/Navbar.astro";
+import "@/styles/global.css";
+---
+
+<Navbar
+  links={[
+    {
+      label: "__CR_LINK_LABEL__",
+      href: "__CR_LINK_HREF__",
+    },
+    {
+      label: "__CR_PRIMARY_LINK_LABEL__",
+      href: "__CR_PRIMARY_LINK_HREF__",
+      variant: "primary",
+    },
+  ]}
+  logo={{
+    src: "__CR_LOGO_SRC__",
+    alt: "__CR_BRAND_NAME__",
+    variant: "wordmark",
+    width: 160,
+    height: 40,
+  }}
+  brandName="__CR_BRAND_NAME__"
+  homeHref="__CR_HOME_HREF__"
+  navLabel="__CR_NAV_LABEL__"
+  openMenuLabel="__CR_OPEN_MENU__"
+  closeMenuLabel="__CR_CLOSE_MENU__"
+  showLanguageSelector={true}
+  locale="en"
+  localeOptions={[
+    {
+      code: "en",
+      label: "__CR_LOCALE_LABEL__",
+      href: "__CR_LOCALE_HREF__",
+    },
+    {
+      code: "xx",
+      label: "__CR_LOCALE_LABEL_ALT__",
+      href: "__CR_LOCALE_HREF_ALT__",
+    },
+  ]}
+  changeLanguageLabel="__CR_LANG_LABEL__"
+  className="cr-chrome"
+/>
