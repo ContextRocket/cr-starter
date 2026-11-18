@@ -96,7 +96,13 @@ async function mountedArchiveSmoke(
     ).toBe(true);
     expect(served.has(mount + "embed/widget.js")).toBe(true);
     expect(served.has(mount + "embed/site-behaviors.js")).toBe(true);
-    expect(served.has(mount + "assets/brand/logo-h-spark-ink.svg")).toBe(true);
+    // The build packages a supplied asset even when this fixture's sections do
+    // not reference it, so read it directly: nothing in the page links to it,
+    // and asserting on `served` only ever described what the page linked to.
+    const brandAsset = await fetch(
+      origin + mount + "assets/brand/logo-h-spark-ink.svg",
+    );
+    expect(brandAsset.status, "supplied brand asset").toBe(200);
     expect((await fetch(origin + "/facts/")).status).toBe(404);
     expect((await fetch(origin + mount + "facts/")).status).toBe(404);
     return [...served].sort();
@@ -189,4 +195,7 @@ it("GENERATED-002: executes Astro twice and packages only the supplied page, ass
   } finally {
     await rm(dir, { recursive: true, force: true });
   }
-}, 90000);
+  // Two full Astro builds to prove byte-identical output, plus a third that
+  // fails at the renderer-pin check. 90s could not fit one build here, so the
+  // case could only ever time out rather than fail on its assertions.
+}, 900000);

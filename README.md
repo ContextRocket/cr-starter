@@ -172,3 +172,17 @@ operator release workflow. Keep the local artifacts for offline demos.
 
 See [AGENTS.md](AGENTS.md), [docs/fork-evolution.md](docs/fork-evolution.md),
 and [docs/site-integrations.md](docs/site-integrations.md).
+
+## Tests
+
+`pnpm test` is the default suite: behaviour assertions render the Astro
+components in-process with `experimental_AstroContainer`, so they run in
+seconds.
+
+`pnpm test:build` is the full-build gate (`*.build.test.ts`). Each case there
+runs a real Astro build, so it is slow by nature and covers only what a
+component render cannot: archive bytes, determinism, schema validation, mount
+and the build receipt. Run it at release; it is deliberately not part of
+`pnpm test` or `pnpm verify`.
+
+Assert a rendering behaviour in one layer, never both.
